@@ -25,7 +25,7 @@ export default function Navbar() {
         <div className={`nav-dynamic-wrapper ${scrolled ? 'is-scrolled' : 'is-top'}`}>
             <nav className="nav-dynamic-bar">
                 <a href="#beranda" className="brand-icon-nav">
-                    <img src="Aset UKS/UKS-02.png" alt="UKS Logo" />
+                    <img src={scrolled ? "Aset UKS/UKS-03.png" : "Aset UKS/UKS-02.png"} alt="UKS Logo" />
                 </a>
 
                 <div className="nav-links-nav">

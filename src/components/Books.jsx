@@ -6,32 +6,18 @@ export default function Books() {
     const [selectedBook, setSelectedBook] = useState(null);
     const marqueeTween = useRef(null);
     const overlayRef = useRef(null);
+    const trackRef = useRef(null);
 
     // Initialize GSAP Marquee
     useEffect(() => {
-        marqueeTween.current = gsap.to('.cards-marquee-track', {
+        marqueeTween.current = gsap.to(trackRef.current, {
             xPercent: -50,
             repeat: -1,
             duration: 40,
             ease: 'none'
         });
 
-        const track = document.querySelector('.cards-marquee-track');
-        const handleEnter = () => {
-            if (marqueeTween.current.timeScale() < 2) marqueeTween.current.pause();
-        };
-        const handleLeave = () => {
-            if (marqueeTween.current.timeScale() < 2) marqueeTween.current.play();
-        };
-        if (track) {
-            track.addEventListener('mouseenter', handleEnter);
-            track.addEventListener('mouseleave', handleLeave);
-        }
         return () => {
-            if (track) {
-                track.removeEventListener('mouseenter', handleEnter);
-                track.removeEventListener('mouseleave', handleLeave);
-            }
             if (marqueeTween.current) marqueeTween.current.kill();
         };
     }, []);
@@ -51,7 +37,7 @@ export default function Books() {
         // Ramp up warp speed
         marqueeTween.current.play();
         gsap.to(marqueeTween.current, { timeScale: 80, duration: 1.2, ease: 'power4.in' });
-        gsap.to('.cards-marquee-track', { filter: 'blur(24px) contrast(1.3)', duration: 1.2, ease: 'power4.in' });
+        gsap.to(trackRef.current, { filter: 'blur(24px) contrast(1.3)', duration: 1.2, ease: 'power4.in' });
 
         // At max velocity, slide the overlay in from the right
         setTimeout(() => {
@@ -84,7 +70,7 @@ export default function Books() {
                 document.body.style.overflow = '';
                 // Decelerate marquee
                 gsap.to(marqueeTween.current, { timeScale: 1, duration: 1.5, ease: 'power2.out' });
-                gsap.to('.cards-marquee-track', { filter: 'blur(0px) contrast(1)', duration: 1.5 });
+                gsap.to(trackRef.current, { filter: 'blur(0px) contrast(1)', duration: 1.5 });
             }
         });
     };
@@ -97,14 +83,14 @@ export default function Books() {
                         <span className="section-kicker">Perpustakaan</span>
                         <h2 className="section-title">Buku &amp; Panduan</h2>
                     </div>
-                    <button className="btn-pill secondary" onClick={handleLihatSemua} style={{ padding: '12px 24px' }}>
+                    <button className="btn-pill secondary" onClick={handleLihatSemua} style={{ padding: '12px 24px', flex: 'none' }}>
                         Lihat Semua <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
                     </button>
                 </div>
             </div>
 
             <div className="cards-marquee" data-gsap="reveal">
-                <div className="cards-marquee-track">
+                <div className="cards-marquee-track" ref={trackRef}>
                     {defaultBuku.map((buku) => (
                         <div key={buku.id} className="swipe-card book-swipe-card">
                             <div className="book-cover-large">

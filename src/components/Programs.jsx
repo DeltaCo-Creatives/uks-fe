@@ -1,6 +1,24 @@
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { defaultPrograms, defaultBerita } from '../data/mockData';
 
 export default function Programs() {
+    const trackRef = useRef(null);
+
+    // Initialize unstoppable GSAP Marquee
+    useEffect(() => {
+        const marqueeTween = gsap.to(trackRef.current, {
+            xPercent: -50,
+            repeat: -1,
+            duration: 40,
+            ease: 'none'
+        });
+
+        return () => {
+            if (marqueeTween) marqueeTween.kill();
+        };
+    }, []);
+
     return (
         <section className="section" id="berita">
             <div className="container">
@@ -13,7 +31,7 @@ export default function Programs() {
             </div>
 
             <div className="cards-marquee" data-gsap="reveal">
-                <div className="cards-marquee-track">
+                <div className="cards-marquee-track" ref={trackRef}>
                     {/* First set */}
                     {defaultPrograms.map((p, i) => (
                         <div key={i} className="swipe-card">
