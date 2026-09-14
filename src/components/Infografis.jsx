@@ -4,7 +4,7 @@ export default function Infografis() {
     return (
         <section className="section" id="infografis">
             <div className="container">
-                <div className="section-header reveal-on-scroll">
+                <div className="section-header" data-gsap="reveal">
                     <div>
                         <span className="section-kicker">Galeri</span>
                         <h2 className="section-title">Visual Inspirasi</h2>
@@ -13,7 +13,7 @@ export default function Infografis() {
 
                 <div className="info-bento">
                     {defaultInfografis.map((info, i) => (
-                        <div key={i} className={`info-item reveal-on-scroll ${i === 0 ? 'large' : ''}`}>
+                        <div key={i} className={`info-item ${i === 0 ? 'large' : ''}`} data-gsap="reveal">
                             <img src={info.image} alt={info.title} />
                             <div className="info-overlay">
                                 <i className="fa-solid fa-magnifying-glass-plus"></i>
@@ -21,7 +21,7 @@ export default function Infografis() {
                         </div>
                     ))}
                 </div>
-                
+
                 <div className="screenshots-marquee" style={{ marginTop: '80px' }}>
                     <div className="screenshots-strip">
                         {defaultScreenshots.map((img, i) => (

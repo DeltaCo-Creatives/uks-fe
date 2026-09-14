@@ -2,10 +2,9 @@ import { defaultPrograms, defaultBerita } from '../data/mockData';
 
 export default function Programs() {
     return (
-        <section className="section" id="berita" style={{ overflow: 'hidden' }}>
-            
+        <section className="section" id="berita">
             <div className="container">
-                <div className="section-header reveal-on-scroll">
+                <div className="section-header" data-gsap="reveal">
                     <div>
                         <span className="section-kicker">Eksplorasi</span>
                         <h2 className="section-title">Program Unggulan</h2>
@@ -13,12 +12,23 @@ export default function Programs() {
                 </div>
             </div>
 
-            <div className="swipe-track-wrapper">
-                <div className="swipe-track">
+            <div className="cards-marquee" data-gsap="reveal">
+                <div className="cards-marquee-track">
+                    {/* First set */}
                     {defaultPrograms.map((p, i) => (
-                        <div key={i} className="swipe-card reveal-on-scroll">
+                        <div key={i} className="swipe-card">
                             <div className="program-icon">
-                                <i className={p.icon || "fa-solid fa-star"}></i>
+                                <i className={p.icon || 'fa-solid fa-star'}></i>
+                            </div>
+                            <h3>{p.title}</h3>
+                            <p>{p.description}</p>
+                        </div>
+                    ))}
+                    {/* Duplicated set for seamless infinite loop */}
+                    {defaultPrograms.map((p, i) => (
+                        <div key={`dup-${i}`} className="swipe-card">
+                            <div className="program-icon">
+                                <i className={p.icon || 'fa-solid fa-star'}></i>
                             </div>
                             <h3>{p.title}</h3>
                             <p>{p.description}</p>
@@ -28,16 +38,16 @@ export default function Programs() {
             </div>
 
             <div className="container" style={{ marginTop: '80px' }}>
-                <div className="section-header reveal-on-scroll">
+                <div className="section-header" data-gsap="reveal">
                     <div>
                         <span className="section-kicker">Update</span>
                         <h2 className="section-title">Kabar Terbaru</h2>
                     </div>
                 </div>
-                
+
                 <div className="news-masonry">
                     {defaultBerita.map((item) => (
-                        <article key={item.id} className="news-card-playful reveal-on-scroll">
+                        <article key={item.id} className="news-card-playful" data-gsap="reveal">
                             <div className="news-img-wrap">
                                 <img src={item.gambar} alt={item.judul} />
                             </div>
@@ -47,7 +57,6 @@ export default function Programs() {
                     ))}
                 </div>
             </div>
-            
         </section>
     );
 }
