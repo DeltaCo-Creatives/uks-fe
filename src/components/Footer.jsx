@@ -4,7 +4,7 @@ export default function Footer() {
     return (
         <footer id="kontak">
             <div className="container">
-                <div className="footer-content" data-gsap="reveal">
+                <div className="footer-content">
                     <div>
                         <div className="footer-huge-text">UKS.</div>
                         <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', marginTop: '16px', maxWidth: '400px' }}>
