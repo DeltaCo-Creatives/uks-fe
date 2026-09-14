@@ -12,19 +12,25 @@ export default function Hero() {
         if (idx === current) return;
 
         const stage = heroRef.current;
-        const slides = stage.querySelectorAll('.hero-slide');
-        const prev = slides[current];
+        const slides = Array.from(stage.querySelectorAll('.hero-slide'));
         const next = slides[idx];
 
-        // Kill any ongoing animations to allow "spamming" the buttons
-        gsap.killTweensOf([prev, next, prev.querySelector('.hero-bg img'), next.querySelector('.hero-bg img'), ...prev.querySelectorAll('.hero-content > *'), ...next.querySelectorAll('.hero-content > *')]);
+        // Kill ALL ongoing animations on all slides to prevent ghost overlapping
+        gsap.killTweensOf(slides);
+        slides.forEach(s => {
+            gsap.killTweensOf(s.querySelector('.hero-bg img'));
+            gsap.killTweensOf(s.querySelectorAll('.hero-content > *'));
+        });
+
+        // Force all other slides to fade out and go to back to prevent stacking
+        const others = slides.filter((_, i) => i !== idx);
+        gsap.to(others, { opacity: 0, duration: 0.3, zIndex: 1, ease: 'power2.in' });
 
         // Bring next slide on top
         gsap.set(next, { zIndex: 3 });
 
         const tl = gsap.timeline({
             onComplete: () => {
-                gsap.set(prev, { zIndex: 1, opacity: 0 });
                 gsap.set(next, { zIndex: 2 });
             }
         });
@@ -36,8 +42,6 @@ export default function Hero() {
         );
         // Fade in the next slide
         tl.fromTo(next, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0);
-        // Fade out current slide
-        tl.to(prev, { opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
         
         // Stagger text in next slide
         tl.fromTo(

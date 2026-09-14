@@ -325,17 +325,12 @@ ul { list-style: none; }
 .cards-marquee-track {
   display: flex;
   gap: 32px;
-  width: max-content; /* Let it stretch as far as the cards dictate */
-  padding: 0 32px; /* Slight padding to offset start */
-  animation: endlessMarquee 40s linear infinite;
-}
-
-/* The user requested continuous scrolling, so we no longer pause on hover! */
-
-@keyframes endlessMarquee {
-  0% { transform: translateX(0); }
-  /* Translate exactly 50% because we duplicated the items perfectly */
-  100% { transform: translateX(-50%); }
+  width: max-content;
+  padding: 0 32px;
+  /* Force GPU acceleration and cache the filter shader to prevent black-box stutters on first warp */
+  filter: blur(0px) contrast(1);
+  transform: translateZ(0);
+  will-change: filter, transform;
 }
 
 .swipe-card {
@@ -599,3 +594,164 @@ footer {
   .swipe-track { padding: 0 20px; }
   .swipe-card { flex: 0 0 85vw; }
 }
+
+/* ============================================================
+   PDF VIEWER MODAL (BUBBLY)
+   ============================================================ */
+.pdf-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(17, 28, 22, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.pdf-modal-content {
+  background: white;
+  width: 100%;
+  max-width: 1000px;
+  height: 85vh;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* The "Blubly" animation: expands from a small circle into the large squircle */
+  animation: bubblyPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.pdf-modal-header {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+  background: white;
+}
+
+.pdf-modal-header h3 {
+  font-size: 18px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 24px;
+}
+
+.pdf-modal-close {
+  background: var(--bg-app);
+  border: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--spring);
+  flex-shrink: 0;
+}
+
+.pdf-modal-close:hover {
+  background: #ff4757; 
+  color: white;
+  transform: scale(1.1) rotate(90deg);
+}
+
+.pdf-modal-content iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #f0f0f0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bubblyPop {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.6) translateY(60px); 
+    border-radius: 200px; /* Start as a bubbly pill */
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+    border-radius: var(--radius-xl); /* Snap into squircle */
+  }
+}
+
+/* ============================================================
+   LIHAT SEMUA & WARP DRIVE OVERLAY
+   ============================================================ */
+.cards-marquee-track {
+  /* GSAP handles position, timeScale, and blur now */
+}
+
+.all-books-view {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-app);
+  z-index: 99998;
+  /* Always in DOM, parked off-screen to the right. GSAP slides it in via x. */
+  transform: translateX(100%);
+  overflow: hidden;
+}
+
+.all-books-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 0 20px 0;
+}
+.all-books-header h2 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+}
+
+.kembali-btn {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: var(--text-primary);
+  font-size: 20px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: var(--spring);
+  display: flex; justify-content: center; align-items: center;
+}
+.kembali-btn:hover {
+  background: var(--text-primary);
+  color: white;
+  transform: scale(1.1) translateX(-8px);
+}
+
+.all-books-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 80px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-primary) transparent;
+}
+
+.all-books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  padding: 20px 0;
+}
+
+/* Reset the strict width constraint for grid items so they fill the grid track */
+.all-books-grid .grid-card {
+  flex: none;
+  width: 100%;
+}
+

@@ -1,20 +1,110 @@
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { defaultBuku } from '../data/mockData';
 
 export default function Books() {
+    const [selectedBook, setSelectedBook] = useState(null);
+    const marqueeTween = useRef(null);
+    const overlayRef = useRef(null);
+
+    // Initialize GSAP Marquee
+    useEffect(() => {
+        marqueeTween.current = gsap.to('.cards-marquee-track', {
+            xPercent: -50,
+            repeat: -1,
+            duration: 40,
+            ease: 'none'
+        });
+
+        const track = document.querySelector('.cards-marquee-track');
+        const handleEnter = () => {
+            if (marqueeTween.current.timeScale() < 2) marqueeTween.current.pause();
+        };
+        const handleLeave = () => {
+            if (marqueeTween.current.timeScale() < 2) marqueeTween.current.play();
+        };
+        if (track) {
+            track.addEventListener('mouseenter', handleEnter);
+            track.addEventListener('mouseleave', handleLeave);
+        }
+        return () => {
+            if (track) {
+                track.removeEventListener('mouseenter', handleEnter);
+                track.removeEventListener('mouseleave', handleLeave);
+            }
+            if (marqueeTween.current) marqueeTween.current.kill();
+        };
+    }, []);
+
+    // Lock scroll when PDF modal is open
+    useEffect(() => {
+        if (selectedBook) {
+            document.body.style.overflow = 'hidden';
+            gsap.to('.nav-dynamic-wrapper', { y: -100, opacity: 0, duration: 0.5, ease: 'back.in(1.2)' });
+        } else {
+            document.body.style.overflow = '';
+            gsap.to('.nav-dynamic-wrapper', { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(1.2)', clearProps: 'all' });
+        }
+    }, [selectedBook]);
+
+    const handleLihatSemua = () => {
+        // Ramp up warp speed
+        marqueeTween.current.play();
+        gsap.to(marqueeTween.current, { timeScale: 80, duration: 1.2, ease: 'power4.in' });
+        gsap.to('.cards-marquee-track', { filter: 'blur(24px) contrast(1.3)', duration: 1.2, ease: 'power4.in' });
+
+        // At max velocity, slide the overlay in from the right
+        setTimeout(() => {
+            document.body.style.overflow = 'hidden';
+            const overlay = overlayRef.current;
+            const cards = overlay.querySelectorAll('.grid-card');
+
+            // The overlay is always in the DOM but positioned off-screen.
+            // Animate it sliding in from the right.
+            gsap.timeline()
+                .fromTo(overlay,
+                    { x: '100%' },
+                    { x: '0%', duration: 0.5, ease: 'power3.inOut' }
+                )
+                .fromTo(cards,
+                    { opacity: 0, y: 40 },
+                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.04, ease: 'back.out(1.4)' },
+                    '-=0.1'
+                );
+        }, 1200);
+    };
+
+    const handleKembali = () => {
+        const overlay = overlayRef.current;
+        gsap.to(overlay, {
+            x: '-100%',
+            duration: 0.5,
+            ease: 'power3.inOut',
+            onComplete: () => {
+                document.body.style.overflow = '';
+                // Decelerate marquee
+                gsap.to(marqueeTween.current, { timeScale: 1, duration: 1.5, ease: 'power2.out' });
+                gsap.to('.cards-marquee-track', { filter: 'blur(0px) contrast(1)', duration: 1.5 });
+            }
+        });
+    };
+
     return (
         <section className="section" id="buku">
             <div className="container">
-                <div className="section-header" data-gsap="reveal">
+                <div className="section-header" data-gsap="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                     <div>
                         <span className="section-kicker">Perpustakaan</span>
                         <h2 className="section-title">Buku &amp; Panduan</h2>
                     </div>
+                    <button className="btn-pill secondary" onClick={handleLihatSemua} style={{ padding: '12px 24px' }}>
+                        Lihat Semua <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                    </button>
                 </div>
             </div>
 
             <div className="cards-marquee" data-gsap="reveal">
                 <div className="cards-marquee-track">
-                    {/* First set */}
                     {defaultBuku.map((buku) => (
                         <div key={buku.id} className="swipe-card book-swipe-card">
                             <div className="book-cover-large">
@@ -23,16 +113,11 @@ export default function Books() {
                             <h3>{buku.judul}</h3>
                             <p>{buku.kategori} · {buku.tahun}</p>
                             <div className="book-swipe-actions">
-                                <button className="btn-pill primary" onClick={() => window.open(buku.pdf, '_blank')}>
-                                    Baca
-                                </button>
-                                <a className="btn-pill secondary" href={buku.pdf} download>
-                                    Unduh
-                                </a>
+                                <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
+                                <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
                             </div>
                         </div>
                     ))}
-                    {/* Duplicated set for seamless infinite loop */}
                     {defaultBuku.map((buku) => (
                         <div key={`dup-${buku.id}`} className="swipe-card book-swipe-card">
                             <div className="book-cover-large">
@@ -41,17 +126,57 @@ export default function Books() {
                             <h3>{buku.judul}</h3>
                             <p>{buku.kategori} · {buku.tahun}</p>
                             <div className="book-swipe-actions">
-                                <button className="btn-pill primary" onClick={() => window.open(buku.pdf, '_blank')}>
-                                    Baca
-                                </button>
-                                <a className="btn-pill secondary" href={buku.pdf} download>
-                                    Unduh
-                                </a>
+                                <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
+                                <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
+
+            {/* ALL BOOKS OVERLAY — always in DOM, GSAP slides it in/out */}
+            <div className="all-books-view" ref={overlayRef}>
+                <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <div className="all-books-header">
+                        <button className="kembali-btn" onClick={handleKembali}>
+                            <i className="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <h2>Semua Koleksi Perpustakaan</h2>
+                    </div>
+                    <div className="all-books-scroll-area">
+                        <div className="all-books-grid">
+                            {defaultBuku.map((buku) => (
+                                <div key={`grid-${buku.id}`} className="swipe-card book-swipe-card grid-card">
+                                    <div className="book-cover-large">
+                                        <img src={buku.cover} alt={buku.judul} />
+                                    </div>
+                                    <h3>{buku.judul}</h3>
+                                    <p>{buku.kategori} · {buku.tahun}</p>
+                                    <div className="book-swipe-actions">
+                                        <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
+                                        <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Bubbly PDF Modal */}
+            {selectedBook && (
+                <div className="pdf-modal-overlay" onClick={() => setSelectedBook(null)} style={{ zIndex: 100000 }}>
+                    <div className="pdf-modal-content" onClick={e => e.stopPropagation()}>
+                        <div className="pdf-modal-header">
+                            <h3>{selectedBook.judul}</h3>
+                            <button className="pdf-modal-close" onClick={() => setSelectedBook(null)} aria-label="Tutup">
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <iframe src={`${selectedBook.pdf}#view=Fit`} title={selectedBook.judul} />
+                    </div>
+                </div>
+            )}
         </section>
     );
 }

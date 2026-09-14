@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,8 +17,6 @@ function App() {
     const mainRef = useRef(null);
 
     useGSAP(() => {
-        // Wait one frame to ensure all elements are painted
-        // Target only elements that are in the normal document flow (not inside scroll containers)
         const reveals = gsap.utils.toArray('[data-gsap="reveal"]');
 
         reveals.forEach((el, i) => {
@@ -32,18 +30,26 @@ function App() {
                     scrollTrigger: {
                         trigger: el,
                         start: 'top 88%',
-                        toggleActions: 'play none none reverse',
+                        // once: true — fire once, never reverse.
+                        // This prevents DevTools resize from "un-revealing" elements.
+                        once: true,
                     },
                     delay: (i % 4) * 0.08,
                 }
             );
         });
 
-        ScrollTrigger.addEventListener('refreshInit', () => ScrollTrigger.refresh());
-        window.addEventListener('resize', () => ScrollTrigger.refresh());
+        // Debounced resize handler so rapid DevTools panel opens don't spam-refresh
+        let resizeTimer;
+        const handleResize = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+        };
+        window.addEventListener('resize', handleResize, { passive: true });
 
         return () => {
-            window.removeEventListener('resize', () => ScrollTrigger.refresh());
+            clearTimeout(resizeTimer);
+            window.removeEventListener('resize', handleResize);
         };
     }, { scope: mainRef });
 
