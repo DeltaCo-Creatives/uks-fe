@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Pembaca Buku UKS</title>
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(180deg, #edf5f0 0%, #dfeae5 100%);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .reader-shell {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, #edf5f0 0%, #dfeae5 100%);
+        }
+
+        .reader-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px 10px;
+            background: rgba(11, 70, 43, 0.96);
+            border-bottom: 1px solid rgba(255,255,255,0.14);
+            box-shadow: 0 6px 18px rgba(11, 70, 43, 0.2);
+        }
+
+        .reader-title {
+            flex: 1;
+            min-width: 0;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .reader-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-button {
+            border: 0;
+            border-radius: 999px;
+            padding: 10px 16px;
+            background: #ffffff;
+            color: #0b462b;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-button:active {
+            transform: scale(0.98);
+        }
+
+        .viewer-wrap {
+            flex: 1;
+            padding: 12px;
+            min-height: 0;
+            position: relative;
+        }
+
+        .book-frame {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 18px;
+            background: #ffffff;
+            box-shadow: 0 10px 24px rgba(12, 62, 42, 0.12);
+        }
+
+        .fallback-panel {
+            position: absolute;
+            inset: 12px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 24px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.96);
+            box-shadow: 0 10px 24px rgba(12, 62, 42, 0.12);
+            text-align: center;
+            color: #163b29;
+        }
+
+        .fallback-panel.show {
+            display: flex;
+        }
+
+        .fallback-panel h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .fallback-panel p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #4a5f56;
+        }
+
+        .fallback-actions {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .reader-title {
+                font-size: 12px;
+            }
+
+            .close-button {
+                padding: 9px 14px;
+                font-size: 12px;
+            }
+
+            .viewer-wrap {
+                padding: 10px;
+            }
+
+            .fallback-panel {
+                inset: 10px;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reader-shell">
+        <div class="reader-header">
+            <div class="reader-title" id="readerTitle">Buku</div>
+            <div class="reader-actions">
+                <button class="close-button" type="button" id="closeReader">Tutup</button>
+            </div>
+        </div>
+
+        <div class="viewer-wrap">
+            <iframe id="bookFrame" class="book-frame" title="Pembaca Buku" allow="fullscreen" allowfullscreen="true"></iframe>
+
+            <div class="fallback-panel" id="fallbackPanel">
+                <h2>File Buku Tidak Dapat Ditampilkan</h2>
+                <p id="fallbackMessage">Browser perangkat Anda tidak bisa menampilkan file PDF di dalam halaman ini.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        function getBookUrl() {
+            const rawFile = params.get("file");
+
+            if (!rawFile) {
+                return "";
+            }
+
+            return new URL(rawFile, window.location.href).href;
+        }
+
+        function getBookTitle() {
+            const title = params.get("title");
+            return title ? decodeURIComponent(title) : "Buku";
+        }
+
+        const bookFrame = document.getElementById("bookFrame");
+        const closeReader = document.getElementById("closeReader");
+        const readerTitle = document.getElementById("readerTitle");
+        const fallbackPanel = document.getElementById("fallbackPanel");
+
+        readerTitle.textContent = getBookTitle();
+
+        const bookUrl = getBookUrl();
+
+        if (bookUrl) {
+            bookFrame.src = bookUrl;
+        } else {
+            bookFrame.srcdoc = "<html><body style='margin:0;display:flex;align-items:center;justify-content:center;background:#f4f4f4;font-family:Arial;color:#333;'>File buku tidak ditemukan.</body></html>";
+            fallbackPanel.classList.add("show");
+        }
+
+        bookFrame.addEventListener("error", function () {
+            fallbackPanel.classList.add("show");
+        });
+
+        closeReader.addEventListener("click", function () {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
