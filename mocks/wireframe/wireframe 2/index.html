@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe 2 - Complete Architecture & Content Blueprint | UKS/M</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="device-desktop">
+
+  <!-- ============================================================
+       TOP TOOLBAR (INSPECTOR & VIEWPORT CONTROLS)
+       ============================================================ -->
+  <header class="wf-shell-bar">
+    <div class="wf-shell-brand">
+      <span class="wf-badge-v2">WIREFRAME 2</span>
+      <span style="font-weight: 700; font-family: var(--font-mono); font-size: 12px;">[ COMPLETE CONTENT ARCHITECTURE ]</span>
+      <a href="../Wireframe 1/index.html" class="wf-tool-btn" style="border: 1px solid #283D31; margin-left: 8px;">
+        <i class="fa-solid fa-arrow-left"></i> Wireframe 1
+      </a>
+    </div>
+
+    <!-- Quick Page Selector in Toolbar -->
+    <div class="wf-toolbar-group" style="display: none; @media(min-width: 1200px){ display: flex; }">
+      <button class="wf-tool-btn active" onclick="navigateToPage('beranda')">1. Beranda</button>
+      <button class="wf-tool-btn" onclick="navigateToPage('uksm')">2. UKS/M</button>
+      <button class="wf-tool-btn" onclick="navigateToPage('program')">3. Program</button>
+      <button class="wf-tool-btn" onclick="navigateToPage('mitra')">4. Mitra</button>
+      <button class="wf-tool-btn" onclick="navigateToPage('informasi')">5. Informasi</button>
+      <button class="wf-tool-btn" onclick="navigateToPage('publikasi')">6. Publikasi</button>
+      <button class="wf-tool-btn" onclick="navigateToPage('kontak')">7. Kontak</button>
+    </div>
+
+    <!-- Viewport Switcher -->
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <div class="wf-toolbar-group">
+        <button class="wf-tool-btn active" data-device="desktop" onclick="setDevice('desktop')">
+          <i class="fa-solid fa-desktop"></i> Desktop
+        </button>
+        <button class="wf-tool-btn" data-device="tablet" onclick="setDevice('tablet')">
+          <i class="fa-solid fa-tablet-screen-button"></i> Tablet
+        </button>
+        <button class="wf-tool-btn" data-device="mobile" onclick="setDevice('mobile')">
+          <i class="fa-solid fa-mobile-screen"></i> Mobile
+        </button>
+        <button class="wf-tool-btn" data-device="fluid" onclick="setDevice('fluid')">
+          <i class="fa-solid fa-arrows-left-right"></i> Fluid
+        </button>
+      </div>
+
+      <button class="wf-tool-btn" id="btn-blueprint" onclick="toggleBlueprint()" style="border: 1px solid #283D31;">
+        <i class="fa-solid fa-draw-polygon"></i> Blueprint
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CANVAS DEVICE VIEWPORT
+       ============================================================ -->
+  <main class="wf-stage-wrapper">
+    <div class="wf-device-mockup">
+      <!-- Chrome Header Bar -->
+      <div class="wf-browser-chrome">
+        <div class="wf-traffic-lights">
+          <span style="background: #D5DDD7;"></span>
+          <span style="background: #D5DDD7;"></span>
+          <span style="background: #D5DDD7;"></span>
+        </div>
+        <div>https://uks.kemendikdasmen.go.id/ [WIREFRAME VIEWPORT: <span id="viewport-label">1440 × 900 (Desktop)</span>]</div>
+        <div style="font-size: 10px; font-weight: 700; color: var(--wf-accent);">ALL CONTENT INCLUDED</div>
+      </div>
+
+      <!-- ================= 1. PURE WIREFRAME OMNI-NAV ISLAND ================= -->
+      <div class="wf-nav-wrapper">
+        <nav class="wf-omni-island">
+          <!-- Logo Pill -->
+          <div class="wf-brand-pill" onclick="navigateToPage('beranda')">
+            <div class="logo-box">U</div>
+            <div>
+              <div style="font-weight: 800; font-family: var(--font-mono); font-size: 13px;">[ LOGO: UKS/M ]</div>
+              <div style="font-size: 8px; color: var(--wf-ink-muted); font-family: var(--font-mono);">KEMENDIKDASMEN</div>
+            </div>
+          </div>
+
+          <!-- Segmented Navigation Tabs -->
+          <div class="wf-page-segments">
+            <button class="wf-page-tab active" data-target-view="beranda">
+              <span>[ 🏠 Beranda ]</span>
+            </button>
+            <button class="wf-page-tab" data-target-view="uksm">
+              <span>[ 🌿 UKS/M &amp; Trias ]</span>
+            </button>
+            <button class="wf-page-tab" data-target-view="program">
+              <span>[ 🍱 Program ]</span> <span class="tag-count">MBG</span>
+            </button>
+            <button class="wf-page-tab" data-target-view="mitra">
+              <span>[ 🤝 Mitra ]</span>
+            </button>
+            <button class="wf-page-tab" data-target-view="informasi">
+              <span>[ 📰 Informasi ]</span>
+            </button>
+            <button class="wf-page-tab" data-target-view="publikasi">
+              <span>[ 📚 Publikasi ]</span> <span class="tag-count">PDF</span>
+            </button>
+            <button class="wf-page-tab" data-target-view="kontak">
+              <span>[ 📞 Kontak ]</span>
+            </button>
+          </div>
+
+          <!-- Omni Actions -->
+          <div class="wf-omni-actions">
+            <button class="wf-btn-prim" id="btn-toggle-flyout" style="padding: 5px 12px; font-size: 11px;">
+              <i class="fa-solid fa-compass"></i> [ Peta Halaman ]
+            </button>
+            <button class="wf-btn-prim" style="width: 32px; height: 32px; padding: 0; border-radius: 50%;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+
+          <!-- Visual Wireframe Mega-Flyout -->
+          <div class="wf-mega-flyout">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span class="wf-tag-spec">WIREFRAME SITEMAP &amp; NAVIGATION MAP</span>
+              <span style="font-family: var(--font-mono); font-size: 10px; color: var(--wf-ink-muted);">[ KLIK KARTU UNTUK SWITCH VIEW ]</span>
+            </div>
+            <div class="wf-flyout-grid">
+              <div class="wf-flyout-card" data-page="beranda">
+                <span class="card-kicker">[ HALAMAN #1 ]</span>
+                <h4>🏠 Beranda</h4>
+                <p>Hero panggung, bar dampak nasional, Trias switcher bento, program prioritas, rak buku, warta berita, dan marquee mitra.</p>
+              </div>
+              <div class="wf-flyout-card" data-page="uksm">
+                <span class="card-kicker">[ HALAMAN #2 ]</span>
+                <h4>🌿 UKS/M &amp; Trias</h4>
+                <p>Deskripsi, sasaran 3 lapis, rincian Trias 3 pilar, struktur Tim Pembina vs Pelaksana, 4 strata UKS, dan Gerakan Sekolah Sehat (5 Sehat).</p>
+              </div>
+              <div class="wf-flyout-card" data-page="program">
+                <span class="card-kicker">[ HALAMAN #3 ]</span>
+                <h4>🍱 Program Prioritas</h4>
+                <p>Makan Bergizi Gratis (MBG), Cek Kesehatan Gratis (CKG), 7KAIH karakter hebat, Lomba SAIH 2025, Gala Kreasi, dan Dokter Kecil.</p>
+              </div>
+              <div class="wf-flyout-card" data-page="mitra">
+                <span class="card-kicker">[ HALAMAN #4 ]</span>
+                <h4>🤝 Mitra &amp; Kerjasama</h4>
+                <p>Alur kerjasama 3 langkah, formulir registrasi mitra online, direktori mitra terverifikasi, dan bentuk dukungan satuan pendidikan.</p>
+              </div>
+              <div class="wf-flyout-card" data-page="informasi">
+                <span class="card-kicker">[ HALAMAN #5 ]</span>
+                <h4>📰 Pusat Informasi</h4>
+                <p>Warta berita berfilter kategori, kisah praktik baik sekolah model, catatan UPT BPMP bercerita, agenda 2026, dan aplikasi UKS.</p>
+              </div>
+              <div class="wf-flyout-card" data-page="publikasi">
+                <span class="card-kicker">[ HALAMAN #6 ]</span>
+                <h4>📚 Publikasi &amp; Modul</h4>
+                <p>Rak buku panduan &amp; juknis siap unduh (PDF asli), infografis &amp; poster mading cetak A3, video edukasi animasi, dan SKB 4 Menteri.</p>
+              </div>
+              <div class="wf-flyout-card" data-page="kontak">
+                <span class="card-kicker">[ HALAMAN #7 ]</span>
+                <h4>📞 Kontak &amp; ULT 177</h4>
+                <p>Sekretariat Pusat Kemendikdasmen Senayan, jam operasional, tiket konsultasi online, dan FAQ interaktif seputar dana BOS.</p>
+              </div>
+              <div class="wf-flyout-card" style="background: var(--wf-surface-box);" onclick="window.open('../Wireframe 1/index.html', '_blank')">
+                <span class="card-kicker">[ ARSIP ]</span>
+                <h4>📐 Wireframe 1</h4>
+                <div style="font-size: 10px; font-family: var(--font-mono); color: var(--wf-ink-muted);">Buka versi original di tab baru ➔</div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- ================= 2. CONTEXTUAL SUB-ROUTE STRIP ================= -->
+      <div class="wf-route-strip">
+        <div class="wf-breadcrumbs" id="route-breadcrumb">
+          <span>PORTAL</span> <span>/</span> <span class="crumb-active">Beranda</span>
+        </div>
+        <div class="wf-sub-pills" id="route-subpills">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- ================= 3. MODULAR WIREFRAME VIEWS (ALL PAGES) ================= -->
+      <div class="wf-page-container">
+
+        <!-- ==========================================================
+             VIEW 1: BERANDA (HOME)
+             ========================================================== -->
+        <div class="wf-view-panel active" id="view-beranda">
+          
+          <!-- Section 1.1: Hero Stage -->
+          <div class="wf-box" id="sec-home-hero" style="padding: 0; overflow: hidden; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="padding: 16px 20px 0; display: flex; justify-content: space-between; align-items: center;">
+              <span class="wf-tag-spec">SECTION 1.1: HERO STAGE (100vh - 80px)</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted);">[ CAROUSEL: SLIDE 1 OF 3 ]</span>
+            </div>
+
+            <div class="wf-grid-2" style="padding: 24px; align-items: center; gap: 28px;">
+              <div>
+                <span class="wf-tag-spec" style="background: var(--wf-accent-light); color: var(--wf-accent);">[ BADGE: PRIORITAS 2026 ]</span>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 26px; line-height: 1.2; margin: 10px 0 14px;">
+                  [ H1: Membangun Generasi Emas yang Sehat, Bugar, dan Berkarakter Hebat ]
+                </div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-90"></div>
+                <div class="wf-line-skel w-60" style="margin-bottom: 24px;"></div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <button class="wf-btn-prim dark" onclick="navigateToPage('program')">[ BTN: Makan Bergizi Gratis (MBG) ➔ ]</button>
+                  <button class="wf-btn-prim" onclick="navigateToPage('publikasi')">[ BTN: Modul &amp; Juknis UKS ]</button>
+                  <button class="wf-btn-prim" onclick="navigateToPage('uksm')">[ BTN: Jelajahi Trias UKS ]</button>
+                </div>
+              </div>
+
+              <div class="wf-media-box" style="height: 260px;">
+                <div>
+                  <div style="font-size: 28px; margin-bottom: 8px;">🖼️</div>
+                  <div style="font-size: 13px; font-weight: 800;">[ HERO MEDIA: FOTO SISWA MAKAN BERGIZI &amp; AKTIVITAS UKS ]</div>
+                  <div style="font-size: 10px; color: var(--wf-ink-light); margin-top: 4px;">Rasio 16:9 • Asset: IoXWcqNbTfrFivbEdyumvg78d4dwkaLhY2ZPRbzW.jpg</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: var(--wf-surface-alt); border-top: 1.5px solid var(--wf-line-solid); padding: 8px 24px; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 11px;">
+              <div>[ SLIDE DOTS: ● ○ ○ ]</div>
+              <div>[ PENGUMUMAN POPUP BANNER: AKTIF ]</div>
+              <div>[ CONTROLS: ‹ PREV | NEXT › ]</div>
+            </div>
+          </div>
+
+          <!-- Section 1.2: National Impact Metrics Bar -->
+          <div class="wf-box flat" id="sec-home-stats" style="padding: 18px 24px;">
+            <span class="wf-tag-spec">SECTION 1.2: NATIONAL METRICS (4-COL DATA BAR)</span>
+            <div class="wf-grid-4" style="text-align: center;">
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 800; color: var(--wf-accent);">15,000+</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--wf-ink-muted);">[ SEKOLAH MODEL BINAAN ]</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 800; color: var(--wf-accent);">50,000+</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--wf-ink-muted);">[ DOKTER KECIL TERLATIH ]</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 800; color: var(--wf-accent);">25,000+</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--wf-ink-muted);">[ KADER TIWI PRADA SEHAT ]</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 800; color: var(--wf-accent);">38 PROV</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--wf-ink-muted);">[ CAKUPAN NASIONAL ]</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1.3: Trias UKS Interactive Bento Switcher -->
+          <div class="wf-box" id="sec-home-trias">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+              <div>
+                <span class="wf-tag-spec">SECTION 1.3: TRIAS UKS BENTO SWITCHER</span>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 18px;">[ TRIAS UKS / 3 PILAR UTAMA ]</div>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button class="wf-sub-pill active wf-pillar-pill" onclick="selectPillar(0, this)">[ PILAR 1: PENDIDIKAN KESEHATAN ]</button>
+                <button class="wf-sub-pill wf-pillar-pill" onclick="selectPillar(1, this)">[ PILAR 2: PELAYANAN KESEHATAN ]</button>
+                <button class="wf-sub-pill wf-pillar-pill" onclick="selectPillar(2, this)">[ PILAR 3: LINGKUNGAN SEHAT ]</button>
+              </div>
+            </div>
+
+            <div class="wf-grid-2">
+              <div class="wf-box" style="background: var(--wf-ink-black); color: white; display: flex; flex-direction: column; justify-content: space-between; min-height: 240px; margin-bottom: 0;">
+                <div>
+                  <span class="wf-tag-spec" id="pillar-kicker" style="background: rgba(255,255,255,0.15); color: white;">PILAR #1</span>
+                  <h3 id="pillar-title" style="font-family: var(--font-mono); font-size: 20px; font-weight: 800; margin: 8px 0 12px; color: white;">Pendidikan Kesehatan</h3>
+                  <p id="pillar-desc" style="font-size: 13px; line-height: 1.5; color: #C5D1C9;">
+                    Literasi gizi (Isi Piringku), PHBS cuci tangan pakai sabun (CTPS), kespro &amp; anemia remaja, pembiasaan 30 menit senam SKJ pagi, serta kader dokter kecil.
+                  </p>
+                </div>
+                <button class="wf-btn-prim accent" style="max-width: max-content;" onclick="navigateToPage('uksm')">[ Buka Rincian Pilar Lengkap ➔ ]</button>
+              </div>
+
+              <div class="wf-grid-2" id="pillar-cards-container">
+                <div class="wf-box dashed" style="padding: 14px; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+                  <span class="wf-tag-spec">KOMPONEN 1</span>
+                  <div style="font-weight: 800; font-family: var(--font-mono); font-size: 13px;">[ Literasi Gizi ]</div>
+                  <div style="font-size: 10px; color: var(--wf-ink-muted); font-family: var(--font-mono);">Kurikulum Isi Piringku &amp; Sayur Buah</div>
+                  <div class="wf-line-skel w-75" style="margin-top: 6px;"></div>
+                </div>
+                <div class="wf-box dashed" style="padding: 14px; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+                  <span class="wf-tag-spec">KOMPONEN 2</span>
+                  <div style="font-weight: 800; font-family: var(--font-mono); font-size: 13px;">[ PHBS &amp; CTPS ]</div>
+                  <div style="font-size: 10px; color: var(--wf-ink-muted); font-family: var(--font-mono);">Cuci Tangan 6 Langkah Air Mengalir</div>
+                  <div class="wf-line-skel w-75" style="margin-top: 6px;"></div>
+                </div>
+                <div class="wf-box dashed" style="padding: 14px; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+                  <span class="wf-tag-spec">KOMPONEN 3</span>
+                  <div style="font-weight: 800; font-family: var(--font-mono); font-size: 13px;">[ Kespro &amp; Anemia ]</div>
+                  <div style="font-size: 10px; color: var(--wf-ink-muted); font-family: var(--font-mono);">Tablet Tambah Darah Remaja Putri</div>
+                  <div class="wf-line-skel w-75" style="margin-top: 6px;"></div>
+                </div>
+                <div class="wf-box dashed" style="padding: 14px; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+                  <span class="wf-tag-spec">KOMPONEN 4</span>
+                  <div style="font-weight: 800; font-family: var(--font-mono); font-size: 13px;">[ Dokter Kecil ]</div>
+                  <div style="font-size: 10px; color: var(--wf-ink-muted); font-family: var(--font-mono);">Pembinaan Peer Educator Sebaya</div>
+                  <div class="wf-line-skel w-75" style="margin-top: 6px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1.4: Program Prioritas 2-Col Bento -->
+          <div class="wf-box" id="sec-home-programs">
+            <span class="wf-tag-spec">SECTION 1.4: PROGRAM PRIORITAS BENTO (2-COLUMN)</span>
+            <div class="wf-grid-2">
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 20px;">
+                <span class="wf-tag-spec">[ PRIORITAS #1: BADAN GIZI NASIONAL &amp; KEMENDIKDASMEN ]</span>
+                <h3 style="font-family: var(--font-mono); font-size: 18px; font-weight: 800; margin: 6px 0 8px;">[ MBG: Makan Bergizi Gratis ]</h3>
+                <div class="wf-media-box" style="height: 110px; margin-bottom: 12px;">[ DIAGRAM: MENU GIZI SEIMBANG &amp; ADAB MAKAN KARAKTER ]</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-80" style="margin-bottom: 14px;"></div>
+                <button class="wf-btn-prim dark" onclick="navigateToPage('program')">[ Pelajari Implementasi MBG ➔ ]</button>
+              </div>
+
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 20px;">
+                <span class="wf-tag-spec">[ PRIORITAS #2: KEMENKES &amp; KEMENDIKDASMEN ]</span>
+                <h3 style="font-family: var(--font-mono); font-size: 18px; font-weight: 800; margin: 6px 0 8px;">[ CKG: Cek Kesehatan Gratis &amp; 7KAIH ]</h3>
+                <div class="wf-media-box" style="height: 110px; margin-bottom: 12px;">[ SKRINING FISIK, MATA SNELLEN, GIGI &amp; HB ANEMIA ]</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-80" style="margin-bottom: 14px;"></div>
+                <button class="wf-btn-prim dark" onclick="navigateToPage('program')">[ Detail Pemeriksaan CKG ➔ ]</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1.5: Books & Publications Showcase -->
+          <div class="wf-box" id="sec-home-books">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <div>
+                <span class="wf-tag-spec">SECTION 1.5: DOKUMEN &amp; BUKU PANDUAN CAROUSEL</span>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 16px;">[ 4 BUKU PANDUAN RESMI KEMENDIKDASMEN ]</div>
+              </div>
+              <button class="wf-btn-prim" onclick="navigateToPage('publikasi')">[ Arsip Publikasi Lengkap ➔ ]</button>
+            </div>
+            <div class="wf-grid-4">
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: bukucover1.png ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Pedoman Keswa SMP</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Asset: buku1.pdf</div>
+                <button class="wf-btn-prim" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 8px;" onclick="navigateToPage('publikasi')">[ 📖 Unduh PDF ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: coverbuku2.png ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Panduan MBG Satpen</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Asset: buku2.pdf</div>
+                <button class="wf-btn-prim" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 8px;" onclick="navigateToPage('publikasi')">[ 📖 Unduh PDF ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: coverbuku3.png ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Karakter dalam MBG</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Asset: Buku Karakter MBG.pdf</div>
+                <button class="wf-btn-prim" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 8px;" onclick="navigateToPage('publikasi')">[ 📖 Unduh PDF ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: coverbuku4.png ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Manajemen Pembinaan</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Asset: buku3.pdf</div>
+                <button class="wf-btn-prim" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 8px;" onclick="navigateToPage('publikasi')">[ 📖 Unduh PDF ]</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1.6: Warta Berita & Praktik Baik -->
+          <div class="wf-box" id="sec-home-news">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <span class="wf-tag-spec">SECTION 1.6: WARTA BERITA &amp; PRAKTIK BAIK TERKINI</span>
+              <button class="wf-btn-prim" onclick="navigateToPage('informasi')">[ Indeks Informasi ➔ ]</button>
+            </div>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 14px;">
+                <div class="wf-media-box" style="height: 120px; margin-bottom: 10px;">[ BERITA 1: SEAMEO RECFON ]</div>
+                <span class="wf-tag-spec">GIZI SEKOLAH</span>
+                <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0 6px;">Belajar Gizi dari Kebun Sekolah (NGTS)</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 14px;">
+                <div class="wf-media-box" style="height: 120px; margin-bottom: 10px;">[ BERITA 2: MBG KARAKTER ]</div>
+                <span class="wf-tag-spec">PENDIDIKAN KARAKTER</span>
+                <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0 6px;">Makan Bersama Mengasah Adab &amp; Syukur</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 14px;">
+                <div class="wf-media-box" style="height: 120px; margin-bottom: 10px;">[ BERITA 3: AKSI BERGIZI ]</div>
+                <span class="wf-tag-spec">PELAYANAN KESEHATAN</span>
+                <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0 6px;">Pemberian Tablet Tambah Darah Remaja Putri</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1.7: Mitra Marquee Stream -->
+          <div class="wf-box flat" id="sec-home-partners" style="padding: 16px;">
+            <span class="wf-tag-spec">SECTION 1.7: MITRA KOLABORATOR (MARQUEE INFINITE TRACK)</span>
+            <div style="display: flex; gap: 12px; overflow-x: auto; white-space: nowrap; padding-bottom: 6px;">
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: Kemenkes RI ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: Kemenag RI ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: Kemendagri ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: UNICEF Indonesia ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: WHO Indonesia ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: BKKBN ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: SEAMEO RECFON ]</div>
+              <div class="wf-box dashed" style="padding: 8px 18px; margin-bottom: 0; font-family: var(--font-mono); font-size: 11px;">[ LOGO: BPOM ]</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================================
+             VIEW 2: UKS/M (TENTANG UKS/M & TRIAS LENGKAP)
+             ========================================================== -->
+        <div class="wf-view-panel" id="view-uksm">
+          
+          <!-- Section 2.1: Deskripsi, Tujuan & Sasaran -->
+          <div class="wf-box" id="sec-uksm-sasaran">
+            <span class="wf-tag-spec">SECTION 2.1: LANDASAN HUKUM, TUJUAN &amp; SASARAN</span>
+            <div class="wf-grid-2" style="align-items: start;">
+              <div>
+                <h2 style="font-family: var(--font-mono); font-size: 20px; font-weight: 800; margin-bottom: 8px;">
+                  [ DESKRIPSI UMUM &amp; DASAR HUKUM ]
+                </h2>
+                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--wf-ink-muted); line-height: 1.6; margin-bottom: 12px;">
+                  UKS/M berlandaskan SKB 4 Menteri (Mendikbud, Menkes, Menag, Mendagri) Nomor 6/X/PB/2014 &amp; UU No. 17 Tahun 2023 tentang Kesehatan guna memadukan upaya kesehatan promotif, preventif, kuratif, dan rehabilitatif di sekolah.
+                </div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-80"></div>
+              </div>
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 16px;">
+                <span class="wf-tag-spec">[ SASARAN PEMBINAAN 3 TINGKAT ]</span>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 11px; margin-top: 6px;">
+                  <div>• <strong>Sasaran Primer:</strong> Peserta Didik (PAUD/TK, SD/MI, SMP/MTs, SMA/SMK/MA)</div>
+                  <div>• <strong>Sasaran Sekunder:</strong> Kepala Sekolah, Guru Pembina UKS, Pengelola Kantin, Orang Tua</div>
+                  <div>• <strong>Sasaran Tersier:</strong> Lembaga Pendidikan, Tim Pembina UKS Daerah, Puskesmas, Pemda</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2.2: Trias UKS 3 Pilar In-Depth -->
+          <div class="wf-box" id="sec-uksm-trias-detail">
+            <span class="wf-tag-spec">SECTION 2.2: RINCIAN KOMPREHENSIF 3 PILAR TRIAS UKS/M</span>
+            <div class="wf-grid-3">
+              <!-- Pilar 1 -->
+              <div class="wf-box" style="border-top: 6px solid var(--wf-ink-black); margin-bottom: 0; padding: 18px;">
+                <span class="wf-tag-spec">[ PILAR 1: PENDIDIKAN KESEHATAN ]</span>
+                <div class="wf-media-box" style="height: 80px; margin: 8px 0;">[ IKON: BUKU &amp; GIZI ]</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; line-height: 1.6; color: var(--wf-ink-muted);">
+                  <div>✓ Literasi Kesehatan &amp; Pojok Gizi</div>
+                  <div>✓ PHBS: Cuci Tangan 6 Langkah (CTPS)</div>
+                  <div>✓ Pendidikan Gizi Seimbang (Isi Piringku)</div>
+                  <div>✓ Pendidikan Kesehatan Reproduksi Remaja</div>
+                  <div>✓ Pembiasaan Aktivitas Fisik (Senam SKJ)</div>
+                  <div>✓ Pelatihan Dokter Kecil &amp; KKR</div>
+                </div>
+              </div>
+
+              <!-- Pilar 2 -->
+              <div class="wf-box" style="border-top: 6px solid var(--wf-ink-black); margin-bottom: 0; padding: 18px;">
+                <span class="wf-tag-spec">[ PILAR 2: PELAYANAN KESEHATAN ]</span>
+                <div class="wf-media-box" style="height: 80px; margin: 8px 0;">[ IKON: STETOSKOP &amp; MEDIS ]</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; line-height: 1.6; color: var(--wf-ink-muted);">
+                  <div>✓ Penjaringan Fisik: TB/BB, Mata &amp; Gigi</div>
+                  <div>✓ Bulan Imunisasi Anak Sekolah (BIAS)</div>
+                  <div>✓ Pemberian TTD &amp; Obat Cacing Berkala</div>
+                  <div>✓ Kesiapsiagaan P3K &amp; P3P di Ruang UKS</div>
+                  <div>✓ Deteksi Dini Kesehatan Jiwa &amp; Bullying</div>
+                  <div>✓ Sistem Rujukan Cepat ke Puskesmas</div>
+                </div>
+              </div>
+
+              <!-- Pilar 3 -->
+              <div class="wf-box" style="border-top: 6px solid var(--wf-ink-black); margin-bottom: 0; padding: 18px;">
+                <span class="wf-tag-spec">[ PILAR 3: LINGKUNGAN SEKOLAH SEHAT ]</span>
+                <div class="wf-media-box" style="height: 80px; margin: 8px 0;">[ IKON: SANITASI &amp; TANAMAN ]</div>
+                <div style="font-family: var(--font-mono); font-size: 11px; line-height: 1.6; color: var(--wf-ink-muted);">
+                  <div>✓ Sanitasi Jamban (1:25 Putri &amp; 1:40 Putra)</div>
+                  <div>✓ Sertifikasi Kantin Sehat (Bebas 5P)</div>
+                  <div>✓ Pemanfaatan Kebun TOGA &amp; Gizi Sekolah</div>
+                  <div>✓ Pemberantasan Sarang Nyamuk (PSN 3M+)</div>
+                  <div>✓ Kawasan Bebas Rokok, Vape, &amp; Napza</div>
+                  <div>✓ Tim Pencegahan Kekerasan Sekolah (TPPK)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2.3: Struktur Organisasi (Tim Pembina vs Tim Pelaksana) -->
+          <div class="wf-box" id="sec-uksm-struktur">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+              <span class="wf-tag-spec">SECTION 2.3: TATA KELOLA &amp; STRUKTUR ORGANISASI</span>
+              <div class="tab-btn-group" style="display: flex; gap: 6px;">
+                <button class="wf-sub-pill active" onclick="switchTab('tab-struktur-container', 'tab-tim-pembina', this)">[ 🏛️ Tim Pembina (Pusat - Kecamatan) ]</button>
+                <button class="wf-sub-pill" onclick="switchTab('tab-struktur-container', 'tab-tim-pelaksana', this)">[ 🏫 Tim Pelaksana Sekolah ]</button>
+              </div>
+            </div>
+
+            <div id="tab-struktur-container">
+              <!-- Panel A: Tim Pembina -->
+              <div class="tab-panel" id="tab-tim-pembina">
+                <div class="wf-grid-4">
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">TINGKAT PUSAT</span>
+                    <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; margin: 4px 0;">TP UKS Pusat</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Kemendikdasmen, Kemenkes, Kemenag, Kemendagri. Kebijakan norma &amp; regulasi.</div>
+                  </div>
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">TINGKAT PROVINSI</span>
+                    <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; margin: 4px 0;">TP UKS Provinsi</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Gubernur &amp; Sekda Provinsi. Koordinasi Disdik, Dinkes, dan Kanwil Kemenag.</div>
+                  </div>
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">TINGKAT KAB/KOTA</span>
+                    <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; margin: 4px 0;">TP UKS Kab/Kota</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Bupati/Walikota. Pembinaan operasional dan fasilitas Puskesmas kecamatan.</div>
+                  </div>
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">TINGKAT KECAMATAN</span>
+                    <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800; margin: 4px 0;">TP UKS Kecamatan</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Camat, Korwil Pendidikan, KUA, dan Kepala Puskesmas pendamping.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel B: Tim Pelaksana -->
+              <div class="tab-panel" id="tab-tim-pelaksana" style="display: none;">
+                <div class="wf-grid-3">
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">KETUA TIM</span>
+                    <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0;">Kepala Satuan Pendidikan</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Penanggung jawab SK, alokasi dana BOS, dan sinergi bersama Komite Sekolah.</div>
+                  </div>
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">SEKRETARIS TIM</span>
+                    <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0;">Guru Pembina UKS / Penjas</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Pengelolaan ruang UKS, logistik obat P3K, pembinaan dokter kecil, pelaporan berkala.</div>
+                  </div>
+                  <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                    <span class="wf-tag-spec">ANGGOTA TERPADU</span>
+                    <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0;">Nakes Puskesmas, BK, Komite</div>
+                    <div style="font-size: 10px; color: var(--wf-ink-muted);">Tenaga medis pemeriksa, guru konseling siswa, perwakilan orang tua murid, dan OSIS.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2.4: Stratifikasi UKS/M 4 Strata -->
+          <div class="wf-box" id="sec-uksm-stratifikasi">
+            <span class="wf-tag-spec">SECTION 2.4: STRATIFIKASI UKS/M (STANDAR AKREDITASI SEKOLAH)</span>
+            <div class="wf-grid-4">
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <span class="wf-tag-spec">STRATA 1</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Minimal</h4>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); line-height: 1.4;">Ruang UKS ada, tempat tidur terpisah, kotak P3K dasar, air mengalir, penyuluhan insidental.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <span class="wf-tag-spec">STRATA 2</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Standar</h4>
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted); line-height: 1.4;">Pelaksanaan Trias terjadwal, penjaringan fisik tahunan bersama Puskesmas, kantin bersih.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <span class="wf-tag-spec">STRATA 3</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Optimal</h4>
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted); line-height: 1.4;">Dokter kecil aktif 10% siswa, kebun TOGA gizi, jamban rasio standar, konseling sebaya.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0; background: var(--wf-surface-box);">
+                <span class="wf-tag-spec" style="background: var(--wf-accent); color: white;">STRATA 4</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Paripurna</h4>
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted); line-height: 1.4;">Sekolah model percontohan nasional, kantin bintang satu higienis, sistem pelaporan online.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2.5: Gerakan Sekolah Sehat (GSS) - 5 Sehat -->
+          <div class="wf-box flat" id="sec-uksm-gss">
+            <span class="wf-tag-spec">SECTION 2.5: GERAKAN SEKOLAH SEHAT (5 PILAR SEHAT)</span>
+            <div class="wf-grid-4" style="grid-template-columns: repeat(5, 1fr);">
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-size: 20px;">🍎</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 12px; margin: 4px 0;">1. Sehat Bergizi</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Isi Piringku, batasi gula garam lemak (GGL).</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-size: 20px;">🏃</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 12px; margin: 4px 0;">2. Sehat Fisik</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Senam SKJ &amp; peregangan jam belajar.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-size: 20px;">💉</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 12px; margin: 4px 0;">3. Sehat Imunisasi</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Cakupan lengkap BIAS (Campak, HPV, dll).</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-size: 20px;">🧘</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 12px; margin: 4px 0;">4. Sehat Jiwa</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Anti-perundungan &amp; afirmasi positif.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-size: 20px;">🌳</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 12px; margin: 4px 0;">5. Sehat Lingkungan</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Sampah terpilah, toilet bersih bebas bau.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==========================================================
+             VIEW 3: PROGRAM PRIORITAS NASIONAL
+             ========================================================== -->
+        <div class="wf-view-panel" id="view-program">
+          
+          <!-- Section 3.1: Makan Bergizi Gratis (MBG) -->
+          <div class="wf-box" id="sec-prog-mbg">
+            <span class="wf-tag-spec">SECTION 3.1: PROGRAM MAKAN BERGIZI GRATIS (MBG) &amp; BADAN GIZI NASIONAL</span>
+            <div class="wf-grid-2" style="align-items: start;">
+              <div>
+                <h3 style="font-family: var(--font-mono); font-size: 20px; font-weight: 800; margin-bottom: 8px;">
+                  [ MBG: NUTRISI &amp; INTEGRASI PENDIDIKAN KARAKTER ]
+                </h3>
+                <p style="font-family: var(--font-mono); font-size: 12px; color: var(--wf-ink-muted); line-height: 1.6; margin-bottom: 14px;">
+                  Program MBG menyasar murid PAUD s.d. SMA/SMK dengan standar menu 4 bintang gizi seimbang, SOP pengawasan higienitas sanitasi wadah pakai ulang (ompreng), serta edukasi adab makan bersama dan zero food waste.
+                </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <button class="wf-btn-prim dark" onclick="navigateToPage('publikasi')">[ Unduh Panduan MBG PDF ]</button>
+                  <button class="wf-btn-prim" onclick="navigateToPage('publikasi')">[ Buku Karakter dalam MBG ]</button>
+                  <button class="wf-btn-prim">[ Dasbor Portal BGN ➔ ]</button>
+                </div>
+              </div>
+
+              <div class="wf-media-box" style="height: 180px;">
+                <div>
+                  <div style="font-size: 24px;">🍱</div>
+                  <div style="font-weight: 800;">[ DIAGRAM ALUR TATA KELOLA MBG ]</div>
+                  <div style="font-size: 10px; color: var(--wf-ink-light); margin-top: 4px;">Dapur Pusat SP -> Distribusi Sekolah -> Cuci Tangan -> Doa Bersama -> Cuci Ompreng</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3.2: Cek Kesehatan Gratis (CKG) -->
+          <div class="wf-box" id="sec-prog-ckg">
+            <span class="wf-tag-spec">SECTION 3.2: CEK KESEHATAN GRATIS (CKG) &amp; PENJARINGAN</span>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <div style="font-size: 20px;">👁️</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; margin: 4px 0;">Skrining Indra &amp; Mata</div>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Uji Snellen Chart ketajaman visus dan tes buta warna Ishihara untuk kenyamanan membaca di kelas.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <div style="font-size: 20px;">🦷</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; margin: 4px 0;">Kesehatan Gigi &amp; Mulut</div>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Deteksi karies, karang gigi, dan demonstrasi sikat gigi massal dengan pasta berfluoride.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <div style="font-size: 20px;">🩸</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; margin: 4px 0;">Antropometri &amp; Anemia</div>
+                <div style="font-size: 11px; color: var(--wf-muted); font-size: 11px;">Pengukuran berkala TB/BB, Indeks Massa Tubuh (IMT), dan skrining Hb remaja putri + distribusi TTD.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3.3: 7 Kebiasaan Anak Indonesia Hebat (7KAIH) -->
+          <div class="wf-box flat" id="sec-prog-7kaih">
+            <span class="wf-tag-spec">SECTION 3.3: GERAKAN 7 KEBIASAAN ANAK INDONESIA HEBAT (7KAIH)</span>
+            <div class="wf-grid-4">
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#1 Bangun Pagi:</strong> Segar &amp; tidak terlambat</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#2 Beribadah:</strong> Takwa &amp; toleransi</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#3 Berolahraga:</strong> Fisik bugar 30 menit</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#4 Makan Sehat:</strong> Sayur buah &amp; protein</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#5 Gemar Belajar:</strong> Literasi mandiri</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#6 Bermasyarakat:</strong> Gotong royong kawan</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;"><strong>#7 Tidur Cukup:</strong> 8 jam regenerasi otak</div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0; background: var(--wf-surface-box);"><strong>+ Panduan:</strong> Integrasi Kurikulum</div>
+            </div>
+          </div>
+
+          <!-- Section 3.4: Lomba SAIH & Gala Kreasi Video -->
+          <div class="wf-grid-2" style="margin-top: 20px;">
+            <div class="wf-box dashed" id="sec-prog-saih" style="margin-bottom: 0; padding: 18px;">
+              <span class="wf-tag-spec">SECTION 3.4: SEMARAK ANAK INDONESIA HEBAT (SAIH) 2025</span>
+              <h4 style="font-family: var(--font-mono); font-size: 15px; font-weight: 800; margin: 4px 0 8px;">[ Lomba SAIH Tingkat Nasional 2025 ]</h4>
+              <div style="font-size: 11px; color: var(--wf-ink-muted); margin-bottom: 12px;">
+                Kategori Lomba: Cerita Bergambar Praktik Baik, Inovasi Kantin Sehat, dan Dokter Kecil Teladan 38 Provinsi.
+              </div>
+              <button class="wf-btn-prim">[ Unduh Juknis Lomba SAIH 2025 ➔ ]</button>
+            </div>
+
+            <div class="wf-box dashed" id="sec-prog-gala" style="margin-bottom: 0; padding: 18px;">
+              <span class="wf-tag-spec">SECTION 3.5: GALA KREASI VIDEO INOVASI UKS/M</span>
+              <h4 style="font-family: var(--font-mono); font-size: 15px; font-weight: 800; margin: 4px 0 8px;">[ Gala Kreasi 2024 &amp; 2023 ]</h4>
+              <div style="font-size: 11px; color: var(--wf-ink-muted); margin-bottom: 12px;">
+                Festival video pendek inovasi sekolah sehat buatan murid dan guru pembina UKS di seluruh tanah air.
+              </div>
+              <button class="wf-btn-prim">[ Tonton Video Pemenang Gala Kreasi ➔ ]</button>
+            </div>
+          </div>
+
+          <!-- Section 3.6: Dokter Kecil & KKR -->
+          <div class="wf-box" id="sec-prog-dokcil" style="margin-top: 20px;">
+            <span class="wf-tag-spec">SECTION 3.6: DOKTER KECIL (SD/MI) &amp; KADER KESEHATAN REMAJA (SMP/SMA)</span>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <strong>Pelatihan P3K &amp; P3P</strong>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); margin-top: 4px;">Keterampilan perban luka ringan, penanganan pingsan upacara, dan obat dasar.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <strong>Pencatatan KMS &amp; Antropometri</strong>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); margin-top: 4px;">Membantu guru &amp; Puskesmas mencatat kenaikan TB/BB di buku raport kesehatan.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <strong>Konselor Sebaya (Peer Educator)</strong>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); margin-top: 4px;">Teman curhat cegah perundungan, ajak teman cuci tangan dan makan sayur.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==========================================================
+             VIEW 4: MITRA & KOLABORASI MULTIPIHAK
+             ========================================================== -->
+        <div class="wf-view-panel" id="view-mitra">
+          
+          <!-- Section 4.1: Panduan Kemitraan 3 Langkah -->
+          <div class="wf-box" id="sec-mitra-alur">
+            <span class="wf-tag-spec">SECTION 4.1: PANDUAN &amp; MEKANISME KERJASAMA KEMITRAAN</span>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="padding: 16px; margin-bottom: 0;">
+                <span class="wf-tag-spec">TAHAP 1</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Pengajuan Niat (LoI)</h4>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Penyampaian proposal program kemitraan non-komersial yang selaras dengan Trias UKS atau GSS.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 16px; margin-bottom: 0;">
+                <span class="wf-tag-spec">TAHAP 2</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Kurasi &amp; Verifikasi</h4>
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted);">Peninjauan etika perlindungan anak, kesesuaian kurikulum, dan dampak kesehatan bersama kementerian.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 16px; margin-bottom: 0;">
+                <span class="wf-tag-spec">TAHAP 3</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">Perjanjian Kerja Sama (PKS)</h4>
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted);">Penandatanganan kesepakatan resmi, penetapan lokus sekolah dampingan, dan evaluasi berkala.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4.2: Formulir Pendaftaran Mitra Online -->
+          <div class="wf-box" id="sec-mitra-form">
+            <span class="wf-tag-spec">SECTION 4.2: FORMULIR PENDAFTARAN MITRA BARU ONLINE</span>
+            <div class="wf-grid-2">
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 18px; font-weight: 800; margin-bottom: 8px;">
+                  [ INVENTARISASI INVENTARIS MITRA ]
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--wf-ink-muted); line-height: 1.6; margin-bottom: 14px;">
+                  Setiap proposal yang masuk akan diverifikasi oleh Tim Teknis Sekretariat UKS Pusat maksimal 7 hari kerja.
+                </div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="wf-media-box" style="height: 36px; padding: 4px;">[ INPUT: Nama Lembaga / Mitra CSR ]</div>
+                  <div class="wf-media-box" style="height: 36px; padding: 4px;">[ SELECT: Kategori (CSR / NGO / Profesi / Lembaga) ]</div>
+                  <div class="wf-media-box" style="height: 36px; padding: 4px;">[ INPUT: Nama PIC &amp; Jabatan ]</div>
+                  <div class="wf-media-box" style="height: 36px; padding: 4px;">[ INPUT: Email Resmi &amp; WhatsApp ]</div>
+                  <div class="wf-media-box" style="height: 60px; padding: 4px;">[ TEXTAREA: Ringkasan Program &amp; Lokus Sekolah ]</div>
+                  <button class="wf-btn-prim dark">[ KIRIM FORMULIR PENDAFTARAN MITRA ➔ ]</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4.3: Mitra Terverifikasi & Bentuk Dukungan -->
+          <div class="wf-box" id="sec-mitra-list">
+            <span class="wf-tag-spec">SECTION 4.3: DIREKTORI MITRA KAMI TERVERIFIKASI</span>
+            <div class="wf-grid-4">
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-weight: 800;">[ Kemenkes RI ]</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Vaksin BIAS, TTD, Juknis Skrining</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-weight: 800;">[ Kemenag RI ]</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Gerakan Madrasah &amp; Pesantren Sehat</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-weight: 800;">[ Kemendagri ]</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Fasilitasi TP UKS Pemda &amp; Kecamatan</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-weight: 800;">[ UNICEF Indonesia ]</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Sanitasi WASH &amp; Kebersihan Menstruasi</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-box flat" id="sec-mitra-support">
+            <span class="wf-tag-spec">SECTION 4.4: BENTUK DUKUNGAN NYATA DI SATUAN PENDIDIKAN</span>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <strong>Renovasi Sanitasi &amp; Toilet</strong>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); margin-top: 4px;">Instalasi wastafel cuci tangan air mengalir dan toilet terpisah murid.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <strong>Pojok Baca &amp; Alat Peraga Gizi</strong>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); margin-top: 4px;">Buku cerita kesehatan, timbangan digital, dan poster edukasi bergambar.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <strong>Workshop Dokter Cilik &amp; Nakes</strong>
+                <div style="font-size: 11px; color: var(--wf-ink-muted); margin-top: 4px;">Pelatihan penanganan cedera olahraga, mitigasi kram, dan P3K dasar.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==========================================================
+             VIEW 5: PUSAT INFORMASI & WARTA
+             ========================================================== -->
+        <div class="wf-view-panel" id="view-informasi">
+          
+          <!-- Section 5.1: Warta Berita Terfilter -->
+          <div class="wf-box" id="sec-info-berita">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+              <span class="wf-tag-spec">SECTION 5.1: WARTA BERITA RESMI UKS/M</span>
+              <div style="display: flex; gap: 6px;">
+                <button class="wf-sub-pill active">[ Semua ]</button>
+                <button class="wf-sub-pill">[ Gizi &amp; MBG ]</button>
+                <button class="wf-sub-pill">[ Pelayanan ]</button>
+                <button class="wf-sub-pill">[ Lingkungan ]</button>
+              </div>
+            </div>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 14px;">
+                <div class="wf-media-box" style="height: 120px; margin-bottom: 10px;">[ BERITA 1: SEAMEO RECFON ]</div>
+                <span class="wf-tag-spec">GIZI SEKOLAH</span>
+                <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0 6px;">Belajar Gizi dari Kebun Sekolah (NGTS)</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 14px;">
+                <div class="wf-media-box" style="height: 120px; margin-bottom: 10px;">[ BERITA 2: MBG KARAKTER ]</div>
+                <span class="wf-tag-spec">PENDIDIKAN KARAKTER</span>
+                <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0 6px;">Makan Bersama Mengasah Adab &amp; Syukur</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 14px;">
+                <div class="wf-media-box" style="height: 120px; margin-bottom: 10px;">[ BERITA 3: AKSI BERGIZI ]</div>
+                <span class="wf-tag-spec">PELAYANAN KESEHATAN</span>
+                <div style="font-family: var(--font-mono); font-size: 13px; font-weight: 800; margin: 4px 0 6px;">Pemberian Tablet Tambah Darah Remaja Putri</div>
+                <div class="wf-line-skel w-100"></div>
+                <div class="wf-line-skel w-75"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5.2: Praktik Baik Satuan Pendidikan -->
+          <div class="wf-box" id="sec-info-praktik">
+            <span class="wf-tag-spec">SECTION 5.2: INSPIRASI PRAKTIK BAIK SATUAN PENDIDIKAN</span>
+            <div class="wf-grid-2">
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 16px;">
+                <span class="wf-tag-spec">SD MODEL UKS PARIPURNA</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">SDN 1 Wonosobo: Kantin Higienis Bebas 5P</h4>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Memberdayakan paguyuban orang tua menyajikan kudapan lokal tanpa pewarna/pengawet sintetis.</div>
+              </div>
+              <div class="wf-box dashed" style="margin-bottom: 0; padding: 16px;">
+                <span class="wf-tag-spec">SMP INOVATIF</span>
+                <h4 style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; margin: 4px 0;">SMPN 4 Singaraja: Aplikasi Pantau Kebugaran Mandiri</h4>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Kader KKR mencatat sarana air minum dan capaian jalan kaki 6.000 langkah melalui gawai sekolah.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5.3: UPT BPMP/BBPMP Bercerita -->
+          <div class="wf-box flat" id="sec-info-upt">
+            <span class="wf-tag-spec">SECTION 5.3: CATATAN LAPANGAN UPT BPMP / BBPMP</span>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <span class="wf-tag-spec">BPMP MALUKU</span>
+                <div style="font-weight: 800; font-family: var(--font-mono); font-size: 12px; margin: 4px 0;">Penjaringan Siswa Kepulauan 3T</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Menembus ombak menjangkau 12 pulau terluar untuk skrining TB/BB.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <span class="wf-tag-spec">BBPMP JAWA BARAT</span>
+                <div style="font-weight: 800; font-family: var(--font-mono); font-size: 12px; margin: 4px 0;">Sinergi Dana Desa untuk Air Bersih</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Advokasi pipa air gravitasi gratis ke 15 SD di kawasan pegunungan.</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <span class="wf-tag-spec">BPMP KALIMANTAN BARAT</span>
+                <div style="font-weight: 800; font-family: var(--font-mono); font-size: 12px; margin: 4px 0;">Sekolah Sehat di Batas Negara Entikong</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Penguatan imunisasi dan sanitasi di beranda perbatasan RI-Malaysia.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5.4: Kalender Agenda 2026 & Aplikasi Ekosistem -->
+          <div class="wf-grid-2" style="margin-top: 20px;">
+            <div class="wf-box dashed" id="sec-info-agenda" style="margin-bottom: 0; padding: 16px;">
+              <span class="wf-tag-spec">SECTION 5.4: KALENDER KEGIATAN UKS/M 2026</span>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 11px; margin-top: 6px;">
+                <div>[ 28 Sep ] • Webinar Nasional Penerapan GSS di Satpen Dasar</div>
+                <div>[ 15 Okt ] • Aksi Massal Hari Cuci Tangan Pakai Sabun Sedunia</div>
+                <div>[ 12 Nov ] • Hari Kesehatan Nasional ke-62 &amp; UKS Award 2026</div>
+              </div>
+            </div>
+
+            <div class="wf-box dashed" id="sec-info-apps" style="margin-bottom: 0; padding: 16px;">
+              <span class="wf-tag-spec">SECTION 5.5: DIREKTORI APLIKASI DIGITAL EKOSISTEM</span>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 11px; margin-top: 6px;">
+                <div>[ 📊 ] Stratifikasi UKS Online: stratifikasiuks.org</div>
+                <div>[ 🍱 ] Dasbor MBG Portal: mbg.pdm.kemendikdasmen.go.id</div>
+                <div>[ 📱 ] SIPRAK (Sistem Praktik Baik): Kurasi Inovasi Guru &amp; Siswa</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==========================================================
+             VIEW 6: PERPUSTAKAAN PUBLIKASI & JUKNIS
+             ========================================================== -->
+        <div class="wf-view-panel" id="view-publikasi">
+          
+          <!-- Section 6.1: Buku Panduan PDF -->
+          <div class="wf-box" id="sec-pub-books">
+            <span class="wf-tag-spec">SECTION 6.1: BUKU PANDUAN, JUKNIS &amp; MODUL RESMI (PDF)</span>
+            <div class="wf-grid-4">
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: Pedoman Keswa SMP ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Pedoman Keswa SMP</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">buku1.pdf (8.9 MB)</div>
+                <button class="wf-btn-prim dark" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 6px;">[ Unduh PDF ➔ ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: Panduan MBG ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Panduan MBG Satpen</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">buku2.pdf (11.8 MB)</div>
+                <button class="wf-btn-prim dark" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 6px;">[ Unduh PDF ➔ ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: Karakter MBG ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Karakter dalam MBG</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">Buku Karakter.pdf (2.4 MB)</div>
+                <button class="wf-btn-prim dark" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 6px;">[ Unduh PDF ➔ ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; text-align: center; margin-bottom: 0;">
+                <div class="wf-media-box" style="height: 180px; margin-bottom: 8px;">[ COVER: Manajemen UKS ]</div>
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 700;">Manajemen Pembinaan</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted);">buku3.pdf (6.6 MB)</div>
+                <button class="wf-btn-prim dark" style="width: 100%; font-size: 10px; padding: 4px; margin-top: 6px;">[ Unduh PDF ➔ ]</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 6.2: Infografis & Video Sosialisasi -->
+          <div class="wf-grid-2">
+            <div class="wf-box dashed" id="sec-pub-infografis" style="margin-bottom: 0; padding: 18px;">
+              <span class="wf-tag-spec">SECTION 6.2: INFOGRAFIS &amp; POSTER MADING SIAP CETAK A3</span>
+              <div class="wf-media-box" style="height: 140px; margin-bottom: 10px;">[ INFOGRAFIS: AKSI BERGIZI &amp; CTPS 6 LANGKAH ]</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted); margin-bottom: 12px;">
+                Paket infografis siap cetak untuk dinding ruang UKS, selasar sekolah, dan kantin beresolusi tinggi (Asset: infograsi1.png).
+              </div>
+              <button class="wf-btn-prim">[ Unduh Paket Poster HD (.ZIP) ➔ ]</button>
+            </div>
+
+            <div class="wf-box dashed" id="sec-pub-video" style="margin-bottom: 0; padding: 18px;">
+              <span class="wf-tag-spec">SECTION 6.3: VIDEO SOSIALISASI &amp; ANIMASI EDUKASI</span>
+              <div class="wf-media-box" style="height: 140px; margin-bottom: 10px;">[ VIDEO PLAYER: KISAH BUDI &amp; TUTORIAL PENJARINGAN ]</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--wf-ink-muted); margin-bottom: 12px;">
+                Video animasi Isi Piringku untuk siswa SD dan video tutorial penggunaan Snellen Chart bagi guru pembina UKS.
+              </div>
+              <button class="wf-btn-prim">[ Tonton Video Edukasi ➔ ]</button>
+            </div>
+          </div>
+
+          <!-- Section 6.4: SKB 4 Menteri & Produk Hukum -->
+          <div class="wf-box" id="sec-pub-regulasi" style="margin-top: 20px;">
+            <span class="wf-tag-spec">SECTION 6.4: REPOSITORI PRODUK HUKUM &amp; SKB 4 MENTERI</span>
+            <div class="wf-grid-2">
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800;">SKB 4 Menteri No. 6/X/PB/2014</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted); margin-top: 2px;">Landasan pembinaan Tim Pembina UKS Pusat hingga Kecamatan.</div>
+                <button class="wf-btn-prim" style="font-size: 10px; padding: 2px 8px; margin-top: 6px;">[ Salinan PDF ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800;">Undang-Undang No. 17 Tahun 2023</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted); margin-top: 2px;">Pasal pelayanan kesehatan anak usia sekolah dan remaja.</div>
+                <button class="wf-btn-prim" style="font-size: 10px; padding: 2px 8px; margin-top: 6px;">[ Salinan PDF ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800;">Peraturan Presiden No. 72 Tahun 2021</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted); margin-top: 2px;">Percepatan penurunan stunting bagi remaja putri calon ibu.</div>
+                <button class="wf-btn-prim" style="font-size: 10px; padding: 2px 8px; margin-top: 6px;">[ Salinan PDF ]</button>
+              </div>
+              <div class="wf-box dashed" style="padding: 12px; margin-bottom: 0;">
+                <div style="font-family: var(--font-mono); font-size: 12px; font-weight: 800;">Permendikbudristek No. 46 Tahun 2023</div>
+                <div style="font-size: 10px; color: var(--wf-ink-muted); margin-top: 2px;">Pencegahan dan Penanganan Kekerasan di Sekolah (PPKSP).</div>
+                <button class="wf-btn-prim" style="font-size: 10px; padding: 2px 8px; margin-top: 6px;">[ Salinan PDF ]</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==========================================================
+             VIEW 7: KONTAK, FAQ & LAYANAN PENGADUAN
+             ========================================================== -->
+        <div class="wf-view-panel" id="view-kontak">
+          
+          <!-- Section 7.1: Alamat Kantor & ULT 177 -->
+          <div class="wf-box" id="sec-kontak-kantor">
+            <span class="wf-tag-spec">SECTION 7.1: ALAMAT KANTOR SEKRETARIAT PUSAT &amp; HELPDESK</span>
+            <div class="wf-grid-3">
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <div style="font-size: 20px;">📍</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; margin: 4px 0;">Sekretariat Pembina UKS</div>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Kemendikdasmen Gedung E Lt. 17, Jl. Jenderal Sudirman, Senayan, Jakarta Pusat 10270</div>
+              </div>
+              <div class="wf-box dashed" id="sec-kontak-helpdesk" style="padding: 14px; margin-bottom: 0;">
+                <div style="font-size: 20px;">📞</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; margin: 4px 0;">Layanan Terpadu (ULT) 177</div>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Call Center: 177 • Hotline UKS: (021) 572-5034 • Email: uks@kemendikdasmen.go.id</div>
+              </div>
+              <div class="wf-box dashed" style="padding: 14px; margin-bottom: 0;">
+                <div style="font-size: 20px;">⏰</div>
+                <div style="font-family: var(--font-mono); font-weight: 800; font-size: 13px; margin: 4px 0;">Jam Operasional</div>
+                <div style="font-size: 11px; color: var(--wf-ink-muted);">Senin - Jumat: 08.00 - 16.00 WIB (Kecuali hari libur nasional &amp; cuti bersama)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 7.2: Formulir Tiket Aduan & FAQ -->
+          <div class="wf-grid-2">
+            <!-- Formulir Konsultasi Wireframe -->
+            <div class="wf-box dashed" id="sec-kontak-form" style="margin-bottom: 0; padding: 18px;">
+              <span class="wf-tag-spec">SECTION 7.2: FORMULIR PENGADUAN &amp; KONSULTASI ONLINE</span>
+              <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                <div class="wf-media-box" style="height: 36px; padding: 4px;">[ INPUT: Nama Lengkap Pengirim ]</div>
+                <div class="wf-media-box" style="height: 36px; padding: 4px;">[ SELECT: Peran (Kepsek / Guru UKS / Nakes / Komite) ]</div>
+                <div class="wf-media-box" style="height: 36px; padding: 4px;">[ INPUT: Nama Satuan Pendidikan &amp; Daerah ]</div>
+                <div class="wf-media-box" style="height: 36px; padding: 4px;">[ INPUT: Nomor WhatsApp &amp; Email Aktif ]</div>
+                <div class="wf-media-box" style="height: 70px; padding: 4px;">[ TEXTAREA: Uraian Masalah Ruang UKS / Sanitasi / MBG ]</div>
+                <button class="wf-btn-prim dark">[ KIRIM TIKET LAYANAN UKS ➔ ]</button>
+              </div>
+            </div>
+
+            <!-- FAQ Wireframe -->
+            <div class="wf-box" id="sec-kontak-faq" style="margin-bottom: 0; padding: 18px;">
+              <span class="wf-tag-spec">SECTION 7.3: TANYA JAWAB POPULER (FAQ KOMPREHENSIF)</span>
+              <div style="display: flex; flex-direction: column; gap: 10px; font-family: var(--font-mono); font-size: 11px; margin-top: 8px;">
+                <div class="wf-box dashed" style="padding: 10px; margin-bottom: 0;">
+                  <strong>Q: Bolehkah dana BOS digunakan untuk obat P3K?</strong>
+                  <div style="color: var(--wf-ink-muted); margin-top: 2px;">A: Boleh, sesuai juknis BOS komponen pemeliharaan kesehatan dan sanitasi.</div>
+                </div>
+                <div class="wf-box dashed" style="padding: 10px; margin-bottom: 0;">
+                  <strong>Q: Bagaimana cara mengundang Puskesmas untuk skrining?</strong>
+                  <div style="color: var(--wf-ink-muted); margin-top: 2px;">A: Kirim surat resmi permohonan penjaringan di awal tahun ajaran baru.</div>
+                </div>
+                <div class="wf-box dashed" style="padding: 10px; margin-bottom: 0;">
+                  <strong>Q: Syarat minimal ruang UKS strata standar?</strong>
+                  <div style="color: var(--wf-ink-muted); margin-top: 2px;">A: Tempat tidur terpisah, kotak P3K lengkap, air mengalir, buku catatan.</div>
+                </div>
+                <div class="wf-box dashed" style="padding: 10px; margin-bottom: 0;">
+                  <strong>Q: Bagaimana cara menjadi sekolah percontohan MBG?</strong>
+                  <div style="color: var(--wf-ink-muted); margin-top: 2px;">A: Dikoordinasikan Badan Gizi Nasional bersama Disdik Kabupaten/Kota.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= 4. WIREFRAME GLOBAL FOOTER ================= -->
+      <footer style="background: var(--wf-ink-black); color: white; border-radius: var(--radius-xl) var(--radius-xl) 0 0; padding: 40px 32px 24px; margin-top: 40px;">
+        <span class="wf-tag-spec" style="background: rgba(255,255,255,0.15); color: white; margin-bottom: 20px;">SECTION: WIREFRAME GLOBAL FOOTER &amp; CROSS-MINISTRY LINKS</span>
+        
+        <div class="wf-grid-4" style="margin-bottom: 24px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 20px; font-weight: 800; color: white;">[ UKS/M ]</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #8FA196; margin-top: 6px;">
+              Sekretariat Pembina UKS/M Tingkat Pusat<br>
+              Kemendikdasmen • Kemenkes • Kemenag • Kemendagri
+            </div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: white; margin-bottom: 8px;">NAVIGASI HALAMAN</div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: #8FA196; display: flex; flex-direction: column; gap: 4px;">
+              <span style="cursor: pointer;" onclick="navigateToPage('beranda')">• 1. Beranda Portal</span>
+              <span style="cursor: pointer;" onclick="navigateToPage('uksm')">• 2. UKS/M &amp; Trias</span>
+              <span style="cursor: pointer;" onclick="navigateToPage('program')">• 3. Program Prioritas</span>
+              <span style="cursor: pointer;" onclick="navigateToPage('mitra')">• 4. Kemitraan</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: white; margin-bottom: 8px;">INFORMASI &amp; PUBLIKASI</div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: #8FA196; display: flex; flex-direction: column; gap: 4px;">
+              <span style="cursor: pointer;" onclick="navigateToPage('informasi')">• 5. Warta &amp; Agenda</span>
+              <span style="cursor: pointer;" onclick="navigateToPage('publikasi')">• 6. Modul Buku &amp; SKB</span>
+              <span style="cursor: pointer;" onclick="navigateToPage('kontak')">• 7. Kontak &amp; FAQ</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: white; margin-bottom: 8px;">TAUTAN RESMI KEMENTERIAN</div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: #8FA196; display: flex; flex-direction: column; gap: 4px;">
+              <span>• kemendikdasmen.go.id</span>
+              <span>• kemkes.go.id (Ayo Sehat)</span>
+              <span>• kemenag.go.id (Madrasah)</span>
+              <span>• kemendagri.go.id (Bangda)</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #283D31; padding-top: 16px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #6E8777;">
+          <div>[ © 2026 Kemendikdasmen RI • Wireframe Model 2 • All Pages Architecture ]</div>
+          <div>[ Low-Fi Wireframe Specification • Complete Hierarchical Mapping ]</div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <script src="wireframe2.js"></script>
+</body>
+</html>

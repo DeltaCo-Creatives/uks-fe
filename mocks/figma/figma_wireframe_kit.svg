@@ -1,0 +1,482 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3400 2500" width="3400" height="2500" fill="none">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@700;800;900&amp;display=swap');
+      .font-sans { font-family: 'Inter', system-ui, sans-serif; }
+      .font-heading { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 800; }
+      .text-title { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 900; }
+    </style>
+    
+    <!-- Tactile drop shadow filter for Figma import -->
+    <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.06"/>
+    </filter>
+    <filter id="pill-shadow" x="-5%" y="-10%" width="110%" height="130%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000000" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <!-- Canvas Background for Preview -->
+  <rect width="3400" height="2500" fill="#E8ECE9"/>
+
+  <!-- ====================================================================
+       ARTBOARD 1: DESKTOP WIREFRAME (1440 x 2400)
+       ==================================================================== -->
+  <g id="Frame_Desktop_1440" transform="translate(60, 60)">
+    <!-- Frame Canvas -->
+    <rect width="1440" height="2360" rx="32" fill="#F4F5F4"/>
+    
+    <!-- Artboard Title Label -->
+    <text x="30" y="-20" class="font-heading" font-size="22" fill="#111C16">Desktop Wireframe (1440px) • Portal Resmi UKS/M Kemendikdasmen</text>
+
+    <!-- 1. Floating Pill Navbar (Width 1200, Height 64, Centered at x=120) -->
+    <g id="Navbar_Desktop" transform="translate(120, 24)" filter="url(#pill-shadow)">
+      <rect width="1200" height="64" rx="32" fill="#FFFFFF" stroke="#E2E8E4" stroke-width="1.5"/>
+      <!-- Brand Logo & Name -->
+      <circle cx="48" cy="32" r="18" fill="#098C4C"/>
+      <text x="40" y="38" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="16" fill="#FFFFFF">U</text>
+      <text x="76" y="33" class="font-heading" font-size="15" fill="#111C16">UKS/M</text>
+      <text x="76" y="46" class="font-sans" font-weight="700" font-size="9" fill="#098C4C" letter-spacing="1">KEMENDIKDASMEN</text>
+
+      <!-- Nav Links -->
+      <g transform="translate(230, 20)">
+        <!-- Active Beranda Pill -->
+        <rect width="90" height="32" rx="16" fill="#111C16"/>
+        <text x="18" y="21" class="font-sans" font-weight="700" font-size="13" fill="#FFFFFF">Beranda</text>
+
+        <!-- Other links -->
+        <text x="115" y="21" class="font-sans" font-weight="600" font-size="13" fill="#536359">Tentang UKS ▾</text>
+        <text x="240" y="21" class="font-sans" font-weight="600" font-size="13" fill="#536359">Program ▾</text>
+        <text x="335" y="21" class="font-sans" font-weight="600" font-size="13" fill="#536359">Mitra ▾</text>
+        <text x="415" y="21" class="font-sans" font-weight="600" font-size="13" fill="#536359">Informasi ▾</text>
+        <text x="510" y="21" class="font-sans" font-weight="600" font-size="13" fill="#536359">Publikasi ▾</text>
+        <text x="610" y="21" class="font-sans" font-weight="600" font-size="13" fill="#536359">Kontak</text>
+      </g>
+
+      <!-- Actions: Search & Wireframe Switcher -->
+      <rect x="1005" y="16" width="125" height="34" rx="17" fill="#EBF0EC"/>
+      <text x="1025" y="38" class="font-sans" font-weight="700" font-size="12" fill="#111C16">📐 Wireframe</text>
+      <circle cx="1155" cy="32" r="18" fill="#098C4C"/>
+      <text x="1149" y="37" font-size="14" fill="#FFFFFF">🔍</text>
+    </g>
+
+    <!-- 2. Hero Immersive Stage (1200 x 480 at x=120, y=110) -->
+    <g id="Hero_Section" transform="translate(120, 110)" filter="url(#card-shadow)">
+      <rect width="1200" height="460" rx="36" fill="#111C16"/>
+      <!-- Background Graphic Simulation -->
+      <rect width="1200" height="460" rx="36" fill="url(#hero-overlay)" opacity="0.3"/>
+      
+      <!-- Hero Copy -->
+      <g transform="translate(48, 160)">
+        <!-- Kicker Badge -->
+        <rect width="210" height="28" rx="14" fill="#FFD23F"/>
+        <text x="14" y="19" class="font-heading" font-size="11" fill="#111C16">PROGRAM PRIORITAS NASIONAL 2026</text>
+
+        <!-- Headline -->
+        <text x="0" y="70" class="text-title" font-size="38" fill="#FFFFFF">Membangun Generasi Emas yang Sehat,</text>
+        <text x="0" y="115" class="text-title" font-size="38" fill="#FFFFFF">Bugar, dan Berkarakter Hebat</text>
+
+        <!-- Subtitle -->
+        <text x="0" y="155" class="font-sans" font-size="15" fill="#C5D1C9">Portal resmi terpadu Kemendikdasmen, Kemenkes, Kemenag, dan Kemendagri</text>
+        <text x="0" y="178" class="font-sans" font-size="15" fill="#C5D1C9">guna akselerasi gizi, kebugaran fisik, dan sanitasi satuan pendidikan.</text>
+
+        <!-- CTA Buttons -->
+        <g transform="translate(0, 210)">
+          <rect width="240" height="44" rx="22" fill="#FFD23F"/>
+          <text x="24" y="27" class="font-heading" font-size="14" fill="#111C16">🍱 Makan Bergizi Gratis (MBG)</text>
+
+          <rect x="255" y="0" width="180" height="44" rx="22" fill="#FFFFFF" opacity="0.15"/>
+          <text x="280" y="27" class="font-heading" font-size="14" fill="#FFFFFF">📚 Buku &amp; Modul UKS</text>
+
+          <rect x="450" y="0" width="180" height="44" rx="22" fill="#098C4C"/>
+          <text x="475" y="27" class="font-heading" font-size="14" fill="#FFFFFF">🌿 Jelajahi Trias UKS</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- 3. National Impact Stats Pill Bar (1200 x 90 at x=120, y=595) -->
+    <g id="Stats_Bar" transform="translate(120, 595)" filter="url(#card-shadow)">
+      <rect width="1200" height="96" rx="28" fill="#FFFFFF" stroke="#E2E8E4" stroke-width="1"/>
+      <g transform="translate(80, 28)">
+        <!-- Metric 1 -->
+        <text x="0" y="32" class="text-title" font-size="28" fill="#098C4C">15,000+</text>
+        <text x="0" y="52" class="font-sans" font-weight="700" font-size="12" fill="#536359">Sekolah Model Binaan</text>
+
+        <!-- Metric 2 -->
+        <text x="280" y="32" class="text-title" font-size="28" fill="#098C4C">50,000+</text>
+        <text x="280" y="52" class="font-sans" font-weight="700" font-size="12" fill="#536359">Dokter Kecil Terlatih</text>
+
+        <!-- Metric 3 -->
+        <text x="560" y="32" class="text-title" font-size="28" fill="#098C4C">25,000+</text>
+        <text x="560" y="52" class="font-sans" font-weight="700" font-size="12" fill="#536359">Kader Tiwi Prada Sehat</text>
+
+        <!-- Metric 4 -->
+        <text x="840" y="32" class="text-title" font-size="28" fill="#098C4C">38 Provinsi</text>
+        <text x="840" y="52" class="font-sans" font-weight="700" font-size="12" fill="#536359">Jangkauan Nasional</text>
+      </g>
+    </g>
+
+    <!-- 4. Trias UKS Section (3 Columns: Width 380 each, Gap 30) -->
+    <g id="Trias_Section" transform="translate(120, 725)">
+      <!-- Section Header -->
+      <rect width="140" height="24" rx="12" fill="#D2E8DA"/>
+      <text x="14" y="16" class="font-heading" font-size="11" fill="#098C4C">FONDASI UTAMA UKS/M</text>
+      <text x="0" y="54" class="text-title" font-size="28" fill="#111C16">Trias Usaha Kesehatan Sekolah</text>
+
+      <!-- Card 1: Pendidikan Kesehatan -->
+      <g transform="translate(0, 75)" filter="url(#card-shadow)">
+        <rect width="380" height="240" rx="24" fill="#FFFFFF"/>
+        <rect width="380" height="6" rx="3" fill="#098C4C"/>
+        <circle cx="44" cy="48" r="20" fill="#D2E8DA"/>
+        <text x="36" y="54" font-size="18">🍎</text>
+        <text x="76" y="52" class="font-heading" font-size="18" fill="#111C16">1. Pendidikan Kesehatan</text>
+        <text x="24" y="95" class="font-sans" font-size="13" fill="#536359">Literasi gizi seimbang, pembiasaan PHBS,</text>
+        <text x="24" y="118" class="font-sans" font-size="13" fill="#536359">senam pagi kesegaran jasmani, dan</text>
+        <text x="24" y="141" class="font-sans" font-size="13" fill="#536359">pembinaan dokter kecil peer educator.</text>
+        <!-- Tags -->
+        <rect x="24" y="180" width="90" height="26" rx="13" fill="#F4F5F4"/>
+        <text x="36" y="197" class="font-sans" font-size="11" font-weight="700" fill="#111C16">Literasi Gizi</text>
+        <rect x="122" y="180" width="80" height="26" rx="13" fill="#F4F5F4"/>
+        <text x="134" y="197" class="font-sans" font-size="11" font-weight="700" fill="#111C16">PHBS Siswa</text>
+      </g>
+
+      <!-- Card 2: Pelayanan Kesehatan -->
+      <g transform="translate(410, 75)" filter="url(#card-shadow)">
+        <rect width="380" height="240" rx="24" fill="#FFFFFF"/>
+        <rect width="380" height="6" rx="3" fill="#3B82F6"/>
+        <circle cx="44" cy="48" r="20" fill="#DBEAFE"/>
+        <text x="36" y="54" font-size="18">🩺</text>
+        <text x="76" y="52" class="font-heading" font-size="18" fill="#111C16">2. Pelayanan Kesehatan</text>
+        <text x="24" y="95" class="font-sans" font-size="13" fill="#536359">Penjaringan kesehatan berkala TB/BB,</text>
+        <text x="24" y="118" class="font-sans" font-size="13" fill="#536359">imunisasi BIAS, tablet tambah darah,</text>
+        <text x="24" y="141" class="font-sans" font-size="13" fill="#536359">dan kesiapsiagaan ruang P3K &amp; P3P.</text>
+        <rect x="24" y="180" width="95" height="26" rx="13" fill="#F4F5F4"/>
+        <text x="36" y="197" class="font-sans" font-size="11" font-weight="700" fill="#111C16">Cek Berkala</text>
+        <rect x="127" y="180" width="105" height="26" rx="13" fill="#F4F5F4"/>
+        <text x="139" y="197" class="font-sans" font-size="11" font-weight="700" fill="#111C16">Imunisasi BIAS</text>
+      </g>
+
+      <!-- Card 3: Pembinaan Lingkungan -->
+      <g transform="translate(820, 75)" filter="url(#card-shadow)">
+        <rect width="380" height="240" rx="24" fill="#FFFFFF"/>
+        <rect width="380" height="6" rx="3" fill="#EAB308"/>
+        <circle cx="44" cy="48" r="20" fill="#FEF08A"/>
+        <text x="36" y="54" font-size="18">🌱</text>
+        <text x="76" y="52" class="font-heading" font-size="18" fill="#111C16">3. Lingkungan Sehat</text>
+        <text x="24" y="95" class="font-sans" font-size="13" fill="#536359">Sanitasi toilet higienis, kantin sehat</text>
+        <text x="24" y="118" class="font-sans" font-size="13" fill="#536359">bebas 5P, kebun gizi sekolah, serta</text>
+        <text x="24" y="141" class="font-sans" font-size="13" fill="#536359">kawasan bebas asap rokok &amp; kekerasan.</text>
+        <rect x="24" y="180" width="90" height="26" rx="13" fill="#F4F5F4"/>
+        <text x="36" y="197" class="font-sans" font-size="11" font-weight="700" fill="#111C16">Kantin Sehat</text>
+        <rect x="122" y="180" width="90" height="26" rx="13" fill="#F4F5F4"/>
+        <text x="134" y="197" class="font-sans" font-size="11" font-weight="700" fill="#111C16">Sanitasi Air</text>
+      </g>
+    </g>
+
+    <!-- 5. Program Bento Grid (2 Columns: Width 585 each at y=1090) -->
+    <g id="Program_Bento" transform="translate(120, 1090)">
+      <rect width="130" height="24" rx="12" fill="#D2E8DA"/>
+      <text x="14" y="16" class="font-heading" font-size="11" fill="#098C4C">PROGRAM TERKINI</text>
+      <text x="0" y="54" class="text-title" font-size="28" fill="#111C16">Program Prioritas Nasional</text>
+
+      <!-- Bento 1: MBG -->
+      <g transform="translate(0, 75)" filter="url(#card-shadow)">
+        <rect width="585" height="220" rx="28" fill="#FFFFFF"/>
+        <rect x="24" y="24" width="190" height="24" rx="12" fill="#FFD23F"/>
+        <text x="36" y="40" class="font-heading" font-size="10" fill="#111C16">BGN &amp; KEMENDIKDASMEN</text>
+        <text x="24" y="80" class="font-heading" font-size="20" fill="#111C16">Makan Bergizi Gratis &amp; Karakter</text>
+        <text x="24" y="112" class="font-sans" font-size="13" fill="#536359">Menu gizi seimbang harian diintegrasikan langsung dengan</text>
+        <text x="24" y="132" class="font-sans" font-size="13" fill="#536359">adab antre, cuci tangan, dan rasa syukur peserta didik.</text>
+        
+        <rect x="24" y="160" width="160" height="36" rx="18" fill="#098C4C"/>
+        <text x="44" y="183" class="font-heading" font-size="12" fill="#FFFFFF">Panduan MBG ➔</text>
+      </g>
+
+      <!-- Bento 2: CKG & 7KAIH -->
+      <g transform="translate(615, 75)" filter="url(#card-shadow)">
+        <rect width="585" height="220" rx="28" fill="#FFFFFF"/>
+        <rect x="24" y="24" width="160" height="24" rx="12" fill="#BAE6FD"/>
+        <text x="36" y="40" class="font-heading" font-size="10" fill="#0369A1">KEMENKES KOLABORASI</text>
+        <text x="24" y="80" class="font-heading" font-size="20" fill="#111C16">Cek Kesehatan Gratis &amp; 7KAIH</text>
+        <text x="24" y="112" class="font-sans" font-size="13" fill="#536359">Skrining penglihatan, pendengaran, dan gigi secara serentak</text>
+        <text x="24" y="132" class="font-sans" font-size="13" fill="#536359">serta festival Semarak Anak Indonesia Hebat (SAIH) 2025.</text>
+
+        <rect x="24" y="160" width="160" height="36" rx="18" fill="#EBF0EC"/>
+        <text x="44" y="183" class="font-heading" font-size="12" fill="#111C16">Detail Program ➔</text>
+      </g>
+    </g>
+
+    <!-- 6. Books & Publications Showcase (4 Columns: Width 275 each at y=1440) -->
+    <g id="Books_Showcase" transform="translate(120, 1440)">
+      <text x="0" y="30" class="text-title" font-size="26" fill="#111C16">Buku Panduan &amp; Modul Resmi UKS</text>
+
+      <!-- Book 1 -->
+      <g transform="translate(0, 50)" filter="url(#card-shadow)">
+        <rect width="275" height="340" rx="24" fill="#FFFFFF"/>
+        <rect x="16" y="16" width="243" height="180" rx="16" fill="#D2E8DA"/>
+        <text x="80" y="110" class="font-heading" font-size="14" fill="#098C4C">[Cover Buku Keswa]</text>
+        <text x="16" y="224" class="font-heading" font-size="14" fill="#111C16">Pedoman Keswa SMP</text>
+        <text x="16" y="246" class="font-sans" font-size="11" fill="#536359">Panduan deteksi dini kesehatan</text>
+        <text x="16" y="262" class="font-sans" font-size="11" fill="#536359">jiwa dan konseling murid.</text>
+        <rect x="16" y="285" width="243" height="36" rx="18" fill="#098C4C"/>
+        <text x="85" y="308" class="font-heading" font-size="12" fill="#FFFFFF">📖 Unduh PDF</text>
+      </g>
+
+      <!-- Book 2 -->
+      <g transform="translate(305, 50)" filter="url(#card-shadow)">
+        <rect width="275" height="340" rx="24" fill="#FFFFFF"/>
+        <rect x="16" y="16" width="243" height="180" rx="16" fill="#FEF08A"/>
+        <text x="85" y="110" class="font-heading" font-size="14" fill="#854D0E">[Cover Juknis MBG]</text>
+        <text x="16" y="224" class="font-heading" font-size="14" fill="#111C16">Implementasi MBG</text>
+        <text x="16" y="246" class="font-sans" font-size="11" fill="#536359">Juknis higienitas, standar porsi,</text>
+        <text x="16" y="262" class="font-sans" font-size="11" fill="#536359">dan SOP ompreng bersih.</text>
+        <rect x="16" y="285" width="243" height="36" rx="18" fill="#098C4C"/>
+        <text x="85" y="308" class="font-heading" font-size="12" fill="#FFFFFF">📖 Unduh PDF</text>
+      </g>
+
+      <!-- Book 3 -->
+      <g transform="translate(610, 50)" filter="url(#card-shadow)">
+        <rect width="275" height="340" rx="24" fill="#FFFFFF"/>
+        <rect x="16" y="16" width="243" height="180" rx="16" fill="#DBEAFE"/>
+        <text x="75" y="110" class="font-heading" font-size="14" fill="#1E40AF">[Pendidikan Karakter]</text>
+        <text x="16" y="224" class="font-heading" font-size="14" fill="#111C16">Karakter dalam MBG</text>
+        <text x="16" y="246" class="font-sans" font-size="11" fill="#536359">Panduan adab makan bersama</text>
+        <text x="16" y="262" class="font-sans" font-size="11" fill="#536359">dan pembiasaan 7KAIH.</text>
+        <rect x="16" y="285" width="243" height="36" rx="18" fill="#098C4C"/>
+        <text x="85" y="308" class="font-heading" font-size="12" fill="#FFFFFF">📖 Unduh PDF</text>
+      </g>
+
+      <!-- Book 4 -->
+      <g transform="translate(915, 50)" filter="url(#card-shadow)">
+        <rect width="275" height="340" rx="24" fill="#FFFFFF"/>
+        <rect x="16" y="16" width="243" height="180" rx="16" fill="#F4F5F4"/>
+        <text x="80" y="110" class="font-heading" font-size="14" fill="#536359">[Manajemen UKS]</text>
+        <text x="16" y="224" class="font-heading" font-size="14" fill="#111C16">Manajemen UKS/M</text>
+        <text x="16" y="246" class="font-sans" font-size="11" fill="#536359">Tata kelola Tim Pembina dan</text>
+        <text x="16" y="262" class="font-sans" font-size="11" fill="#536359">penggunaan dana BOS.</text>
+        <rect x="16" y="285" width="243" height="36" rx="18" fill="#098C4C"/>
+        <text x="85" y="308" class="font-heading" font-size="12" fill="#FFFFFF">📖 Unduh PDF</text>
+      </g>
+    </g>
+
+    <!-- 7. Footer (1440 x 300 at y=1900) -->
+    <g id="Footer_Desktop" transform="translate(0, 1920)">
+      <rect width="1440" height="440" rx="36" fill="#111C16"/>
+      <g transform="translate(120, 50)">
+        <text x="0" y="40" class="text-title" font-size="32" fill="#098C4C">UKS / M</text>
+        <text x="0" y="70" class="font-sans" font-size="13" fill="#C5D1C9">Sekretariat Pembina Usaha Kesehatan Sekolah Tingkat Pusat</text>
+        <text x="0" y="92" class="font-sans" font-size="13" fill="#C5D1C9">Kementerian Pendidikan Dasar dan Menengah RI</text>
+        <text x="0" y="120" class="font-sans" font-size="12" fill="#7F9185">Kompleks Kemendikdasmen Gedung E Lt. 17, Senayan, Jakarta</text>
+
+        <!-- Col 1 -->
+        <text x="500" y="40" class="font-heading" font-size="15" fill="#FFFFFF">Tentang UKS</text>
+        <text x="500" y="72" class="font-sans" font-size="13" fill="#7F9185">Trias UKS (3 Pilar)</text>
+        <text x="500" y="98" class="font-sans" font-size="13" fill="#7F9185">Struktur Organisasi</text>
+        <text x="500" y="124" class="font-sans" font-size="13" fill="#7F9185">Stratifikasi UKS</text>
+
+        <!-- Col 2 -->
+        <text x="750" y="40" class="font-heading" font-size="15" fill="#FFFFFF">Program</text>
+        <text x="750" y="72" class="font-sans" font-size="13" fill="#7F9185">Makan Bergizi Gratis</text>
+        <text x="750" y="98" class="font-sans" font-size="13" fill="#7F9185">Cek Kesehatan Gratis</text>
+        <text x="750" y="124" class="font-sans" font-size="13" fill="#7F9185">Dokter Kecil</text>
+
+        <!-- Col 3 -->
+        <text x="1000" y="40" class="font-heading" font-size="15" fill="#FFFFFF">Publikasi</text>
+        <text x="1000" y="72" class="font-sans" font-size="13" fill="#7F9185">Buku Panduan PDF</text>
+        <text x="1000" y="98" class="font-sans" font-size="13" fill="#7F9185">SKB 4 Menteri</text>
+        <text x="1000" y="124" class="font-sans" font-size="13" fill="#7F9185">Infografis &amp; Video</text>
+      </g>
+      <line x1="120" y1="230" x2="1320" y2="230" stroke="#223329" stroke-width="1"/>
+      <text x="120" y="270" class="font-sans" font-size="12" fill="#536359">© 2026 Kementerian Pendidikan Dasar dan Menengah RI. Seluruh hak cipta dilindungi.</text>
+    </g>
+  </g>
+
+  <!-- ====================================================================
+       ARTBOARD 2: MOBILE WIREFRAME (375 x 2000)
+       ==================================================================== -->
+  <g id="Frame_Mobile_375" transform="translate(1560, 60)">
+    <rect width="375" height="1960" rx="36" fill="#F4F5F4" stroke="#CBD5E1" stroke-width="2"/>
+    <text x="20" y="-20" class="font-heading" font-size="20" fill="#111C16">Mobile Wireframe (375px)</text>
+
+    <!-- Mobile Nav Header -->
+    <g transform="translate(16, 20)" filter="url(#pill-shadow)">
+      <rect width="343" height="56" rx="28" fill="#FFFFFF" stroke="#E2E8E4" stroke-width="1.5"/>
+      <circle cx="36" cy="28" r="14" fill="#098C4C"/>
+      <text x="31" y="33" font-weight="900" font-size="13" fill="#FFFFFF">U</text>
+      <text x="58" y="29" class="font-heading" font-size="14" fill="#111C16">UKS/M</text>
+      <text x="58" y="41" class="font-sans" font-size="8" font-weight="700" fill="#098C4C">KEMENDIKDASMEN</text>
+
+      <circle cx="280" cy="28" r="14" fill="#098C4C"/>
+      <text x="274" y="32" font-size="11" fill="#FFFFFF">🔍</text>
+      <circle cx="316" cy="28" r="14" fill="#EBF0EC"/>
+      <text x="310" y="32" font-size="12" fill="#111C16">☰</text>
+    </g>
+
+    <!-- Mobile Hero -->
+    <g transform="translate(16, 96)" filter="url(#card-shadow)">
+      <rect width="343" height="320" rx="24" fill="#111C16"/>
+      <g transform="translate(20, 30)">
+        <rect width="180" height="22" rx="11" fill="#FFD23F"/>
+        <text x="10" y="15" class="font-heading" font-size="9" fill="#111C16">PROGRAM PRIORITAS 2026</text>
+        <text x="0" y="55" class="text-title" font-size="22" fill="#FFFFFF">Membangun Generasi</text>
+        <text x="0" y="82" class="text-title" font-size="22" fill="#FFFFFF">Emas yang Sehat &amp; Bugar</text>
+        <text x="0" y="115" class="font-sans" font-size="12" fill="#A5B8AD">Portal resmi Usaha Kesehatan Sekolah</text>
+        <text x="0" y="132" class="font-sans" font-size="12" fill="#A5B8AD">terpadu 4 Kementerian.</text>
+
+        <rect x="0" y="160" width="303" height="40" rx="20" fill="#FFD23F"/>
+        <text x="50" y="185" class="font-heading" font-size="13" fill="#111C16">🍱 Makan Bergizi Gratis (MBG)</text>
+        <rect x="0" y="210" width="303" height="40" rx="20" fill="#FFFFFF" opacity="0.15"/>
+        <text x="80" y="235" class="font-heading" font-size="13" fill="#FFFFFF">🌿 Jelajahi Trias UKS</text>
+      </g>
+    </g>
+
+    <!-- Mobile Stats -->
+    <g transform="translate(16, 436)" filter="url(#card-shadow)">
+      <rect width="343" height="110" rx="20" fill="#FFFFFF"/>
+      <g transform="translate(20, 20)">
+        <text x="0" y="24" class="text-title" font-size="20" fill="#098C4C">15,000+</text>
+        <text x="0" y="42" class="font-sans" font-size="11" fill="#536359">Sekolah Binaan</text>
+        <text x="160" y="24" class="text-title" font-size="20" fill="#098C4C">50,000+</text>
+        <text x="160" y="42" class="font-sans" font-size="11" fill="#536359">Dokter Kecil</text>
+        <text x="0" y="70" class="text-title" font-size="20" fill="#098C4C">25,000+</text>
+        <text x="0" y="88" class="font-sans" font-size="11" fill="#536359">Kader Tiwi Prada</text>
+        <text x="160" y="70" class="text-title" font-size="20" fill="#098C4C">38</text>
+        <text x="160" y="88" class="font-sans" font-size="11" fill="#536359">Provinsi</text>
+      </g>
+    </g>
+
+    <!-- Mobile Trias Stack -->
+    <g transform="translate(16, 566)">
+      <text x="0" y="24" class="text-title" font-size="18" fill="#111C16">Trias UKS (3 Pilar)</text>
+      
+      <g transform="translate(0, 40)" filter="url(#card-shadow)">
+        <rect width="343" height="110" rx="20" fill="#FFFFFF"/>
+        <rect width="343" height="4" rx="2" fill="#098C4C"/>
+        <text x="16" y="32" class="font-heading" font-size="15" fill="#111C16">1. Pendidikan Kesehatan</text>
+        <text x="16" y="56" class="font-sans" font-size="12" fill="#536359">Literasi gizi, PHBS, dan aktivitas fisik rutin.</text>
+        <rect x="16" y="72" width="90" height="22" rx="11" fill="#F4F5F4"/>
+        <text x="24" y="87" class="font-sans" font-size="10" font-weight="700">Literasi Gizi</text>
+      </g>
+
+      <g transform="translate(0, 165)" filter="url(#card-shadow)">
+        <rect width="343" height="110" rx="20" fill="#FFFFFF"/>
+        <rect width="343" height="4" rx="2" fill="#3B82F6"/>
+        <text x="16" y="32" class="font-heading" font-size="15" fill="#111C16">2. Pelayanan Kesehatan</text>
+        <text x="16" y="56" class="font-sans" font-size="12" fill="#536359">Penjaringan kesehatan, imunisasi BIAS, dan P3K.</text>
+        <rect x="16" y="72" width="90" height="22" rx="11" fill="#F4F5F4"/>
+        <text x="24" y="87" class="font-sans" font-size="10" font-weight="700">Imunisasi</text>
+      </g>
+
+      <g transform="translate(0, 290)" filter="url(#card-shadow)">
+        <rect width="343" height="110" rx="20" fill="#FFFFFF"/>
+        <rect width="343" height="4" rx="2" fill="#EAB308"/>
+        <text x="16" y="32" class="font-heading" font-size="15" fill="#111C16">3. Lingkungan Sekolah</text>
+        <text x="16" y="56" class="font-sans" font-size="12" fill="#536359">Sanitasi toilet, kantin sehat, dan anti-rokok.</text>
+        <rect x="16" y="72" width="90" height="22" rx="11" fill="#F4F5F4"/>
+        <text x="24" y="87" class="font-sans" font-size="10" font-weight="700">Kantin Sehat</text>
+      </g>
+    </g>
+
+    <!-- Mobile Footer -->
+    <g transform="translate(0, 1600)">
+      <rect width="375" height="360" rx="28" fill="#111C16"/>
+      <g transform="translate(24, 30)">
+        <text x="0" y="30" class="text-title" font-size="22" fill="#098C4C">UKS / M</text>
+        <text x="0" y="56" class="font-sans" font-size="12" fill="#C5D1C9">Kementerian Pendidikan Dasar &amp; Menengah RI</text>
+        <text x="0" y="80" class="font-sans" font-size="11" fill="#7F9185">Kompleks Gedung E Lt. 17, Senayan, Jakarta</text>
+        <line x1="0" y1="110" x2="327" y2="110" stroke="#223329" stroke-width="1"/>
+        <text x="0" y="140" class="font-sans" font-size="11" fill="#7F9185">© 2026 Kemendikdasmen RI.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ====================================================================
+       ARTBOARD 3: DESIGN SYSTEM TOKENS & UI COMPONENTS (1200 x 2000)
+       ==================================================================== -->
+  <g id="Frame_Design_System" transform="translate(2000, 60)">
+    <rect width="1340" height="1960" rx="32" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    <text x="40" y="-20" class="font-heading" font-size="22" fill="#111C16">Design System &amp; Component Kit • Figma Ready</text>
+
+    <g transform="translate(48, 48)">
+      <!-- 1. Color Palette Tokens -->
+      <text x="0" y="20" class="text-title" font-size="22" fill="#111C16">Color Palette Tokens</text>
+      
+      <g transform="translate(0, 40)">
+        <!-- Brand Primary -->
+        <rect width="180" height="90" rx="16" fill="#098C4C"/>
+        <text x="16" y="115" class="font-heading" font-size="13" fill="#111C16">Brand Primary</text>
+        <text x="16" y="132" class="font-sans" font-size="11" fill="#7F9185">#098C4C • Green</text>
+
+        <!-- Brand Accent -->
+        <rect x="200" y="0" width="180" height="90" rx="16" fill="#FFD23F"/>
+        <text x="216" y="115" class="font-heading" font-size="13" fill="#111C16">Brand Accent</text>
+        <text x="216" y="132" class="font-sans" font-size="11" fill="#7F9185">#FFD23F • Yellow</text>
+
+        <!-- Brand Light -->
+        <rect x="400" y="0" width="180" height="90" rx="16" fill="#D2E8DA"/>
+        <text x="416" y="115" class="font-heading" font-size="13" fill="#111C16">Brand Light</text>
+        <text x="416" y="132" class="font-sans" font-size="11" fill="#7F9185">#D2E8DA • Sage</text>
+
+        <!-- Text Primary -->
+        <rect x="600" y="0" width="180" height="90" rx="16" fill="#111C16"/>
+        <text x="616" y="115" class="font-heading" font-size="13" fill="#111C16">Text Primary</text>
+        <text x="616" y="132" class="font-sans" font-size="11" fill="#7F9185">#111C16 • Obsidian</text>
+
+        <!-- Background App -->
+        <rect x="800" y="0" width="180" height="90" rx="16" fill="#F4F5F4" stroke="#CBD5E1" stroke-width="1"/>
+        <text x="816" y="115" class="font-heading" font-size="13" fill="#111C16">Background App</text>
+        <text x="816" y="132" class="font-sans" font-size="11" fill="#7F9185">#F4F5F4 • Warm Gray</text>
+      </g>
+
+      <!-- 2. Typography Scale -->
+      <g transform="translate(0, 220)">
+        <text x="0" y="0" class="text-title" font-size="22" fill="#111C16">Typography Scale</text>
+        <text x="0" y="44" class="text-title" font-size="36" fill="#111C16">Display Title 36px / Plus Jakarta Sans 900</text>
+        <text x="0" y="84" class="font-heading" font-size="24" fill="#111C16">Heading 1 24px / Plus Jakarta Sans 800</text>
+        <text x="0" y="120" class="font-heading" font-size="18" fill="#111C16">Heading 2 18px / Plus Jakarta Sans 800</text>
+        <text x="0" y="152" class="font-sans" font-weight="700" font-size="14" fill="#111C16">Body Bold 14px / Inter 700</text>
+        <text x="0" y="180" class="font-sans" font-size="14" fill="#536359">Body Regular 14px / Inter 400 • Tata kelola dan pembiasaan hidup sehat terpadu.</text>
+        <text x="0" y="206" class="font-sans" font-size="12" fill="#7F9185">Caption &amp; Subtext 12px / Inter 400</text>
+      </g>
+
+      <!-- 3. Component Buttons & Pills -->
+      <g transform="translate(0, 480)">
+        <text x="0" y="0" class="text-title" font-size="22" fill="#111C16">UI Components (Buttons, Badges &amp; Squircles)</text>
+
+        <!-- Buttons Row -->
+        <g transform="translate(0, 30)">
+          <!-- Primary -->
+          <rect width="160" height="44" rx="22" fill="#098C4C"/>
+          <text x="24" y="27" class="font-heading" font-size="13" fill="#FFFFFF">Primary Action</text>
+
+          <!-- Secondary -->
+          <rect x="180" y="0" width="160" height="44" rx="22" fill="#EBF0EC"/>
+          <text x="198" y="27" class="font-heading" font-size="13" fill="#111C16">Secondary Action</text>
+
+          <!-- Accent -->
+          <rect x="360" y="0" width="160" height="44" rx="22" fill="#FFD23F"/>
+          <text x="382" y="27" class="font-heading" font-size="13" fill="#111C16">Accent Highlight</text>
+
+          <!-- Dark -->
+          <rect x="540" y="0" width="160" height="44" rx="22" fill="#111C16"/>
+          <text x="568" y="27" class="font-heading" font-size="13" fill="#FFFFFF">Dark Action</text>
+        </g>
+
+        <!-- Pills & Badges Row -->
+        <g transform="translate(0, 100)">
+          <rect width="130" height="28" rx="14" fill="#D2E8DA"/>
+          <text x="16" y="18" class="font-heading" font-size="11" fill="#098C4C">PILAR UTAMA</text>
+
+          <rect x="150" y="0" width="130" height="28" rx="14" fill="#FFD23F"/>
+          <text x="166" y="18" class="font-heading" font-size="11" fill="#111C16">PRIORITAS 2026</text>
+
+          <rect x="300" y="0" width="100" height="28" rx="14" fill="#F4F5F4" stroke="#CBD5E1" stroke-width="1"/>
+          <text x="318" y="18" class="font-sans" font-weight="700" font-size="11" fill="#536359">Jenjang SD</text>
+
+          <rect x="420" y="0" width="100" height="28" rx="14" fill="#F4F5F4" stroke="#CBD5E1" stroke-width="1"/>
+          <text x="435" y="18" class="font-sans" font-weight="700" font-size="11" fill="#536359">Jenjang SMP</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

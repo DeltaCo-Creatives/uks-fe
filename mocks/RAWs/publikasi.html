@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publikasi & Regulasi UKS/M | Kemendikdasmen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="raws.css">
+</head>
+<body>
+
+  <!-- ================= HEADER & FLOATING PILL NAVBAR ================= -->
+  <header class="nav-wrapper">
+    <nav class="nav-bar">
+      <a href="index.html" class="brand-nav">
+        <img src="../../public/Aset UKS/UKS-02.png" alt="Logo UKS" class="brand-logo-img">
+        <div>
+          <span style="font-weight: 900; font-size: 16px; color: var(--text-primary); display: block; line-height: 1.1;">UKS/M</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--brand-primary); text-transform: uppercase;">Kemendikdasmen</span>
+        </div>
+      </a>
+
+      <div class="nav-menu">
+        <div class="nav-item"><a href="index.html" class="nav-link">Beranda</a></div>
+        <div class="nav-item"><a href="tentang-uks.html" class="nav-link">Tentang UKS/M ▾</a></div>
+        <div class="nav-item"><a href="program.html" class="nav-link">Program ▾</a></div>
+        <div class="nav-item"><a href="mitra.html" class="nav-link">Mitra ▾</a></div>
+        <div class="nav-item"><a href="informasi.html" class="nav-link">Informasi ▾</a></div>
+        <div class="nav-item">
+          <a href="publikasi.html" class="nav-link active">Publikasi ▾</a>
+          <div class="nav-dropdown">
+            <a href="#buku">Buku Panduan & Juknis</a>
+            <a href="#infografis">Infografis Interaktif</a>
+            <a href="#video">Video Edukasi</a>
+            <a href="#regulasi">Produk Hukum (SKB 4 Menteri)</a>
+          </div>
+        </div>
+        <div class="nav-item"><a href="kontak.html" class="nav-link">Kontak</a></div>
+      </div>
+
+      <div class="nav-actions">
+        <a href="../wireframe/index.html" class="btn-pill secondary" style="font-size: 12px; padding: 7px 14px;">📐 Wireframe</a>
+        <button class="btn-nav-search" title="Pencarian">🔍</button>
+        <button class="mobile-menu-toggle">☰</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= PAGE HERO ================= -->
+  <section class="page-hero">
+    <div class="container page-hero-content">
+      <span class="section-kicker">Perpustakaan Digital</span>
+      <h1>Publikasi, Panduan & Produk Hukum Resmi UKS/M</h1>
+      <p>
+        Pusat unduh buku panduan operasional, modul pendidikan gizi, materi pelatihan dokter kecil, infografis ringkas, serta basis regulasi SKB 4 Menteri Republik Indonesia.
+      </p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px;">
+        <a href="#buku" class="filter-pill active">Buku Panduan</a>
+        <a href="#infografis" class="filter-pill">Infografis</a>
+        <a href="#video" class="filter-pill">Video Edukasi</a>
+        <a href="#regulasi" class="filter-pill">Produk Hukum & SKB</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- ================= BUKU PANDUAN DENGAN FILTER JENJANG ================= -->
+    <section class="section" id="buku">
+      <div class="section-header" data-filter-container>
+        <div>
+          <span class="section-kicker">Modul & Petunjuk Teknis</span>
+          <h2 class="section-title">Buku Panduan Operasional UKS</h2>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="filter-pill active" data-filter="all" data-target-grid="#buku-grid">Semua Jenjang</button>
+          <button class="filter-pill" data-filter="smp" data-target-grid="#buku-grid">SMP / MTs</button>
+          <button class="filter-pill" data-filter="mbg" data-target-grid="#buku-grid">MBG & Gizi</button>
+          <button class="filter-pill" data-filter="tata-kelola" data-target-grid="#buku-grid">Tata Kelola</button>
+        </div>
+      </div>
+
+      <div class="grid-4 filterable-grid" id="buku-grid">
+        <!-- Buku 1: Pedoman Keswa SMP -->
+        <div class="card-playful" data-category="smp" style="padding: 16px;">
+          <div style="height: 220px; border-radius: var(--radius-md); overflow: hidden; background: #e0e0e0; margin-bottom: 12px;">
+            <img src="../../public/Aset UKS/bukucover1.png" alt="Buku Pedoman Kesehatan Jiwa SMP" style="height: 100%; width: 100%; object-fit: cover;">
+          </div>
+          <span class="filter-pill" style="font-size: 10px; padding: 3px 8px; margin-bottom: 8px;">SMP / MTs</span>
+          <h4 style="font-size: 14px; font-weight: 800; line-height: 1.3; margin-bottom: 8px;">Buku Pedoman Kesehatan Jiwa di Satpen SMP</h4>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 12px;">Pedoman deteksi dini masalah emosional, perundungan, dan layanan konseling sebaya.</p>
+          <button class="btn-pill primary" style="width: 100%; font-size: 12px; padding: 8px;"
+             data-modal-title="Buku Pedoman Kesehatan Jiwa di Satpen SMP"
+             data-modal-category="Modul Guru & Siswa SMP"
+             data-modal-desc="Memberikan panduan komprehensif bagi guru pembina dan tenaga medis dalam mendampingi psikologis remaja serta menciptakan suasana belajar yang ramah dan suportif."
+             data-modal-img="../../public/Aset UKS/bukucover1.png"
+             data-modal-file="../../public/Aset UKS/buku1.pdf">📖 Buka & Unduh PDF</button>
+        </div>
+
+        <!-- Buku 2: Implementasi MBG -->
+        <div class="card-playful" data-category="mbg" style="padding: 16px;">
+          <div style="height: 220px; border-radius: var(--radius-md); overflow: hidden; background: #e0e0e0; margin-bottom: 12px;">
+            <img src="../../public/Aset UKS/coverbuku2.png" alt="Panduan MBG Satuan Pendidikan" style="height: 100%; width: 100%; object-fit: cover;">
+          </div>
+          <span class="filter-pill" style="font-size: 10px; padding: 3px 8px; margin-bottom: 8px;">MBG & Gizi</span>
+          <h4 style="font-size: 14px; font-weight: 800; line-height: 1.3; margin-bottom: 8px;">Panduan Implementasi Program MBG di Sekolah</h4>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 12px;">Juknis higienitas, standar porsi, dan pemanfaatan ompreng ramah lingkungan.</p>
+          <button class="btn-pill primary" style="width: 100%; font-size: 12px; padding: 8px;"
+             data-modal-title="Panduan Implementasi Program MBG di Satuan Pendidikan"
+             data-modal-category="Pedoman Satuan Pendidikan"
+             data-modal-desc="Petunjuk resmi Kemendikdasmen mengenai distribusi makanan bergizi, pencucian wadah pakai ulang secara higienis, dan pengawasan mutu berkala bersama Puskesmas."
+             data-modal-img="../../public/Aset UKS/coverbuku2.png"
+             data-modal-file="../../public/Aset UKS/buku2.pdf">📖 Buka & Unduh PDF</button>
+        </div>
+
+        <!-- Buku 3: Karakter dalam MBG -->
+        <div class="card-playful" data-category="mbg" style="padding: 16px;">
+          <div style="height: 220px; border-radius: var(--radius-md); overflow: hidden; background: #e0e0e0; margin-bottom: 12px;">
+            <img src="../../public/Aset UKS/coverbuku3.png" alt="Pendidikan Karakter dalam MBG" style="height: 100%; width: 100%; object-fit: cover;">
+          </div>
+          <span class="filter-pill" style="font-size: 10px; padding: 3px 8px; margin-bottom: 8px;">Karakter</span>
+          <h4 style="font-size: 14px; font-weight: 800; line-height: 1.3; margin-bottom: 8px;">Pedoman Pendidikan Karakter dalam MBG</h4>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 12px;">Penerapan 7 kebiasaan anak hebat saat momen sarapan & makan siang bersama.</p>
+          <button class="btn-pill primary" style="width: 100%; font-size: 12px; padding: 8px;"
+             data-modal-title="Pedoman Pendidikan Karakter dalam MBG"
+             data-modal-category="Karakter & Etika"
+             data-modal-desc="Pedoman mengintegrasikan adab makan, rasa bersyukur, kepedulian berbagi, dan tanggung jawab membersihkan meja makan bagi siswa usia dini hingga menengah."
+             data-modal-img="../../public/Aset UKS/coverbuku3.png"
+             data-modal-file="../../public/Aset UKS/Buku Pedoman Pendidikan Karakter dalam MBG-dikompresi.pdf">📖 Buka & Unduh PDF</button>
+        </div>
+
+        <!-- Buku 4: Manajemen UKS -->
+        <div class="card-playful" data-category="tata-kelola" style="padding: 16px;">
+          <div style="height: 220px; border-radius: var(--radius-md); overflow: hidden; background: #e0e0e0; margin-bottom: 12px;">
+            <img src="../../public/Aset UKS/coverbuku4.png" alt="Manajemen Pembinaan UKS/M" style="height: 100%; width: 100%; object-fit: cover;">
+          </div>
+          <span class="filter-pill" style="font-size: 10px; padding: 3px 8px; margin-bottom: 8px;">Tata Kelola</span>
+          <h4 style="font-size: 14px; font-weight: 800; line-height: 1.3; margin-bottom: 8px;">Buku Pedoman Manajemen Pembinaan UKS/M</h4>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 12px;">SOP Tim Pembina, alokasi dana BOS, dan pengadaan sarana ruang UKS.</p>
+          <button class="btn-pill primary" style="width: 100%; font-size: 12px; padding: 8px;"
+             data-modal-title="Buku Pedoman Manajemen Pembinaan UKS/M"
+             data-modal-category="Struktur & Organisasi"
+             data-modal-desc="Buku panduan induk bagi pemerintah daerah dan sekolah dalam merancang program kerja tahunan UKS, pembagian tugas sekretariat, dan akreditasi strata."
+             data-modal-img="../../public/Aset UKS/coverbuku4.png"
+             data-modal-file="../../public/Aset UKS/buku3.pdf">📖 Buka & Unduh PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INFOGRAFIS INTERAKTIF ================= -->
+    <section class="section" id="infografis">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Visual Edukasi</span>
+          <h2 class="section-title">Infografis Sekolah Sehat</h2>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card-playful" style="padding: 20px;">
+          <div style="border-radius: var(--radius-md); overflow: hidden; margin-bottom: 14px; background: #f0f0f0;">
+            <img src="../../public/Aset UKS/infograsi1.png" alt="Infografis UKS" style="width: 100%; height: auto; display: block;">
+          </div>
+          <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Infografis Aksi Bergizi & Pencegahan Anemia</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+            Panduan visual tata cara minum Tablet Tambah Darah (TTD) yang benar dengan air putih atau jus jeruk dan menghindari minum teh/kopi bersamaan.
+          </p>
+          <a href="../../public/Aset UKS/infograsi1.png" target="_blank" class="btn-pill secondary" style="font-size: 12px;">🔍 Lihat Ukuran Penuh (HD)</a>
+        </div>
+
+        <div class="card-playful" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <span class="section-kicker" style="font-size: 10px;">Seri Infografis GSS</span>
+            <h3 style="font-size: 20px; font-weight: 800; margin: 8px 0 12px;">Kumpulan Poster Edukasi Cetak untuk Mading Sekolah</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              Tersedia paket infografis siap cetak ukuran A3/A2 resolusi tinggi yang dapat ditempelkan di ruang UKS, selasar kelas, dan kantin sekolah:
+            </p>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-secondary);">
+              <li>📌 Poster 6 Langkah Cuci Tangan Pakai Sabun (CTPS) Berstandar WHO</li>
+              <li>📌 Poster Panduan Porsi Makanan Sehat 'Isi Piringku'</li>
+              <li>📌 Poster Kawasan Bebas Rokok & Stop Perundungan di Satuan Pendidikan</li>
+              <li>📌 Poster Panduan Pertolongan Pertama Mimisan & Pingsan</li>
+            </ul>
+          </div>
+          <div style="margin-top: 20px;">
+            <a href="#" class="btn-pill primary" style="font-size: 13px;">📥 Unduh Paket Poster Lengkap (.ZIP)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIDEO EDUKASI ================= -->
+    <section class="section" id="video">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Multimedia Pembelajaran</span>
+          <h2 class="section-title">Video Sosialisasi & Animasi UKS</h2>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card-playful">
+          <div style="height: 160px; border-radius: var(--radius-md); background: #1E293B; display: flex; align-items: center; justify-content: center; color: white; font-size: 44px; margin-bottom: 12px; cursor: pointer;">
+            ▶️
+          </div>
+          <span class="filter-pill" style="font-size: 10px;">Animasi Murid SD</span>
+          <h4 style="font-size: 15px; font-weight: 800; margin: 8px 0 4px;">Kisah Budi & Petualangan Piring Bergizi</h4>
+          <p style="font-size: 12px; color: var(--text-secondary);">Animasi interaktif mengenalkan zat pembangun dan zat pengatur tubuh bagi murid kelas 1-3 SD.</p>
+        </div>
+
+        <div class="card-playful">
+          <div style="height: 160px; border-radius: var(--radius-md); background: #0F172A; display: flex; align-items: center; justify-content: center; color: white; font-size: 44px; margin-bottom: 12px; cursor: pointer;">
+            ▶️
+          </div>
+          <span class="filter-pill" style="font-size: 10px;">Video Pelatihan Guru</span>
+          <h4 style="font-size: 15px; font-weight: 800; margin: 8px 0 4px;">Tutorial Penjaringan Berkala Menggunakan Snellen Chart</h4>
+          <p style="font-size: 12px; color: var(--text-secondary);">Instruksi langkah demi langkah bagi guru pembina UKS untuk skrining penglihatan di kelas.</p>
+        </div>
+
+        <div class="card-playful">
+          <div style="height: 160px; border-radius: var(--radius-md); background: #111827; display: flex; align-items: center; justify-content: center; color: white; font-size: 44px; margin-bottom: 12px; cursor: pointer;">
+            ▶️
+          </div>
+          <span class="filter-pill" style="font-size: 10px;">Dokumenter Inspiratif</span>
+          <h4 style="font-size: 15px; font-weight: 800; margin: 8px 0 4px;">Kiprah Dokter Cilik di Ujung Timur Nusantara</h4>
+          <p style="font-size: 12px; color: var(--text-secondary);">Kisah inspiratif para kader cilik Merauke yang mengajar adab cuci tangan ke adik-adik kelas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRODUK HUKUM & REGULASI SKB 4 MENTERI ================= -->
+    <section class="section" id="regulasi">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Landasan Yuridis</span>
+          <h2 class="section-title">Produk Hukum & SKB 4 Menteri</h2>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Payung hukum operasional dan mandat sinergi lintas kementerian dalam pembinaan UKS/M.</p>
+        </div>
+      </div>
+
+      <div class="bento-frame" style="background: white;">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 14px;">
+            <div>
+              <span class="section-kicker" style="font-size: 10px;">Peraturan Bersama</span>
+              <h4 style="font-size: 15px; font-weight: 800;">SKB 4 Menteri Nomor 6/X/PB/2014 tentang Pembinaan & Pengembangan UKS/M</h4>
+              <p style="font-size: 12px; color: var(--text-secondary);">Mendikbud, Menkes, Menag, dan Mendagri tentang Tim Pembina dan Tim Pelaksana UKS.</p>
+            </div>
+            <a href="../../public/Aset UKS/rxtoMtve87W9xvTNE5nyLViQftgG0kutb7QLmRHz.pdf" target="_blank" class="btn-pill secondary" style="font-size: 12px;">📥 Unduh Salinan (PDF)</a>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 14px;">
+            <div>
+              <span class="section-kicker" style="font-size: 10px;">Undang-Undang</span>
+              <h4 style="font-size: 15px; font-weight: 800;">Undang-Undang Nomor 17 Tahun 2023 tentang Kesehatan (Pasal Kesehatan Sekolah)</h4>
+              <p style="font-size: 12px; color: var(--text-secondary);">Mandat penyelenggaraan pelayanan kesehatan anak usia sekolah dan remaja.</p>
+            </div>
+            <a href="#" class="btn-pill secondary" style="font-size: 12px;">📥 Unduh Salinan (PDF)</a>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 14px;">
+            <div>
+              <span class="section-kicker" style="font-size: 10px;">Peraturan Presiden</span>
+              <h4 style="font-size: 15px; font-weight: 800;">Peraturan Presiden Nomor 72 Tahun 2021 tentang Percepatan Penurunan Stunting</h4>
+              <p style="font-size: 12px; color: var(--text-secondary);">Intervensi gizi spesifik dan sensitif pada remaja putri calon pengantin di sekolah.</p>
+            </div>
+            <a href="#" class="btn-pill secondary" style="font-size: 12px;">📥 Unduh Salinan (PDF)</a>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <span class="section-kicker" style="font-size: 10px;">Permendikbudristek</span>
+              <h4 style="font-size: 15px; font-weight: 800;">Permendikbudristek Nomor 46 Tahun 2023 tentang Pencegahan & Penanganan Kekerasan (PPKSP)</h4>
+              <p style="font-size: 12px; color: var(--text-secondary);">Pembentukan Tim Pencegahan dan Penanganan Kekerasan (TPPK) di setiap satuan pendidikan.</p>
+            </div>
+            <a href="#" class="btn-pill secondary" style="font-size: 12px;">📥 Unduh Salinan (PDF)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <img src="../../public/Aset UKS/UKS-02.png" alt="Logo UKS" style="height: 48px; width: auto; background: white; border-radius: 12px; padding: 4px;">
+            <span style="font-weight: 900; font-size: 24px; color: white;">UKS / M</span>
+          </div>
+          <p>Kementerian Pendidikan Dasar dan Menengah Republik Indonesia.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Publikasi</h4>
+          <ul>
+            <li><a href="#buku">Buku Panduan</a></li>
+            <li><a href="#infografis">Infografis</a></li>
+            <li><a href="#video">Video Sosialisasi</a></li>
+            <li><a href="#regulasi">Produk Hukum</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Halaman Utama</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="tentang-uks.html">Tentang UKS</a></li>
+            <li><a href="program.html">Program</a></li>
+            <li><a href="mitra.html">Kemitraan</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Bantuan</h4>
+          <ul>
+            <li><a href="kontak.html">Kontak Kami</a></li>
+            <li><a href="../wireframe/index.html">📐 Wireframe Blueprint</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Kemendikdasmen RI. Hak Cipta Dilindungi.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="raws.js"></script>
+</body>
+</html>

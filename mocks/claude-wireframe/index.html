@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe — Beranda</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="wf-pagebar">
+  <div class="wf-pagebar-left">
+    <span class="wf-status">EXISTING</span>
+    <span class="wf-pagebar-title">Beranda</span>
+    <span class="wf-pagebar-route">/ · mirrors src/App.jsx</span>
+  </div>
+  <nav class="wf-pagebar-nav">
+    <a href="index.html" class="current">Beranda</a>
+    <a href="program-detail.html">Detail Program</a>
+    <a href="perpustakaan.html">Perpustakaan</a>
+    <a href="galeri.html">Galeri</a>
+    <a href="kontak.html">Kontak</a>
+  </nav>
+</div>
+<div class="wf-legend">
+  <span><span class="dot cyan"></span> cyan tag = exists in the live app right now</span>
+  <span><span class="dot orange"></span> orange tag / dashed outline = new, not built yet — links to an expansion page</span>
+</div>
+
+<div class="wf-canvas">
+
+  <!-- NAVBAR -->
+  <div class="wf-section" style="padding-top:20px;">
+    <div class="wf-tag">Navbar.jsx<br>navLinks[]</div>
+    <div class="wf-navbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="wf-logo">U</div>
+        <span class="wf-bar" style="width:70px;display:inline-block;"></span>
+      </div>
+      <div class="wf-navlinks">
+        <span class="active">Beranda</span>
+        <span>UKS/M</span>
+        <span>Program</span>
+        <span>Informasi</span>
+        <span>Publikasi</span>
+      </div>
+      <div class="wf-logo" style="background:var(--surface); border:1px solid var(--border); color:var(--muted);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="wf-section">
+    <div class="wf-tag">SECTION 1 · HERO SLIDER<br>Hero.jsx · defaultHeroSlides[3]</div>
+    <div class="wf-ph" style="height:420px;flex-direction:column;gap:14px;align-items:center;padding:30px;">
+      <span class="wf-kicker">Edukasi Gizi</span>
+      <div style="max-width:600px;font-family:var(--sans);color:var(--ink);font-size:26px;font-weight:800;line-height:1.25;">
+        Belajar Gizi dari Kebun Sekolah, Cara NGTS Ubah Pengetahuan Jadi Kebiasaan
+      </div>
+      <div class="wf-bar" style="width:340px;"></div>
+      <button class="wf-btn solid" style="margin-top:6px;">Lihat Program →</button>
+      <div style="position:absolute; bottom:18px; left:24px; font-size:11px;">[ dots ● ○ ○ ]</div>
+      <div style="position:absolute; bottom:18px; right:24px; font-size:11px;">[ ← → arrows ]</div>
+    </div>
+  </section>
+
+  <!-- TRIAS UKS -->
+  <section class="wf-section">
+    <div class="wf-tag">SECTION 2 · TRIAS UKS BENTO<br>About.jsx · defaultStats[4]</div>
+    <span class="wf-kicker">Fondasi UKS</span>
+    <div class="wf-h2">Trias UKS</div>
+    <div class="wf-grid-2" style="margin-top:18px;">
+      <div class="wf-box" style="background:var(--primary); border-color:var(--primary); color:#fff; min-height:200px; display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);"></div>
+        <div>
+          <div style="font-size:19px;font-weight:800;margin-bottom:8px;">Pendidikan Kesehatan</div>
+          <div class="wf-bar" style="background:rgba(255,255,255,.35); width:100%;"></div>
+          <div class="wf-bar" style="background:rgba(255,255,255,.35); width:80%; margin-top:6px;"></div>
+        </div>
+      </div>
+      <div class="wf-stat-grid">
+        <div class="wf-box" style="text-align:center;"><div style="font-size:24px;font-weight:800;">4</div><div style="font-size:10.5px;color:var(--muted);">Program Utama</div></div>
+        <div class="wf-box" style="text-align:center;"><div style="font-size:24px;font-weight:800;">132</div><div style="font-size:10.5px;color:var(--muted);">Materi Edukasi</div></div>
+        <div class="wf-box" style="text-align:center;"><div style="font-size:24px;font-weight:800;">100%</div><div style="font-size:10.5px;color:var(--muted);">Sekolah Sehat</div></div>
+        <div class="wf-box" style="text-align:center;"><div style="font-size:24px;font-weight:800;">24/7</div><div style="font-size:10.5px;color:var(--muted);">Dukungan Kesehatan</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAM MARQUEE -->
+  <section class="wf-section">
+    <div class="wf-tag">SECTION 3 · PROGRAM MARQUEE (↔ infinite)<br>Programs.jsx · defaultPrograms[5]</div>
+    <span class="wf-kicker">Eksplorasi</span>
+    <div class="wf-h2">Program Unggulan</div>
+    <div class="wf-strip" style="margin-top:16px;">
+      <div class="wf-box" style="width:200px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);margin-bottom:10px;"></div><div style="font-size:13px;font-weight:700;">Pendidikan Kesehatan</div><div class="wf-bar" style="margin-top:8px;"></div><div class="wf-bar" style="width:70%;margin-top:6px;"></div></div>
+      <div class="wf-box" style="width:200px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);margin-bottom:10px;"></div><div style="font-size:13px;font-weight:700;">Pelayanan Kesehatan</div><div class="wf-bar" style="margin-top:8px;"></div><div class="wf-bar" style="width:70%;margin-top:6px;"></div></div>
+      <div class="wf-box" style="width:200px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);margin-bottom:10px;"></div><div style="font-size:13px;font-weight:700;">Lingkungan Sekolah Sehat</div><div class="wf-bar" style="margin-top:8px;"></div><div class="wf-bar" style="width:70%;margin-top:6px;"></div></div>
+      <div class="wf-box" style="width:200px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);margin-bottom:10px;"></div><div style="font-size:13px;font-weight:700;">Gizi Seimbang</div><div class="wf-bar" style="margin-top:8px;"></div><div class="wf-bar" style="width:70%;margin-top:6px;"></div></div>
+      <div class="wf-box" style="width:200px;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);margin-bottom:10px;"></div><div style="font-size:13px;font-weight:700;">Aktivitas Fisik</div><div class="wf-bar" style="margin-top:8px;"></div><div class="wf-bar" style="width:70%;margin-top:6px;"></div></div>
+    </div>
+  </section>
+
+  <!-- KABAR TERBARU -->
+  <section class="wf-section">
+    <div class="wf-tag">SECTION 4 · 3-COL NEWS GRID<br>Programs.jsx · defaultBerita[3]</div>
+    <span class="wf-kicker">Update</span>
+    <div class="wf-h2">Kabar Terbaru <span class="flag">→ each card opens program-detail.html</span></div>
+    <div class="wf-grid-3" style="margin-top:16px;">
+      <div class="wf-box wf-flag-new" data-flag="→ program-detail.html">
+        <div class="wf-ph" style="height:130px;margin-bottom:12px;">[ Cover Image 4:3 ]</div>
+        <div style="font-size:14px;font-weight:700;">Belajar Gizi dari Kebun Sekolah</div>
+        <div class="wf-bar" style="margin-top:10px;"></div>
+        <div class="wf-bar" style="width:70%;margin-top:6px;"></div>
+        <div style="font-size:11px;font-weight:700;color:var(--primary);margin-top:10px;">Baca Selengkapnya →</div>
+      </div>
+      <div class="wf-box wf-flag-new" data-flag="→ program-detail.html">
+        <div class="wf-ph" style="height:130px;margin-bottom:12px;">[ Cover Image 4:3 ]</div>
+        <div style="font-size:14px;font-weight:700;">Rapat Koordinasi UPT Edukasi Gizi</div>
+        <div class="wf-bar" style="margin-top:10px;"></div>
+        <div class="wf-bar" style="width:70%;margin-top:6px;"></div>
+        <div style="font-size:11px;font-weight:700;color:var(--primary);margin-top:10px;">Baca Selengkapnya →</div>
+      </div>
+      <div class="wf-box wf-flag-new" data-flag="→ program-detail.html">
+        <div class="wf-ph" style="height:130px;margin-bottom:12px;">[ Cover Image 4:3 ]</div>
+        <div style="font-size:14px;font-weight:700;">Hari Anak Nasional: Ajak Anak Bergerak</div>
+        <div class="wf-bar" style="margin-top:10px;"></div>
+        <div class="wf-bar" style="width:70%;margin-top:6px;"></div>
+        <div style="font-size:11px;font-weight:700;color:var(--primary);margin-top:10px;">Baca Selengkapnya →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERPUSTAKAAN -->
+  <section class="wf-section">
+    <div class="wf-tag">SECTION 5 · PERPUSTAKAAN MARQUEE + PDF MODAL<br>Books.jsx · defaultBuku[4]</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div><span class="wf-kicker">Perpustakaan</span><div class="wf-h2">Buku &amp; Panduan</div></div>
+      <button class="wf-btn wf-flag-new" data-flag="→ perpustakaan.html">Lihat Semua →</button>
+    </div>
+    <div class="wf-strip" style="margin-top:16px;">
+      <div class="wf-box" style="width:160px;"><div class="wf-ph" style="height:180px;">[ Cover 3:4 ]</div><div style="font-size:12px;font-weight:700;margin-top:8px;">Modul Edukasi Gizi MBG</div><div style="font-size:10.5px;color:var(--muted);">Panduan · 2026</div></div>
+      <div class="wf-box" style="width:160px;"><div class="wf-ph" style="height:180px;">[ Cover 3:4 ]</div><div style="font-size:12px;font-weight:700;margin-top:8px;">Pedoman Kesehatan Reproduksi</div><div style="font-size:10.5px;color:var(--muted);">Panduan · 2026</div></div>
+      <div class="wf-box" style="width:160px;"><div class="wf-ph" style="height:180px;">[ Cover 3:4 ]</div><div style="font-size:12px;font-weight:700;margin-top:8px;">Edukasi Gizi Peserta Didik</div><div style="font-size:10.5px;color:var(--muted);">Buku · 2026</div></div>
+      <div class="wf-box" style="width:160px;"><div class="wf-ph" style="height:180px;">[ Cover 3:4 ]</div><div style="font-size:12px;font-weight:700;margin-top:8px;">Panduan Lingkungan Sekolah</div><div style="font-size:10.5px;color:var(--muted);">Panduan · 2026</div></div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section class="wf-section">
+    <div class="wf-tag">SECTION 6 · BENTO GALLERY + PARTNER MARQUEE<br>Infografis.jsx · defaultInfografis[3] + defaultScreenshots[14]</div>
+    <span class="wf-kicker">Galeri</span>
+    <div class="wf-h2">Visual Inspirasi <span class="flag">→ tiles open galeri.html</span></div>
+    <div class="wf-flag-new" data-flag="→ galeri.html" style="display:grid; grid-template-columns:1.3fr 1fr; gap:14px; margin-top:16px;">
+      <div class="wf-ph" style="height:230px;">[ Bubble besar — klik untuk lightbox ]</div>
+      <div style="display:grid; grid-template-rows:1fr 1fr; gap:14px;">
+        <div class="wf-ph" style="height:108px;">[ Bubble 2 ]</div>
+        <div class="wf-ph" style="height:108px;">[ Bubble 3 ]</div>
+      </div>
+    </div>
+    <div class="wf-strip" style="margin-top:16px;">
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <span style="align-self:center;font-family:var(--mono);font-size:10.5px;color:var(--muted);">↑ row scrolls one way, second row (below) scrolls opposite</span>
+    </div>
+    <div class="wf-strip" style="margin-top:10px;">
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+      <div class="wf-ph" style="width:130px;height:54px;">Partner</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="wf-footer wf-flag-new" data-flag="#kontak anchor only → kontak.html">
+    <div class="wf-tag" style="position:static; display:inline-block; margin-bottom:16px;">Footer.jsx · navLinks[]</div>
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; border-bottom:1px solid var(--border); padding-bottom:20px; margin-bottom:16px;">
+      <div>
+        <div style="font-size:36px;font-weight:800;color:var(--primary);">UKS.</div>
+        <div class="wf-bar" style="width:260px;margin-top:10px;"></div>
+        <div class="wf-bar" style="width:180px;margin-top:6px;"></div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px; font-size:12.5px; color:var(--muted);">
+        <span>Beranda</span><span>UKS/M</span><span>Program</span><span>Informasi</span><span>Publikasi</span>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted);">
+      <span>© 2026 UKS Indonesia.</span><span>Semua Hak Dilindungi.</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
