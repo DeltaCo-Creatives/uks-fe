@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe — Kontak</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="wf-pagebar">
+  <div class="wf-pagebar-left">
+    <span class="wf-status new">NEW PAGE</span>
+    <span class="wf-pagebar-title">Kontak Kami</span>
+    <span class="wf-pagebar-route">/kontak · #kontak is currently just a Footer.jsx anchor</span>
+  </div>
+  <nav class="wf-pagebar-nav">
+    <a href="index.html">Beranda</a>
+    <a href="program-detail.html">Detail Program</a>
+    <a href="perpustakaan.html">Perpustakaan</a>
+    <a href="galeri.html">Galeri</a>
+    <a href="kontak.html" class="current">Kontak</a>
+  </nav>
+</div>
+<div class="wf-legend">
+  <span><span class="dot cyan"></span> cyan tag = mirrors Footer.jsx</span>
+  <span><span class="dot orange"></span> orange tag = new for this page</span>
+  <span>Reached from: Footer link on every page</span>
+</div>
+
+<div class="wf-canvas">
+
+  <!-- NAVBAR -->
+  <div class="wf-section" style="padding-top:20px;">
+    <div class="wf-tag">Navbar.jsx (mirrors Beranda)</div>
+    <div class="wf-navbar">
+      <div style="display:flex;align-items:center;gap:10px;"><div class="wf-logo">U</div><span class="wf-bar" style="width:70px;display:inline-block;"></span></div>
+      <div class="wf-navlinks"><span>Beranda</span><span>UKS/M</span><span>Program</span><span>Informasi</span><span>Publikasi</span></div>
+      <div class="wf-logo" style="background:var(--surface); border:1px solid var(--border); color:var(--muted);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <section class="wf-section">
+    <div class="wf-tag new">NEW · page header</div>
+    <div class="wf-crumb">Beranda / <b>Kontak</b></div>
+    <div class="wf-h2" style="margin-top:6px;">Kontak Kami</div>
+    <div class="wf-bar" style="width:420px; margin-top:12px;"></div>
+    <div class="wf-bar" style="width:280px; margin-top:6px;"></div>
+  </section>
+
+  <!-- FORM + INFO -->
+  <section class="wf-section wf-flag-new" data-flag="NEW — form + info card">
+    <div class="wf-grid-2" style="margin-top:8px;">
+      <div class="wf-box" style="display:flex; flex-direction:column; gap:14px;">
+        <div style="font-size:13px;font-weight:700;">Kirim Pesan</div>
+        <div><div style="font-size:10.5px;color:var(--muted);margin-bottom:6px;">Nama</div><div class="wf-box" style="padding:10px 14px; color:var(--muted); font-size:12.5px;">Nama lengkap</div></div>
+        <div><div style="font-size:10.5px;color:var(--muted);margin-bottom:6px;">Email</div><div class="wf-box" style="padding:10px 14px; color:var(--muted); font-size:12.5px;">nama@email.com</div></div>
+        <div><div style="font-size:10.5px;color:var(--muted);margin-bottom:6px;">Subjek</div><div class="wf-box" style="padding:10px 14px; color:var(--muted); font-size:12.5px;">Subjek pesan</div></div>
+        <div><div style="font-size:10.5px;color:var(--muted);margin-bottom:6px;">Pesan</div><div class="wf-box" style="padding:10px 14px; height:90px; color:var(--muted); font-size:12.5px;">Tulis pesan Anda…</div></div>
+        <button class="wf-btn solid" style="align-self:flex-start;">Kirim Pesan</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="wf-box" style="display:flex; flex-direction:column; gap:14px;">
+          <div><div style="font-size:12.5px;font-weight:700;">Alamat</div><div class="wf-bar" style="width:160px;margin-top:6px;"></div></div>
+          <div><div style="font-size:12.5px;font-weight:700;">Telepon</div><div class="wf-bar" style="width:130px;margin-top:6px;"></div></div>
+          <div><div style="font-size:12.5px;font-weight:700;">Email</div><div class="wf-bar" style="width:150px;margin-top:6px;"></div></div>
+          <div><div style="font-size:12.5px;font-weight:700;">Jam Operasional</div><div class="wf-bar" style="width:160px;margin-top:6px;"></div></div>
+        </div>
+        <div class="wf-ph" style="height:170px;">[ MAP EMBED ]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="wf-footer">
+    <div class="wf-tag" style="position:static; display:inline-block; margin-bottom:16px;">Footer.jsx (mirrors Beranda)</div>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-size:26px;font-weight:800;color:var(--primary);">UKS.</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--muted);">© 2026 UKS Indonesia.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

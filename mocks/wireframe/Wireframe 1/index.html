@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UKS Website Wireframe & Architecture Blueprint</title>
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="device-desktop">
+
+  <!-- ============================================================
+       TOP CONTROL TOOLBAR
+       ============================================================ -->
+  <header class="wf-toolbar">
+    <div class="wf-toolbar-brand">
+      <span class="wf-toolbar-badge">WIREFRAME</span>
+      <span class="wf-toolbar-title">UKS Indonesia · Layout Blueprint</span>
+    </div>
+
+    <!-- Viewport Device Switcher -->
+    <div class="wf-toolbar-group">
+      <button class="wf-btn active" onclick="setDevice('desktop')" id="btn-desktop">
+        <i class="fa-solid fa-desktop"></i> Desktop (1440px)
+      </button>
+      <button class="wf-btn" onclick="setDevice('tablet')" id="btn-tablet">
+        <i class="fa-solid fa-tablet-screen-button"></i> Tablet (768px)
+      </button>
+      <button class="wf-btn" onclick="setDevice('mobile')" id="btn-mobile">
+        <i class="fa-solid fa-mobile-screen"></i> Mobile (375px)
+      </button>
+      <button class="wf-btn" onclick="setDevice('fluid')" id="btn-fluid">
+        <i class="fa-solid fa-arrows-left-right"></i> Fluid Full
+      </button>
+    </div>
+
+    <!-- Mode & Inspector Controls -->
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <a href="../RAWs/index.html" class="wf-btn" style="background: #098C4C; color: white; text-decoration: none; font-weight: 700;">
+        <i class="fa-solid fa-layer-group"></i> Buka RAWs Mocks
+      </a>
+      <a href="../figma/figma_wireframe_kit.svg" target="_blank" class="wf-btn" style="border: 1px solid var(--wf-border); text-decoration: none;">
+        <i class="fa-brands fa-figma"></i> Figma SVG
+      </a>
+      <button class="wf-btn" onclick="toggleTheme()" id="btn-theme" style="border: 1px solid var(--wf-border)">
+        <i class="fa-solid fa-palette"></i> Blueprint / Sketch
+      </button>
+      <button class="wf-btn" onclick="toggleInspector()" style="background: var(--wf-primary); color: white;">
+        <i class="fa-solid fa-sliders"></i> Specs &amp; Roadmap
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CANVAS VIEWPORT
+       ============================================================ -->
+  <main class="wf-stage-outer">
+    <div class="wf-device-frame">
+      <!-- Browser Mockup Header Bar -->
+      <div class="wf-device-header">
+        <div class="wf-dots">
+          <div class="wf-dot" style="background: #FF5F56;"></div>
+          <div class="wf-dot" style="background: #FFBD2E;"></div>
+          <div class="wf-dot" style="background: #27C93F;"></div>
+        </div>
+        <div>https://uks.kemdikbud.go.id/ [WIREFRAME MOCKUP]</div>
+        <div id="viewport-label">1440 × 900</div>
+      </div>
+
+      <!-- Website Wireframe Body -->
+      <div class="wf-container">
+
+        <!-- 0. NAVBAR -->
+        <nav class="wf-navbar-block">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--wf-primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 800;">U</div>
+            <div style="font-weight: 800; font-family: var(--font-heading); color: var(--wf-ink);">[ UKS LOGO ]</div>
+          </div>
+          <div class="wf-nav-links">
+            <span class="active">Beranda</span>
+            <span>UKS/M</span>
+            <span>Program</span>
+            <span>Informasi</span>
+            <span>Publikasi</span>
+          </div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--wf-primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 13px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </nav>
+
+        <!-- 1. HERO SECTION -->
+        <section class="wf-section" id="hero">
+          <div class="wf-section-tag">SECTION 1: HERO (100vh - 48px)</div>
+          <div class="wf-placeholder wf-hero-stage">
+            <div class="wf-hero-content">
+              <span class="wf-kicker">Edukasi Gizi</span>
+              <h1 class="wf-hero-title">Belajar Gizi dari Kebun Sekolah, Cara NGTS Ubah Pengetahuan jadi Kebiasaan</h1>
+              <p style="color: var(--wf-muted); font-size: 14px;">
+                Edukasi gizi dan sekolah sehat menjadi budaya yang tumbuh dari praktik nyata di lingkungan sekolah.
+              </p>
+              <button class="wf-cta-btn">Lihat Program &rarr;</button>
+            </div>
+            <div style="position: absolute; bottom: 20px; left: 30px; right: 30px; display: flex; justify-content: space-between; font-size: 12px; color: var(--wf-muted);">
+              <div>[ Dots: ● ○ ○ ]</div>
+              <div>[ Arrows: &larr; &rarr; ]</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. TRIAS UKS SECTION -->
+        <section class="wf-section" id="trias">
+          <div class="wf-section-tag">SECTION 2: TRIAS UKS BENTO</div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <span class="wf-kicker">Fondasi UKS</span>
+              <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin-top: 6px;">Trias UKS</h2>
+            </div>
+            <!-- 3 Pillar Selector -->
+            <div class="wf-pillar-tabs">
+              <button class="wf-pillar-pill active" onclick="selectPillar(0, this)">
+                <i class="fa-solid fa-graduation-cap"></i> Pendidikan Kesehatan
+              </button>
+              <button class="wf-pillar-pill" onclick="selectPillar(1, this)">
+                <i class="fa-solid fa-stethoscope"></i> Pelayanan Kesehatan
+              </button>
+              <button class="wf-pillar-pill" onclick="selectPillar(2, this)">
+                <i class="fa-solid fa-leaf"></i> Lingkungan Sehat
+              </button>
+            </div>
+          </div>
+
+          <div class="wf-bento-grid">
+            <!-- Left Highlight Card -->
+            <div class="wf-box" style="background: var(--wf-primary); color: white; display: flex; flex-direction: column; justify-content: space-between; min-height: 240px;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px;" id="pillar-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div>
+                <h3 style="font-family: var(--font-heading); font-size: 24px; font-weight: 800; margin-bottom: 8px;" id="pillar-title">
+                  Pendidikan Kesehatan
+                </h3>
+                <p style="font-size: 14px; opacity: 0.9; line-height: 1.5;" id="pillar-desc">
+                  Membentuk pengetahuan, sikap, dan kebiasaan hidup sehat siswa secara menyenangkan melalui Intrakurikuler, Ekstrakurikuler, dan Kokurikuler.
+                </p>
+              </div>
+            </div>
+
+            <!-- Right 2x2 Stats -->
+            <div class="wf-stat-grid" id="pillar-stats">
+              <div class="wf-stat-item">
+                <div style="font-size: 28px; font-weight: 900; color: var(--wf-ink); font-family: var(--font-heading);">4</div>
+                <div style="font-size: 11px; color: var(--wf-muted); text-transform: uppercase; font-weight: 700; margin-top: 4px;">Program Utama</div>
+              </div>
+              <div class="wf-stat-item">
+                <div style="font-size: 28px; font-weight: 900; color: var(--wf-ink); font-family: var(--font-heading);">132</div>
+                <div style="font-size: 11px; color: var(--wf-muted); text-transform: uppercase; font-weight: 700; margin-top: 4px;">Materi Edukasi</div>
+              </div>
+              <div class="wf-stat-item">
+                <div style="font-size: 28px; font-weight: 900; color: var(--wf-ink); font-family: var(--font-heading);">100%</div>
+                <div style="font-size: 11px; color: var(--wf-muted); text-transform: uppercase; font-weight: 700; margin-top: 4px;">Sekolah Sehat</div>
+              </div>
+              <div class="wf-stat-item">
+                <div style="font-size: 28px; font-weight: 900; color: var(--wf-ink); font-family: var(--font-heading);">24/7</div>
+                <div style="font-size: 11px; color: var(--wf-muted); text-transform: uppercase; font-weight: 700; margin-top: 4px;">Dukungan Kesehatan</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. PROGRAM UNGGULAN -->
+        <section class="wf-section" id="program">
+          <div class="wf-section-tag">SECTION 3: PROGRAM MARQUEE</div>
+          <span class="wf-kicker">Eksplorasi</span>
+          <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin: 6px 0 16px 0;">Program Unggulan</h2>
+          
+          <div class="wf-cards-strip">
+            <div class="wf-card-item">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--wf-primary-light); color: var(--wf-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px;">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Pendidikan Kesehatan</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5;">Membekali peserta didik dengan pengetahuan &amp; kebiasaan hidup bersih.</p>
+            </div>
+            <div class="wf-card-item">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--wf-primary-light); color: var(--wf-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px;">
+                <i class="fa-solid fa-hospital"></i>
+              </div>
+              <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Pelayanan Kesehatan</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5;">Layanan promotif, preventif, P3K, dan rujukan Puskesmas terpadu.</p>
+            </div>
+            <div class="wf-card-item">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--wf-primary-light); color: var(--wf-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px;">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Lingkungan Sehat</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5;">Mendorong sekolah yang bersih, aman, nyaman, dan ramah anak.</p>
+            </div>
+            <div class="wf-card-item">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--wf-primary-light); color: var(--wf-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px;">
+                <i class="fa-solid fa-apple-whole"></i>
+              </div>
+              <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Gizi Seimbang</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5;">Mengajak siswa memilih makanan bergizi dan pola makan seimbang.</p>
+            </div>
+            <div class="wf-card-item">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--wf-primary-light); color: var(--wf-primary); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px;">
+                <i class="fa-solid fa-person-running"></i>
+              </div>
+              <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px;">Aktivitas Fisik</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5;">Membangun kebiasaan aktif menjaga kebugaran jasmani peserta didik.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. KABAR TERBARU (NEWS) -->
+        <section class="wf-section" id="news">
+          <div class="wf-section-tag">SECTION 4: 3-COL NEWS GRID</div>
+          <span class="wf-kicker">Update</span>
+          <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin: 6px 0 16px 0;">Kabar Terbaru</h2>
+
+          <div class="wf-news-grid">
+            <div class="wf-box" style="cursor: pointer;">
+              <div class="wf-placeholder" style="height: 140px; border-radius: 12px; margin-bottom: 14px;">
+                <span>[ Cover Image 4:3 ]</span>
+              </div>
+              <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 6px;">Belajar Gizi dari Kebun Sekolah</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5; margin-bottom: 10px;">
+                Kemendikdasmen melalui program NGTS mengubah pengetahuan menjadi kebiasaan hidup sehat...
+              </p>
+              <span style="font-size: 11px; font-weight: 700; color: var(--wf-primary);">Baca Selengkapnya &rarr;</span>
+            </div>
+
+            <div class="wf-box" style="cursor: pointer;">
+              <div class="wf-placeholder" style="height: 140px; border-radius: 12px; margin-bottom: 14px;">
+                <span>[ Cover Image 4:3 ]</span>
+              </div>
+              <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 6px;">Rapat Koordinasi UPT Edukasi Gizi</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5; margin-bottom: 10px;">
+                Sinergi lintas satuan pendidikan memperkuat pendampingan layanan gizi dan kesehatan sekolah...
+              </p>
+              <span style="font-size: 11px; font-weight: 700; color: var(--wf-primary);">Baca Selengkapnya &rarr;</span>
+            </div>
+
+            <div class="wf-box" style="cursor: pointer;">
+              <div class="wf-placeholder" style="height: 140px; border-radius: 12px; margin-bottom: 14px;">
+                <span>[ Cover Image 4:3 ]</span>
+              </div>
+              <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 6px;">Hari Anak Nasional: Ajak Anak Bergerak</h4>
+              <p style="font-size: 12px; color: var(--wf-muted); line-height: 1.5; margin-bottom: 10px;">
+                Aktivitas fisik dan bermain gembira menjadi bagian penting dari tumbuh kembang anak...
+              </p>
+              <span style="font-size: 11px; font-weight: 700; color: var(--wf-primary);">Baca Selengkapnya &rarr;</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. PERPUSTAKAAN BUKU -->
+        <section class="wf-section" id="library">
+          <div class="wf-section-tag">SECTION 5: PERPUSTAKAAN + WARP</div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px;">
+            <div>
+              <span class="wf-kicker">Perpustakaan</span>
+              <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin-top: 6px;">Buku &amp; Panduan</h2>
+            </div>
+            <button class="wf-btn" style="background: var(--wf-surface-subtle); border: 1px solid var(--wf-border); color: var(--wf-ink); font-weight: 700;">
+              Lihat Semua &rarr;
+            </button>
+          </div>
+
+          <div class="wf-cards-strip">
+            <div class="wf-card-item" style="flex: 0 0 210px;">
+              <div class="wf-placeholder" style="aspect-ratio: 3/4; border-radius: 10px; margin-bottom: 10px;">
+                <span>[ Cover 3:4 ]</span>
+              </div>
+              <h4 style="font-size: 13px; font-weight: 800; margin-bottom: 4px;">Modul Edukasi Gizi MBG</h4>
+              <p style="font-size: 11px; color: var(--wf-muted); margin-bottom: 12px;">Panduan · 2026</p>
+              <div style="display: flex; gap: 6px;">
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-primary); color: white; justify-content: center; font-size: 11px;">Baca</button>
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-surface-subtle); border: 1px solid var(--wf-border); color: var(--wf-ink); justify-content: center; font-size: 11px;">Unduh</button>
+              </div>
+            </div>
+
+            <div class="wf-card-item" style="flex: 0 0 210px;">
+              <div class="wf-placeholder" style="aspect-ratio: 3/4; border-radius: 10px; margin-bottom: 10px;">
+                <span>[ Cover 3:4 ]</span>
+              </div>
+              <h4 style="font-size: 13px; font-weight: 800; margin-bottom: 4px;">Pedoman Kesehatan Reproduksi</h4>
+              <p style="font-size: 11px; color: var(--wf-muted); margin-bottom: 12px;">Panduan · 2026</p>
+              <div style="display: flex; gap: 6px;">
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-primary); color: white; justify-content: center; font-size: 11px;">Baca</button>
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-surface-subtle); border: 1px solid var(--wf-border); color: var(--wf-ink); justify-content: center; font-size: 11px;">Unduh</button>
+              </div>
+            </div>
+
+            <div class="wf-card-item" style="flex: 0 0 210px;">
+              <div class="wf-placeholder" style="aspect-ratio: 3/4; border-radius: 10px; margin-bottom: 10px;">
+                <span>[ Cover 3:4 ]</span>
+              </div>
+              <h4 style="font-size: 13px; font-weight: 800; margin-bottom: 4px;">Edukasi Gizi Peserta Didik</h4>
+              <p style="font-size: 11px; color: var(--wf-muted); margin-bottom: 12px;">Buku · 2026</p>
+              <div style="display: flex; gap: 6px;">
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-primary); color: white; justify-content: center; font-size: 11px;">Baca</button>
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-surface-subtle); border: 1px solid var(--wf-border); color: var(--wf-ink); justify-content: center; font-size: 11px;">Unduh</button>
+              </div>
+            </div>
+
+            <div class="wf-card-item" style="flex: 0 0 210px;">
+              <div class="wf-placeholder" style="aspect-ratio: 3/4; border-radius: 10px; margin-bottom: 10px;">
+                <span>[ Cover 3:4 ]</span>
+              </div>
+              <h4 style="font-size: 13px; font-weight: 800; margin-bottom: 4px;">Panduan Lingkungan Sekolah</h4>
+              <p style="font-size: 11px; color: var(--wf-muted); margin-bottom: 12px;">Panduan · 2026</p>
+              <div style="display: flex; gap: 6px;">
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-primary); color: white; justify-content: center; font-size: 11px;">Baca</button>
+                <button class="wf-btn" style="flex: 1; padding: 6px; background: var(--wf-surface-subtle); border: 1px solid var(--wf-border); color: var(--wf-ink); justify-content: center; font-size: 11px;">Unduh</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. GALERI & MITRA -->
+        <section class="wf-section" id="gallery">
+          <div class="wf-section-tag">SECTION 6: BUBBLE BENTO &amp; MITRA</div>
+          <span class="wf-kicker">Galeri</span>
+          <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin: 6px 0 16px 0;">Visual Inspirasi</h2>
+
+          <!-- Bubbles -->
+          <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 24px;">
+            <div class="wf-placeholder" style="width: 180px; height: 230px; border-radius: var(--radius-lg);">
+              <span>[ Bubble 1 ]</span>
+            </div>
+            <div class="wf-placeholder" style="width: 220px; height: 260px; border-radius: var(--radius-lg); border-color: var(--wf-primary);">
+              <span>[ Bubble 2 (Hover Focus) ]</span>
+            </div>
+            <div class="wf-placeholder" style="width: 180px; height: 230px; border-radius: var(--radius-lg);">
+              <span>[ Bubble 3 ]</span>
+            </div>
+          </div>
+
+          <!-- Partner Marquee Dual Rows -->
+          <div class="wf-partner-marquee">
+            <div class="wf-partner-row">
+              <div class="wf-partner-chip">Save the Children</div>
+              <div class="wf-partner-chip">Kemendikdasmen</div>
+              <div class="wf-partner-chip">KAO Indonesia</div>
+              <div class="wf-partner-chip">Wardhana</div>
+              <div class="wf-partner-chip">Cimory</div>
+              <div class="wf-partner-chip">UPI</div>
+            </div>
+            <div class="wf-partner-row" style="margin-left: 40px;">
+              <div class="wf-partner-chip">UNICEF</div>
+              <div class="wf-partner-chip">SEAMEO RECFON</div>
+              <div class="wf-partner-chip">Kemenkes RI</div>
+              <div class="wf-partner-chip">Dinas Pendidikan</div>
+              <div class="wf-partner-chip">Mitra Sekolah</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. FOOTER -->
+        <footer class="wf-box" style="background: #111C16; color: white; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 40px; margin-top: 24px;">
+          <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 24px; margin-bottom: 20px;">
+            <div>
+              <div style="font-size: 48px; font-weight: 900; font-family: var(--font-heading); color: var(--wf-primary); line-height: 1;">UKS.</div>
+              <p style="color: var(--wf-muted); font-size: 13px; max-width: 340px; margin-top: 10px;">
+                Membangun generasi sehat, cerdas, dan tangguh mulai dari lingkungan sekolah di seluruh Indonesia.
+              </p>
+            </div>
+            <div style="display: flex; gap: 32px; font-size: 13px; color: var(--wf-muted);">
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <strong style="color: white;">Navigasi</strong>
+                <span>Beranda</span>
+                <span>UKS/M</span>
+                <span>Program</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <strong style="color: white;">Informasi</strong>
+                <span>Buku &amp; Panduan</span>
+                <span>Kabar Terbaru</span>
+                <span>Galeri Publikasi</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.4);">
+            <div>&copy; 2026 UKS Indonesia. Hak Cipta Dilindungi.</div>
+            <div>Direktorat SMP · Kemendikdasmen</div>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       INSPECTOR / SPECS SLIDE-OVER DRAWER
+       ============================================================ -->
+  <aside class="wf-inspector" id="inspector">
+    <div class="wf-inspector-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-layer-group" style="color: var(--wf-primary)"></i>
+        <strong style="font-size: 14px;">Spesifikasi &amp; Rencana Ekspansi</strong>
+      </div>
+      <button class="wf-btn" onclick="toggleInspector()" style="padding: 4px 8px;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="wf-inspector-body">
+      <!-- Section Tree -->
+      <div>
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--wf-muted); margin-bottom: 10px;">
+          Anatomi Halaman (Klik untuk scroll)
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+          <a href="#hero" style="color: var(--wf-ink); text-decoration: none; padding: 6px 10px; background: var(--wf-surface-subtle); border-radius: 6px;">1. Hero Stage (100vh Slider)</a>
+          <a href="#trias" style="color: var(--wf-ink); text-decoration: none; padding: 6px 10px; background: var(--wf-surface-subtle); border-radius: 6px;">2. Trias UKS (Bento 3 Pilar)</a>
+          <a href="#program" style="color: var(--wf-ink); text-decoration: none; padding: 6px 10px; background: var(--wf-surface-subtle); border-radius: 6px;">3. Program Unggulan (Marquee)</a>
+          <a href="#news" style="color: var(--wf-ink); text-decoration: none; padding: 6px 10px; background: var(--wf-surface-subtle); border-radius: 6px;">4. Kabar Terbaru (3-Col Grid)</a>
+          <a href="#library" style="color: var(--wf-ink); text-decoration: none; padding: 6px 10px; background: var(--wf-surface-subtle); border-radius: 6px;">5. Perpustakaan &amp; Modal Baca</a>
+          <a href="#gallery" style="color: var(--wf-ink); text-decoration: none; padding: 6px 10px; background: var(--wf-surface-subtle); border-radius: 6px;">6. Galeri &amp; Mitra Logo</a>
+        </div>
+      </div>
+
+      <!-- Design Tokens -->
+      <div>
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--wf-muted); margin-bottom: 10px;">
+          Design Tokens
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 11px; background: var(--wf-surface-subtle); padding: 12px; border-radius: 8px; display: flex; flex-direction: column; gap: 6px;">
+          <div>--brand-primary: #098C4C;</div>
+          <div>--brand-accent: #FFD23F;</div>
+          <div>--container: min(1200px, 92%);</div>
+          <div>--section-pad: 44px 0 (Dense);</div>
+          <div>--marquee-speed: 45s / 70s;</div>
+        </div>
+      </div>
+
+      <!-- Next Steps Roadmap -->
+      <div>
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--wf-muted); margin-bottom: 10px;">
+          Ide Ekspansi Selanjutnya
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+          <div style="padding: 10px; background: var(--wf-surface-subtle); border-left: 3px solid var(--wf-primary); border-radius: 4px;">
+            <strong>Live Search Drawer:</strong> Pencarian cepat buku PDF, berita, dan program.
+          </div>
+          <div style="padding: 10px; background: var(--wf-surface-subtle); border-left: 3px solid var(--wf-accent); border-radius: 4px;">
+            <strong>Filter Kategori Buku:</strong> Modul filter chips di modal "Lihat Semua".
+          </div>
+          <div style="padding: 10px; background: var(--wf-surface-subtle); border-left: 3px solid var(--wf-cyan); border-radius: 4px;">
+            <strong>Formulir Kemitraan:</strong> Tombol ajukan kolaborasi UKS untuk sekolah baru.
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="./wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pusat Informasi UKS/M | Kemendikdasmen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="raws.css">
+</head>
+<body>
+
+  <!-- ================= HEADER & FLOATING PILL NAVBAR ================= -->
+  <header class="nav-wrapper">
+    <nav class="nav-bar">
+      <a href="index.html" class="brand-nav">
+        <img src="../../public/Aset UKS/UKS-02.png" alt="Logo UKS" class="brand-logo-img">
+        <div>
+          <span style="font-weight: 900; font-size: 16px; color: var(--text-primary); display: block; line-height: 1.1;">UKS/M</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--brand-primary); text-transform: uppercase;">Kemendikdasmen</span>
+        </div>
+      </a>
+
+      <div class="nav-menu">
+        <div class="nav-item"><a href="index.html" class="nav-link">Beranda</a></div>
+        <div class="nav-item"><a href="tentang-uks.html" class="nav-link">Tentang UKS/M ▾</a></div>
+        <div class="nav-item"><a href="program.html" class="nav-link">Program ▾</a></div>
+        <div class="nav-item"><a href="mitra.html" class="nav-link">Mitra ▾</a></div>
+        <div class="nav-item">
+          <a href="informasi.html" class="nav-link active">Informasi ▾</a>
+          <div class="nav-dropdown">
+            <a href="#berita">Berita Terkini</a>
+            <a href="#praktik-baik">Praktik Baik Sekolah</a>
+            <a href="#upt">UPT Bercerita</a>
+            <a href="#agenda">Agenda & Kalender</a>
+            <a href="#aplikasi">Aplikasi Ekosistem</a>
+          </div>
+        </div>
+        <div class="nav-item"><a href="publikasi.html" class="nav-link">Publikasi ▾</a></div>
+        <div class="nav-item"><a href="kontak.html" class="nav-link">Kontak</a></div>
+      </div>
+
+      <div class="nav-actions">
+        <a href="../wireframe/index.html" class="btn-pill secondary" style="font-size: 12px; padding: 7px 14px;">📐 Wireframe</a>
+        <button class="btn-nav-search" title="Pencarian">🔍</button>
+        <button class="mobile-menu-toggle">☰</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= PAGE HERO ================= -->
+  <section class="page-hero">
+    <div class="container page-hero-content">
+      <span class="section-kicker">Kanal Berita & Inspirasi</span>
+      <h1>Pusat Informasi & Praktik Baik Sekolah Sehat</h1>
+      <p>
+        Rangkuman berita resmi, cerita inspiratif dari sekolah model di pelosok negeri, catatan advokasi Unit Pelaksana Teknis (UPT), dan agenda kegiatan UKS/M nasional.
+      </p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px;">
+        <a href="#berita" class="filter-pill active">Berita Terkini</a>
+        <a href="#praktik-baik" class="filter-pill">Praktik Baik</a>
+        <a href="#upt" class="filter-pill">UPT Bercerita</a>
+        <a href="#agenda" class="filter-pill">Agenda Kegiatan</a>
+        <a href="#aplikasi" class="filter-pill">Aplikasi UKS</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- ================= BERITA TERKINI DENGAN FILTER ================= -->
+    <section class="section" id="berita">
+      <div class="section-header" data-filter-container>
+        <div>
+          <span class="section-kicker">Warta Resmi Kemendikdasmen</span>
+          <h2 class="section-title">Berita Terkini UKS/M</h2>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="filter-pill active" data-filter="all" data-target-grid="#berita-grid">Semua</button>
+          <button class="filter-pill" data-filter="gizi" data-target-grid="#berita-grid">Gizi & MBG</button>
+          <button class="filter-pill" data-filter="pelayanan" data-target-grid="#berita-grid">Pelayanan</button>
+          <button class="filter-pill" data-filter="lingkungan" data-target-grid="#berita-grid">Lingkungan</button>
+        </div>
+      </div>
+
+      <div class="grid-3 filterable-grid" id="berita-grid">
+        <!-- Berita 1 -->
+        <article class="card-playful" data-category="gizi" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="height: 180px; overflow: hidden;">
+            <img src="../../public/Aset UKS/beritagambar1.png" alt="Belajar Gizi Kebun Sekolah" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="filter-pill" style="font-size: 11px; margin-bottom: 8px;">Gizi & MBG</span>
+              <h3 style="font-size: 16px; font-weight: 800; line-height: 1.35; margin-bottom: 8px;">
+                Belajar Gizi dari Kebun Sekolah, Cara NGTS Ubah Pengetahuan Jadi Kebiasaan
+              </h3>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                Kemendikdasmen melalui SEAMEO RECFON mendampingi puluhan sekolah dasar mengembangkan kebun hidroponik dan sayur organik untuk edukasi nutrisi siswa.
+              </p>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">25 Agustus 2026 • SEAMEO RECFON</div>
+          </div>
+        </article>
+
+        <!-- Berita 2 -->
+        <article class="card-playful" data-category="gizi" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="height: 180px; overflow: hidden;">
+            <img src="../../public/Aset UKS/bertaigambar2.png" alt="Kemendikdasmen Jadikan MBG Bagian Karakter" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="filter-pill" style="font-size: 11px; margin-bottom: 8px;">Gizi & MBG</span>
+              <h3 style="font-size: 16px; font-weight: 800; line-height: 1.35; margin-bottom: 8px;">
+                Kemendikdasmen Dorong MBG Tidak Hanya Fokus Makanan, Namun Edukasi Adab
+              </h3>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                Makan bersama melatih nilai gotong royong, mencuci tangan memakai sabun, dan membiasakan siswa tidak membuang-buang makanan sisa.
+              </p>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">23 Agustus 2026 • Kemendikdasmen RI</div>
+          </div>
+        </article>
+
+        <!-- Berita 3 -->
+        <article class="card-playful" data-category="pelayanan" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="height: 180px; overflow: hidden;">
+            <img src="../../public/Aset UKS/Gambarberita3.png" alt="Puskesmas Skrining Kesehatan Berkala" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="filter-pill" style="font-size: 11px; margin-bottom: 8px;">Pelayanan</span>
+              <h3 style="font-size: 16px; font-weight: 800; line-height: 1.35; margin-bottom: 8px;">
+                Pemberian Suplementasi TTD & Pemeriksaan Gigi Siswa di Kota Kupang
+              </h3>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                Kolaborasi intensif antara Dinas Pendidikan dan Dinas Kesehatan dalam menyukseskan program Aksi Bergizi serentak di jenjang SMP dan SMA.
+              </p>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">19 Agustus 2026 • Dinkes & Disdik</div>
+          </div>
+        </article>
+
+        <!-- Berita 4 -->
+        <article class="card-playful" data-category="lingkungan" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="height: 180px; overflow: hidden; background: #e0e0e0;">
+            <img src="../../public/Aset UKS/gambar3.png" alt="Sanitasi Sekolah Ramah Anak" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="filter-pill" style="font-size: 11px; margin-bottom: 8px;">Lingkungan</span>
+              <h3 style="font-size: 16px; font-weight: 800; line-height: 1.35; margin-bottom: 8px;">
+                Revitalisasi Toilet Sehat dan Pemilahan Sampah Organik di Satuan Pendidikan
+              </h3>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                Pedoman baru rasio jamban sekolah dan pemanfaatan komposter daur ulang dedaunan menjadi pupuk tanaman TOGA sekolah.
+              </p>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">15 Agustus 2026 • Tim UKS Nasional</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= PRAKTIK BAIK SEKOLAH ================= -->
+    <section class="section" id="praktik-baik">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Inspirasi Nyata</span>
+          <h2 class="section-title">Praktik Baik Satuan Pendidikan</h2>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card-playful" style="display: flex; gap: 16px; align-items: flex-start;">
+          <div style="font-size: 36px; background: var(--brand-light); width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">🏆</div>
+          <div>
+            <span class="section-kicker" style="font-size: 10px; margin-bottom: 4px;">SD Model UKS Paripurna</span>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 8px;">SDN 1 Wonosobo: Kantin Kejujuran Bebas Bahan Sintetis</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+              Berhasil meniadakan jajanan berpengawet dengan memberdayakan paguyuban orang tua murid memasok kudapan tradisional berbahan lokal bernutrisi tinggi.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-playful" style="display: flex; gap: 16px; align-items: flex-start;">
+          <div style="font-size: 36px; background: #DBEAFE; width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">💡</div>
+          <div>
+            <span class="section-kicker" style="font-size: 10px; margin-bottom: 4px;">SMP Inovatif</span>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 8px;">SMPN 4 Singaraja: Aplikasi Pantau Kebugaran Berbasis Siswa</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+              Kader kesehatan remaja mencatat kehadiran sarapan, jumlah konsumsi air putih, dan capaian jalan 6.000 langkah harian secara mandiri melalui gawai ruang UKS.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= UPT BERCERITA (BPMP / BBPMP) ================= -->
+    <section class="section" id="upt">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Catatan Lapangan</span>
+          <h2 class="section-title">UPT Kemendikdasmen Bercerita</h2>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">
+            Dedikasi Balai Penjaminan Mutu Pendidikan (BPMP) dalam mengadvokasi pembentukan Tim Pembina UKS di daerah 3T.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card-playful">
+          <span class="section-kicker" style="font-size: 10px;">BPMP Provinsi Maluku</span>
+          <h4 style="font-size: 16px; font-weight: 800; margin: 8px 0;">Menembus Ombak demi Penjaringan Siswa Kepulauan</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Kisah kolaborasi tim BPMP bersama Puskesmas keliling menjangkau 12 pulau terluar untuk skrining stunting dan distribusi buku panduan UKS.</p>
+        </div>
+        <div class="card-playful">
+          <span class="section-kicker" style="font-size: 10px;">BBPMP Jawa Barat</span>
+          <h4 style="font-size: 16px; font-weight: 800; margin: 8px 0;">Sinergi Dana Desa untuk Air Bersih Sekolah Dasar</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Advokasi bersama Pemdes dan Korwil menghasilkan penyaluran air gravitasi gratis ke 15 SD di kawasan perbukitan terpencil.</p>
+        </div>
+        <div class="card-playful">
+          <span class="section-kicker" style="font-size: 10px;">BPMP Kalimantan Barat</span>
+          <h4 style="font-size: 16px; font-weight: 800; margin: 8px 0;">Gerakan Sekolah Sehat di Beranda Perbatasan RI-Malaysia</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Penguatan imunisasi dan sanitasi di Entikong guna membangun benteng kesehatan kokoh anak-anak perbatasan negara.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= AGENDA KEGIATAN ================= -->
+    <section class="section" id="agenda">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Jadwal & Agenda</span>
+          <h2 class="section-title">Kalender Kegiatan UKS/M 2026</h2>
+        </div>
+      </div>
+
+      <div class="bento-frame" style="background: white;">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <div style="background: var(--brand-light); color: var(--brand-primary); font-weight: 900; font-size: 16px; border-radius: var(--radius-sm); padding: 10px 16px; text-align: center;">
+                28<br><span style="font-size: 10px; text-transform: uppercase;">Sep</span>
+              </div>
+              <div>
+                <h4 style="font-size: 15px; font-weight: 800;">Webinar Nasional: Penerapan GSS di Satuan Pendidikan Dasar</h4>
+                <p style="font-size: 12px; color: var(--text-secondary);">Daring via Zoom & YouTube Ditjen PDM • Narasumber: Pakar Gizi & Kemendikdasmen</p>
+              </div>
+            </div>
+            <a href="#" class="btn-pill secondary" style="font-size: 12px; padding: 6px 14px;">Daftar Peserta</a>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <div style="background: #FEF08A; color: #854D0E; font-weight: 900; font-size: 16px; border-radius: var(--radius-sm); padding: 10px 16px; text-align: center;">
+                15<br><span style="font-size: 10px; text-transform: uppercase;">Okt</span>
+              </div>
+              <div>
+                <h4 style="font-size: 15px; font-weight: 800;">Peringatan Hari Cuci Tangan Sedunia & Aksi CTPS Massal</h4>
+                <p style="font-size: 12px; color: var(--text-secondary);">Serentak di seluruh satuan pendidikan Indonesia bersama Kemenkes & Kemendagri</p>
+              </div>
+            </div>
+            <a href="#" class="btn-pill secondary" style="font-size: 12px; padding: 6px 14px;">Unduh Panduan Aksi</a>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <div style="background: #DBEAFE; color: #1E40AF; font-weight: 900; font-size: 16px; border-radius: var(--radius-sm); padding: 10px 16px; text-align: center;">
+                12<br><span style="font-size: 10px; text-transform: uppercase;">Nov</span>
+              </div>
+              <div>
+                <h4 style="font-size: 15px; font-weight: 800;">Hari Kesehatan Nasional ke-62: Malam Penganugerahan UKS Award</h4>
+                <p style="font-size: 12px; color: var(--text-secondary);">Apresiasi bagi TP UKS Provinsi, Kabupaten/Kota, dan Sekolah Paripurna Berprestasi</p>
+              </div>
+            </div>
+            <a href="#" class="btn-pill secondary" style="font-size: 12px; padding: 6px 14px;">Detail Acara</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APLIKASI EKOSISTEM UKS ================= -->
+    <section class="section" id="aplikasi">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Transformasi Digital</span>
+          <h2 class="section-title">Aplikasi Ekosistem UKS/M</h2>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card-playful">
+          <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px; color: var(--brand-primary);">📊 Stratifikasi UKS Online</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+            Platform mandiri bagi sekolah untuk menginput kuesioner kelayakan sarana UKS dan memperoleh status strata resmi secara realtime.
+          </p>
+          <a href="https://stratifikasiuks.org/" target="_blank" class="btn-pill secondary" style="font-size: 12px; padding: 6px 12px;">Buka Platform ➔</a>
+        </div>
+
+        <div class="card-playful">
+          <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px; color: #2563EB;">🍱 Dasbor MBG Kemendikdasmen</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+            Pemantauan distribusi menu makanan bergizi, jumlah penerima manfaat per jenjang, dan pelaporan mutu kantin sekolah.
+          </p>
+          <a href="https://mbg.pdm.kemendikdasmen.go.id/portal" target="_blank" class="btn-pill secondary" style="font-size: 12px; padding: 6px 12px;">Buka Dasbor ➔</a>
+        </div>
+
+        <div class="card-playful">
+          <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 6px; color: #D97706;">📱 SIPRAK (Sistem Informasi Praktik Baik)</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+            Kanal kurasi karya inovasi guru, kepala sekolah, dan siswa untuk dibagikan ke seluruh satuan pendidikan di Indonesia.
+          </p>
+          <a href="#" class="btn-pill secondary" style="font-size: 12px; padding: 6px 12px;">Jelajahi Karya ➔</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <img src="../../public/Aset UKS/UKS-02.png" alt="Logo UKS" style="height: 48px; width: auto; background: white; border-radius: 12px; padding: 4px;">
+            <span style="font-weight: 900; font-size: 24px; color: white;">UKS / M</span>
+          </div>
+          <p>Kementerian Pendidikan Dasar dan Menengah Republik Indonesia.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Kanal Informasi</h4>
+          <ul>
+            <li><a href="#berita">Warta Berita</a></li>
+            <li><a href="#praktik-baik">Praktik Baik</a></li>
+            <li><a href="#upt">UPT Bercerita</a></li>
+            <li><a href="#agenda">Kalender UKS</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Halaman Utama</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="tentang-uks.html">Tentang UKS</a></li>
+            <li><a href="program.html">Program</a></li>
+            <li><a href="publikasi.html">Publikasi</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Bantuan</h4>
+          <ul>
+            <li><a href="kontak.html">Kontak Kami</a></li>
+            <li><a href="../wireframe/index.html">📐 Wireframe Blueprint</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Kemendikdasmen RI. Hak Cipta Dilindungi.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="raws.js"></script>
+</body>
+</html>

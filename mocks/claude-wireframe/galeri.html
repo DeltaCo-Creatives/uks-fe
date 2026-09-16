@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe — Galeri Publikasi</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="wf-pagebar">
+  <div class="wf-pagebar-left">
+    <span class="wf-status new">NEW PAGE</span>
+    <span class="wf-pagebar-title">Galeri Publikasi</span>
+    <span class="wf-pagebar-route">/publikasi · browsable version of the bento gallery</span>
+  </div>
+  <nav class="wf-pagebar-nav">
+    <a href="index.html">Beranda</a>
+    <a href="program-detail.html">Detail Program</a>
+    <a href="perpustakaan.html">Perpustakaan</a>
+    <a href="galeri.html" class="current">Galeri</a>
+    <a href="kontak.html">Kontak</a>
+  </nav>
+</div>
+<div class="wf-legend">
+  <span><span class="dot cyan"></span> cyan tag = mirrors Infografis.jsx data/behavior</span>
+  <span><span class="dot orange"></span> orange tag = new for this page</span>
+  <span>Reached from: Beranda → Galeri → any tile</span>
+</div>
+
+<div class="wf-canvas">
+
+  <!-- NAVBAR -->
+  <div class="wf-section" style="padding-top:20px;">
+    <div class="wf-tag">Navbar.jsx (mirrors Beranda)</div>
+    <div class="wf-navbar">
+      <div style="display:flex;align-items:center;gap:10px;"><div class="wf-logo">U</div><span class="wf-bar" style="width:70px;display:inline-block;"></span></div>
+      <div class="wf-navlinks"><span>Beranda</span><span>UKS/M</span><span>Program</span><span>Informasi</span><span class="active">Publikasi</span></div>
+      <div class="wf-logo" style="background:var(--surface); border:1px solid var(--border); color:var(--muted);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+    </div>
+  </div>
+
+  <!-- HEADER + FILTER CHIPS -->
+  <section class="wf-section">
+    <div class="wf-tag new">NEW · header + filter chips</div>
+    <div class="wf-crumb">Beranda / <b>Publikasi</b></div>
+    <div class="wf-h2" style="margin-top:6px;">Galeri Publikasi</div>
+    <div class="wf-flag-new" data-flag="NEW — chips" style="display:flex; gap:8px; margin-top:14px;">
+      <span class="wf-pill active">Semua</span>
+      <span class="wf-pill">Infografis</span>
+      <span class="wf-pill">Partner &amp; Sekolah</span>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <section class="wf-section">
+    <div class="wf-tag">source: defaultInfografis[3] + defaultScreenshots[14] — reorganized into one grid</div>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:140px; gap:12px; margin-top:16px;">
+      <div class="wf-ph" style="grid-column:span 2; grid-row:span 2;">[ Informasi Kesehatan Sekolah — large ]</div>
+      <div class="wf-ph">[ Lingkungan Sehat ]</div>
+      <div class="wf-ph">[ Edukasi Kesehatan ]</div>
+      <div class="wf-ph">[ Partner ]</div>
+      <div class="wf-ph">[ Partner ]</div>
+      <div class="wf-ph">[ Partner ]</div>
+      <div class="wf-ph">[ Partner ]</div>
+      <div class="wf-ph">[ Partner ]</div>
+      <div class="wf-ph">[ Partner ]</div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX STATE -->
+  <section class="wf-section">
+    <div class="wf-tag">STATE: tile clicked — mirrors .lightbox-overlay</div>
+    <div style="display:flex; justify-content:center; margin-top:20px; position:relative;">
+      <span style="position:absolute; top:0; right:60px; font-family:var(--mono); font-size:13px; color:var(--muted);">✕</span>
+      <div class="wf-ph" style="width:560px; height:360px;">[ EXPANDED IMAGE ]</div>
+      <span class="wf-tag new" style="position:static; margin-left:16px; align-self:center;">NEW: prev/next arrows — current lightbox has none</span>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

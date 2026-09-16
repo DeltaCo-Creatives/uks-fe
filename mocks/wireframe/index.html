@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UKS/M Wireframe Hub | Kemendikdasmen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #F4F7F4;
+      color: #111C16;
+      margin: 0;
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .hub-container {
+      max-width: 860px;
+      width: 100%;
+    }
+    .brand-tag {
+      background: #D2E8DA;
+      color: #098C4C;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin: 0 0 10px;
+    }
+    p {
+      color: #536359;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 32px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: 0 16px 40px rgba(17, 28, 22, 0.06);
+      border: 2px solid transparent;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(9, 140, 76, 0.15);
+      border-color: #098C4C;
+    }
+    .card-badge {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      width: max-content;
+      margin-bottom: 14px;
+    }
+    .card h2 {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 8px;
+    }
+    .card p {
+      font-size: 13px;
+      color: #536359;
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #098C4C;
+      color: white;
+    }
+    .btn-secondary {
+      background: #EBF0EC;
+      color: #111C16;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hub-container">
+    <span class="brand-tag">UKS/M ARCHITECTURE BLUEPRINTS</span>
+    <h1>Katalog Eksplorasi Wireframe UKS</h1>
+    <p>Pilih versi wireframe yang ingin dieksplorasi di bawah ini untuk melihat inovasi tata letak, komponen bento, dan navigasi lintas halaman.</p>
+
+    <div class="grid">
+      <!-- Wireframe 3 (Featured: 3 Dedicated Pages & Left-Edge Drawer) -->
+      <a href="wireframe 3/index.html" class="card" style="border-color: #098C4C; border-width: 2.5px; box-shadow: 0 20px 50px rgba(9, 140, 76, 0.12); grid-column: 1 / -1;">
+        <div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+            <span class="card-badge" style="background: #098C4C; color: white; margin-bottom: 0;">⭐ REKOMENDASI TERBARU · WIREFRAME 3</span>
+            <span class="card-badge" style="background: #D2E8DA; color: #098C4C; margin-bottom: 0;">3 DEDICATED SUB-PAGES</span>
+            <span class="card-badge" style="background: #DBEAFE; color: #1E40AF; margin-bottom: 0;">LEFT-EDGE HOVER DRAWER</span>
+          </div>
+          <h2 style="font-size: 26px;">Wireframe 3 — 3 Dedicated UKS/M Pages & Edge Navigation Drawer</h2>
+          <p style="font-size: 14px; margin-bottom: 16px;">
+            Solusi navigasi elegan tanpa tumpukan masif: menu UKS/M diakses melalui <strong>Dropdown Kompak 3 Kluster</strong> yang membuka 3 halaman dedikasi tersendiri: <strong>1. Profil & Tata Kelola</strong> (Struktur Personel & Stratifikasi 4 Strata), <strong>2. TRIAS UKS/M</strong> (16 Indikator L3), dan <strong>3. Sekolah Sehat GSS</strong> (5 Sehat & Unduhan Advokasi). Masing-masing halaman dilengkapi <strong>Kotak Navigasi Tepi Kiri (Edge Hover Drawer)</strong> yang meluncur saat kursor didekatkan ke tepi kiri layar, lengkap dengan fitur Pin.
+          </p>
+        </div>
+        <div class="btn btn-primary" style="align-self: flex-start; padding: 14px 28px; font-size: 15px;">
+          Buka Wireframe 3 (3 Halaman & Edge Drawer) ➔
+        </div>
+      </a>
+
+      <!-- Wireframe 2 -->
+      <a href="wireframe 2/index.html" class="card">
+        <div>
+          <span class="card-badge" style="background: #EBF0EC; color: #111C16;">MULTI-PAGE OMNI-NAV</span>
+          <h2>Wireframe 2</h2>
+          <p>
+            Eksplorasi navigasi inovatif dengan <strong>Omni-Navigation Island</strong>, live page view switcher (Beranda, UKS/M, Program, Mitra, Informasi, Publikasi, Kontak), serta lembar visual mega-flyout tanpa perlu me-reload halaman.
+          </p>
+        </div>
+        <div class="btn btn-secondary">Buka Wireframe 2 ➔</div>
+      </a>
+
+      <!-- Wireframe 1 -->
+      <a href="Wireframe 1/index.html" class="card">
+        <div>
+          <span class="card-badge" style="background: #EBF0EC; color: #536359;">VERSI ORIGINAL</span>
+          <h2>Wireframe 1</h2>
+          <p>
+            Wireframe original single-page blueprint dengan interactive viewport switcher (Desktop 1440px, Tablet 768px, Mobile 375px), switch Trias UKS interactive tabs, dan spek anotasi layout.
+          </p>
+        </div>
+        <div class="btn btn-secondary">Buka Wireframe 1 ➔</div>
+      </a>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+      <a href="../RAWs/index.html" style="font-size: 13px; color: #098C4C; font-weight: 700; text-decoration: none;">
+        ← Lihat Website Statis High-Fidelity (RAWs)
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
