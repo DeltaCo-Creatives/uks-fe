@@ -1,0 +1,1005 @@
+/* ============================================================
+   PROFIL & TATA KELOLA PAGE
+   Palette: brand green + dark ink on the app grey. Yellow appears once,
+   on the Manajemen UKS/M bar that joins the three Trias pillars.
+   Motif: the zero-padded "01" numerals shared with Trias and GSS.
+   Rule for this page: small filled pills and bars read as controls, so they
+   are only used for things you can press. Short static labels, names and
+   key facts are plain text or ruled rows.
+   ============================================================ */
+:root {
+  /* Brand green fails AA for small text (4.31:1 on white); this shade passes
+     on white, --bg-card-alt and --brand-light. Icons keep --brand-primary. */
+  --profil-green-text: #05703C;
+  --profil-rule: rgba(17, 28, 22, 0.12);
+}
+
+.profil-section {
+  scroll-margin-top: 96px;
+}
+
+.profil-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.profil-block-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.profil-mini-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--profil-green-text);
+  margin-bottom: 8px;
+}
+
+.profil-spaced-label {
+  margin-top: 18px;
+}
+
+.profil-body {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 72ch;
+}
+
+.profil-section-lead {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 68ch;
+}
+
+.profil-num {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--profil-green-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Internal navigation text links: underlined, no arrow, full tap height */
+.profil-text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--brand-primary);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.profil-text-link:hover {
+  color: var(--profil-green-text);
+}
+
+.profil-text-link:focus-visible,
+.profil-hub-btn:focus-visible,
+.profil-org-tab:focus-visible,
+.profil-org-panel:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+}
+
+/* Static name lists: plain text separated by a dot, no pill shapes */
+.profil-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.profil-inline-list li:not(:last-child)::after {
+  content: '·';
+  margin: 0 10px;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+/* Static item lists with an optional note under each name */
+.profil-item-list {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profil-item-list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.profil-item-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--brand-primary);
+}
+
+.profil-item-list strong {
+  display: block;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.profil-item-list span {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Deskripsi: pillars + Manajemen bar ---------- */
+.profil-trias {
+  display: flex;
+  flex-direction: column;
+}
+
+.profil-pillar-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.profil-pillar {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 24px 24px 12px;
+}
+
+.profil-pillar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.profil-pillar-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  font-size: 18px;
+}
+
+.profil-pillar-title {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.profil-pillar-def {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.profil-pillar-group + .profil-pillar-group {
+  margin-top: 16px;
+}
+
+.profil-pillar-link {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* The bar joins the pillars: it butts against their square bottom corners */
+.profil-hub {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--text-primary);
+  color: #FFFFFF;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.profil-hub-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--brand-accent);
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.profil-hub p {
+  flex: 1 1 320px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.profil-hub strong {
+  color: #FFFFFF;
+}
+
+.profil-hub-btn {
+  min-height: 44px;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.profil-hub-btn:hover {
+  background: var(--brand-light);
+}
+
+.profil-continuity {
+  margin-top: 36px;
+  padding: 28px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card-alt);
+}
+
+.profil-continuity-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profil-continuity-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.profil-continuity-list .profil-num {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.profil-continuity-list p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+/* ---------- Tujuan & Sasaran ---------- */
+.profil-goal-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+/* Tujuan: white card so the section has a clear primary block beside Sasaran */
+.profil-goal {
+  padding: 28px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+}
+
+.profil-goal-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.profil-goal-head .profil-block-title {
+  margin: 0;
+}
+
+.profil-goal-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  font-size: 18px;
+}
+
+/* A long official sentence: reading size, not display size */
+.profil-goal-sentence {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--text-primary);
+  max-width: 62ch;
+  margin-bottom: 24px;
+}
+
+/* The sentence's own logic, in order: means, goal, outcome. The chevrons
+   between steps mark that order ("dengan … sehingga …"). */
+.profil-goal-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profil-goal-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-alt);
+}
+
+.profil-goal-step + .profil-goal-step::before {
+  content: '\f054';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  left: -19px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--brand-primary);
+}
+
+.profil-goal-step-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 4px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--brand-primary);
+  font-size: 16px;
+}
+
+.profil-goal-step strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--profil-green-text);
+}
+
+.profil-goal-step p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* Evaluation horizons: ruled columns */
+.profil-horizons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border-top: 2px solid var(--text-primary);
+}
+
+.profil-horizons > div {
+  padding: 14px 16px 0 0;
+}
+
+.profil-horizons > div + div {
+  padding-left: 16px;
+  border-left: 1px solid rgba(17, 28, 22, 0.15);
+}
+
+.profil-horizons dt {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--profil-green-text);
+  margin-bottom: 6px;
+}
+
+.profil-targets {
+  padding: 24px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card-alt);
+}
+
+.profil-targets-intro {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.profil-target-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.profil-target-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--profil-rule);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.profil-target-list i {
+  color: var(--brand-primary);
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* ---------- Struktur organisasi ---------- */
+.profil-org {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: 8px 8px 28px;
+}
+
+.profil-org-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-alt);
+}
+
+.profil-org-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 56px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.profil-org-tab:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.profil-org-tab.is-active {
+  background: var(--text-primary);
+  color: #FFFFFF;
+}
+
+.profil-org-tab-label {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.profil-org-tab-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.profil-org-tab.is-active .profil-org-tab-hint {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.profil-org-panel {
+  padding: 24px 20px 0;
+}
+
+.profil-org-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.profil-org-lead {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  max-width: 72ch;
+  margin-bottom: 20px;
+}
+
+.profil-level-list,
+.profil-duty-list {
+  padding-left: 20px;
+  margin: 0 0 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.profil-level-list li,
+.profil-duty-list li {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  padding-left: 4px;
+}
+
+.profil-level-list li::marker,
+.profil-duty-list li::marker {
+  font-weight: 800;
+  color: var(--profil-green-text);
+}
+
+/* Chart image slot: dashed so it reads as "not here yet", not as a control */
+.profil-chart-slot {
+  margin: 0;
+}
+
+.profil-chart-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 20px;
+  border: 2px dashed rgba(9, 140, 76, 0.35);
+  border-radius: var(--radius-lg);
+  background: rgba(9, 140, 76, 0.04);
+  text-align: center;
+}
+
+.profil-chart-frame i {
+  font-size: 28px;
+  color: var(--brand-primary);
+}
+
+.profil-chart-frame strong {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.profil-chart-slot figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* ---------- Manajemen ---------- */
+.profil-component-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 40px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+}
+
+.profil-component {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  padding: 24px 0;
+  border-top: 1px solid var(--profil-rule);
+}
+
+.profil-component-num {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--profil-green-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.profil-component-title {
+  font-size: 19px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.profil-component-facts {
+  margin: 14px 0 0;
+  border-bottom: 1px solid var(--profil-rule);
+}
+
+.profil-component-facts div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--profil-rule);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.profil-component-facts dt {
+  font-weight: 700;
+  color: var(--profil-green-text);
+}
+
+.profil-component-facts dd {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.profil-component .profil-text-link {
+  margin-top: 6px;
+}
+
+/* Monev: the page's one elevated panel (it holds most of the source text) */
+.profil-monev {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 32px;
+}
+
+.profil-monev-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--text-primary);
+}
+
+.profil-monev-part {
+  padding-top: 28px;
+}
+
+.profil-monev-part + .profil-monev-part {
+  margin-top: 32px;
+  border-top: 1px solid var(--profil-rule);
+}
+
+.profil-monev-part-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.profil-monev-facts {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 0.8fr 1.2fr;
+  gap: 8px;
+  margin: 20px 0 28px;
+}
+
+.profil-monev-facts div {
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-alt);
+}
+
+.profil-monev-facts dt {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--profil-green-text);
+  margin-bottom: 4px;
+}
+
+.profil-monev-facts dt i {
+  width: 16px;
+  color: var(--brand-primary);
+}
+
+.profil-monev-facts dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.profil-checklist {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.profil-checklist-group + .profil-checklist-group {
+  margin-top: 20px;
+}
+
+.profil-checklist ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.profil-checklist li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 6px;
+  padding: 7px 0;
+  font-size: 14px;
+  line-height: 1.45;
+  border-bottom: 1px solid rgba(17, 28, 22, 0.08);
+}
+
+.profil-check-num {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--profil-green-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.profil-eval-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  margin: 24px 0 28px;
+}
+
+.profil-horizons-lead {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+/* Three periods named in the source: stated as text, not drawn to scale */
+.profil-horizons dd {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.profil-eval-meta {
+  margin: 28px 0 0;
+}
+
+.profil-eval-meta > div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--profil-rule);
+}
+
+.profil-eval-meta dt {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--profil-green-text);
+}
+
+.profil-eval-meta dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.profil-source-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.profil-source-list li {
+  position: relative;
+  padding: 0 0 10px 22px;
+  font-size: 14px;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(17, 28, 22, 0.08);
+}
+
+.profil-source-list li::before {
+  content: '\f058';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-size: 13px;
+  color: var(--brand-primary);
+}
+
+.profil-stages {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profil-stage {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-alt);
+}
+
+.profil-stage-title {
+  display: block;
+  margin: 4px 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.profil-stage p,
+.profil-stage-points li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.profil-stage-points {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  list-style: disc;
+}
+
+.profil-stage-points li::marker {
+  color: var(--brand-primary);
+}
+
+/* ---------- Small laptop: the three-step Tujuan flow needs the full width ---------- */
+@media (max-width: 1180px) {
+  .profil-goal-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 960px) {
+  .profil-pillar-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .profil-pillar {
+    border-radius: var(--radius-xl);
+    padding-bottom: 16px;
+  }
+
+  .profil-hub {
+    margin-top: 12px;
+    border-radius: var(--radius-xl);
+  }
+
+  .profil-continuity-list,
+  .profil-goal-grid,
+  .profil-org-split,
+  .profil-eval-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profil-chart-slot {
+    max-width: 560px;
+  }
+
+  .profil-monev-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profil-checklist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profil-stages {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 600px) {
+  .profil-pillar,
+  .profil-continuity,
+  .profil-targets,
+  .profil-goal {
+    padding: 20px;
+  }
+
+  .profil-goal-sentence {
+    font-size: 16px;
+  }
+
+  .profil-goal-flow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+
+  .profil-goal-step + .profil-goal-step::before {
+    content: '\f078';
+    left: 50%;
+    top: -20px;
+    transform: translateX(-50%);
+  }
+
+  .profil-horizons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profil-horizons > div,
+  .profil-horizons > div + div {
+    padding: 12px 0;
+    border-left: none;
+  }
+
+  .profil-horizons > div + div {
+    border-top: 1px solid rgba(17, 28, 22, 0.15);
+  }
+
+  .profil-target-list,
+  .profil-component-list,
+  .profil-monev-facts,
+  .profil-checklist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profil-org {
+    padding: 6px 6px 20px;
+  }
+
+  .profil-org-panel {
+    padding: 20px 10px 0;
+  }
+
+  .profil-org-tab {
+    padding: 10px 12px;
+  }
+
+  .profil-monev {
+    padding: 20px;
+  }
+
+  .profil-component-num {
+    font-size: 26px;
+  }
+
+  .profil-component-facts div,
+  .profil-eval-meta > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
