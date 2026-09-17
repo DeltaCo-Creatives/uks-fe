@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { faqsList } from '../data/portalData';
+import { faqsList, contactInfo } from '../data/portalData';
 
 export default function KontakView() {
   const [openFaq, setOpenFaq] = useState(0);
@@ -54,8 +54,7 @@ export default function KontakView() {
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
                   <strong>Sekretariat Pembina UKS/M Pusat</strong><br />
                   Kementerian Pendidikan Dasar dan Menengah RI<br />
-                  Gedung E Lantai 17, Kompleks Kemendikdasmen<br />
-                  Jl. Jenderal Sudirman, Senayan, Jakarta 10270
+                  {contactInfo.address}
                 </p>
               </div>
 
@@ -67,10 +66,10 @@ export default function KontakView() {
                   Helpdesk &amp; Call Center
                 </h4>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  <strong>Call Center ULT Kemendikdasmen:</strong> 177<br />
-                  <strong>Hotline Khusus UKS/M:</strong> (021) 572-5034<br />
-                  <strong>Email:</strong> uks@kemendikdasmen.go.id<br />
-                  <strong>Jam Layanan:</strong> Senin - Jumat, 08.00 - 16.00 WIB
+                  <strong>Call Center ULT Kemendikdasmen:</strong> {contactInfo.ultPhone}<br />
+                  <strong>Hotline Khusus UKS/M:</strong> <a href={`tel:${contactInfo.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>{contactInfo.phone}</a><br />
+                  <strong>Email:</strong> <a href={`mailto:${contactInfo.email}`} style={{ color: 'var(--brand-primary)', fontWeight: 700 }}>{contactInfo.email}</a><br />
+                  <strong>Jam Layanan:</strong> {contactInfo.operatingHours}
                 </p>
               </div>
 

@@ -1,19 +1,7 @@
 import { useState } from 'react';
-import { realBooksList, defaultInfografis, pageNavigationConfigs } from '../data/portalData';
+import { realBooksList, defaultInfografis, pageNavigationConfigs, videoList, regulationsList } from '../data/portalData';
 
 const publikasiTabs = pageNavigationConfigs.publikasi.sections;
-
-const videoList = [
-  { id: 'vid-1', title: 'Animasi Edukasi: Tata Cara 6 Langkah Cuci Tangan Pakai Sabun (CTPS)', duration: '03:45', channel: 'Pusdatin Kemendikdasmen', thumb: 'Aset UKS/beritagambar1.png' },
-  { id: 'vid-2', title: 'Tutorial Senam Kebugaran Jasmani (SKJ) & Peregangan Kelas 3 Menit', duration: '05:12', channel: 'Direktorat PDM', thumb: 'Aset UKS/bertaigambar2.png' },
-  { id: 'vid-3', title: 'Film Pendek Edukasi: Sahabat Sehat, Lawan Anemia dengan Aksi Bergizi', duration: '08:20', channel: 'Kementerian Kesehatan RI', thumb: 'Aset UKS/gambar3.png' }
-];
-
-const regulationsList = [
-  { code: 'SKB-2022', badge: 'SKB 4 MENTERI', title: 'SKB 4 Menteri tentang Pembinaan & Pengembangan UKS/M', number: 'Nomor 03/KB/2022, Nomor HK.01.08/MENKES/1325/2022, Nomor 835 Tahun 2022, Nomor 119-5091.A Tahun 2022', size: '2.4 MB', file: 'Aset UKS/buku3.pdf' },
-  { code: 'PERMENDIKBUD-18', badge: 'REGULASI PDM', title: 'Permendikbudristek No. 18 Tahun 2023 tentang Standar Pelayanan Minimal Pendidikan', number: 'Pasal 24: Fasilitasi Layanan Kesehatan Dasar di Sekolah', size: '1.8 MB', file: 'Aset UKS/buku1.pdf' },
-  { code: 'SE-GSS-2024', badge: 'SURAT EDARAN', title: 'Surat Edaran Dirjen PAUD Dikdasmen tentang Kampanye Sekolah Sehat', number: 'Nomor 4447/C/HK.04.01/2024 tentang Gerakan 5 Sehat', size: '890 KB', file: 'Aset UKS/buku2.pdf' }
-];
 
 function BooksPanel() {
   const [selectedBook, setSelectedBook] = useState(null);
