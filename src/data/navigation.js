@@ -34,13 +34,13 @@ export const pageNavigationConfigs = {
     icon: 'fa-solid fa-landmark',
     badge: 'PROFIL',
     drawerTitle: 'NAVIGASI PROFIL',
-    footerText: 'Landasan Filosofis & Struktur Kelembagaan',
+    footerText: 'Deskripsi, Struktur Organisasi & Manajemen',
     sections: [
-      { id: 'sec-profil-deskripsi', label: 'Deskripsi & Dasar Hukum', icon: 'fa-regular fa-file-lines' },
-      { id: 'sec-profil-tujuan', label: 'Tujuan Umum & Khusus', icon: 'fa-solid fa-bullseye' },
-      { id: 'sec-profil-sasaran', label: 'Sasaran 3 Tingkat', icon: 'fa-solid fa-users' },
-      { id: 'sec-profil-struktur', label: 'Struktur Organisasi Personel', icon: 'fa-solid fa-sitemap' },
-      { id: 'sec-profil-manajemen', label: 'Siklus Manajemen Pembinaan', icon: 'fa-solid fa-arrows-spin' }
+      { id: 'sec-profil-deskripsi', label: 'Deskripsi Umum', icon: 'fa-regular fa-file-lines' },
+      { id: 'sec-profil-tujuan', label: 'Tujuan', icon: 'fa-solid fa-bullseye' },
+      { id: 'sec-profil-sasaran', label: 'Sasaran', icon: 'fa-solid fa-users' },
+      { id: 'sec-profil-struktur', label: 'Struktur Organisasi', icon: 'fa-solid fa-sitemap' },
+      { id: 'sec-profil-manajemen', label: 'Manajemen UKS/M', icon: 'fa-solid fa-gears' }
     ]
   },
   'uksm-trias': {
@@ -69,7 +69,7 @@ export const pageNavigationConfigs = {
       { id: 'sec-strat-pengertian', label: 'Apa itu Stratifikasi UKS/M?', icon: 'fa-solid fa-circle-info' },
       { id: 'sec-strat-tujuan', label: 'Tujuan Stratifikasi UKS', icon: 'fa-solid fa-bullseye' },
       { id: 'sec-strat-penilaian', label: 'Cara Penilaian', icon: 'fa-solid fa-scale-balanced' },
-      { id: 'sec-strat-indikator', label: 'Indikator', icon: 'fa-solid fa-layer-group' }
+      { id: 'sec-strat-indikator', label: 'Indikator per Strata', icon: 'fa-solid fa-layer-group' }
     ]
   },
   'uksm-gss': {
@@ -93,33 +93,28 @@ export const pageNavigationConfigs = {
     icon: 'fa-solid fa-bullhorn',
     badge: 'PROGRAM',
     drawerTitle: 'PROGRAM PRIORITAS',
-    footerText: 'Inisiatif Transformasi Nasional 2026',
+    footerText: 'MBG, CKG, 7KAIH, ASRI, SAIH & Gala Kreasi',
     sections: [
       { id: 'sec-prog-mbg', label: '1. Makan Bergizi Gratis (MBG)', icon: 'fa-solid fa-utensils' },
-      { id: 'sec-prog-ckg', label: '2. Cek Kesehatan Gratis (CKG)', icon: 'fa-solid fa-stethoscope' },
-      { id: 'sec-prog-7kaih', label: '3. 7KAIH Karakter Hebat', icon: 'fa-solid fa-medal' },
-      { id: 'sec-prog-asri', label: '4. Gerakan Sekolah ASRI', icon: 'fa-solid fa-tree' },
-      { id: 'sec-prog-saih', label: '5. Semarak SAIH & Gala Kreasi', icon: 'fa-solid fa-star' },
-      { id: 'sec-prog-dokcil', label: '6. Dokter Kecil & KKR', icon: 'fa-solid fa-user-doctor' },
-      { id: 'sec-prog-sarpras', label: '7. Standardisasi Sarpras UKS', icon: 'fa-solid fa-couch' }
+      { id: 'sec-prog-ckg', label: '2. Cek Kesehatan Gratis (CKG) Sekolah', icon: 'fa-solid fa-stethoscope' },
+      { id: 'sec-prog-7kaih', label: '3. Gerakan 7KAIH', icon: 'fa-solid fa-sun' },
+      { id: 'sec-prog-asri', label: '4. Gerakan Sekolah ASRI', icon: 'fa-solid fa-leaf' },
+      { id: 'sec-prog-saih', label: '5. SAIH & Gala Kreasi Video', icon: 'fa-solid fa-trophy' }
     ]
   },
   mitra: {
     id: 'mitra',
     title: 'Kemitraan',
-    path: 'PORTAL / KEMITRAAN MULTIPIHAK',
+    path: 'PORTAL / MITRA ➔ KEMITRAAN UKS/M',
     icon: 'fa-solid fa-handshake-angle',
     badge: 'MITRA',
-    drawerTitle: 'KEMITRAAN MULTIPIHAK',
-    footerText: 'Kolaborasi CSR, NGO & Lembaga Internasional',
+    drawerTitle: 'NAVIGASI KEMITRAAN',
+    footerText: 'Panduan, kriteria, dan daftar mitra',
     sections: [
-      { id: 'sec-mitra-tentang', label: 'Tentang Mitra UKS/M', icon: 'fa-solid fa-circle-info' },
-      { id: 'sec-mitra-alur', label: 'Alur Kemitraan 4 Tahap', icon: 'fa-solid fa-route' },
-      { id: 'sec-mitra-form', label: 'Registrasi Mitra Baru', icon: 'fa-solid fa-file-signature' },
-      { id: 'sec-mitra-katalog', label: 'Katalog Lembaga Mitra', icon: 'fa-solid fa-building-flag' },
-      { id: 'sec-mitra-aktivitas', label: 'Aktivitas Kolaborasi Mitra', icon: 'fa-solid fa-newspaper' },
-      { id: 'sec-mitra-dukungan', label: 'Bentuk Dukungan Nyata', icon: 'fa-solid fa-table-list' },
-      { id: 'sec-mitra-testimoni', label: 'Testimoni Kolaborasi', icon: 'fa-solid fa-quote-left' }
+      { id: 'sec-mitra-panduan', label: 'Panduan Kemitraan', icon: 'fa-solid fa-book-open' },
+      { id: 'sec-mitra-kriteria', label: 'Kriteria & Pendaftaran Mitra', icon: 'fa-solid fa-list-check' },
+      { id: 'sec-mitra-kami', label: 'Mitra Kami', icon: 'fa-solid fa-building' },
+      { id: 'sec-mitra-dukungan', label: 'Dukungan Mitra', icon: 'fa-solid fa-table-list' }
     ]
   },
   informasi: {

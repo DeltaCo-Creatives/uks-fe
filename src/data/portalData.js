@@ -6,12 +6,20 @@
 // Navigation architecture
 export * from './navigation';
 
-// UKS/M Profiles, Trias 3 Pillars, Strata & GSS
+// UKS/M Profiles
 export * from './uksm';
+
+// Profil & Tata Kelola, curated from PROD /tentang-uks/* and /program/manajemen-uks-m
+export * from './profil';
 
 // Trias UKS/M: 3 pillars, 16 sub-programs (verbatim from dev /trias-uks)
 export * from './trias';
+export * from './triasSummaries';
 export * from './stratifikasi';
+
+// Gerakan Sekolah Sehat, curated from PROD /sekolah-sehat/*
+export * from './gss';
+export * from './gssAdvokasi';
 
 // Priority Programs (MBG, CKG, 7KAIH, ASRI, SAIH, etc.)
 export * from './program';

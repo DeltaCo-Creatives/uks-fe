@@ -2,7 +2,7 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import {
   triasPillarsDetail,
   strataLevels,
-  gssFocusList,
+  gssFocusAreas,
   priorityProgramsList,
   realBooksList,
   realNewsList,
@@ -64,13 +64,13 @@ export default function SearchView({ onNavigateView }) {
     });
 
     // 3. GSS 5 Fokus
-    gssFocusList.forEach((fok) => {
+    gssFocusAreas.forEach((fok) => {
       items.push({
         id: `gss-${fok.id}`,
-        title: `${fok.title} (${fok.tag})`,
-        excerpt: `${fok.description} Aksi: ${fok.action}`,
+        title: fok.title,
+        excerpt: `${fok.summary} Kegiatan: ${fok.activities.map((act) => act.label ?? act.text).join(' ')}`,
         typeLabel: 'Gerakan Sekolah Sehat',
-        typeColor: fok.color,
+        typeColor: '#098C4C',
         icon: fok.icon,
         viewKey: 'uksm-gss',
         sectionId: 'sec-gss-5sehat'
@@ -82,7 +82,7 @@ export default function SearchView({ onNavigateView }) {
       items.push({
         id: `prog-${prog.id}`,
         title: prog.title,
-        excerpt: `${prog.kicker} · ${prog.agency}. ${prog.desc} Pilar: ${prog.pillars.join(' ')}`,
+        excerpt: `${prog.agency}. ${prog.lead} ${prog.sections.map((section) => section.title).join(' · ')}`,
         typeLabel: 'Program Prioritas',
         typeColor: '#098C4C',
         icon: prog.icon,

@@ -3,7 +3,7 @@ import Programs from './Programs';
 import Books from './Books';
 import Infografis from './Infografis';
 import HomeStratifikasi from './HomeStratifikasi';
-import { nationalMetrics, gssFocusList, triasPillarsDetail } from '../data/portalData';
+import { nationalMetrics, gssFocusAreas, triasPillarsDetail } from '../data/portalData';
 
 export default function BerandaView({ onNavigateView }) {
   return (
@@ -212,7 +212,7 @@ export default function BerandaView({ onNavigateView }) {
                   5 Fokus Pembiasaan Sekolah Sehat (GSS)
                 </h2>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                  Seluruh 5 pilar terpadu dalam 1 halaman mandiri dengan kotak navigasi tepi kiri.
+                  Sehat Bergizi, Sehat Fisik, Sehat Imunisasi, Sehat Jiwa, dan Sehat Lingkungan di satuan pendidikan.
                 </p>
               </div>
               <button
@@ -220,30 +220,22 @@ export default function BerandaView({ onNavigateView }) {
                 onClick={() => onNavigateView('uksm-gss')}
                 style={{ padding: '10px 20px', fontSize: '12px' }}
               >
-                Buka Halaman GSS &amp; Unduhan &rarr;
+                Buka Halaman Sekolah Sehat
               </button>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '14px' }}>
-              {gssFocusList.map((fok) => (
-                <div
+              {gssFocusAreas.map((fok) => (
+                <button
                   key={fok.id}
-                  onClick={() => onNavigateView('uksm-gss')}
-                  style={{
-                    background: 'var(--bg-card-alt)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '16px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    transition: 'var(--spring)'
-                  }}
+                  type="button"
+                  className="home-gss-focus"
+                  onClick={() => onNavigateView('uksm-gss', 'sec-gss-5sehat')}
                 >
-                  <div style={{ fontSize: '28px', color: fok.color, marginBottom: '8px' }}>
-                    <i className={fok.icon}></i>
-                  </div>
-                  <h4 style={{ fontSize: '14px', fontWeight: 800, marginBottom: '4px' }}>{fok.title}</h4>
-                  <p style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{fok.tag}</p>
-                </div>
+                  <i className={fok.icon} aria-hidden="true"></i>
+                  <span className="home-gss-focus-title">{fok.title}</span>
+                  <span className="home-gss-focus-count">{fok.activities.length} kegiatan</span>
+                </button>
               ))}
             </div>
           </div>

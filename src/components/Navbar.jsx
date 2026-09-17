@@ -120,7 +120,7 @@ export default function Navbar({ currentView, onNavigateView }) {
                         <i className="fa-solid fa-landmark"></i>
                       </div>
                       <h4>1. Profil &amp; Tata Kelola</h4>
-                      <p>Landasan filosofis SKB 4 Menteri, bagan personel terstruktur, dan manajemen UKS.</p>
+                      <p>Deskripsi, tujuan dan sasaran UKS/M, struktur Tim Pembina dan Tim Pelaksana, serta manajemen UKS/M.</p>
                     </div>
                     <div className="nav-cluster-btn">
                       <span>Buka Halaman Profil</span>

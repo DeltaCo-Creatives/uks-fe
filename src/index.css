@@ -853,6 +853,349 @@ ul {
 }
 
 /* ============================================================
+   CONTENT TOOLBAR (search, sort, group, date range)
+   Shared by Warta, UPT Bercerita, and Praktik Baik. Radius, shadow, and
+   spring transition reuse the tokens already used by stat-box / news-card
+   so the toolbar reads as part of the same component family.
+   ============================================================ */
+.content-toolbar {
+  margin-bottom: 24px;
+}
+
+.content-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.content-toolbar-search {
+  flex: 1 1 260px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 0 18px;
+  box-shadow: var(--shadow-card);
+  transition: var(--spring);
+}
+
+.content-toolbar-search:focus-within {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 4px var(--brand-light);
+}
+
+.content-toolbar-search i {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.content-toolbar-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 13px 0;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.content-toolbar-search input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.75;
+}
+
+.content-toolbar-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: var(--bg-app);
+}
+
+.content-toolbar-clear:hover {
+  color: var(--text-primary);
+}
+
+.content-toolbar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.content-toolbar-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-card);
+}
+
+.content-toolbar-select select {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.content-toolbar-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-card);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: var(--spring);
+}
+
+.content-toolbar-pill-btn:hover {
+  color: var(--text-primary);
+}
+
+.content-toolbar-pill-btn-active {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+  background: var(--brand-light);
+}
+
+.content-toolbar-search input:focus-visible,
+.content-toolbar-clear:focus-visible,
+.content-toolbar-select select:focus-visible,
+.content-toolbar-pill-btn:focus-visible,
+.content-toolbar-reset:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.content-toolbar-calendar-wrap {
+  position: relative;
+}
+
+.content-toolbar-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.content-toolbar-reset {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Date range popover */
+.date-range-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  width: 300px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-hover);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 16px;
+}
+
+.date-range-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.date-range-month-label {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.date-range-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+}
+
+.date-range-nav:hover {
+  background: var(--bg-app);
+  color: var(--text-primary);
+}
+
+.date-range-nav:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 1px;
+}
+
+.date-range-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.date-range-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.date-range-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.date-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-radius: 8px;
+}
+
+.date-cell-blank {
+  visibility: hidden;
+}
+
+.date-cell:not(.date-cell-blank):hover {
+  background: var(--bg-app);
+}
+
+.date-cell:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 1px;
+}
+
+.date-cell-marked::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+.date-cell-in-range {
+  background: var(--brand-light);
+  border-radius: 0;
+}
+
+.date-cell-edge {
+  background: var(--brand-primary);
+  color: #FFFFFF;
+}
+
+.date-cell-edge.date-cell-marked::after {
+  background: #FFFFFF;
+}
+
+.date-range-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.date-range-clear {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.date-range-clear:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.date-range-clear:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.date-range-apply {
+  font-size: 13px;
+  font-weight: 800;
+  color: #FFFFFF;
+  background: var(--brand-primary);
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+}
+
+.date-range-clear:focus-visible,
+.date-range-apply:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.content-group-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 28px 0 14px;
+}
+
+.content-group-heading:first-child {
+  margin-top: 4px;
+}
+
+.content-group-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.content-toolbar-empty {
+  text-align: center;
+  padding: 48px 20px;
+  background: var(--bg-app);
+  border-radius: var(--radius-lg);
+}
+
+/* ============================================================
    INFOGRAFIS & FOOTER
    ============================================================ */
 .info-bento {
@@ -1225,6 +1568,30 @@ footer {
   .download-doc-item .btn-pill {
     width: 100%;
     justify-content: center;
+  }
+
+  .content-toolbar-controls {
+    width: 100%;
+  }
+
+  .content-toolbar-select,
+  .content-toolbar-pill-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .content-toolbar-calendar-wrap {
+    flex: 1 1 100%;
+  }
+
+  .content-toolbar-calendar-wrap .content-toolbar-pill-btn {
+    width: 100%;
+  }
+
+  .date-range-popover {
+    left: 0;
+    right: 0;
+    width: auto;
   }
 }
 
@@ -2506,4 +2873,771 @@ footer {
   background: var(--text-primary);
   color: #FFFFFF;
   transform: rotate(90deg) scale(1.1);
+}
+/* ============================================================
+   TRIAS UKS/M PAGE — pillar shortcuts + sub-program accordion
+   ============================================================ */
+.trias-jump-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.trias-jump-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1.5px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--spring);
+}
+
+.trias-jump-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.trias-jump-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trias-jump-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.trias-jump-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.trias-jump-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.trias-jump-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.trias-pillar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #FFFFFF;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.trias-pillar-badge-lg {
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+}
+
+.trias-pillar-section {
+  scroll-margin-top: 96px;
+}
+
+.trias-pillar-header {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.trias-pillar-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 860px;
+  margin-top: 10px;
+}
+
+.trias-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trias-accordion-item {
+  background: var(--bg-card);
+  border: 1.5px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--ease);
+}
+
+.trias-accordion-item:hover,
+.trias-accordion-item.is-open {
+  border-color: var(--pillar-color);
+}
+
+.trias-accordion-item.is-open {
+  box-shadow: var(--shadow-card);
+}
+
+.trias-accordion-trigger {
+  width: 100%;
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.trias-accordion-trigger:focus-visible,
+.trias-jump-card:focus-visible,
+.trias-full-toggle:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.trias-accordion-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.trias-accordion-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.trias-accordion-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.trias-accordion-num {
+  color: var(--text-secondary);
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.trias-accordion-short {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.trias-accordion-chevron {
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.trias-accordion-item.is-open .trias-accordion-chevron {
+  transform: rotate(180deg);
+  color: var(--pillar-color);
+}
+
+.trias-accordion-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0 24px 24px 90px;
+}
+
+.trias-summary {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.trias-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 12px;
+}
+
+.trias-fact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+}
+
+.trias-fact i {
+  font-size: 18px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.trias-fact-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.trias-fact-value {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.trias-full-toggle {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.trias-full {
+  display: flex;
+  flex-direction: column;
+}
+
+.trias-official-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.06);
+}
+
+.trias-text-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.trias-text-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.trias-text-list li > span:last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.trias-text-marker {
+  min-width: 22px;
+  font-weight: 800;
+}
+
+@media (max-width: 600px) {
+  .trias-accordion-trigger {
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .trias-accordion-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 18px;
+  }
+
+  .trias-accordion-title {
+    font-size: 16px;
+  }
+
+  .trias-accordion-panel {
+    padding: 0 16px 20px;
+  }
+
+  /* The kicker already says "Pilar N" — drop the big badge so the title keeps full width */
+  .trias-pillar-badge-lg {
+    display: none;
+  }
+
+  .trias-jump-grid {
+    gap: 10px;
+  }
+
+  .trias-jump-card {
+    padding: 16px 18px;
+    gap: 6px;
+  }
+
+  .trias-jump-desc {
+    display: none;
+  }
+}
+
+/* ============================================================
+   STRATIFIKASI UKS/M PAGE — overview cards + strata ladder
+   ============================================================ */
+.strat-section {
+  scroll-margin-top: 96px;
+}
+
+.strat-section-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+.strat-hero-cta {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: var(--brand-accent);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.strat-hero-cta:hover {
+  transform: scale(1.04);
+}
+
+.strat-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.strat-overview-card {
+  scroll-margin-top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(20px, 3vw, 28px);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.strat-overview-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.strat-overview-title i {
+  color: var(--brand-primary);
+}
+
+.strat-scoring-card {
+  border: 2px solid var(--brand-accent);
+}
+
+.strat-scoring-rule {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.strat-area-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 8px;
+}
+
+.strat-area-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-card-alt);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.strat-area-chip i {
+  color: var(--brand-primary);
+  width: 18px;
+  text-align: center;
+}
+
+.strat-level-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.strat-level-flow-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strat-level-flow-item i {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.strat-scoring-official {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  padding-top: 12px;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.06);
+}
+
+.strat-goal-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+.strat-goal-list li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.strat-goal-list li > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.strat-goal-list strong {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.strat-goal-list li > span:last-child > span {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.strat-goal-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+/* Ladder: 4 steps rising left→right, lower strata sit lower */
+.strat-ladder {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.strat-step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 18px 20px;
+  min-height: calc(104px + var(--step-rise, 0px));
+  justify-content: flex-end;
+  background: var(--bg-card);
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  border-top: 6px solid var(--strata-color);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--spring);
+}
+
+.strat-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+}
+
+.strat-step.is-active {
+  background: var(--strata-bg);
+  border-color: var(--strata-color);
+  box-shadow: var(--shadow-card);
+}
+
+.strat-step:focus-visible,
+.strat-more-btn:focus-visible,
+.strat-next-btn:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.strat-step-code {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.strat-step-name {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.strat-step-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.strat-panel {
+  padding: clamp(20px, 3vw, 32px);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border-top: 6px solid;
+  box-shadow: var(--shadow-card);
+}
+
+.strat-panel-head {
+  margin-bottom: 20px;
+}
+
+.strat-panel-title {
+  font-size: clamp(24px, 3vw, 30px);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.strat-panel-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.strat-panel-desc strong {
+  color: var(--text-primary);
+}
+
+.strat-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.strat-category-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--bg-card-alt);
+  border-radius: var(--radius-md);
+}
+
+.strat-category-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.strat-category-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+.strat-category-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.strat-category-count {
+  min-width: 30px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.strat-checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.strat-checklist-extra {
+  padding-top: 10px;
+}
+
+.strat-checklist li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.strat-checklist i {
+  margin-top: 5px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.strat-more-btn {
+  align-self: flex-start;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 4px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.strat-next-btn {
+  margin-top: 20px;
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.strat-dashboard-cta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: clamp(20px, 3vw, 28px);
+  background: var(--brand-light);
+  border-radius: var(--radius-lg);
+}
+
+.strat-dashboard-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--brand-primary);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.strat-dashboard-text {
+  flex: 1;
+  min-width: 220px;
+}
+
+.strat-dashboard-text h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.strat-dashboard-text p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.strat-dashboard-btn {
+  padding: 12px 22px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .strat-ladder {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .strat-step {
+    min-height: 0;
+    padding: 14px 16px;
+  }
+
+  .strat-step-name {
+    font-size: 18px;
+  }
 }

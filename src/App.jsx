@@ -191,11 +191,15 @@ function App() {
         )}
 
         {currentView === 'program' && (
-          <ProgramView activeSection={activeSection} onNavigateSection={handleNavigateSection} />
+          <ProgramView
+            activeSection={activeSection}
+            onNavigateSection={handleNavigateSection}
+            onNavigate={handleNavigateView}
+          />
         )}
 
         {currentView === 'mitra' && (
-          <MitraView activeSection={activeSection} onNavigateSection={handleNavigateSection} />
+          <MitraView onNavigate={handleNavigateView} />
         )}
 
         {currentView === 'informasi' && (
