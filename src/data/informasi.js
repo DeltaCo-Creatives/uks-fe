@@ -74,24 +74,33 @@ export const realNewsList = [
   }
 ];
 
+// `date` is a placeholder (not sourced from a real publication date) added so the
+// Praktik Baik page can sort/group/filter by date like the other content pages.
+// Replace with the real publication date once these entries are curated from a source.
 export const bestPracticesList = [
   {
+    id: 1,
     icon: '🏆',
     level: 'SD Model Paripurna',
     title: 'SDN 1 Wonosobo: Kantin Kejujuran Bebas 5P',
-    desc: 'Pemberdayaan paguyuban orang tua memasok menu tradisional lokal bernutrisi tinggi bebas 5P (pengawet, perasa, pemanis, pewarna sintetis, pengenyal).'
+    desc: 'Pemberdayaan paguyuban orang tua memasok menu tradisional lokal bernutrisi tinggi bebas 5P (pengawet, perasa, pemanis, pewarna sintetis, pengenyal).',
+    date: '02 September 2026'
   },
   {
+    id: 2,
     icon: '💡',
     level: 'SMP Inovatif Sehat',
     title: 'SMPN 4 Singaraja: Aplikasi Pantau Kebugaran',
-    desc: 'Digitalisasi kartu pantau fisik mandiri siswa untuk mencatat rekor peregangan kelas, hidrasi 2 liter air, dan waktu tidur teratur.'
+    desc: 'Digitalisasi kartu pantau fisik mandiri siswa untuk mencatat rekor peregangan kelas, hidrasi 2 liter air, dan waktu tidur teratur.',
+    date: '18 Agustus 2026'
   },
   {
+    id: 3,
     icon: '🌿',
     level: 'SMA Adiwiyata Mandiri',
     title: 'SMAN 2 Padang: Bank Sampah & Apotek TOGA',
-    desc: 'Pengolahan kompos sisa makanan kantin menjadi pupuk organik kebun sayur sekolah dan budidaya tanaman obat keluarga.'
+    desc: 'Pengolahan kompos sisa makanan kantin menjadi pupuk organik kebun sayur sekolah dan budidaya tanaman obat keluarga.',
+    date: '05 Agustus 2026'
   }
 ];
 
