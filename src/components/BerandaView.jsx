@@ -2,7 +2,8 @@ import Hero from './Hero';
 import Programs from './Programs';
 import Books from './Books';
 import Infografis from './Infografis';
-import { nationalMetrics, gssFocusList } from '../data/portalData';
+import HomeStratifikasi from './HomeStratifikasi';
+import { nationalMetrics, gssFocusList, triasPillarsDetail } from '../data/portalData';
 
 export default function BerandaView({ onNavigateView }) {
   return (
@@ -60,7 +61,7 @@ export default function BerandaView({ onNavigateView }) {
               onClick={() => onNavigateView('uksm-trias')}
               style={{ padding: '10px 22px', fontSize: '13px' }}
             >
-              Jelajahi 16 Indikator &rarr;
+              Jelajahi Trias UKS/M &rarr;
             </button>
           </div>
 
@@ -91,18 +92,18 @@ export default function BerandaView({ onNavigateView }) {
                 }}>
                   <i className="fa-solid fa-graduation-cap"></i>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)' }}>PILAR 1 · 7 INDIKATOR</span>
+                <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)' }}>PILAR 1 · 7 SUB-PROGRAM</span>
                 <h3 style={{ fontSize: '18px', fontWeight: 800, margin: '6px 0 10px' }}>Pendidikan Kesehatan</h3>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px' }}>
-                  Literasi kesehatan, PHBS, gizi seimbang, kespro, pendidikan karakter 7KAIH, aktivitas fisik, dan dokter kecil.
+                  {triasPillarsDetail.pendidikan.description}
                 </p>
               </div>
               <button
                 className="btn-pill secondary"
-                onClick={() => onNavigateView('uksm-trias')}
+                onClick={() => onNavigateView('uksm-trias', 'sec-trias-pendidikan')}
                 style={{ width: '100%', padding: '10px', fontSize: '12px' }}
               >
-                Buka Halaman Trias (7 Submenu) &rarr;
+                Lihat 7 Sub-program &rarr;
               </button>
             </div>
 
@@ -132,18 +133,18 @@ export default function BerandaView({ onNavigateView }) {
                 }}>
                   <i className="fa-solid fa-kit-medical"></i>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563EB' }}>PILAR 2 · 4 INDIKATOR</span>
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563EB' }}>PILAR 2 · 4 SUB-PROGRAM</span>
                 <h3 style={{ fontSize: '18px', fontWeight: 800, margin: '6px 0 10px' }}>Pelayanan Kesehatan</h3>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px' }}>
-                  Penjaringan berkala siswa, imunisasi BIAS &amp; HPV, distribusi obat cacing &amp; TTD, dan penanganan P3K.
+                  {triasPillarsDetail.pelayanan.description}
                 </p>
               </div>
               <button
                 className="btn-pill secondary"
-                onClick={() => onNavigateView('uksm-trias')}
+                onClick={() => onNavigateView('uksm-trias', 'sec-trias-pelayanan')}
                 style={{ width: '100%', padding: '10px', fontSize: '12px' }}
               >
-                Buka Halaman Trias (4 Submenu) &rarr;
+                Lihat 4 Sub-program &rarr;
               </button>
             </div>
 
@@ -173,23 +174,26 @@ export default function BerandaView({ onNavigateView }) {
                 }}>
                   <i className="fa-solid fa-seedling"></i>
                 </div>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#059669' }}>PILAR 3 · 5 INDIKATOR</span>
-                <h3 style={{ fontSize: '18px', fontWeight: 800, margin: '6px 0 10px' }}>Pembinaan Lingkungan</h3>
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#059669' }}>PILAR 3 · 5 SUB-PROGRAM</span>
+                <h3 style={{ fontSize: '18px', fontWeight: 800, margin: '6px 0 10px' }}>Pembinaan Lingkungan Sekolah Sehat</h3>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '16px' }}>
-                  Sanitasi jamban terpisah gender, kantin higienis, apotek TOGA, PSN 3M, dan kawasan 100% bebas asap rokok/napza.
+                  {triasPillarsDetail.lingkungan.description}
                 </p>
               </div>
               <button
                 className="btn-pill secondary"
-                onClick={() => onNavigateView('uksm-trias')}
+                onClick={() => onNavigateView('uksm-trias', 'sec-trias-lingkungan')}
                 style={{ width: '100%', padding: '10px', fontSize: '12px' }}
               >
-                Buka Halaman Trias (5 Submenu) &rarr;
+                Lihat 5 Sub-program &rarr;
               </button>
             </div>
           </div>
         </div>
       </section>
+
+      {/* 3b. Stratifikasi UKS/M — 4 strata teaser */}
+      <HomeStratifikasi onNavigateView={onNavigateView} />
 
       {/* 4. Fokus 5 Sehat GSS Teaser */}
       <section id="sec-home-gss" className="section" style={{ paddingBottom: '30px' }}>

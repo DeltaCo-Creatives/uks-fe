@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import {
-  triasPillarsDetail,
-  strataLevels,
   gssFocusList,
   gssAdvocacyDocs
 } from '../data/portalData';
+import TriasPage from './uksm/TriasPage';
+import StratifikasiPage from './uksm/StratifikasiPage';
 
 export default function UksmClusters({ activeSubpage, onChangeView }) {
   // Profil state
   const [orgTab, setOrgTab] = useState('pembina');
-  const [selectedStrata, setSelectedStrata] = useState('all');
 
   // GSS state
   const [advFilter, setAdvFilter] = useState('all');
@@ -41,11 +40,18 @@ export default function UksmClusters({ activeSubpage, onChangeView }) {
             <span>2. TRIAS UKS/M</span>
           </button>
           <button
+            className={`subnav-pill ${activeSubpage === 'uksm-stratifikasi' ? 'active' : ''}`}
+            onClick={() => onChangeView('uksm-stratifikasi')}
+          >
+            <i className="fa-solid fa-layer-group"></i>
+            <span>3. Stratifikasi UKS/M</span>
+          </button>
+          <button
             className={`subnav-pill ${activeSubpage === 'uksm-gss' ? 'active' : ''}`}
             onClick={() => onChangeView('uksm-gss')}
           >
             <i className="fa-solid fa-apple-whole"></i>
-            <span>3. Sekolah Sehat (GSS)</span>
+            <span>4. Sekolah Sehat (GSS)</span>
           </button>
         </div>
       </div>
@@ -64,7 +70,7 @@ export default function UksmClusters({ activeSubpage, onChangeView }) {
               Profil Lembaga &amp; Manajemen Tata Kelola UKS/M
             </h1>
             <p className="subpage-hero-desc">
-              Pijakan filosofis SKB 4 Menteri, struktur tim pembina berjenjang dari pusat hingga satuan pendidikan, empat strata akreditasi kesiapan sekolah, dan siklus pengelolaan terpadu dana BOSP.
+              Pijakan filosofis SKB 4 Menteri, struktur tim pembina berjenjang dari pusat hingga satuan pendidikan, dan siklus pengelolaan terpadu dana BOSP.
             </p>
           </div>
 
@@ -269,104 +275,6 @@ export default function UksmClusters({ activeSubpage, onChangeView }) {
             </div>
           </section>
 
-          {/* 4. Stratifikasi 4 Strata Interaktif */}
-          <section id="sec-profil-stratifikasi" className="section">
-            <div className="section-header" data-gsap="reveal">
-              <div>
-                <span className="section-kicker">Standar Kesiapan Satpen</span>
-                <h2 className="section-title">Stratifikasi UKS/M (4 Strata Kesiapan)</h2>
-              </div>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <button
-                  className={`subnav-pill ${selectedStrata === 'all' ? 'active' : ''}`}
-                  onClick={() => setSelectedStrata('all')}
-                  style={{ padding: '8px 16px', fontSize: '12px' }}
-                >
-                  Semua Strata
-                </button>
-                {strataLevels.map(lvl => (
-                  <button
-                    key={lvl.key}
-                    className={`subnav-pill ${selectedStrata === lvl.key ? 'active' : ''}`}
-                    onClick={() => setSelectedStrata(lvl.key)}
-                    style={{ padding: '8px 16px', fontSize: '12px' }}
-                  >
-                    {lvl.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
-              {strataLevels.map(lvl => {
-                const isMatch = selectedStrata === 'all' || selectedStrata === lvl.key;
-                return (
-                  <div
-                    key={lvl.key}
-                    className="stat-box"
-                    style={{
-                      borderTop: `6px solid ${lvl.color}`,
-                      opacity: isMatch ? 1 : 0.35,
-                      transform: isMatch ? 'translateY(0)' : 'scale(0.98)',
-                      transition: 'var(--spring)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    <div>
-                      <span className="section-kicker" style={{ alignSelf: 'flex-start', margin: '0 0 10px', color: lvl.color, background: lvl.bgColor }}>
-                        {lvl.name.toUpperCase()}
-                      </span>
-                      <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '6px' }}>{lvl.name.replace(/^\d+\.\s*/, '')}</h3>
-                      <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>{lvl.subtitle}</p>
-                      
-                      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--text-primary)' }}>
-                        {lvl.requirements.map((req, idx) => (
-                          <li key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                            <i className="fa-solid fa-circle-check" style={{ color: lvl.color, marginTop: '4px', fontSize: '12px' }}></i>
-                            <span>{req}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Evaluation Rule Alert */}
-            <div style={{
-              background: 'var(--bg-card)',
-              border: '2px solid var(--brand-accent)',
-              borderRadius: 'var(--radius-xl)',
-              padding: '20px 28px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '18px',
-              marginTop: '24px',
-              boxShadow: 'var(--shadow-card)'
-            }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '50%',
-                background: '#FEF3C7',
-                color: '#D97706',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '20px',
-                flexShrink: 0
-              }}>
-                <i className="fa-solid fa-triangle-exclamation"></i>
-              </div>
-              <div style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.6 }}>
-                <strong>Aturan Penilaian Resmi:</strong> Satuan pendidikan dinyatakan sah berada di suatu strata apabila telah memenuhi <strong>100% (seluruh) indikator</strong> pada tingkatan tersebut. Tidak ada sistem pembulatan parsial.
-              </div>
-            </div>
-          </section>
-
           {/* 5. Siklus Manajemen Pembinaan */}
           <section id="sec-profil-manajemen" className="section">
             <div className="section-header" data-gsap="reveal">
@@ -415,163 +323,26 @@ export default function UksmClusters({ activeSubpage, onChangeView }) {
       )}
 
       {/* ============================================================
-          SUBPAGE 2: TRIAS UKS/M (16 INDIKATOR)
+          SUBPAGE 2: TRIAS UKS/M (3 PILAR · 16 SUB-PROGRAM)
           ============================================================ */}
-      {activeSubpage === 'uksm-trias' && (
-        <div>
-          {/* Subpage Hero Banner */}
-          <div className="subpage-hero-banner" data-gsap="reveal">
-            <span className="subpage-hero-kicker">
-              <i className="fa-solid fa-shield-heart"></i> Kluster 2 · TRIAS UKS/M (16 Indikator)
-            </span>
-            <h1 className="subpage-hero-title">
-              TRIAS UKS/M : 3 Pilar Pelaksanaan di Satuan Pendidikan
-            </h1>
-            <p className="subpage-hero-desc">
-              Tiga pilar pokok yang menjadi ruh pembiasaan hidup sehat: (1) Pendidikan Kesehatan (7 indikator), (2) Pelayanan Kesehatan (4 indikator), dan (3) Pembinaan Lingkungan Sekolah Sehat (5 indikator).
-            </p>
-          </div>
+      {activeSubpage === 'uksm-trias' && <TriasPage />}
 
-          {/* Pilar 1: Pendidikan Kesehatan (7 Indikator) */}
-          <section id="sec-trias-pendidikan" className="section" style={{ paddingTop: '10px' }}>
-            <div className="section-header" data-gsap="reveal">
-              <div>
-                <span className="section-kicker">Pilar 1 · 7 Indikator</span>
-                <h2 className="section-title">(1) Pendidikan Kesehatan</h2>
-              </div>
-            </div>
-
-            <div className="about-bento-frame" data-gsap="reveal" style={{ marginBottom: '28px' }}>
-              <div className="about-grid" style={{ gridTemplateColumns: '1fr', marginBottom: '20px' }}>
-                <div className="about-card" style={{ padding: '28px 32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div className="program-icon" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', margin: 0 }}>
-                      <i className="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: '24px', margin: 0, color: 'white' }}>Pendidikan Kesehatan Terintegrasi</h3>
-                      <p style={{ margin: '4px 0 0', color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
-                        Membangun pengetahuan, afektif, dan keterampilan perilaku hidup sehat peserta didik sejak dini.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="indicator-bento-grid">
-                {triasPillarsDetail.pendidikan.indicators.map(ind => (
-                  <div key={ind.id} id={ind.id} className="indicator-card">
-                    <div>
-                      <span className="indicator-card-tag">{ind.tag}</span>
-                      <h4>{ind.title}</h4>
-                      <p>{ind.desc}</p>
-                    </div>
-                    <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)' }}>
-                      <i className="fa-solid fa-check-circle" style={{ marginRight: '4px' }}></i> Indikator Terverifikasi
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Pilar 2: Pelayanan Kesehatan (4 Indikator) */}
-          <section id="sec-trias-pelayanan" className="section">
-            <div className="section-header" data-gsap="reveal">
-              <div>
-                <span className="section-kicker" style={{ background: '#DBEAFE', color: '#2563EB' }}>Pilar 2 · 4 Indikator</span>
-                <h2 className="section-title">(2) Pelayanan Kesehatan</h2>
-              </div>
-            </div>
-
-            <div className="about-bento-frame" data-gsap="reveal" style={{ marginBottom: '28px' }}>
-              <div className="about-grid" style={{ gridTemplateColumns: '1fr', marginBottom: '20px' }}>
-                <div className="about-card" style={{ background: '#1E40AF', padding: '28px 32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div className="program-icon" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', margin: 0 }}>
-                      <i className="fa-solid fa-kit-medical"></i>
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: '24px', margin: 0, color: 'white' }}>Pelayanan Preventif &amp; Kuratif Ringan</h3>
-                      <p style={{ margin: '4px 0 0', color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
-                        Pemeriksaan rutin bekerja sama dengan Puskesmas pembina untuk deteksi dini masalah kesehatan.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="indicator-bento-grid">
-                {triasPillarsDetail.pelayanan.indicators.map(ind => (
-                  <div key={ind.id} id={ind.id} className="indicator-card">
-                    <div>
-                      <span className="indicator-card-tag" style={{ background: '#DBEAFE', color: '#2563EB' }}>{ind.tag}</span>
-                      <h4>{ind.title}</h4>
-                      <p>{ind.desc}</p>
-                    </div>
-                    <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: '11px', fontWeight: 800, color: '#2563EB' }}>
-                      <i className="fa-solid fa-check-circle" style={{ marginRight: '4px' }}></i> Indikator Terverifikasi
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Pilar 3: Pembinaan Lingkungan (5 Indikator) */}
-          <section id="sec-trias-lingkungan" className="section">
-            <div className="section-header" data-gsap="reveal">
-              <div>
-                <span className="section-kicker" style={{ background: '#D1FAE5', color: '#059669' }}>Pilar 3 · 5 Indikator</span>
-                <h2 className="section-title">(3) Pembinaan Lingkungan Sekolah Sehat</h2>
-              </div>
-            </div>
-
-            <div className="about-bento-frame" data-gsap="reveal">
-              <div className="about-grid" style={{ gridTemplateColumns: '1fr', marginBottom: '20px' }}>
-                <div className="about-card" style={{ background: '#059669', padding: '28px 32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div className="program-icon" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', margin: 0 }}>
-                      <i className="fa-solid fa-seedling"></i>
-                    </div>
-                    <div>
-                      <h3 style={{ fontSize: '24px', margin: 0, color: 'white' }}>Ekosistem Bersih, Hijau &amp; Aman</h3>
-                      <p style={{ margin: '4px 0 0', color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
-                        Menjaga sanitasi prima, kantin higienis, penghijauan, dan zona bebas rokok/napza 100%.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="indicator-bento-grid">
-                {triasPillarsDetail.lingkungan.indicators.map(ind => (
-                  <div key={ind.id} id={ind.id} className="indicator-card">
-                    <div>
-                      <span className="indicator-card-tag" style={{ background: '#D1FAE5', color: '#059669' }}>{ind.tag}</span>
-                      <h4>{ind.title}</h4>
-                      <p>{ind.desc}</p>
-                    </div>
-                    <div style={{ marginTop: '16px', paddingTop: '10px', borderTop: '1px solid rgba(0,0,0,0.06)', fontSize: '11px', fontWeight: 800, color: '#059669' }}>
-                      <i className="fa-solid fa-check-circle" style={{ marginRight: '4px' }}></i> Indikator Terverifikasi
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
+      {/* ============================================================
+          SUBPAGE 3: STRATIFIKASI UKS/M (4 STRATA)
+          ============================================================ */}
+      {activeSubpage === 'uksm-stratifikasi' && (
+        <StratifikasiPage />
       )}
 
       {/* ============================================================
-          SUBPAGE 3: SEKOLAH SEHAT (GSS & 5 SEHAT)
+          SUBPAGE 4: SEKOLAH SEHAT (GSS & 5 SEHAT)
           ============================================================ */}
       {activeSubpage === 'uksm-gss' && (
         <div>
           {/* Subpage Hero Banner */}
           <div className="subpage-hero-banner" data-gsap="reveal">
             <span className="subpage-hero-kicker">
-              <i className="fa-solid fa-apple-whole"></i> Kluster 3 · Gerakan Sekolah Sehat (GSS)
+              <i className="fa-solid fa-apple-whole"></i> Kluster 4 · Gerakan Sekolah Sehat (GSS)
             </span>
             <h1 className="subpage-hero-title">
               Gerakan Sekolah Sehat &amp; 5 Fokus Pembiasaan
