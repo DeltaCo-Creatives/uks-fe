@@ -9,170 +9,100 @@ import {
   strataLevels
 } from '../../data/portalData';
 import ContentPlaceholder from '../ContentPlaceholder';
+import StrataExplorer from './StrataExplorer';
 
-const cardStyle = {
-  background: '#FFFFFF',
-  borderRadius: 'var(--radius-lg)',
-  padding: '22px',
-  boxShadow: 'var(--shadow-card)'
-};
-
-const iconBadgeStyle = (color, bg) => ({
-  width: '40px',
-  height: '40px',
-  borderRadius: 'var(--radius-md)',
-  background: bg,
-  color,
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '17px',
-  flexShrink: 0
-});
-
-function SectionHeader({ kicker, title }) {
+/** Tujuan: the 4 goals as a compact icon list. */
+function GoalsCard() {
   return (
-    <div className="section-header" data-gsap="reveal">
-      <div>
-        <span className="section-kicker">{kicker}</span>
-        <h2 className="section-title">{title}</h2>
-      </div>
+    <div id="sec-strat-tujuan" className="strat-overview-card" data-gsap="reveal">
+      <h3 className="strat-overview-title">
+        <i className="fa-solid fa-bullseye" aria-hidden="true"></i> Tujuan Stratifikasi UKS
+      </h3>
+      <ul className="strat-goal-list">
+        {stratifikasiGoals.map((goal) => (
+          <li key={goal.id}>
+            <span className="strat-goal-icon" aria-hidden="true"><i className={goal.icon}></i></span>
+            <span>
+              <strong>{goal.title}</strong>
+              <span>{goal.description}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-/** One strata: dev's sentence + the 4 categories, each with its SD requirements. */
-function StrataBlock({ strata, previous }) {
+/** Cara Penilaian: the official rule, with the 4 areas that must all be met shown as chips. */
+function ScoringCard() {
   return (
-    <div style={{ ...cardStyle, borderTop: `6px solid ${strata.color}`, padding: 'clamp(20px, 3vw, 28px)' }} data-gsap="reveal">
-      <span className="indicator-card-tag" style={{ background: strata.bgColor, color: strata.color }}>
-        STRATA {strata.code}
-      </span>
-      <h3 style={{ fontSize: 'clamp(20px, 2.4vw, 26px)', fontWeight: 800, margin: '0 0 6px', color: 'var(--text-primary)' }}>
-        {strata.name}
+    <div id="sec-strat-penilaian" className="strat-overview-card strat-scoring-card" data-gsap="reveal">
+      <h3 className="strat-overview-title">
+        <i className="fa-solid fa-scale-balanced" aria-hidden="true"></i> {stratifikasiScoring.title}
       </h3>
-      <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'var(--text-secondary)', margin: '0 0 18px' }}>
-        Apabila sekolah telah memenuhi seluruh indikator {strata.name.toLowerCase()}:
-        {previous && (
-          <>
-            {' '}
-            <strong style={{ color: 'var(--text-primary)' }}>
-              dipenuhinya strata {previous.name.toLowerCase()}, plus:
-            </strong>
-          </>
-        )}
-      </p>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '14px', alignItems: 'start' }}>
-        {strataCategories.map((cat, idx) => (
-          <div key={cat.id} style={{ background: 'var(--bg-card-alt)', borderRadius: 'var(--radius-md)', padding: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-              <span style={{ ...iconBadgeStyle(strata.color, strata.bgColor), width: '30px', height: '30px', fontSize: '12px', borderRadius: '50%' }}>
-                <i className={cat.icon}></i>
-              </span>
-              <h4 style={{ fontSize: '14px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                {idx + 1}. {cat.title}
-              </h4>
-            </div>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', margin: 0, padding: 0 }}>
-              {strata.requirementsSD[cat.id].map((req) => (
-                <li key={req} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)' }}>
-                  <i className="fa-solid fa-circle-check" style={{ color: strata.color, marginTop: '4px', fontSize: '11px' }}></i>
-                  <span>{req}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <p className="strat-scoring-rule">Satu strata tercapai jika <strong>semua indikator di 4 bidang ini terpenuhi</strong>:</p>
+      <div className="strat-area-chips">
+        {strataCategories.map((cat) => (
+          <span key={cat.id} className="strat-area-chip">
+            <i className={cat.icon} aria-hidden="true"></i> {cat.title}
+          </span>
         ))}
       </div>
+      <div className="strat-level-flow" aria-label="Urutan strata">
+        {strataLevels.map((lvl, idx) => (
+          <span key={lvl.key} className="strat-level-flow-item">
+            <span style={{ color: lvl.color }}>{lvl.name}</span>
+            {idx < strataLevels.length - 1 && <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>}
+          </span>
+        ))}
+      </div>
+      <p className="strat-scoring-official">{stratifikasiScoring.body}</p>
     </div>
   );
 }
 
 /**
- * UKS/M ▸ Stratifikasi UKS/M — mirrors dev's /stratifikasi-uks page:
- * pengertian, tujuan, cara penilaian, indikator (4 strata), then the
- * external dashboard CTA. Indicator details are dev's SD rubric.
+ * UKS/M ▸ Stratifikasi UKS/M — dev's /stratifikasi-uks content: a short
+ * overview (pengertian, tujuan, penilaian), the strata explorer (SD rubric),
+ * then the external dashboard.
  */
 export default function StratifikasiPage() {
   return (
     <div>
-      {/* Subpage Hero Banner */}
       <div className="subpage-hero-banner" data-gsap="reveal">
         <span className="subpage-hero-kicker">
           <i className="fa-solid fa-layer-group"></i> Kluster 3 · Stratifikasi UKS/M
         </span>
         <h1 className="subpage-hero-title">Stratifikasi UKS</h1>
-        <p className="subpage-hero-desc">
-          {strataLevels.map((s) => s.name).join(' · ')}
-        </p>
+        <p className="subpage-hero-desc">{stratifikasiIntro.body}</p>
+        <a className="btn-pill strat-hero-cta" href={STRATIFIKASI_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+          Masuk ke Dasbor Stratifikasi UKS/M <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+        </a>
       </div>
 
-      {/* 1. Pengertian */}
-      <section id="sec-strat-pengertian" className="section" style={{ paddingTop: '10px' }}>
-        <SectionHeader kicker="Pengertian" title={stratifikasiIntro.title} />
-        <div className="about-card" data-gsap="reveal" style={{ ...cardStyle, display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-          <span style={iconBadgeStyle('var(--brand-primary)', 'var(--brand-light)')}>
-            <i className="fa-solid fa-circle-info"></i>
-          </span>
-          <p style={{ fontSize: '15px', lineHeight: 1.8, color: 'var(--text-primary)', margin: 0 }}>
-            {stratifikasiIntro.body}
-          </p>
+      <section id="sec-strat-pengertian" className="section strat-section" style={{ paddingTop: '10px' }}>
+        <div className="section-header" data-gsap="reveal">
+          <div>
+            <span className="section-kicker">Sekilas</span>
+            <h2 className="section-title">{stratifikasiIntro.title}</h2>
+          </div>
+        </div>
+        <div className="strat-overview-grid">
+          <ScoringCard />
+          <GoalsCard />
         </div>
       </section>
 
-      {/* 2. Tujuan */}
-      <section id="sec-strat-tujuan" className="section">
-        <SectionHeader kicker="Tujuan" title="Tujuan Stratifikasi UKS" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
-          {stratifikasiGoals.map((goal) => (
-            <div key={goal.id} style={cardStyle} data-gsap="reveal">
-              <span style={{ ...iconBadgeStyle('var(--brand-primary)', 'var(--brand-light)'), marginBottom: '14px' }}>
-                <i className={goal.icon}></i>
-              </span>
-              <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 6px', color: 'var(--text-primary)' }}>{goal.title}</h3>
-              <p style={{ fontSize: '13px', lineHeight: 1.6, color: 'var(--text-secondary)', margin: 0 }}>{goal.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Cara Penilaian */}
-      <section id="sec-strat-penilaian" className="section">
-        <SectionHeader kicker="Penilaian" title={stratifikasiScoring.title} />
-        <div data-gsap="reveal" style={{
-          ...cardStyle,
-          border: '2px solid var(--brand-accent)',
-          display: 'flex',
-          gap: '16px',
-          alignItems: 'flex-start'
-        }}>
-          <span style={iconBadgeStyle('#D97706', '#FEF3C7')}>
-            <i className="fa-solid fa-scale-balanced"></i>
-          </span>
-          <p style={{ fontSize: '15px', lineHeight: 1.8, color: 'var(--text-primary)', margin: 0 }}>
-            {stratifikasiScoring.body}
-          </p>
-        </div>
-      </section>
-
-      {/* 4. Indikator — 4 strata, SD rubric */}
-      <section id="sec-strat-indikator" className="section">
+      <section id="sec-strat-indikator" className="section strat-section">
         <div className="section-header" data-gsap="reveal">
           <div>
             <span className="section-kicker">Indikator · Jenjang SD</span>
-            <h2 className="section-title">Indikator</h2>
-            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '8px 0 0' }}>
-              {stratifikasiIndicatorIntro}
-            </p>
+            <h2 className="section-title">Indikator per Strata</h2>
+            <p className="strat-section-desc">{stratifikasiIndicatorIntro} Pilih strata untuk melihat indikatornya.</p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {strataLevels.map((strata, idx) => (
-            <StrataBlock key={strata.key} strata={strata} previous={strataLevels[idx - 1]} />
-          ))}
-        </div>
+        <StrataExplorer />
 
         <div style={{ marginTop: '20px' }}>
           <ContentPlaceholder
@@ -183,32 +113,15 @@ export default function StratifikasiPage() {
         </div>
       </section>
 
-      {/* Closing CTA — external dashboard */}
       <section className="section">
-        <div data-gsap="reveal" style={{
-          ...cardStyle,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px'
-        }}>
-          <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-            <span style={iconBadgeStyle('var(--brand-primary)', 'var(--brand-light)')}>
-              <i className="fa-solid fa-chart-column"></i>
-            </span>
-            <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-              Dasbor Stratifikasi UKS/M
-            </h3>
+        <div className="strat-dashboard-cta" data-gsap="reveal">
+          <span className="strat-dashboard-icon" aria-hidden="true"><i className="fa-solid fa-chart-column"></i></span>
+          <div className="strat-dashboard-text">
+            <h3>Dasbor Stratifikasi UKS/M</h3>
+            <p>Penilaian strata sekolah/madrasah dilakukan melalui dasbor resmi Stratifikasi UKS/M.</p>
           </div>
-          <a
-            className="btn-pill primary"
-            href={STRATIFIKASI_DASHBOARD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ padding: '10px 22px', fontSize: '13px', textDecoration: 'none' }}
-          >
-            Masuk ke Dasbor Stratifikasi UKS/M <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: '11px', marginLeft: '6px' }}></i>
+          <a className="btn-pill primary strat-dashboard-btn" href={STRATIFIKASI_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
+            Masuk ke Dasbor <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
           </a>
         </div>
       </section>
