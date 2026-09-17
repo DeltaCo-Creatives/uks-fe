@@ -12,22 +12,29 @@ import MitraView from './components/MitraView';
 import InformasiView from './components/InformasiView';
 import PublikasiView from './components/PublikasiView';
 import KontakView from './components/KontakView';
+import SearchView from './components/SearchView';
+import BeritaDetailView from './components/BeritaDetailView';
 import Footer from './components/Footer';
 
-import { pageNavigationConfigs } from './data/portalData';
+import { pageNavigationConfigs, realNewsList } from './data/portalData';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 function App() {
   const [currentView, setCurrentView] = useState('beranda');
   const [activeSection, setActiveSection] = useState(null);
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
   const mainRef = useRef(null);
 
-  // View Navigation Handler
-  const handleNavigateView = (viewKey, targetSectionId = null) => {
+  // View Navigation Handler with optional targetSectionId & extraParam
+  const handleNavigateView = (viewKey, targetSectionId = null, extraParam = null) => {
     // Backwards compatibility alias for 'uksm'
     if (viewKey === 'uksm') {
       viewKey = 'uksm-profil';
+    }
+
+    if (viewKey === 'berita-detail') {
+      setSelectedArticleId(extraParam || targetSectionId || 1);
     }
 
     setCurrentView(viewKey);
@@ -79,7 +86,7 @@ function App() {
     // ScrollSpy for Active Section
     const handleScroll = () => {
       const config = pageNavigationConfigs[currentView];
-      if (!config) return;
+      if (!config || !config.sections || config.sections.length === 0) return;
 
       const scrollPos = window.scrollY + 180;
       let matchedSection = null;
@@ -102,15 +109,18 @@ function App() {
 
   const currentConfig = pageNavigationConfigs[currentView] || pageNavigationConfigs['beranda'];
 
+  // Current article for breadcrumb title if in berita-detail
+  const currentArticle = currentView === 'berita-detail'
+    ? realNewsList.find(n => n.id === Number(selectedArticleId) || n.slug === selectedArticleId) || realNewsList[0]
+    : null;
+
   return (
     <div ref={mainRef} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Primary Floating Navbar */}
       <Navbar currentView={currentView} onNavigateView={handleNavigateView} />
 
-      {/* Universal Left-Edge Hover Navigation Drawer — hidden on Beranda,
-          which has no long anatomy to jump around (the nav dropdowns cover
-          it); every subpage still gets it for in-page section navigation. */}
-      {currentView !== 'beranda' && (
+      {/* Universal Left-Edge Hover Navigation Drawer — hidden on Beranda, Search, & Detail */}
+      {!['beranda', 'search', 'berita-detail'].includes(currentView) && (
         <EdgeDrawer
           currentView={currentView}
           activeSection={activeSection}
@@ -125,6 +135,7 @@ function App() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
+              flexWrap: 'wrap',
               gap: '8px',
               fontSize: '12px',
               color: 'var(--text-secondary)'
@@ -136,8 +147,36 @@ function App() {
               >
                 Beranda
               </a>
-              <span>/</span>
-              <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>{currentConfig.title}</span>
+
+              {currentView === 'berita-detail' ? (
+                <>
+                  <span>/</span>
+                  <a
+                    href="#informasi"
+                    onClick={(e) => { e.preventDefault(); handleNavigateView('informasi', 'sec-info-berita'); }}
+                    style={{ color: 'var(--brand-primary)', fontWeight: 700 }}
+                  >
+                    Informasi
+                  </a>
+                  <span>/</span>
+                  <a
+                    href="#berita"
+                    onClick={(e) => { e.preventDefault(); handleNavigateView('informasi', 'sec-info-berita'); }}
+                    style={{ color: 'var(--brand-primary)', fontWeight: 700 }}
+                  >
+                    Warta Terkini
+                  </a>
+                  <span>/</span>
+                  <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {currentArticle ? currentArticle.title : 'Detail Warta'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span>/</span>
+                  <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>{currentConfig.title}</span>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -147,7 +186,7 @@ function App() {
           <BerandaView onNavigateView={handleNavigateView} />
         )}
 
-        {['uksm-profil', 'uksm-trias', 'uksm-gss'].includes(currentView) && (
+        {['uksm-profil', 'uksm-trias', 'uksm-stratifikasi', 'uksm-gss'].includes(currentView) && (
           <UksmClusters activeSubpage={currentView} onChangeView={handleNavigateView} />
         )}
 
@@ -160,7 +199,11 @@ function App() {
         )}
 
         {currentView === 'informasi' && (
-          <InformasiView activeSection={activeSection} onNavigateSection={handleNavigateSection} />
+          <InformasiView
+            activeSection={activeSection}
+            onNavigateSection={handleNavigateSection}
+            onNavigateView={handleNavigateView}
+          />
         )}
 
         {currentView === 'publikasi' && (
@@ -169,6 +212,14 @@ function App() {
 
         {currentView === 'kontak' && (
           <KontakView />
+        )}
+
+        {currentView === 'search' && (
+          <SearchView onNavigateView={handleNavigateView} />
+        )}
+
+        {currentView === 'berita-detail' && (
+          <BeritaDetailView articleId={selectedArticleId} onNavigateView={handleNavigateView} />
         )}
       </main>
 
