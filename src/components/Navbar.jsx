@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
+import NavTautanDropdown from './NavTautanDropdown';
+import { tautanGroups } from '../data/portalData';
 
 export default function Navbar({ currentView, onNavigateView }) {
   const [scrolled, setScrolled] = useState(false);
-  // Which single dropdown is open: null | 'uksm' | 'program' | 'mitra' | 'informasi' | 'publikasi'
+  // Which single dropdown is open: null | 'uksm' | 'tautan'
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileTautanOpen, setMobileTautanOpen] = useState(false);
 
   useEffect(() => {
-    // On Beranda the hero is ~viewport-height, so the floating pill nav must
-    // wait until most of it has scrolled past — otherwise it hovers directly
-    // over the hero title/copy for the entire first screen of scrolling.
-    // Subpages have no comparable hero, so they can switch almost immediately.
     const handleScroll = () => {
       const threshold = currentView === 'beranda' ? window.innerHeight * 0.55 : 40;
       setScrolled(window.scrollY > threshold);
@@ -40,15 +39,11 @@ export default function Navbar({ currentView, onNavigateView }) {
     onNavigateView(viewKey, sectionId);
   };
 
-  const isUksmActive = ['uksm-profil', 'uksm-trias', 'uksm-gss'].includes(currentView);
+  const isUksmActive = ['uksm-profil', 'uksm-trias', 'uksm-stratifikasi', 'uksm-gss'].includes(currentView);
 
-  // Program / Kemitraan / Informasi / Publikasi are single-page "lobbies" —
-  // picking a topic happens inside the page itself (tab buttons + one big
-  // display panel), so the navbar just links straight there. Only UKS/M
-  // still needs a dropdown here, since it's genuinely 3 separate pages.
   const plainTabs = [
     { key: 'program', label: 'Program' },
-    { key: 'mitra', label: 'Kemitraan' },
+    { key: 'mitra', label: 'Mitra' },
     { key: 'informasi', label: 'Informasi' },
     { key: 'publikasi', label: 'Publikasi' }
   ];
@@ -77,7 +72,7 @@ export default function Navbar({ currentView, onNavigateView }) {
             Beranda
           </a>
 
-          {/* UKS/M Tab with 3-Cluster Dropdown */}
+          {/* UKS/M Tab with 4-Cluster Dropdown */}
           <div
             className="nav-item-has-dropdown"
             onMouseEnter={() => setOpenMenu('uksm')}
@@ -98,22 +93,19 @@ export default function Navbar({ currentView, onNavigateView }) {
               }}
             >
               <i className="fa-solid fa-layer-group" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
-              <span>UKS/M (3 Pilar)</span>
+              <span>UKS/M</span>
               <i className="fa-solid fa-chevron-down" style={{ fontSize: '9px', opacity: 0.7 }}></i>
             </a>
 
-            {/* 3-Cluster Mega Dropdown Menu — the visible card is a nested
-                panel so the outer .nav-cluster-dropdown can extend, invisibly,
-                all the way up to the trigger with no dead hover gap. */}
             <div className={`nav-cluster-dropdown ${openMenu === 'uksm' ? 'is-open' : ''}`}>
               <div className="nav-cluster-panel">
                 <div className="nav-cluster-header">
                   <div className="nav-cluster-title">
                     <i className="fa-solid fa-table-cells-large" style={{ color: 'var(--brand-primary)' }}></i>
-                    <span>Peta 3 Kluster UKS/M (Masing-Masing Memiliki Halaman &amp; Navigasi Mandiri)</span>
+                    <span>Peta 4 Kluster UKS/M (Masing-Masing Memiliki Halaman &amp; Navigasi Mandiri)</span>
                   </div>
                   <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
-                    3 DEDICATED PAGES
+                    4 DEDICATED PAGES
                   </span>
                 </div>
 
@@ -128,7 +120,7 @@ export default function Navbar({ currentView, onNavigateView }) {
                         <i className="fa-solid fa-landmark"></i>
                       </div>
                       <h4>1. Profil &amp; Tata Kelola</h4>
-                      <p>Landasan filosofis SKB 4 Menteri, bagan personel terstruktur, matriks 4 strata kesiapan, dan manajemen UKS.</p>
+                      <p>Landasan filosofis SKB 4 Menteri, bagan personel terstruktur, dan manajemen UKS.</p>
                     </div>
                     <div className="nav-cluster-btn">
                       <span>Buka Halaman Profil</span>
@@ -146,7 +138,7 @@ export default function Navbar({ currentView, onNavigateView }) {
                         <i className="fa-solid fa-shield-heart"></i>
                       </div>
                       <h4>2. TRIAS UKS/M</h4>
-                      <p>3 Pilar pokok di satuan pendidikan: (1) Pendidikan Kesehatan (7 L3), (2) Pelayanan (4 L3), dan (3) Lingkungan (5 L3).</p>
+                      <p>3 pilar: (1) Pendidikan Kesehatan, (2) Pelayanan Kesehatan, dan (3) Pembinaan Lingkungan Sekolah Sehat.</p>
                     </div>
                     <div className="nav-cluster-btn" style={{ color: '#2563EB' }}>
                       <span>Buka Halaman Trias</span>
@@ -154,7 +146,25 @@ export default function Navbar({ currentView, onNavigateView }) {
                     </div>
                   </div>
 
-                  {/* Cluster 3: GSS */}
+                  {/* Cluster 3: Stratifikasi */}
+                  <div
+                    className="nav-cluster-card"
+                    onClick={(e) => handleNavClick(e, 'uksm-stratifikasi')}
+                  >
+                    <div>
+                      <div className="nav-cluster-icon" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
+                        <i className="fa-solid fa-layer-group"></i>
+                      </div>
+                      <h4>3. Stratifikasi UKS/M</h4>
+                      <p>4 strata satuan pendidikan: Dasar, Madya, Utama, dan Paripurna.</p>
+                    </div>
+                    <div className="nav-cluster-btn" style={{ color: '#7C3AED' }}>
+                      <span>Buka Halaman Stratifikasi</span>
+                      <i className="fa-solid fa-arrow-right"></i>
+                    </div>
+                  </div>
+
+                  {/* Cluster 4: GSS */}
                   <div
                     className="nav-cluster-card"
                     onClick={(e) => handleNavClick(e, 'uksm-gss')}
@@ -163,7 +173,7 @@ export default function Navbar({ currentView, onNavigateView }) {
                       <div className="nav-cluster-icon" style={{ background: '#FEF3C7', color: '#D97706' }}>
                         <i className="fa-solid fa-apple-whole"></i>
                       </div>
-                      <h4>3. Sekolah Sehat (GSS)</h4>
+                      <h4>4. Sekolah Sehat (GSS)</h4>
                       <p>Gerakan Sekolah Sehat dengan 5 fokus pembiasaan (Bergizi, Fisik, Imunisasi, Jiwa, Lingkungan) serta listing unduhan.</p>
                     </div>
                     <div className="nav-cluster-btn" style={{ color: '#D97706' }}>
@@ -188,6 +198,33 @@ export default function Navbar({ currentView, onNavigateView }) {
             </a>
           ))}
 
+          {/* Tautan Outbound Dropdown (A1) */}
+          <div
+            className="nav-item-has-dropdown"
+            onMouseEnter={() => setOpenMenu('tautan')}
+            onMouseLeave={() => setOpenMenu(null)}
+          >
+            <a
+              href="#tautan"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenMenu(openMenu === 'tautan' ? null : 'tautan');
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontWeight: openMenu === 'tautan' ? 800 : 600
+              }}
+            >
+              <i className="fa-solid fa-link" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
+              <span>Tautan</span>
+              <i className="fa-solid fa-chevron-down" style={{ fontSize: '9px', opacity: 0.7 }}></i>
+            </a>
+
+            <NavTautanDropdown isOpen={openMenu === 'tautan'} onClose={() => setOpenMenu(null)} />
+          </div>
+
           <a
             href="#kontak"
             className={currentView === 'kontak' ? 'active' : ''}
@@ -198,14 +235,16 @@ export default function Navbar({ currentView, onNavigateView }) {
           </a>
         </div>
 
-        {/* Right Controls: Stratifikasi & Mobile Toggle */}
+        {/* Right Controls: Search & Mobile Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Search Button (A2) */}
           <button
-            onClick={(e) => handleNavClick(e, 'uksm-profil')}
-            className="btn-pill primary nav-strat-desktop"
-            style={{ padding: '8px 16px', fontSize: '12px' }}
+            onClick={(e) => handleNavClick(e, 'search')}
+            className={`nav-search-btn ${currentView === 'search' ? 'active' : ''}`}
+            aria-label="Pencarian Direktori UKS"
+            title="Pencarian Direktori UKS/M"
           >
-            <i className="fa-solid fa-layer-group" style={{ marginRight: '6px' }}></i> Stratifikasi
+            <i className="fa-solid fa-magnifying-glass"></i>
           </button>
 
           {/* Mobile Hamburger Toggle Button */}
@@ -222,6 +261,21 @@ export default function Navbar({ currentView, onNavigateView }) {
         {mobileMenuOpen && (
           <div className="nav-mobile-menu">
             <div className="nav-mobile-list">
+              {/* Mobile Search Item (A2) */}
+              <a
+                href="#pencarian"
+                className={`nav-mobile-item ${currentView === 'search' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'search')}
+                style={{
+                  background: currentView === 'search' ? 'var(--brand-primary)' : 'var(--brand-light)',
+                  color: currentView === 'search' ? '#FFFFFF' : 'var(--brand-primary)',
+                  fontWeight: 800
+                }}
+              >
+                <i className="fa-solid fa-magnifying-glass"></i>
+                <span>Pencarian Direktori UKS</span>
+              </a>
+
               <a
                 href="#beranda"
                 className={`nav-mobile-item ${currentView === 'beranda' ? 'active' : ''}`}
@@ -251,7 +305,16 @@ export default function Navbar({ currentView, onNavigateView }) {
                 onClick={(e) => handleNavClick(e, 'uksm-trias')}
               >
                 <i className="fa-solid fa-shield-heart"></i>
-                <span>2. TRIAS UKS/M (16 Indikator)</span>
+                <span>2. TRIAS UKS/M</span>
+              </a>
+
+              <a
+                href="#stratifikasi"
+                className={`nav-mobile-item indent ${currentView === 'uksm-stratifikasi' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'uksm-stratifikasi')}
+              >
+                <i className="fa-solid fa-layer-group"></i>
+                <span>3. Stratifikasi UKS/M</span>
               </a>
 
               <a
@@ -260,7 +323,7 @@ export default function Navbar({ currentView, onNavigateView }) {
                 onClick={(e) => handleNavClick(e, 'uksm-gss')}
               >
                 <i className="fa-solid fa-apple-whole"></i>
-                <span>3. Sekolah Sehat (GSS)</span>
+                <span>4. Sekolah Sehat (GSS)</span>
               </a>
 
               <div className="nav-mobile-divider"></div>
@@ -271,7 +334,7 @@ export default function Navbar({ currentView, onNavigateView }) {
                 onClick={(e) => handleNavClick(e, 'program')}
               >
                 <i className="fa-solid fa-bullhorn"></i>
-                <span>Program Prioritas (MBG, CKG)</span>
+                <span>Program Prioritas (MBG, CKG, ASRI)</span>
               </a>
 
               <a
@@ -301,6 +364,46 @@ export default function Navbar({ currentView, onNavigateView }) {
                 <span>Pustaka Digital &amp; Modul</span>
               </a>
 
+              {/* Collapsible Mobile Tautan (A1) */}
+              <div
+                className="nav-mobile-group-header"
+                onClick={() => setMobileTautanOpen(!mobileTautanOpen)}
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <i className="fa-solid fa-link"></i>
+                  <span>Tautan 4 Kementerian:</span>
+                </span>
+                <i className={`fa-solid fa-chevron-${mobileTautanOpen ? 'up' : 'down'}`} style={{ fontSize: '10px' }}></i>
+              </div>
+
+              {mobileTautanOpen && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px' }}>
+                  {tautanGroups.map((grp) => (
+                    <div key={grp.group} style={{ marginBottom: '4px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)', padding: '4px 16px 2px' }}>
+                        {grp.group}
+                      </div>
+                      {grp.links.map((lnk) => (
+                        <a
+                          key={lnk.url}
+                          href={lnk.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="nav-mobile-item indent"
+                          style={{ fontSize: '12px', padding: '6px 16px 6px 28px', justifyContent: 'space-between' }}
+                        >
+                          <span>{lnk.label}</span>
+                          <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: '10px', opacity: 0.5 }}></i>
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="nav-mobile-divider"></div>
+
               <a
                 href="#kontak"
                 className={`nav-mobile-item ${currentView === 'kontak' ? 'active' : ''}`}
@@ -312,7 +415,7 @@ export default function Navbar({ currentView, onNavigateView }) {
 
               <div style={{ padding: '12px 16px 4px' }}>
                 <button
-                  onClick={(e) => handleNavClick(e, 'uksm-profil')}
+                  onClick={(e) => handleNavClick(e, 'uksm-stratifikasi')}
                   className="btn-massive"
                   style={{ width: '100%', justifyContent: 'center', fontSize: '14px', padding: '12px' }}
                 >
