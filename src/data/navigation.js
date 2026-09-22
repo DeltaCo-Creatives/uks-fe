@@ -13,7 +13,6 @@ export const pageNavigationConfigs = {
     footerText: 'Ikhtisar Gerakan Sekolah Sehat Nasional',
     sections: [
       { id: 'sec-home-hero', label: 'Hero Stage & Inisiatif', icon: 'fa-solid fa-flag' },
-      { id: 'sec-home-stats', label: 'Metrik Nasional 4 Kementerian', icon: 'fa-solid fa-chart-simple' },
       { id: 'sec-home-trias', label: 'Trias UKS Bento Preview', icon: 'fa-solid fa-shield-heart' },
       { id: 'sec-home-stratifikasi', label: 'Stratifikasi UKS/M (4 Strata)', icon: 'fa-solid fa-layer-group' },
       { id: 'sec-home-programs', label: 'Program Unggulan Nasional', icon: 'fa-solid fa-bolt' },
