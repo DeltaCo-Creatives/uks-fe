@@ -25,30 +25,20 @@ export const VIEW_PATHS = {
 // Everywhere else a section is just a scroll anchor on an already-rendered page.
 const TAB_VIEWS = ['program', 'informasi', 'publikasi'];
 
-const slugById = {};
-const idBySlug = {};
-TAB_VIEWS.forEach((view) => {
-  slugById[view] = {};
-  idBySlug[view] = {};
-  pageNavigationConfigs[view].sections.forEach((section) => {
-    slugById[view][section.id] = section.slug;
-    idBySlug[view][section.slug] = section.id;
-  });
-});
-
 export const isTabView = (viewKey) => TAB_VIEWS.includes(viewKey);
 
 export const defaultTabSlug = (viewKey) => pageNavigationConfigs[viewKey].sections[0].slug;
 
 /** The section a tab slug names, or undefined when the slug is not one of ours. */
-export const sectionIdFromSlug = (viewKey, slug) => idBySlug[viewKey]?.[slug];
+export const sectionIdFromSlug = (viewKey, slug) =>
+  isTabView(viewKey) ? pageNavigationConfigs[viewKey].sections.find((s) => s.slug === slug)?.id : undefined;
 
 export function pathForView(viewKey, sectionId = null) {
   const base = VIEW_PATHS[viewKey];
   if (!base) return '/';
   if (!sectionId) return base;
   if (isTabView(viewKey)) {
-    const slug = slugById[viewKey][sectionId];
+    const slug = pageNavigationConfigs[viewKey].sections.find((s) => s.id === sectionId)?.slug;
     return slug ? `${base}/${slug}` : base;
   }
   return `${base}#${sectionId}`;
@@ -56,15 +46,12 @@ export function pathForView(viewKey, sectionId = null) {
 
 export const pathForArticle = (idOrSlug) => `/informasi/berita/${idOrSlug}`;
 
-// Longest first so /uksm/profil is matched before /uksm.
-const VIEWS_BY_DEPTH = Object.entries(VIEW_PATHS)
-  .filter(([, path]) => path !== '/')
-  .sort((a, b) => b[1].length - a[1].length);
+const SUBPAGE_PATHS = Object.entries(VIEW_PATHS).filter(([, path]) => path !== '/');
 
 export function viewKeyFromPathname(pathname) {
   if (pathname === '/') return 'beranda';
   if (pathname.startsWith('/informasi/berita/')) return 'berita-detail';
-  const match = VIEWS_BY_DEPTH.find(
+  const match = SUBPAGE_PATHS.find(
     ([, path]) => pathname === path || pathname.startsWith(`${path}/`)
   );
   return match ? match[0] : null;

@@ -101,6 +101,10 @@ export const realNewsList = [
   }
 ];
 
+/** Looks an article up by numeric id or slug, falling back to the newest. */
+export const findArticle = (idOrSlug) =>
+  realNewsList.find((n) => n.id === Number(idOrSlug) || n.slug === idOrSlug) || realNewsList[0];
+
 // `date` is a placeholder (not sourced from a real publication date) added so the
 // Praktik Baik page can sort/group/filter by date like the other content pages.
 // Replace with the real publication date once these entries are curated from a source.
