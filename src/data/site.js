@@ -104,42 +104,41 @@ export const appsList = [
   }
 ];
 
-export const ministryLinks = [
+/* Logo files don't exist yet — drop them in public/logo/<id>.png and set
+   `logo` to the matching path (e.g. 'logo/kemendikdasmen.png'). Until then
+   `logo: null` renders a named placeholder tile instead of a broken <img>. */
+export const ministries = [
   {
     id: 'kemendikdasmen',
     name: 'Kementerian Pendidikan Dasar dan Menengah',
-    abbr: 'Kemendikdasmen RI',
-    role: 'Sekretariat Pembina UKS/M Pusat',
-    logo: 'Aset UKS/kementerian/kemendikdasmen.svg',
-    url: 'https://www.kemendikdasmen.go.id',
-    color: '#098C4C'
+    short: 'Kemendikdasmen RI',
+    unit: 'Sekretariat Utama',
+    logo: null,
+    url: 'https://www.kemendikdasmen.go.id'
   },
   {
     id: 'kemenkes',
     name: 'Kementerian Kesehatan',
-    abbr: 'Kemenkes RI',
-    role: 'Pembina Pelayanan & Skrining Kesehatan',
-    logo: 'Aset UKS/kementerian/kemenkes.svg',
-    url: 'https://kemkes.go.id',
-    color: '#0284C7'
+    short: 'Kemenkes RI',
+    unit: 'Dinkes & Puskesmas',
+    logo: null,
+    url: 'https://kemkes.go.id'
   },
   {
     id: 'kemenag',
     name: 'Kementerian Agama',
-    abbr: 'Kemenag RI',
-    role: 'Pembina UKS di Madrasah & Pesantren',
-    logo: 'Aset UKS/kementerian/kemenag.svg',
-    url: 'https://kemenag.go.id',
-    color: '#166534'
+    short: 'Kemenag RI',
+    unit: 'Madrasah & Ponpes',
+    logo: null,
+    url: 'https://kemenag.go.id'
   },
   {
     id: 'kemendagri',
     name: 'Kementerian Dalam Negeri',
-    abbr: 'Kemendagri RI',
-    role: 'Fasilitator TP UKS/M Pemerintah Daerah',
-    logo: 'Aset UKS/kementerian/kemendagri.svg',
-    url: 'https://kemendagri.go.id',
-    color: '#991B1B'
+    short: 'Kemendagri RI',
+    unit: 'Pemda & TP UKS',
+    logo: null,
+    url: 'https://kemendagri.go.id'
   }
 ];
 

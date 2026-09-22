@@ -1,0 +1,171 @@
+/* ============================================================
+   KONTAK — SEKRETARIAT & LAYANAN KONTAK
+   Three cards, each a real definition list (label + value), not a stat
+   tile. Ministry logos are placeholder tiles until real files land in
+   public/logo/ (see src/data/site.js).
+   ============================================================ */
+.kontak-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.kontak-card {
+  padding: 26px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+}
+
+.kontak-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-lg);
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  font-size: 19px;
+}
+
+.kontak-card-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: var(--text-primary);
+}
+
+.kontak-fields {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.kontak-fields > div {
+  display: grid;
+  gap: 3px;
+}
+
+.kontak-fields dt {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.kontak-fields dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+/* The UA sheet italicises <address> itself, so inheriting normal from dd
+   does not reach it. */
+.kontak-fields address {
+  font-style: normal;
+}
+
+/* Values are short inline text, so the 44px target grows the tap area with
+   padding rather than the line height, to avoid a lopsided-looking row. */
+.kontak-fields a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: -11px 0;
+  padding: 11px 0;
+  color: var(--brand-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.kontak-fields a:hover {
+  text-decoration: underline;
+}
+
+.kontak-fields a:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Kementerian Terkait ---------- */
+.kontak-ministry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kontak-ministry-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 14px;
+  border: 1.5px solid rgba(17, 28, 22, 0.1);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: var(--spring);
+}
+
+.kontak-ministry-tile:hover {
+  border-color: var(--brand-primary);
+  background: var(--brand-light);
+}
+
+.kontak-ministry-tile:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+.kontak-ministry-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.kontak-ministry-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card-alt);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.kontak-ministry-short {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.kontak-ministry-unit {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* One per row on a phone, and the tile turns on its side: stacked, four
+   109px tiles ran longer than the two cards above them put together. */
+@media (max-width: 420px) {
+  .kontak-ministry-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kontak-ministry-tile {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+}
