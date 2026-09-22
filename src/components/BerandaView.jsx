@@ -4,7 +4,6 @@ import Programs from './Programs';
 import Books from './Books';
 import Infografis from './Infografis';
 import HomeStratifikasi from './HomeStratifikasi';
-
 import { triasPillarsDetail } from '../data/portalData';
 import { pathForView } from '../routes';
 
