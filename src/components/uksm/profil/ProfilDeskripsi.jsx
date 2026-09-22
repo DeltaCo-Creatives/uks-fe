@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom';
 import { profilTriasPillars, profilContinuity } from '../../../data/portalData';
+import { pathForView } from '../../../routes';
 
-function PillarCard({ pillar, onNavigate }) {
+function PillarCard({ pillar }) {
   return (
     <article className="profil-pillar" data-gsap="reveal">
       <div className="profil-pillar-head">
@@ -24,13 +26,12 @@ function PillarCard({ pillar, onNavigate }) {
         </div>
       ))}
 
-      <button
-        type="button"
+      <Link
         className="profil-text-link profil-pillar-link"
-        onClick={() => onNavigate('uksm-trias', pillar.triasSection)}
+        to={pathForView('uksm-trias', pillar.triasSection)}
       >
         Rincian program di halaman Trias UKS/M
-      </button>
+      </Link>
     </article>
   );
 }
@@ -40,11 +41,7 @@ function PillarCard({ pillar, onNavigate }) {
  * bar (the source diagram puts Manajemen at the centre of the three). Below it,
  * the page's own "keep it running" advice as a numbered list, not more cards.
  */
-export default function ProfilDeskripsi({ onNavigate, onOpenOrgTab, onScrollTo }) {
-  const handleContinuityLink = (link) => {
-    if (link.orgTab) onOpenOrgTab(link.orgTab);
-    else onNavigate(link.view, link.section);
-  };
+export default function ProfilDeskripsi({ onOpenOrgTab, onScrollTo }) {
 
   return (
     <section id="sec-profil-deskripsi" className="section profil-section" style={{ paddingTop: '10px' }}>
@@ -58,7 +55,7 @@ export default function ProfilDeskripsi({ onNavigate, onOpenOrgTab, onScrollTo }
       <div className="profil-trias">
         <div className="profil-pillar-row">
           {profilTriasPillars.map((pillar) => (
-            <PillarCard key={pillar.id} pillar={pillar} onNavigate={onNavigate} />
+            <PillarCard key={pillar.id} pillar={pillar} />
           ))}
         </div>
 
@@ -83,9 +80,15 @@ export default function ProfilDeskripsi({ onNavigate, onOpenOrgTab, onScrollTo }
               <div>
                 <p>{step.text}</p>
                 {step.link && (
-                  <button type="button" className="profil-text-link" onClick={() => handleContinuityLink(step.link)}>
-                    {step.link.label}
-                  </button>
+                  step.link.orgTab ? (
+                    <button type="button" className="profil-text-link" onClick={() => onOpenOrgTab(step.link.orgTab)}>
+                      {step.link.label}
+                    </button>
+                  ) : (
+                    <Link className="profil-text-link" to={pathForView(step.link.view, step.link.section)}>
+                      {step.link.label}
+                    </Link>
+                  )
                 )}
               </div>
             </li>

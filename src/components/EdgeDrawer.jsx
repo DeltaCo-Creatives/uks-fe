@@ -1,11 +1,16 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { pageNavigationConfigs } from '../data/portalData';
+import { isTabView, pathForView } from '../routes';
 
-export default function EdgeDrawer({ currentView, activeSection, onNavigateSection }) {
+export default function EdgeDrawer({ viewKey, activeSection }) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [isPinned, setIsPinned] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const config = pageNavigationConfigs[currentView] || pageNavigationConfigs['beranda'];
+  const config = pageNavigationConfigs[viewKey] || pageNavigationConfigs['beranda'];
+  const tabbed = isTabView(viewKey);
 
   const togglePin = () => {
     setIsPinned(!isPinned);
@@ -13,13 +18,13 @@ export default function EdgeDrawer({ currentView, activeSection, onNavigateSecti
 
   const handleItemClick = (e, targetId) => {
     e.preventDefault();
-    if (onNavigateSection) {
-      onNavigateSection(targetId);
+    if (tabbed) {
+      navigate(pathForView(viewKey, targetId));
     } else {
-      const el = document.getElementById(targetId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Replace, so a jump between sections of one page does not fill the back
+      // stack the way a jump between pages does.
+      navigate(`${pathname}#${targetId}`, { replace: true });
     }
     if (!isPinned) {
       setIsOpen(false);
@@ -110,7 +115,7 @@ export default function EdgeDrawer({ currentView, activeSection, onNavigateSecti
             return (
               <a
                 key={sec.id}
-                href={`#${sec.id}`}
+                href={tabbed ? pathForView(viewKey, sec.id) : `#${sec.id}`}
                 className={`react-edge-item ${isActive ? 'active' : ''}`}
                 onClick={(e) => handleItemClick(e, sec.id)}
                 style={{

@@ -10,7 +10,7 @@ import './mitra/mitra.css';
  * docs/kemitraan-curation.md). One scrolling page; the drawer jumps between
  * the four sections.
  */
-export default function MitraView({ onNavigate }) {
+export default function MitraView() {
   return (
     <div className="container" style={{ padding: '24px 20px 80px' }}>
       <div className="subpage-hero-banner" data-gsap="reveal">
@@ -22,7 +22,7 @@ export default function MitraView({ onNavigate }) {
       </div>
 
       <MitraPanduan />
-      <MitraKriteria onNavigate={onNavigate} />
+      <MitraKriteria />
       <MitraKami />
       <MitraDukungan />
     </div>

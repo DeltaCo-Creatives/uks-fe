@@ -1,10 +1,12 @@
 import { useEffect, useRef, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { priorityProgramsList, realNewsList } from '../data/portalData';
+import { pathForArticle } from '../routes';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
-export default function Programs({ onNavigateView }) {
+export default function Programs() {
     const trackRef = useRef(null);
 
     // Repeat programs so each half is sufficiently wide (> 3500px)
@@ -75,11 +77,11 @@ export default function Programs({ onNavigateView }) {
 
                 <div className="news-masonry">
                     {realNewsList.map((item) => (
-                        <article
+                        <Link
                             key={item.id}
+                            to={pathForArticle(item.slug)}
                             className="news-card-playful"
                             data-gsap="reveal"
-                            onClick={() => onNavigateView('berita-detail', null, item.slug)}
                             style={{ cursor: 'pointer' }}
                         >
                             <div className="news-img-wrap">
@@ -90,7 +92,7 @@ export default function Programs({ onNavigateView }) {
                             <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                                 Baca Selengkapnya &rarr;
                             </span>
-                        </article>
+                        </Link>
                     ))}
                 </div>
             </div>

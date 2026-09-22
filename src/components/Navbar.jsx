@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavTautanDropdown from './NavTautanDropdown';
 import { tautanGroups } from '../data/portalData';
+import { pathForView, viewKeyFromPathname } from '../routes';
 
-export default function Navbar({ currentView, onNavigateView }) {
+export default function Navbar() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const currentView = viewKeyFromPathname(pathname);
+
   const [scrolled, setScrolled] = useState(false);
   // Which single dropdown is open: null | 'uksm' | 'tautan'
   const [openMenu, setOpenMenu] = useState(null);
@@ -32,14 +38,17 @@ export default function Navbar({ currentView, onNavigateView }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleNavClick = (e, viewKey, sectionId = null) => {
-    e.preventDefault();
+  const closeMenus = () => {
     setOpenMenu(null);
     setMobileMenuOpen(false);
-    onNavigateView(viewKey, sectionId);
   };
 
-  const isUksmActive = ['uksm-profil', 'uksm-trias', 'uksm-stratifikasi'].includes(currentView);
+  const goTo = (viewKey) => {
+    closeMenus();
+    navigate(pathForView(viewKey));
+  };
+
+  const isUksmActive = pathname.startsWith('/uksm');
 
   const plainTabs = [
     { key: 'program', label: 'Program' },
@@ -52,25 +61,25 @@ export default function Navbar({ currentView, onNavigateView }) {
     <div className={`nav-dynamic-wrapper ${scrolled ? 'is-scrolled' : 'is-top'}`}>
       <nav className="nav-dynamic-bar">
         {/* Brand Icon */}
-        <a
-          href="#beranda"
+        <Link
+          to="/"
           className="brand-icon-nav"
-          onClick={(e) => handleNavClick(e, 'beranda')}
+          onClick={closeMenus}
           title="UKS Indonesia"
         >
-          <img src={scrolled ? "Aset UKS/UKS-03.png" : "Aset UKS/UKS-02.png"} alt="UKS Logo" />
-        </a>
+          <img src={scrolled ? "/Aset UKS/UKS-03.png" : "/Aset UKS/UKS-02.png"} alt="UKS Logo" />
+        </Link>
 
         {/* Desktop Navigation Links */}
         <div className="nav-links-nav">
-          <a
-            href="#beranda"
+          <Link
+            to="/"
             className={currentView === 'beranda' ? 'active' : ''}
-            onClick={(e) => handleNavClick(e, 'beranda')}
+            onClick={closeMenus}
             style={{ fontWeight: currentView === 'beranda' ? 800 : 600 }}
           >
             Beranda
-          </a>
+          </Link>
 
           {/* UKS/M Tab with 4-Cluster Dropdown */}
           <div
@@ -111,9 +120,10 @@ export default function Navbar({ currentView, onNavigateView }) {
 
                 <div className="nav-cluster-grid">
                   {/* Cluster 1: Profil */}
-                  <div
+                  <Link
+                    to={pathForView('uksm-profil')}
                     className="nav-cluster-card"
-                    onClick={(e) => handleNavClick(e, 'uksm-profil')}
+                    onClick={closeMenus}
                   >
                     <div>
                       <div className="nav-cluster-icon" style={{ background: '#D2E8DA', color: '#098C4C' }}>
@@ -126,12 +136,13 @@ export default function Navbar({ currentView, onNavigateView }) {
                       <span>Buka Halaman Profil</span>
                       <i className="fa-solid fa-arrow-right"></i>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Cluster 2: Trias */}
-                  <div
+                  <Link
+                    to={pathForView('uksm-trias')}
                     className="nav-cluster-card"
-                    onClick={(e) => handleNavClick(e, 'uksm-trias')}
+                    onClick={closeMenus}
                   >
                     <div>
                       <div className="nav-cluster-icon" style={{ background: '#DBEAFE', color: '#2563EB' }}>
@@ -144,12 +155,13 @@ export default function Navbar({ currentView, onNavigateView }) {
                       <span>Buka Halaman Trias</span>
                       <i className="fa-solid fa-arrow-right"></i>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Cluster 3: Stratifikasi */}
-                  <div
+                  <Link
+                    to={pathForView('uksm-stratifikasi')}
                     className="nav-cluster-card"
-                    onClick={(e) => handleNavClick(e, 'uksm-stratifikasi')}
+                    onClick={closeMenus}
                   >
                     <div>
                       <div className="nav-cluster-icon" style={{ background: '#EDE9FE', color: '#7C3AED' }}>
@@ -162,22 +174,22 @@ export default function Navbar({ currentView, onNavigateView }) {
                       <span>Buka Halaman Stratifikasi</span>
                       <i className="fa-solid fa-arrow-right"></i>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
 
           {plainTabs.map(({ key, label }) => (
-            <a
+            <Link
               key={key}
-              href={`#${key}`}
+              to={pathForView(key)}
               className={currentView === key ? 'active' : ''}
-              onClick={(e) => handleNavClick(e, key)}
+              onClick={closeMenus}
               style={{ fontWeight: currentView === key ? 800 : 600 }}
             >
               {label}
-            </a>
+            </Link>
           ))}
 
           {/* Tautan Outbound Dropdown (A1) */}
@@ -207,21 +219,21 @@ export default function Navbar({ currentView, onNavigateView }) {
             <NavTautanDropdown isOpen={openMenu === 'tautan'} onClose={() => setOpenMenu(null)} />
           </div>
 
-          <a
-            href="#kontak"
+          <Link
+            to={pathForView('kontak')}
             className={currentView === 'kontak' ? 'active' : ''}
-            onClick={(e) => handleNavClick(e, 'kontak')}
+            onClick={closeMenus}
             style={{ fontWeight: currentView === 'kontak' ? 800 : 600 }}
           >
             Kontak
-          </a>
+          </Link>
         </div>
 
         {/* Right Controls: Search & Mobile Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Search Button (A2) */}
           <button
-            onClick={(e) => handleNavClick(e, 'search')}
+            onClick={() => goTo('search')}
             className={`nav-search-btn ${currentView === 'search' ? 'active' : ''}`}
             aria-label="Pencarian Direktori UKS"
             title="Pencarian Direktori UKS/M"
@@ -244,10 +256,10 @@ export default function Navbar({ currentView, onNavigateView }) {
           <div className="nav-mobile-menu">
             <div className="nav-mobile-list">
               {/* Mobile Search Item (A2) */}
-              <a
-                href="#pencarian"
+              <Link
+                to={pathForView('search')}
                 className={`nav-mobile-item ${currentView === 'search' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'search')}
+                onClick={closeMenus}
                 style={{
                   background: currentView === 'search' ? 'var(--brand-primary)' : 'var(--brand-light)',
                   color: currentView === 'search' ? '#FFFFFF' : 'var(--brand-primary)',
@@ -256,86 +268,86 @@ export default function Navbar({ currentView, onNavigateView }) {
               >
                 <i className="fa-solid fa-magnifying-glass"></i>
                 <span>Pencarian Direktori UKS</span>
-              </a>
+              </Link>
 
-              <a
-                href="#beranda"
+              <Link
+                to="/"
                 className={`nav-mobile-item ${currentView === 'beranda' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'beranda')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-house"></i>
                 <span>Beranda Nasional</span>
-              </a>
+              </Link>
 
               <div className="nav-mobile-group-header">
                 <i className="fa-solid fa-layer-group"></i>
                 <span>UKS/M (3 Kluster Pilar):</span>
               </div>
-              
-              <a
-                href="#profil"
+
+              <Link
+                to={pathForView('uksm-profil')}
                 className={`nav-mobile-item indent ${currentView === 'uksm-profil' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'uksm-profil')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-landmark"></i>
                 <span>1. Profil &amp; Tata Kelola</span>
-              </a>
+              </Link>
 
-              <a
-                href="#trias"
+              <Link
+                to={pathForView('uksm-trias')}
                 className={`nav-mobile-item indent ${currentView === 'uksm-trias' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'uksm-trias')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-shield-heart"></i>
                 <span>2. TRIAS UKS/M</span>
-              </a>
+              </Link>
 
-              <a
-                href="#stratifikasi"
+              <Link
+                to={pathForView('uksm-stratifikasi')}
                 className={`nav-mobile-item indent ${currentView === 'uksm-stratifikasi' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'uksm-stratifikasi')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-layer-group"></i>
                 <span>3. Stratifikasi UKS/M</span>
-              </a>
+              </Link>
 
               <div className="nav-mobile-divider"></div>
 
-              <a
-                href="#program"
+              <Link
+                to={pathForView('program')}
                 className={`nav-mobile-item ${currentView === 'program' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'program')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-bullhorn"></i>
                 <span>Program Prioritas (MBG, CKG, ASRI)</span>
-              </a>
+              </Link>
 
-              <a
-                href="#mitra"
+              <Link
+                to={pathForView('mitra')}
                 className={`nav-mobile-item ${currentView === 'mitra' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'mitra')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-handshake"></i>
                 <span>Kolaborasi Kemitraan</span>
-              </a>
+              </Link>
 
-              <a
-                href="#informasi"
+              <Link
+                to={pathForView('informasi')}
                 className={`nav-mobile-item ${currentView === 'informasi' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'informasi')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-newspaper"></i>
                 <span>Warta &amp; Informasi Terkini</span>
-              </a>
+              </Link>
 
-              <a
-                href="#publikasi"
+              <Link
+                to={pathForView('publikasi')}
                 className={`nav-mobile-item ${currentView === 'publikasi' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'publikasi')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-book-bookmark"></i>
                 <span>Pustaka Digital &amp; Modul</span>
-              </a>
+              </Link>
 
               {/* Collapsible Mobile Tautan (A1) */}
               <div
@@ -377,18 +389,18 @@ export default function Navbar({ currentView, onNavigateView }) {
 
               <div className="nav-mobile-divider"></div>
 
-              <a
-                href="#kontak"
+              <Link
+                to={pathForView('kontak')}
                 className={`nav-mobile-item ${currentView === 'kontak' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'kontak')}
+                onClick={closeMenus}
               >
                 <i className="fa-solid fa-headset"></i>
                 <span>Layanan Kontak &amp; Helpdesk</span>
-              </a>
+              </Link>
 
               <div style={{ padding: '12px 16px 4px' }}>
                 <button
-                  onClick={(e) => handleNavClick(e, 'uksm-stratifikasi')}
+                  onClick={() => goTo('uksm-stratifikasi')}
                   className="btn-massive"
                   style={{ width: '100%', justifyContent: 'center', fontSize: '14px', padding: '12px' }}
                 >

@@ -11,7 +11,7 @@ export const realNewsList = [
     date: '22 Juli 2026',
     title: 'Hari Anak Nasional 2026, Kemendikdasmen Ajak Anak Kembali Bermain dan Kurangi Pemakaian Gawai',
     excerpt: 'Kemendikdasmen memperingati Hari Anak Nasional 2026 di Tanjungpinang dengan tema Semua Setara Riang Bersama, sekaligus mengampanyekan pembatasan penggunaan gawai di satuan pendidikan.',
-    image: 'Aset UKS/berita/berita-han-2026.jpg',
+    image: '/Aset UKS/berita/berita-han-2026.jpg',
     sourceUrl: 'https://uks.kemendikdasmen.go.id/halaman/berita/hari-anak-nasional-2026-kemendikdasmen-ajak-anak-kembali-bermain-dan-kurangi-pemakaian-gawai',
     author: 'Biro Komunikasi dan Hubungan Masyarakat, Sekretariat Jenderal, Kementerian Pendidikan Dasar dan Menengah',
     body: [
@@ -34,7 +34,7 @@ export const realNewsList = [
     date: '5 Agustus 2026',
     title: 'Kemendikdasmen Bagikan 30 Laptop untuk Guru di Miangas, Perkuat Akses Pendidikan Daerah 3T',
     excerpt: 'Mendikdasmen Abdul Mu\'ti menyerahkan 30 laptop, perangkat Starlink, dan alat permainan edukatif untuk sekolah di Pulau Miangas, Kepulauan Talaud.',
-    image: 'Aset UKS/berita/berita-laptop-miangas.jpg',
+    image: '/Aset UKS/berita/berita-laptop-miangas.jpg',
     sourceUrl: 'https://uks.kemendikdasmen.go.id/halaman/berita/kemendikdasmen-bagikan-30-laptop-untuk-guru-di-miangas-perkuat-akses-pendidikan-daerah-3t',
     author: 'Biro Komunikasi dan Hubungan Masyarakat, Sekretariat Jenderal, Kementerian Pendidikan Dasar dan Menengah',
     body: [
@@ -56,7 +56,7 @@ export const realNewsList = [
     date: '11 Agustus 2026',
     title: 'Semarak Lomba Kemerdekaan, Kemendikdasmen Bangun Budaya Sehat untuk Dukung Pendidikan Bermutu',
     excerpt: 'Sebanyak 896 pegawai Kemendikdasmen mengikuti 11 cabang lomba HUT ke-81 Kemerdekaan RI, dari senam dan futsal sampai baca puisi.',
-    image: 'Aset UKS/berita/berita-lomba-kemerdekaan.jpg',
+    image: '/Aset UKS/berita/berita-lomba-kemerdekaan.jpg',
     sourceUrl: 'https://uks.kemendikdasmen.go.id/halaman/berita/semarak-lomba-kemerdekaan-kemendikdasmen-bangun-budaya-sehat-untuk-dukung-pendidikan-bermutu',
     author: 'Biro Komunikasi dan Hubungan Masyarakat, Sekretariat Jenderal, Kementerian Pendidikan Dasar dan Menengah',
     body: [
@@ -82,7 +82,7 @@ export const realNewsList = [
     date: '8 Agustus 2026',
     title: 'Kemendikdasmen Perkuat UKS untuk Wujudkan Sekolah Sehat dan Berkarakter',
     excerpt: 'Direktorat SMP menggelar Workshop Penguatan UKS di Banyuwangi pada 4 sampai 7 Agustus 2026, mempertemukan BPMP Jawa Timur, dinas pendidikan, dan Tim Pembina UKS dari empat kabupaten.',
-    image: 'Aset UKS/berita/berita-workshop-uks-banyuwangi.jpg',
+    image: '/Aset UKS/berita/berita-workshop-uks-banyuwangi.jpg',
     sourceUrl: 'https://uks.kemendikdasmen.go.id/halaman/berita/kemendikdasmen-perkuat-uks-untuk-wujudkan-sekolah-sehat-dan-berkarakter',
     author: 'Admin Direktorat SMP',
     body: [
@@ -166,7 +166,7 @@ export const uptStories = [
     category: 'MBG',
     date: '08 September 2026',
     excerpt: 'Pendampingan langsung distribusi makanan hangat bergizi ke sekolah pesisir dengan wadah stainless steel guna menjaga higienitas dan bebas limbah plastik.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-01.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-01.jpg'
   },
   {
     id: 2,
@@ -175,7 +175,7 @@ export const uptStories = [
     category: 'MBG',
     date: '02 September 2026',
     excerpt: 'Kerja sama strategis antara kelompok tani lokal dan satuan pendidikan menghasilkan menu sarapan seimbang yang teruji lab bebas formalin.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-02.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-02.jpg'
   },
   {
     id: 3,
@@ -184,7 +184,7 @@ export const uptStories = [
     category: '7KAIH',
     date: '27 Agustus 2026',
     excerpt: 'Metode interaktif pembelajaran nilai bangun pagi, gemar belajar, dan adab gotong royong melalui gamifikasi buku pantau harian siswa.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-03.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-03.jpg'
   },
   {
     id: 4,
@@ -193,7 +193,7 @@ export const uptStories = [
     category: '7KAIH',
     date: '20 Agustus 2026',
     excerpt: 'Pembiasaan berolahraga sebelum jam pertama belajar meningkatkan kebugaran jasmani dan menurunkan angka keterlambatan siswa.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-04.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-04.jpg'
   },
   {
     id: 5,
@@ -202,7 +202,7 @@ export const uptStories = [
     category: 'CKG',
     date: '14 Agustus 2026',
     excerpt: 'Pemeriksaan mata berkala dan fasilitasi kacamata koreksi gratis bagi anak didik yang mengalami gangguan refraksi penglihatan di sekolah pedalaman.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-05.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-05.jpg'
   },
   {
     id: 6,
@@ -211,7 +211,7 @@ export const uptStories = [
     category: 'CKG',
     date: '05 Agustus 2026',
     excerpt: 'Pemberian Tablet Tambah Darah (TTD) serentak mingguan dan edukasi sikat gigi tepat waktu berhasil menekan angka anemia remaja putri.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-06.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-06.jpg'
   },
   {
     id: 7,
@@ -220,7 +220,7 @@ export const uptStories = [
     category: 'UKS',
     date: '26 Juli 2026',
     excerpt: 'Penerbitan SK Tim Pelaksana UKS tingkat sekolah memicu pemenuhan ruang periksa standar dan kelengkapan obat P3K di sekolah terpencil.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-07.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-07.jpg'
   },
   {
     id: 8,
@@ -229,7 +229,7 @@ export const uptStories = [
     category: 'UKS',
     date: '18 Juli 2026',
     excerpt: 'Integritas pembinaan lintas Kemenag dan Pemda menghasilkan peningkatan strata UKS dari minimal menjadi optimal dan paripurna.',
-    image: 'Aset UKS/upt-bercerita/upt-bercerita-08.jpg'
+    image: '/Aset UKS/upt-bercerita/upt-bercerita-08.jpg'
   }
 ];
 

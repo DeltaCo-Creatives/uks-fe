@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { realNewsList } from '../../data/portalData';
+import { pathForArticle } from '../../routes';
 import SafeImage from '../SafeImage';
 import ContentToolbar from '../shared/ContentToolbar';
 import { useContentToolbar } from '../../hooks/useContentToolbar';
@@ -20,7 +22,7 @@ const CATEGORIES = [
   { key: 'uks', label: 'UKS' }
 ];
 
-export default function BeritaPanel({ onNavigateView }) {
+export default function BeritaPanel() {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categoryFiltered = activeCategory === 'all'
@@ -38,12 +40,6 @@ export default function BeritaPanel({ onNavigateView }) {
     searchFields: ['title', 'excerpt', 'category'],
     groupOptions: GROUP_OPTIONS
   });
-
-  const handleArticleClick = (item) => {
-    if (onNavigateView) {
-      onNavigateView('berita-detail', null, item.id);
-    }
-  };
 
   return (
     <div className="about-bento-frame">
@@ -98,11 +94,10 @@ export default function BeritaPanel({ onNavigateView }) {
             {group.label && <h3 className="content-group-heading">{group.label}</h3>}
             <div className="info-grid">
               {group.items.map(item => (
-                <button
+                <Link
                   key={item.id}
-                  type="button"
+                  to={pathForArticle(item.id)}
                   className="news-card-playful info-card-btn"
-                  onClick={() => handleArticleClick(item)}
                 >
                   <div className="news-img-wrap">
                     <SafeImage src={item.image} alt="" />
@@ -120,7 +115,7 @@ export default function BeritaPanel({ onNavigateView }) {
                       Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </span>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
           </div>

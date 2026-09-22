@@ -1,12 +1,12 @@
+import { Link } from 'react-router-dom';
 import { strataLevels } from '../data/portalData';
+import { pathForView } from '../routes';
 
 /**
  * Beranda ▸ Stratifikasi UKS/M teaser — dev homepage's 4 strata boxes +
  * "Lihat Detail", both leading to UKS/M ▸ Stratifikasi UKS/M.
- *
- * @param {{ onNavigateView: (viewKey: string, sectionId?: string | null) => void }} props
  */
-export default function HomeStratifikasi({ onNavigateView }) {
+export default function HomeStratifikasi() {
   return (
     <section id="sec-home-stratifikasi" className="section" style={{ paddingBottom: '30px' }}>
       <div className="container">
@@ -15,21 +15,21 @@ export default function HomeStratifikasi({ onNavigateView }) {
             <span className="section-kicker">Standar Kesiapan Satpen</span>
             <h2 className="section-title">Stratifikasi UKS/M</h2>
           </div>
-          <button
+          <Link
             className="btn-pill primary"
-            onClick={() => onNavigateView('uksm-stratifikasi')}
+            to={pathForView('uksm-stratifikasi')}
             style={{ padding: '10px 22px', fontSize: '13px' }}
           >
             Lihat Detail &rarr;
-          </button>
+          </Link>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
           {strataLevels.map((lvl) => (
-            <button
+            <Link
               key={lvl.key}
               data-gsap="reveal"
-              onClick={() => onNavigateView('uksm-stratifikasi', 'sec-strat-indikator')}
+              to={pathForView('uksm-stratifikasi', 'sec-strat-indikator')}
               style={{
                 background: '#FFFFFF',
                 borderRadius: 'var(--radius-lg)',
@@ -62,7 +62,7 @@ export default function HomeStratifikasi({ onNavigateView }) {
               <h3 style={{ fontSize: '18px', fontWeight: 800, margin: 0 }}>
                 {lvl.name}
               </h3>
-            </button>
+            </Link>
           ))}
         </div>
       </div>

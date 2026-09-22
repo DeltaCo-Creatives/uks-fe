@@ -12,7 +12,7 @@ export const heroSlides = [
   { slug: 'kemendikdasmen-perkuat-uks-sekolah-sehat-berkarakter' },
   {
     id: 'rakor-upt-edukasi-gizi-2026',
-    image: 'Aset UKS/hero/rakor-upt-edukasi-gizi-2026.jpg',
+    image: '/Aset UKS/hero/rakor-upt-edukasi-gizi-2026.jpg',
     category: 'Agenda',
     date: '21 Agustus 2026',
     title: 'Rapat Koordinasi UPT Implementasi Edukasi Gizi Perkuat Sinergi Pendampingan di Satuan Pendidikan',
@@ -20,7 +20,7 @@ export const heroSlides = [
   },
   {
     id: 'perkemahan-anak-indonesia-hebat-smp-2026',
-    image: 'Aset UKS/hero/perkemahan-anak-indonesia-hebat-smp-2026.jpg',
+    image: '/Aset UKS/hero/perkemahan-anak-indonesia-hebat-smp-2026.jpg',
     category: 'Agenda',
     date: '2 September 2026',
     title: 'Perkemahan Anak Indonesia Hebat Jenjang Sekolah Menengah Pertama Tahun 2026',
@@ -88,7 +88,7 @@ export const appsList = [
     badge: 'KESEHATAN REMAJA',
     tagline: 'Aplikasi Edukasi Pubertas & Menstruasi Ramah Remaja',
     description: 'Aplikasi pelacak menstruasi pertama di dunia yang dirancang bersama anak perempuan untuk memantau siklus, edukasi kebersihan reproduksi, dan tips kesehatan emosional.',
-    icon: 'Aset UKS/aplikasi/oky.png',
+    icon: '/Aset UKS/aplikasi/oky.png',
     featuredOnHome: true,
     color: '#BE185D',
     bgColor: '#FCE7F3',
@@ -103,7 +103,7 @@ export const appsList = [
     badge: 'REKAM KESEHATAN',
     tagline: 'Platform Resmi Catatan Imunisasi & Skrining Siswa',
     description: 'Aplikasi kesehatan resmi Kemenkes RI untuk menyimpan sertifikat imunisasi anak sekolah (BIAS), rekam medis digital, dan skrining berkala terintegrasi fasilitas kesehatan.',
-    icon: 'Aset UKS/aplikasi/satusehat.png',
+    icon: '/Aset UKS/aplikasi/satusehat.png',
     featuredOnHome: true,
     color: '#0369A1',
     bgColor: '#E0F2FE',
@@ -119,7 +119,7 @@ export const appsList = [
     badge: 'KESEHATAN MENTAL',
     tagline: 'Sistem Deteksi Dini & Konseling Ramah Anak',
     description: 'Sistem informasi kesehatan jiwa anak sekolah untuk memfasilitasi guru BK dan wali kelas dalam melakukan skrining awal kesejahteraan mental dan psikososial peserta didik.',
-    icon: 'Aset UKS/aplikasi/sijiwa.png',
+    icon: '/Aset UKS/aplikasi/sijiwa.png',
     featuredOnHome: false,
     color: '#7C3AED',
     bgColor: '#EDE9FE',
@@ -130,7 +130,7 @@ export const appsList = [
 ];
 
 /* Logo files don't exist yet. Drop them in public/logo/<id>.png and set
-   `logo` to the matching path (e.g. 'logo/kemendikdasmen.png'). Until then
+   `logo` to the matching path (e.g. '/logo/kemendikdasmen.png'). Until then
    `logo: null` renders a named placeholder tile instead of a broken <img>. */
 export const ministries = [
   {

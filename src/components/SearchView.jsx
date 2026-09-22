@@ -1,4 +1,6 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { pathForView } from '../routes';
 import {
   triasPillarsDetail,
   strataLevels,
@@ -13,9 +15,15 @@ import {
   uptStories
 } from '../data/portalData';
 
-export default function SearchView({ onNavigateView }) {
-  const [query, setQuery] = useState('');
+export default function SearchView() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('q') || '';
   const inputRef = useRef(null);
+
+  // Replace rather than push: one history entry for the search, not one per keystroke.
+  const setQuery = (value) => {
+    setSearchParams(value ? { q: value } : {}, { replace: true });
+  };
 
   const suggestionChips = [
     'Kesehatan Siswa',
@@ -209,12 +217,6 @@ export default function SearchView({ onNavigateView }) {
       return terms.every((term) => target.includes(term));
     });
   }, [query, searchIndex]);
-
-  const handleResultClick = (item) => {
-    if (onNavigateView) {
-      onNavigateView(item.viewKey, item.sectionId);
-    }
-  };
 
   return (
     <div className="container" style={{ padding: '32px 20px 80px', minHeight: '75vh' }}>
@@ -415,9 +417,9 @@ export default function SearchView({ onNavigateView }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))', gap: '16px' }}>
             {results.map((item) => (
-              <div
+              <Link
                 key={item.id}
-                onClick={() => handleResultClick(item)}
+                to={pathForView(item.viewKey, item.sectionId)}
                 style={{
                   background: '#FFFFFF',
                   borderRadius: 'var(--radius-lg)',
@@ -480,7 +482,7 @@ export default function SearchView({ onNavigateView }) {
                     Bagian #{item.sectionId || item.viewKey}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

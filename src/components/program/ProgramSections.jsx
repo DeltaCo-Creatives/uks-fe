@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import ProgramLink from './ProgramLink';
+import { pathForView } from '../../routes';
 
 /** MBG: who receives it. Real illustrations from the portal carry the three groups. */
 export function AudienceSection({ section }) {
@@ -155,20 +157,19 @@ export function PillarsSection({ section }) {
 }
 
 /** ASRI: one documented school practice, plus the internal link to where it lives in Trias UKS/M. */
-export function ExampleSection({ section, onNavigate }) {
+export function ExampleSection({ section }) {
   return (
     <div className="prog-example">
       <p>{section.text}</p>
       <div className="prog-example-links">
         <ProgramLink url={section.source.url} className="prog-inline-link">{section.source.label}</ProgramLink>
         {section.related && (
-          <button
-            type="button"
+          <Link
             className="prog-text-btn"
-            onClick={() => onNavigate(section.related.view, section.related.section)}
+            to={pathForView(section.related.view, section.related.section)}
           >
             {section.related.label}
-          </button>
+          </Link>
         )}
       </div>
     </div>

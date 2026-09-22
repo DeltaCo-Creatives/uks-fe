@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
 import { mitraRegistration, mitraSectors } from '../../data/portalData';
+import { pathForView } from '../../routes';
 
 /**
  * Each sector shows who belongs to it and the conditions that apply to it,
  * side by side. The registration bar closes the section with the honest
  * status: there is no working form yet, so it points to the contact page.
  */
-export default function MitraKriteria({ onNavigate }) {
+export default function MitraKriteria() {
   return (
     <section id="sec-mitra-kriteria" className="section mitra-section">
       <div className="section-header" data-gsap="reveal">
@@ -56,9 +58,9 @@ export default function MitraKriteria({ onNavigate }) {
             Isi formulir pendaftaran
           </a>
         ) : (
-          <button type="button" className="btn-pill mitra-register-btn" onClick={() => onNavigate('kontak', 'sec-kontak-alamat')}>
+          <Link className="btn-pill mitra-register-btn" to={pathForView('kontak', 'sec-kontak-alamat')}>
             Buka halaman Kontak
-          </button>
+          </Link>
         )}
       </div>
     </section>

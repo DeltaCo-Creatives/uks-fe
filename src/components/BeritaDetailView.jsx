@@ -1,15 +1,19 @@
 import { useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { realNewsList } from '../data/portalData';
+import { pathForArticle, pathForView } from '../routes';
 import SafeImage from './SafeImage';
 
-export default function BeritaDetailView({ articleId, onNavigateView }) {
+export default function BeritaDetailView() {
+  const { idOrSlug } = useParams();
+
   const article = useMemo(() => {
-    if (!articleId) return realNewsList[0];
+    if (!idOrSlug) return realNewsList[0];
     return (
-      realNewsList.find((n) => n.id === Number(articleId) || n.slug === articleId) ||
+      realNewsList.find((n) => n.id === Number(idOrSlug) || n.slug === idOrSlug) ||
       realNewsList[0]
     );
-  }, [articleId]);
+  }, [idOrSlug]);
 
   const otherArticles = useMemo(() => {
     return realNewsList.filter((n) => n.id !== article.id).slice(0, 3);
@@ -156,14 +160,14 @@ export default function BeritaDetailView({ articleId, onNavigateView }) {
             gap: '16px'
           }}
         >
-          <button
-            onClick={() => onNavigateView('informasi', 'sec-info-berita')}
+          <Link
+            to={pathForView('informasi', 'sec-info-berita')}
             className="btn-pill secondary"
             style={{ padding: '10px 20px', fontSize: '13px' }}
           >
             <i className="fa-solid fa-arrow-left" style={{ marginRight: '8px' }}></i>
             Kembali ke Daftar Warta
-          </button>
+          </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)' }}>Bagikan:</span>
@@ -195,11 +199,11 @@ export default function BeritaDetailView({ articleId, onNavigateView }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
           {otherArticles.map((other) => (
-            <div
+            <Link
               key={other.id}
+              to={pathForArticle(other.id)}
               className="news-card-playful"
-              onClick={() => onNavigateView('berita-detail', null, other.id)}
-              style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
+              style={{ display: 'flex', flexDirection: 'column' }}
             >
               <div className="news-img-wrap">
                 <SafeImage src={other.image} alt={other.title} />
@@ -225,7 +229,7 @@ export default function BeritaDetailView({ articleId, onNavigateView }) {
                   <i className="fa-solid fa-arrow-right"></i>
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

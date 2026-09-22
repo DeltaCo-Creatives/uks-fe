@@ -1,12 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
+import { Routes, Route, Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import Navbar from './components/Navbar';
 import EdgeDrawer from './components/EdgeDrawer';
+import ScrollManager from './components/ScrollManager';
 import BerandaView from './components/BerandaView';
 import UksmClusters from './components/UksmClusters';
+import ProfilPage from './components/uksm/profil/ProfilPage';
+import TriasPage from './components/uksm/TriasPage';
+import StratifikasiPage from './components/uksm/StratifikasiPage';
 import ProgramView from './components/ProgramView';
 import MitraView from './components/MitraView';
 import InformasiView from './components/InformasiView';
@@ -14,55 +19,75 @@ import PublikasiView from './components/PublikasiView';
 import KontakView from './components/KontakView';
 import SearchView from './components/SearchView';
 import BeritaDetailView from './components/BeritaDetailView';
+import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 
 import { pageNavigationConfigs, realNewsList } from './data/portalData';
+import {
+  defaultTabSlug,
+  pathForView,
+  tabSectionFromPathname,
+  viewKeyFromPathname
+} from './routes';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-function App() {
-  const [currentView, setCurrentView] = useState('beranda');
-  const [activeSection, setActiveSection] = useState(null);
-  const [selectedArticleId, setSelectedArticleId] = useState(null);
-  const mainRef = useRef(null);
+const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail'];
 
-  // View Navigation Handler with optional targetSectionId & extraParam
-  const handleNavigateView = (viewKey, targetSectionId = null, extraParam = null) => {
-    // Backwards compatibility alias for 'uksm'
-    if (viewKey === 'uksm') {
-      viewKey = 'uksm-profil';
-    }
+function Breadcrumbs({ viewKey, pathname }) {
+  if (!viewKey || viewKey === 'beranda') return null;
 
-    if (viewKey === 'berita-detail') {
-      setSelectedArticleId(extraParam || targetSectionId || 1);
-    }
+  const linkStyle = { color: 'var(--brand-primary)', fontWeight: 700 };
+  const articleKey = decodeURIComponent(pathname.split('/')[3] || '');
+  const article =
+    viewKey === 'berita-detail'
+      ? realNewsList.find((n) => n.id === Number(articleKey) || n.slug === articleKey) || realNewsList[0]
+      : null;
 
-    setCurrentView(viewKey);
-    setActiveSection(targetSectionId);
+  return (
+    <div className="container" style={{ paddingTop: '20px', paddingBottom: '12px' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '8px',
+        fontSize: '12px',
+        color: 'var(--text-secondary)'
+      }}>
+        <Link to="/" style={linkStyle}>Beranda</Link>
 
-    // Scroll to section or top
-    setTimeout(() => {
-      if (targetSectionId) {
-        const el = document.getElementById(targetSectionId);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          return;
-        }
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 60);
-  };
+        {article ? (
+          <>
+            <span>/</span>
+            <Link to={pathForView('informasi', 'sec-info-berita')} style={linkStyle}>Informasi</Link>
+            <span>/</span>
+            <Link to={pathForView('informasi', 'sec-info-berita')} style={linkStyle}>Warta Terkini</Link>
+            <span>/</span>
+            <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {article.title}
+            </span>
+          </>
+        ) : (
+          <>
+            <span>/</span>
+            <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>
+              {pageNavigationConfigs[viewKey].title}
+            </span>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
-  // Section Navigation Handler
-  const handleNavigateSection = (targetSectionId) => {
-    setActiveSection(targetSectionId);
-    const el = document.getElementById(targetSectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+function Layout() {
+  const { pathname } = useLocation();
+  const viewKey = viewKeyFromPathname(pathname);
+  const [scrolledSection, setScrolledSection] = useState(null);
 
-  // GSAP Entrance and ScrollSpy
+  // Keyed off the view rather than the full path: switching tabs inside one
+  // view swaps a panel without remounting the page around it, so re-running
+  // this would re-fade the banner that never went away.
   useGSAP(() => {
     const reveals = gsap.utils.toArray('[data-gsap="reveal"]');
     reveals.forEach((el, i) => {
@@ -83,11 +108,10 @@ function App() {
       );
     });
 
-    // ScrollSpy for Active Section
-    const handleScroll = () => {
-      const config = pageNavigationConfigs[currentView];
-      if (!config || !config.sections || config.sections.length === 0) return;
+    const config = pageNavigationConfigs[viewKey];
+    if (!config || config.sections.length === 0) return undefined;
 
+    const handleScroll = () => {
       const scrollPos = window.scrollY + 180;
       let matchedSection = null;
 
@@ -99,136 +123,69 @@ function App() {
       });
 
       if (matchedSection) {
-        setActiveSection(matchedSection);
+        setScrolledSection(matchedSection);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [currentView]);
+  }, [viewKey]);
 
-  const currentConfig = pageNavigationConfigs[currentView] || pageNavigationConfigs['beranda'];
-
-  // Current article for breadcrumb title if in berita-detail
-  const currentArticle = currentView === 'berita-detail'
-    ? realNewsList.find(n => n.id === Number(selectedArticleId) || n.slug === selectedArticleId) || realNewsList[0]
-    : null;
+  // On a tab view the drawer follows the URL; elsewhere it follows the scroll.
+  const activeSection = tabSectionFromPathname(pathname) ?? scrolledSection;
+  const showDrawer = viewKey && !VIEWS_WITHOUT_DRAWER.includes(viewKey);
 
   return (
-    <div ref={mainRef} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <ScrollManager />
+
       {/* Primary Floating Navbar */}
-      <Navbar currentView={currentView} onNavigateView={handleNavigateView} />
+      <Navbar />
 
       {/* Universal Left-Edge Hover Navigation Drawer — hidden on Beranda, Search, & Detail */}
-      {!['beranda', 'search', 'berita-detail'].includes(currentView) && (
-        <EdgeDrawer
-          currentView={currentView}
-          activeSection={activeSection}
-          onNavigateSection={handleNavigateSection}
-        />
-      )}
+      {showDrawer && <EdgeDrawer viewKey={viewKey} activeSection={activeSection} />}
 
       <main style={{ flexGrow: 1 }}>
-        {/* Breadcrumb strip for Sub-Pages */}
-        {currentView !== 'beranda' && (
-          <div className="container" style={{ paddingTop: '20px', paddingBottom: '12px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '8px',
-              fontSize: '12px',
-              color: 'var(--text-secondary)'
-            }}>
-              <a
-                href="#beranda"
-                onClick={(e) => { e.preventDefault(); handleNavigateView('beranda'); }}
-                style={{ color: 'var(--brand-primary)', fontWeight: 700 }}
-              >
-                Beranda
-              </a>
-
-              {currentView === 'berita-detail' ? (
-                <>
-                  <span>/</span>
-                  <a
-                    href="#informasi"
-                    onClick={(e) => { e.preventDefault(); handleNavigateView('informasi', 'sec-info-berita'); }}
-                    style={{ color: 'var(--brand-primary)', fontWeight: 700 }}
-                  >
-                    Informasi
-                  </a>
-                  <span>/</span>
-                  <a
-                    href="#berita"
-                    onClick={(e) => { e.preventDefault(); handleNavigateView('informasi', 'sec-info-berita'); }}
-                    style={{ color: 'var(--brand-primary)', fontWeight: 700 }}
-                  >
-                    Warta Terkini
-                  </a>
-                  <span>/</span>
-                  <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {currentArticle ? currentArticle.title : 'Detail Warta'}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span>/</span>
-                  <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>{currentConfig.title}</span>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* View Switcher */}
-        {currentView === 'beranda' && (
-          <BerandaView onNavigateView={handleNavigateView} />
-        )}
-
-        {['uksm-profil', 'uksm-trias', 'uksm-stratifikasi'].includes(currentView) && (
-          <UksmClusters activeSubpage={currentView} onChangeView={handleNavigateView} />
-        )}
-
-        {currentView === 'program' && (
-          <ProgramView
-            activeSection={activeSection}
-            onNavigateSection={handleNavigateSection}
-            onNavigate={handleNavigateView}
-          />
-        )}
-
-        {currentView === 'mitra' && (
-          <MitraView onNavigate={handleNavigateView} />
-        )}
-
-        {currentView === 'informasi' && (
-          <InformasiView
-            activeSection={activeSection}
-            onNavigateSection={handleNavigateSection}
-            onNavigateView={handleNavigateView}
-          />
-        )}
-
-        {currentView === 'publikasi' && (
-          <PublikasiView activeSection={activeSection} onNavigateSection={handleNavigateSection} />
-        )}
-
-        {currentView === 'kontak' && (
-          <KontakView />
-        )}
-
-        {currentView === 'search' && (
-          <SearchView onNavigateView={handleNavigateView} />
-        )}
-
-        {currentView === 'berita-detail' && (
-          <BeritaDetailView articleId={selectedArticleId} onNavigateView={handleNavigateView} />
-        )}
+        <Breadcrumbs viewKey={viewKey} pathname={pathname} />
+        <Outlet />
       </main>
 
-      <Footer onNavigateView={handleNavigateView} />
+      <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<BerandaView />} />
+
+        <Route path="uksm" element={<UksmClusters />}>
+          <Route index element={<Navigate to="profil" replace />} />
+          <Route path="profil" element={<ProfilPage />} />
+          <Route path="trias" element={<TriasPage />} />
+          <Route path="stratifikasi" element={<StratifikasiPage />} />
+        </Route>
+
+        <Route path="program" element={<Navigate to={`/program/${defaultTabSlug('program')}`} replace />} />
+        <Route path="program/:programSlug" element={<ProgramView />} />
+
+        <Route path="mitra" element={<MitraView />} />
+
+        <Route path="informasi" element={<Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />} />
+        <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
+        <Route path="informasi/:tabSlug" element={<InformasiView />} />
+
+        <Route path="publikasi" element={<Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />} />
+        <Route path="publikasi/:tabSlug" element={<PublikasiView />} />
+
+        <Route path="kontak" element={<KontakView />} />
+        <Route path="search" element={<SearchView />} />
+
+        <Route path="*" element={<NotFoundView />} />
+      </Route>
+    </Routes>
   );
 }
 
