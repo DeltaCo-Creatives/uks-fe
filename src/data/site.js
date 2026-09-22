@@ -65,7 +65,7 @@ export const appsList = [
     description: 'Aplikasi pelacak menstruasi pertama di dunia yang dirancang bersama anak perempuan untuk memantau siklus, edukasi kebersihan reproduksi, dan tips kesehatan emosional.',
     icon: 'Aset UKS/aplikasi/oky.png',
     featuredOnHome: true,
-    color: '#EC4899',
+    color: '#BE185D',
     bgColor: '#FCE7F3',
     links: [
       { store: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.oky.id', icon: 'fa-brands fa-google-play' }
@@ -80,7 +80,7 @@ export const appsList = [
     description: 'Aplikasi kesehatan resmi Kemenkes RI untuk menyimpan sertifikat imunisasi anak sekolah (BIAS), rekam medis digital, dan skrining berkala terintegrasi fasilitas kesehatan.',
     icon: 'Aset UKS/aplikasi/satusehat.png',
     featuredOnHome: true,
-    color: '#0284C7',
+    color: '#0369A1',
     bgColor: '#E0F2FE',
     links: [
       { store: 'Google Play', url: 'https://play.google.com/store/apps/details?id=dto.kemkes.satusehat', icon: 'fa-brands fa-google-play' },
