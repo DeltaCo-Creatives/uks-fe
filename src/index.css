@@ -722,6 +722,21 @@ ul {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.03);
 }
 
+/* On a phone this frame wraps the whole panel, so its blur ran the full scroll
+   height under an already-blurred navbar. A plain surface reads cleaner and
+   costs nothing to repaint while scrolling. */
+@media (max-width: 768px) {
+  .about-bento-frame {
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
@@ -1722,6 +1737,40 @@ footer {
 .pdf-modal-header {
   padding: 16px 24px;
   display: flex;
+
+.pdf-modal-content iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #f0f0f0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bubblyPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(60px);
+    border-radius: 200px;
+    /* Start as a bubbly pill */
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    border-radius: var(--radius-xl);
+    /* Snap into squircle */
+  }
+}
+
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-light);
@@ -1756,37 +1805,330 @@ footer {
   color: white;
   transform: scale(1.1) rotate(90deg);
 }
+/* ============================================================
+   INFOGRAFIS GRID
+   Posters are portrait and of differing ratios. object-fit: contain on a
+   shared portrait frame shows each one whole, so a poster can be read in the
+   grid instead of being cropped into an unreadable tile.
+   ============================================================ */
+.infografis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 20px;
+}
 
-.pdf-modal-content iframe {
+.infografis-tile {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.infografis-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: var(--bg-app);
+  cursor: zoom-in;
+}
+
+.infografis-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+}
+
+.infografis-zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(17, 28, 22, 0.78);
+  color: #FFFFFF;
+  font-size: 13px;
+}
+
+.infografis-frame:hover .infografis-zoom {
+  background: var(--text-primary);
+}
+
+.infografis-frame:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: -3px;
+}
+
+.infografis-tile figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.infografis-title {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.infografis-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  min-height: 44px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--brand-primary);
+  text-underline-offset: 4px;
+}
+
+.infografis-download:hover {
+  color: var(--brand-deep);
+}
+
+.infografis-download:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   IMAGE LIGHTBOX (full-size poster)
+   ============================================================ */
+.img-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 16, 13, 0.82);
+}
+
+.img-lightbox {
+  position: relative;
+  max-width: min(900px, 100%);
+  max-height: 100%;
+}
+
+.img-lightbox img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.img-lightbox-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 16px;
+  box-shadow: var(--shadow-pill);
+  cursor: pointer;
+}
+
+.img-lightbox-close:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .img-lightbox-overlay {
+    padding: 16px;
+  }
+
+  .img-lightbox-close {
+    top: 0;
+    right: 0;
+  }
+}
+
+/* ============================================================
+   DOCUMENT VIEWER (shared: buku pedoman, materi kampanye)
+   ============================================================ */
+/* Portalled to body, so this sits above the fixed navbar (10000) and the
+   edge drawer (10002) and dims the whole page rather than one panel. */
+.doc-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(10, 16, 13, 0.72);
+}
+
+.doc-viewer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  height: min(88vh, 900px);
+  overflow: hidden;
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+}
+
+.doc-viewer-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(17, 28, 22, 0.12);
+}
+
+.doc-viewer-heading h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.doc-viewer-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.doc-viewer-kind i {
+  color: var(--brand-primary);
+}
+
+.doc-viewer-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.doc-viewer-close:hover {
+  background: var(--text-primary);
+  color: #FFFFFF;
+}
+
+.doc-viewer-frame {
   flex: 1;
   width: 100%;
   border: none;
-  background: #f0f0f0;
+  background: var(--bg-app);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+/* Shown when the source publishes no embed path at all */
+.doc-viewer-offsite {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  background: var(--bg-app);
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
-@keyframes bubblyPop {
-  0% {
-    opacity: 0;
-    transform: scale(0.6) translateY(60px);
-    border-radius: 200px;
-    /* Start as a bubbly pill */
+.doc-viewer-offsite i {
+  font-size: 40px;
+  color: var(--brand-primary);
+}
+
+.doc-viewer-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 12px 20px;
+  border-top: 1px solid rgba(17, 28, 22, 0.12);
+}
+
+.doc-viewer-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.doc-viewer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.doc-viewer-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.doc-viewer a:focus-visible,
+.doc-viewer button:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .doc-viewer-overlay {
+    padding: 0;
   }
 
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    border-radius: var(--radius-xl);
-    /* Snap into squircle */
+  .doc-viewer {
+    height: 100%;
+    max-width: none;
+    border-radius: 0;
+  }
+
+  .doc-viewer-foot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .doc-viewer-actions .btn-pill {
+    flex: 1;
+    justify-content: center;
   }
 }
 
@@ -1930,6 +2272,30 @@ footer {
 }
 
 .screenshot-item img {
+/* The cluster panel is 780px wide, and the UKS/M tab sits left of centre, so
+   hanging the panel off the tab left the whole right half of the screen
+   empty. Going static hands the panel to the fixed bar as its anchor — that
+   one spans the viewport in both navbar states, so 50% is the screen middle. */
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) {
+  position: static;
+}
+
+/* The bar's bottom padding now sits between the tab and the panel. This
+   invisible strip is part of the tab, so the cursor crossing it keeps the tab
+   hovered — without it the menu closes on the way down to the panel. */
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) > a {
+  position: relative;
+}
+
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) > a:hover::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 44px;
+}
+
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
@@ -1973,7 +2339,6 @@ footer {
      cursor crossing it drops :hover and the menu vanishes before you can
      reach it — this is what made the dropdown disappear on the way down. */
   top: 100%;
-  padding-top: 14px;
   left: 50%;
   /* No transform-driven size change on THIS box — it must be at its full,
      final size the instant it opens, or the hit-testable area is still
@@ -2112,6 +2477,10 @@ footer {
   justify-content: space-between;
   font-size: 11px;
   font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.lobby-tabs-track {
   color: var(--brand-primary);
   padding-top: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.04);
@@ -2125,8 +2494,8 @@ footer {
 .lobby-tabs {
   display: flex;
   flex-wrap: wrap;
+  min-height: 44px;
   gap: 10px;
-  margin-bottom: 24px;
 }
 
 .lobby-tab {
@@ -2147,6 +2516,11 @@ footer {
 .lobby-tab i {
   color: var(--brand-primary);
   font-size: 15px;
+.lobby-tab:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
 }
 
 .lobby-tab:hover {
@@ -2162,6 +2536,45 @@ footer {
 
 .lobby-tab.active i {
   color: var(--brand-accent);
+/* Below a tablet the five tabs scroll in one row. Wrapped, they stacked three
+   deep and pushed the panel itself off the first screen. */
+@media (max-width: 768px) {
+  .lobby-tabs {
+    /* .container insets by 4vw; cancel it so the row scrolls edge to edge,
+       then pad it back so the first tab lines up with the content below. */
+    margin-inline: calc(50% - 50vw);
+    margin-bottom: 18px;
+    padding: 2px calc(50vw - 50%) 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .lobby-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lobby-tabs-track {
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: max-content;
+  }
+
+  .lobby-tab {
+    flex: none;
+    padding: 10px 16px;
+    white-space: nowrap;
+  }
+
+  /* The lift needs room the scroll container does not have, and there is no
+     hover on a touchscreen anyway. */
+  .lobby-tab:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+}
+
 }
 
 .lobby-panel {

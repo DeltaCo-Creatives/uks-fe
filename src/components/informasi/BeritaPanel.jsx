@@ -13,6 +13,13 @@ const GROUP_OPTIONS = [
   { key: 'category', label: 'Kategori', getGroup: (item) => item.category }
 ];
 
+const CATEGORIES = [
+  { key: 'all', label: 'Semua Warta' },
+  { key: 'kebijakan', label: 'Kebijakan' },
+  { key: 'kegiatan', label: 'Kegiatan Lapangan' },
+  { key: 'sosialisasi', label: 'Inovasi GSS' }
+];
+
 export default function BeritaPanel({ onNavigateView }) {
   const [activeCategory, setActiveCategory] = useState('all');
 
@@ -40,22 +47,26 @@ export default function BeritaPanel({ onNavigateView }) {
 
   return (
     <div className="about-bento-frame">
-      <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap',
-        gap: '16px', marginBottom: '28px', paddingBottom: '20px', borderBottom: '1px solid rgba(0,0,0,0.06)'
-      }}>
+      <div className="info-panel-head">
         <div>
           <span className="section-kicker">Rilis Resmi Kementerian</span>
-          <h2 style={{ fontSize: 'clamp(22px, 2.6vw, 28px)', fontWeight: 800, margin: '6px 0 0', color: 'var(--text-primary)' }}>
-            Warta Terkini Usaha Kesehatan Sekolah
-          </h2>
+          <h2 className="info-panel-title">Warta Terkini Usaha Kesehatan Sekolah</h2>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', background: 'var(--bg-app)', padding: '6px', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.04)' }}>
-          <button className={`subnav-pill ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => setActiveCategory('all')} style={{ padding: '8px 16px', fontSize: '13px' }}>Semua Warta</button>
-          <button className={`subnav-pill ${activeCategory === 'kebijakan' ? 'active' : ''}`} onClick={() => setActiveCategory('kebijakan')} style={{ padding: '8px 16px', fontSize: '13px' }}>Kebijakan</button>
-          <button className={`subnav-pill ${activeCategory === 'kegiatan' ? 'active' : ''}`} onClick={() => setActiveCategory('kegiatan')} style={{ padding: '8px 16px', fontSize: '13px' }}>Kegiatan Lapangan</button>
-          <button className={`subnav-pill ${activeCategory === 'sosialisasi' ? 'active' : ''}`} onClick={() => setActiveCategory('sosialisasi')} style={{ padding: '8px 16px', fontSize: '13px' }}>Inovasi GSS</button>
+        <div className="info-filter">
+          <div className="info-filter-track" role="group" aria-label="Saring warta menurut kategori">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.key}
+                type="button"
+                className={`info-filter-btn ${activeCategory === cat.key ? 'is-active' : ''}`}
+                aria-pressed={activeCategory === cat.key}
+                onClick={() => setActiveCategory(cat.key)}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -77,46 +88,42 @@ export default function BeritaPanel({ onNavigateView }) {
 
       {resultCount === 0 ? (
         <div className="content-toolbar-empty">
-          <i className="fa-solid fa-newspaper" style={{ fontSize: '32px', color: 'var(--text-secondary)', opacity: 0.5, marginBottom: '12px' }}></i>
-          <h4 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 6px' }}>
-            Tidak ada warta yang cocok
-          </h4>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
-            Coba ubah kata kunci pencarian atau rentang tanggal.
-          </p>
+          <i className="fa-solid fa-newspaper" aria-hidden="true"></i>
+          <h4 className="info-empty-title">Tidak ada warta yang cocok</h4>
+          <p className="info-empty-text">Coba ubah kata kunci pencarian atau rentang tanggal.</p>
         </div>
       ) : (
         groups.map((group) => (
           <div key={group.label ?? 'flat'}>
             {group.label && <h3 className="content-group-heading">{group.label}</h3>}
-            <div className="news-masonry">
+            <div className="info-grid">
               {group.items.map(item => (
-                <div
+                <button
                   key={item.id}
-                  className="news-card-playful"
+                  type="button"
+                  className="news-card-playful info-card-btn"
                   onClick={() => handleArticleClick(item)}
-                  style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
                 >
                   <div className="news-img-wrap">
-                    <SafeImage src={item.image} alt={item.title} />
+                    <SafeImage src={item.image} alt="" />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span className="section-kicker" style={{ margin: 0, padding: '4px 10px', fontSize: '10px' }}>{item.category}</span>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 600 }}>
-                      <i className="fa-regular fa-calendar" style={{ marginRight: '5px' }}></i>{item.date}
+                  <div className="info-card-meta">
+                    <span className="section-kicker">{item.category}</span>
+                    <span className="info-card-date">
+                      <i className="fa-regular fa-calendar" aria-hidden="true"></i> {item.date}
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '17px', fontWeight: 800, margin: '6px 0 8px', color: 'var(--text-primary)', lineHeight: 1.35 }}>{item.title}</h3>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: '16px', flexGrow: 1 }}>{item.excerpt}</p>
-                  <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--brand-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>Baca Selengkapnya</span><i className="fa-solid fa-arrow-right"></i>
+                  <h3 className="info-card-title">{item.title}</h3>
+                  <p className="info-card-excerpt">{item.excerpt}</p>
+                  <div className="info-card-foot">
+                    <span className="info-card-cta">
+                      Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </span>
-                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                      <i className="fa-regular fa-eye" style={{ marginRight: '4px' }}></i>{item.views}
+                    <span className="info-card-views">
+                      <i className="fa-regular fa-eye" aria-hidden="true"></i> {item.views}
                     </span>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>

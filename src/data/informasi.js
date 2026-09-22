@@ -80,7 +80,7 @@ export const realNewsList = [
 export const bestPracticesList = [
   {
     id: 1,
-    icon: '🏆',
+    icon: 'fa-solid fa-utensils',
     level: 'SD Model Paripurna',
     title: 'SDN 1 Wonosobo: Kantin Kejujuran Bebas 5P',
     desc: 'Pemberdayaan paguyuban orang tua memasok menu tradisional lokal bernutrisi tinggi bebas 5P (pengawet, perasa, pemanis, pewarna sintetis, pengenyal).',
@@ -88,7 +88,7 @@ export const bestPracticesList = [
   },
   {
     id: 2,
-    icon: '💡',
+    icon: 'fa-solid fa-heart-pulse',
     level: 'SMP Inovatif Sehat',
     title: 'SMPN 4 Singaraja: Aplikasi Pantau Kebugaran',
     desc: 'Digitalisasi kartu pantau fisik mandiri siswa untuk mencatat rekor peregangan kelas, hidrasi 2 liter air, dan waktu tidur teratur.',
@@ -96,7 +96,7 @@ export const bestPracticesList = [
   },
   {
     id: 3,
-    icon: '🌿',
+    icon: 'fa-solid fa-seedling',
     level: 'SMA Adiwiyata Mandiri',
     title: 'SMAN 2 Padang: Bank Sampah & Apotek TOGA',
     desc: 'Pengolahan kompos sisa makanan kantin menjadi pupuk organik kebun sayur sekolah dan budidaya tanaman obat keluarga.',

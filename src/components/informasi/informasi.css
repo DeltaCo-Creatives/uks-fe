@@ -1,0 +1,554 @@
+/* ============================================================
+   INFORMASI PANELS
+   Layout lives here rather than in inline style props: an inline style
+   outranks every stylesheet rule, so while these panels carried their
+   padding, gaps and type inline, no media query could give them a mobile
+   state. Every class below exists so the narrow viewport can be designed.
+   ============================================================ */
+
+/* No horizontal padding: the tab and filter strips cancel exactly the
+   container's own 4vw inset to reach the screen edges, and extra padding here
+   would knock that alignment out. */
+.informasi-page {
+  padding: 24px 0 80px;
+}
+
+.info-panel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(17, 28, 22, 0.1);
+}
+
+.info-panel-head.is-stacked {
+  display: block;
+}
+
+.info-panel-title {
+  margin: 6px 0 0;
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.info-panel-desc {
+  margin: 8px 0 0;
+  max-width: 70ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+/* Category filter: one scrolling row on a phone, same behaviour as the
+   section tabs above it, so the two strips do not each wrap into blocks. */
+.info-filter {
+  flex: none;
+}
+
+.info-filter-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-app);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.info-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--ease);
+}
+
+.info-filter-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-primary);
+}
+
+.info-filter-btn.is-active {
+  background: var(--brand-deep);
+  color: #FFFFFF;
+}
+
+.info-filter-btn:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- Card grids ---------- */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 18px;
+}
+
+/* The news card is a real button: as a div with onClick it could not be
+   reached or fired from a keyboard. */
+.info-card-btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.info-card-btn:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 3px;
+}
+
+/* A touchscreen has no hover, so the press needs feedback of its own */
+.info-card-btn:active,
+.info-filter-btn:active,
+.lobby-tab:active {
+  transform: scale(0.985);
+}
+
+.info-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.info-card-meta .section-kicker {
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 10px;
+}
+
+.content-toolbar-empty > i {
+  margin-bottom: 12px;
+  font-size: 30px;
+  color: var(--text-secondary);
+}
+
+.info-card-date {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.info-card-title {
+  margin: 6px 0 8px;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.info-card-excerpt {
+  flex-grow: 1;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.info-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(17, 28, 22, 0.08);
+}
+
+.info-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--brand-deep);
+}
+
+.info-card-views {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.info-card-region {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--brand-deep);
+}
+
+.info-story {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Praktik baik ---------- */
+.info-practice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+}
+
+.info-practice-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-md);
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  font-size: 18px;
+}
+
+.info-practice-level {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--brand-light);
+  color: var(--brand-deep);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.info-practice-title {
+  margin-bottom: 8px;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.info-practice-desc {
+  margin-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.info-practice-date {
+  margin-top: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ---------- Agenda ---------- */
+.info-agenda-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-agenda {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1.5px solid rgba(17, 28, 22, 0.08);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.info-agenda-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  border-radius: var(--radius-md);
+  background: var(--brand-deep);
+  color: #FFFFFF;
+}
+
+.info-agenda-day {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.info-agenda-month {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.info-agenda-organizer {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brand-deep);
+}
+
+.info-agenda-title {
+  margin: 4px 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.info-agenda-place {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.info-agenda-place i {
+  color: var(--brand-primary);
+}
+
+/* Plain text, not a pill: the status is a label, and a filled pill read as a
+   button the reader could press. No status dot either, since one colour for
+   three different states would decorate rather than distinguish them. */
+.info-agenda-status {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ---------- Aplikasi ---------- */
+.info-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  border: 1.5px solid rgba(17, 28, 22, 0.08);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+}
+
+.info-app-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.info-app-icon {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--brand-light);
+}
+
+.info-app-badge {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.info-app-name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.info-app-publisher {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.info-app-tagline {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.info-app-desc {
+  margin-bottom: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.info-app-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding-top: 16px;
+  border-top: 1px solid rgba(17, 28, 22, 0.08);
+}
+
+.info-app-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 16px;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.info-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Empty state ---------- */
+.info-empty-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.info-empty-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   TABLET: the grids drop to two columns before they drop to one,
+   so the middle of the range is designed rather than inherited.
+   ============================================================ */
+@media (max-width: 900px) {
+  .info-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 14px;
+  }
+}
+
+/* ============================================================
+   PHONE
+   ============================================================ */
+@media (max-width: 768px) {
+  .informasi-page {
+    padding: 12px 0 56px;
+  }
+
+  .info-panel-head {
+    display: block;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+  }
+
+  .info-panel-desc {
+    font-size: 14px;
+  }
+
+  /* Edge to edge, matching the section tabs, so both strips scroll the same way */
+  .info-filter {
+    margin-inline: calc(50% - 50vw);
+    padding-inline: calc(50vw - 50%);
+    margin-top: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .info-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  .info-filter-track {
+    flex-wrap: nowrap;
+    width: max-content;
+    gap: 6px;
+  }
+
+  .info-filter-btn {
+    flex: none;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .info-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  /* The decorative stagger on every second card just reads as a misaligned
+     card once the grid is a single column. */
+  .info-grid .news-card-playful:nth-child(2) {
+    transform: none;
+  }
+
+  .info-grid .news-card-playful:hover {
+    transform: none;
+    box-shadow: var(--shadow-card);
+  }
+
+  .info-practice,
+  .info-app {
+    padding: 18px;
+  }
+
+  .info-card-title,
+  .info-practice-title {
+    font-size: 16px;
+  }
+
+  .info-agenda {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 16px;
+  }
+
+  /* The status moves under the text instead of squeezing a third column */
+  .info-agenda-status {
+    grid-column: 2;
+  }
+
+  .info-agenda-day {
+    font-size: 19px;
+  }
+
+  .info-app-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .info-app-links .info-app-link {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}

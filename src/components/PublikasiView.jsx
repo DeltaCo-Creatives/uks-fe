@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { realBooksList, defaultInfografis, pageNavigationConfigs, videoList, regulationsList } from '../data/portalData';
+import DocViewerModal from './shared/DocViewerModal';
+import ImageLightbox from './shared/ImageLightbox';
+import LobbyTabs from './shared/LobbyTabs';
 
 const publikasiTabs = pageNavigationConfigs.publikasi.sections;
 
@@ -53,35 +56,29 @@ function BooksPanel() {
       </div>
 
       {selectedBook && (
-        <div className="modal-bento-overlay" onClick={() => setSelectedBook(null)}>
-          <div className="modal-bento-dialog" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-bento-close" onClick={() => setSelectedBook(null)}><i className="fa-solid fa-xmark"></i></button>
-            <div style={{ padding: 'clamp(24px, 4vw, 36px)' }}>
-              <span className="section-kicker">{selectedBook.category}</span>
-              <h2 style={{ fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 800, margin: '8px 0 16px', color: 'var(--text-primary)' }}>{selectedBook.title}</h2>
-              <div style={{ background: 'var(--bg-app)', borderRadius: 'var(--radius-lg)', padding: '28px', textAlign: 'center', margin: '20px 0', border: '1.5px dashed rgba(0,0,0,0.12)' }}>
-                <div style={{ fontSize: '56px', color: '#DC2626', marginBottom: '14px' }}><i className="fa-solid fa-file-pdf"></i></div>
-                <h4 style={{ fontSize: '16px', fontWeight: 800, marginBottom: '6px' }}>Dokumen Digital Siap Baca ({selectedBook.pages} · {selectedBook.size})</h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto 20px' }}>{selectedBook.desc}</p>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
-                  <a href={selectedBook.pdf} target="_blank" rel="noreferrer" className="btn-massive" style={{ padding: '12px 24px', fontSize: '14px' }}>
-                    <i className="fa-solid fa-up-right-from-square"></i><span>Buka Dokumen PDF Penuh</span>
-                  </a>
-                  <a href={selectedBook.pdf} download className="btn-pill secondary" style={{ padding: '12px 20px', fontSize: '14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                    <i className="fa-solid fa-download"></i><span>Unduh Arsip</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DocViewerModal
+          doc={{
+            title: selectedBook.title,
+            url: selectedBook.pdf,
+            kind: 'pdf',
+            meta: `${selectedBook.pages} · ${selectedBook.size}`,
+            download: selectedBook.pdf
+          }}
+          onClose={() => setSelectedBook(null)}
+        />
       )}
     </div>
   );
 }
 
+/**
+ * Each poster is shown whole in its tile, not cropped to fit one, so it can be
+ * read on the page. Enlarging and downloading are for the small print, not the
+ * only way to see what a poster says.
+ */
 function InfografisPanel() {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [zoomed, setZoomed] = useState(null);
+
   return (
     <div className="about-bento-frame">
       <div style={{ marginBottom: '24px' }}>
@@ -90,26 +87,29 @@ function InfografisPanel() {
           Infografis Mading &amp; Kampanye Siap Cetak
         </h2>
         <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '850px' }}>
-          Arahkan kursor ke salah satu poster untuk memperbesar. Klik untuk melihat resolusi penuh siap cetak untuk dinding sekolah.
+          Poster siap cetak untuk dinding dan mading sekolah. Klik poster untuk melihatnya lebih besar.
         </p>
       </div>
 
-      <div className="info-bento">
-        {defaultInfografis.map((item, idx) => (
-          <div key={idx} className="info-item" onClick={() => setSelectedImage(item.image)} title={`Klik untuk memperbesar: ${item.title}`}>
-            <img src={item.image} alt={item.title} />
-          </div>
+      <div className="infografis-grid">
+        {defaultInfografis.map((item) => (
+          <figure key={item.image} className="infografis-tile">
+            <button type="button" className="infografis-frame" onClick={() => setZoomed({ src: item.image, title: item.title })}>
+              <img src={item.image} alt={item.title} loading="lazy" />
+              <span className="infografis-zoom" aria-hidden="true"><i className="fa-solid fa-expand"></i></span>
+            </button>
+            <figcaption>
+              <span className="infografis-title">{item.title}</span>
+              <a className="infografis-download" href={item.image} download>
+                <i className="fa-solid fa-download" aria-hidden="true"></i>
+                <span>Unduh</span>
+              </a>
+            </figcaption>
+          </figure>
         ))}
       </div>
 
-      {selectedImage && (
-        <div className="lightbox-overlay" onClick={() => setSelectedImage(null)}>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={() => setSelectedImage(null)}><i className="fa-solid fa-xmark"></i></button>
-            <img src={selectedImage} alt="Infografis Pembesaran" />
-          </div>
-        </div>
-      )}
+      {zoomed && <ImageLightbox image={zoomed} onClose={() => setZoomed(null)} />}
     </div>
   );
 }
@@ -205,19 +205,12 @@ export default function PublikasiView({ activeSection, onNavigateSection }) {
         </p>
       </div>
 
-      {/* LOBBY: pick a topic, the panel below shows it */}
-      <div className="lobby-tabs" data-gsap="reveal">
-        {publikasiTabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`lobby-tab ${activeId === tab.id ? 'active' : ''}`}
-            onClick={() => onNavigateSection(tab.id)}
-          >
-            <i className={tab.icon}></i>
-            <span>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      <LobbyTabs
+        tabs={publikasiTabs}
+        activeId={activeId}
+        onSelect={onNavigateSection}
+        label="Bagian publikasi"
+      />
 
       {/* GIANT DISPLAY PANEL */}
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
