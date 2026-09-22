@@ -2567,6 +2567,19 @@ footer {
   background: linear-gradient(to bottom, rgba(244, 245, 244, 0.95), rgba(244, 245, 244, 0));
 }
 
+/* Extends the fade up behind the fixed navbar so it reads as one
+   continuous mask instead of starting abruptly at the header's edge. */
+.subnav-3bar-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -84px;
+  height: 84px;
+  background: rgba(244, 245, 244, 0.95);
+  pointer-events: none;
+}
+
 .subnav-3bar {
   display: inline-flex;
   gap: 8px;
