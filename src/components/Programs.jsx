@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { priorityProgramsList, realNewsList } from '../data/portalData';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
-export default function Programs() {
+export default function Programs({ onNavigateView }) {
     const trackRef = useRef(null);
-    const [selectedNews, setSelectedNews] = useState(null);
 
     // Repeat programs so each half is sufficiently wide (> 3500px)
     const marqueePrograms = useMemo(() => [
@@ -80,7 +79,7 @@ export default function Programs() {
                             key={item.id}
                             className="news-card-playful"
                             data-gsap="reveal"
-                            onClick={() => setSelectedNews(item)}
+                            onClick={() => onNavigateView('berita-detail', null, item.slug)}
                             style={{ cursor: 'pointer' }}
                         >
                             <div className="news-img-wrap">
@@ -95,38 +94,6 @@ export default function Programs() {
                     ))}
                 </div>
             </div>
-
-            {/* Full News Article Modal */}
-            {selectedNews && (
-                <div className="pdf-modal-overlay" onClick={() => setSelectedNews(null)} style={{ zIndex: 100000 }}>
-                    <div
-                        className="pdf-modal-content"
-                        onClick={e => e.stopPropagation()}
-                        style={{ maxWidth: '720px', height: 'auto', maxHeight: '85vh', overflowY: 'auto', padding: '24px' }}
-                    >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                            <div>
-                                <span className="section-kicker" style={{ marginBottom: '8px' }}>{selectedNews.category} · {selectedNews.date}</span>
-                                <h3 style={{ fontSize: '22px', fontWeight: 800, lineHeight: 1.25, margin: '4px 0' }}>{selectedNews.title}</h3>
-                            </div>
-                            <button
-                                className="pdf-modal-close"
-                                onClick={() => setSelectedNews(null)}
-                                aria-label="Tutup"
-                                style={{ marginLeft: '16px' }}
-                            >
-                                <i className="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                        <div style={{ width: '100%', height: '280px', borderRadius: '16px', overflow: 'hidden', marginBottom: '20px' }}>
-                            <img src={selectedNews.image} alt={selectedNews.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        </div>
-                        <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#37473D' }}>
-                            {selectedNews.excerpt}
-                        </p>
-                    </div>
-                </div>
-            )}
         </section>
     );
 }

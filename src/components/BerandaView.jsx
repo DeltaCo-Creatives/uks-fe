@@ -10,7 +10,7 @@ export default function BerandaView({ onNavigateView }) {
     <div>
       {/* 1. Hero Stage */}
       <div id="sec-home-hero">
-        <Hero />
+        <Hero onNavigateView={onNavigateView} />
       </div>
 
       {/* 2. Metrik Nasional 4 Kementerian */}
@@ -197,7 +197,7 @@ export default function BerandaView({ onNavigateView }) {
 
       {/* 5. Program Unggulan Marquee & Kabar Terbaru */}
       <div id="sec-home-programs">
-        <Programs />
+        <Programs onNavigateView={onNavigateView} />
       </div>
 
       {/* 6. Rak Perpustakaan Buku Digital */}
