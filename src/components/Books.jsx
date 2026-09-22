@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { realBooksList } from '../data/portalData';
+import SafeImage from './SafeImage';
+
+const MARQUEE_PX_PER_SECOND = 40;
 
 export default function Books() {
     const [selectedBook, setSelectedBook] = useState(null);
@@ -18,7 +21,10 @@ export default function Books() {
         marqueeTween.current = gsap.to(trackRef.current, {
             xPercent: -50,
             repeat: -1,
-            duration: 45,
+            // Constant speed rather than a constant duration: the track holds
+            // several copies of the list, so a fixed duration sped the row up
+            // every time an item was added.
+            duration: (trackRef.current.scrollWidth / 2) / MARQUEE_PX_PER_SECOND,
             ease: 'none'
         });
 
@@ -100,7 +106,7 @@ export default function Books() {
                     {marqueeBooks.map((buku, idx) => (
                         <div key={`b1-${idx}`} className="swipe-card book-swipe-card">
                             <div className="book-cover-large">
-                                <img src={buku.cover} alt={buku.title} />
+                                <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
                             </div>
                             <h3>{buku.title}</h3>
                             <p>{buku.category} · {buku.year}</p>
@@ -114,7 +120,7 @@ export default function Books() {
                     {marqueeBooks.map((buku, idx) => (
                         <div key={`b2-${idx}`} className="swipe-card book-swipe-card">
                             <div className="book-cover-large">
-                                <img src={buku.cover} alt={buku.title} />
+                                <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
                             </div>
                             <h3>{buku.title}</h3>
                             <p>{buku.category} · {buku.year}</p>
@@ -141,7 +147,7 @@ export default function Books() {
                             {realBooksList.map((buku) => (
                                 <div key={`grid-${buku.id}`} className="swipe-card book-swipe-card grid-card">
                                     <div className="book-cover-large">
-                                        <img src={buku.cover} alt={buku.title} />
+                                        <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
                                     </div>
                                     <h3>{buku.title}</h3>
                                     <p>{buku.category} · {buku.year}</p>

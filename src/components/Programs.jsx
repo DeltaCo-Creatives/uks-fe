@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { priorityProgramsList, realNewsList } from '../data/portalData';
 
+const MARQUEE_PX_PER_SECOND = 40;
+
 export default function Programs() {
     const trackRef = useRef(null);
     const [selectedNews, setSelectedNews] = useState(null);
@@ -16,7 +18,10 @@ export default function Programs() {
         const marqueeTween = gsap.to(trackRef.current, {
             xPercent: -50,
             repeat: -1,
-            duration: 45,
+            // Constant speed rather than a constant duration: the track holds
+            // several copies of the list, so a fixed duration sped the row up
+            // every time an item was added.
+            duration: (trackRef.current.scrollWidth / 2) / MARQUEE_PX_PER_SECOND,
             ease: 'none'
         });
 

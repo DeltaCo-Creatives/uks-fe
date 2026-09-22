@@ -3,6 +3,7 @@ import { realBooksList, defaultInfografis, pageNavigationConfigs, videoList, reg
 import DocViewerModal from './shared/DocViewerModal';
 import ImageLightbox from './shared/ImageLightbox';
 import LobbyTabs from './shared/LobbyTabs';
+import SafeImage from './SafeImage';
 
 const publikasiTabs = pageNavigationConfigs.publikasi.sections;
 
@@ -34,7 +35,7 @@ function BooksPanel() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
         {filteredBooks.map((buku) => (
           <div key={buku.id} className="book-swipe-card" style={{ background: '#FFFFFF', borderRadius: 'var(--radius-lg)', padding: '20px', boxShadow: 'var(--shadow-card)', display: 'flex', flexDirection: 'column', transition: 'var(--spring)' }}>
-            <div className="book-cover-large"><img src={buku.cover} alt={buku.title} /></div>
+            <div className="book-cover-large"><SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" /></div>
             <span className="section-kicker" style={{ margin: '0 0 8px', padding: '4px 10px', fontSize: '10px' }}>{buku.category}</span>
             <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>{buku.title}</h3>
             <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '14px' }}>{buku.desc}</p>

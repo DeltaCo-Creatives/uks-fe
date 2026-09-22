@@ -50,6 +50,20 @@ export const realBooksList = [
     pdf: 'Aset UKS/buku3.pdf',
     pages: '142 Halaman',
     size: '6.3 MB'
+  },
+  {
+    id: 5,
+    title: 'Pedoman Sekolah Sehat',
+    category: 'Tata Kelola & SOP',
+    categoryKey: 'manajemen',
+    year: '2026',
+    desc: 'Pedoman penyelenggaraan sekolah sehat bagi satuan pendidikan, dari perencanaan dan pembiasaan harian sampai pemantauannya.',
+    // No cover art supplied with the file; SafeImage shows a named placeholder
+    // until one is dropped in next to the PDF.
+    cover: null,
+    pdf: 'Aset UKS/pedoman-sekolah-sehat.pdf',
+    pages: '106 Halaman',
+    size: '64.6 MB'
   }
 ];
 
