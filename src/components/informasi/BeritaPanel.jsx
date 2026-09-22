@@ -15,9 +15,9 @@ const GROUP_OPTIONS = [
 
 const CATEGORIES = [
   { key: 'all', label: 'Semua Warta' },
-  { key: 'kebijakan', label: 'Kebijakan' },
-  { key: 'kegiatan', label: 'Kegiatan Lapangan' },
-  { key: 'sosialisasi', label: 'Inovasi GSS' }
+  { key: 'pendidikan', label: 'Pendidikan' },
+  { key: 'gss', label: 'Gerakan Sekolah Sehat' },
+  { key: 'uks', label: 'UKS' }
 ];
 
 export default function BeritaPanel({ onNavigateView }) {
@@ -118,9 +118,6 @@ export default function BeritaPanel({ onNavigateView }) {
                   <div className="info-card-foot">
                     <span className="info-card-cta">
                       Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                    </span>
-                    <span className="info-card-views">
-                      <i className="fa-regular fa-eye" aria-hidden="true"></i> {item.views}
                     </span>
                   </div>
                 </button>

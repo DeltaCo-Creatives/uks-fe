@@ -835,7 +835,7 @@ a.prog-variant:hover .prog-ext-icon {
 }
 
 /* Competitions */
-.prog-closed {
+.prog-deadline {
   display: flex;
   gap: 10px;
   align-items: baseline;
@@ -845,7 +845,7 @@ a.prog-variant:hover .prog-ext-icon {
   color: var(--text-primary);
 }
 
-.prog-closed i {
+.prog-deadline i {
   color: var(--brand-primary);
 }
 
@@ -940,6 +940,39 @@ a.prog-competition:hover {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 16px;
+}
+
+/* Two portrait flyer pages read in sequence, so they sit side by side. Capped
+   well under the card width: they are a reference to open, not the content. */
+.prestasi-flyers {
+  margin: 0;
+}
+
+.prestasi-flyer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 520px;
+}
+
+.prestasi-flyer-grid a {
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+.prestasi-flyer-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-alt);
+}
+
+.prestasi-flyers figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
 }
 
 .prestasi-list {
@@ -1290,6 +1323,12 @@ a.prog-competition:hover {
   .prog-picker {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 6px;
+  }
+
+  /* Half a phone width leaves a 4:5 flyer too small to judge, so stack them. */
+  .prestasi-flyer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 300px;
   }
 
   .prog-tab {

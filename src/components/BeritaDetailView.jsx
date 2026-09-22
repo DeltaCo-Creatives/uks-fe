@@ -39,11 +39,6 @@ export default function BeritaDetailView({ articleId, onNavigateView }) {
             <i className="fa-regular fa-calendar"></i>
             {article.date}
           </span>
-          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>•</span>
-          <span style={{ fontSize: '13px', color: 'var(--text-secondary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <i className="fa-regular fa-eye"></i>
-            {article.views || '2.4k'} Pembaca
-          </span>
         </div>
 
         <h1
@@ -134,6 +129,19 @@ export default function BeritaDetailView({ articleId, onNavigateView }) {
             <p style={{ margin: 0 }}>{article.excerpt}</p>
           )}
         </div>
+
+        {article.sourceUrl && (
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-pill"
+            style={{ marginTop: '24px', padding: '10px 20px', fontSize: '13px', background: 'var(--bg-app)', border: '1px solid rgba(0,0,0,0.08)', display: 'inline-flex' }}
+          >
+            Baca artikel asli di portal Kemendikdasmen
+            <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginLeft: '8px' }}></i>
+          </a>
+        )}
 
         {/* Share & Back action bar */}
         <div

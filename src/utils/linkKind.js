@@ -1,6 +1,8 @@
 const KIND = {
   drive: { label: 'Google Drive', icon: 'fa-brands fa-google-drive' },
   pdf: { label: 'PDF', icon: 'fa-solid fa-file-pdf' },
+  doc: { label: 'Google Dokumen', icon: 'fa-solid fa-file-lines' },
+  slides: { label: 'Google Slides', icon: 'fa-solid fa-file-powerpoint' },
   video: { label: 'Video', icon: 'fa-brands fa-youtube' },
   web: { label: 'Situs web', icon: 'fa-solid fa-globe' },
   missing: { label: 'Tautan belum tersedia', icon: 'fa-solid fa-link-slash' }
@@ -15,7 +17,7 @@ const YOUTUBE_ID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/
  * can't be sniffed from the URL, so callers pass `kind` for those once resolved.
  *
  * @param {string | null} url
- * @param {'drive' | 'pdf' | 'video' | 'web' | undefined} kind
+ * @param {'drive' | 'pdf' | 'doc' | 'slides' | 'video' | 'web' | undefined} kind
  */
 export function linkKind(url, kind) {
   if (kind) return KIND[kind] || KIND.web;

@@ -3,6 +3,31 @@
  * Contact info, tautan links, applications directory, and ministry portals
  */
 
+// Curated hero slide list. Each entry is either a { slug } reference into
+// realNewsList, or a standalone slide with its own id/image/category/title/excerpt.
+export const heroSlides = [
+  { slug: 'hari-anak-nasional-2026-kembali-bermain-kurangi-gawai' },
+  { slug: 'kemendikdasmen-bagikan-30-laptop-guru-miangas' },
+  { slug: 'semarak-lomba-kemerdekaan-budaya-sehat-pendidikan-bermutu' },
+  { slug: 'kemendikdasmen-perkuat-uks-sekolah-sehat-berkarakter' },
+  {
+    id: 'rakor-upt-edukasi-gizi-2026',
+    image: 'Aset UKS/hero/rakor-upt-edukasi-gizi-2026.jpg',
+    category: 'Agenda',
+    date: '21 Agustus 2026',
+    title: 'Rapat Koordinasi UPT Implementasi Edukasi Gizi Perkuat Sinergi Pendampingan di Satuan Pendidikan',
+    excerpt: 'Direktorat SMP mempertemukan penanggung jawab Makan Bergizi Gratis dari 34 UPT BBPMP/BPMP se-Indonesia untuk menyamakan langkah pendampingan edukasi gizi di satuan pendidikan.'
+  },
+  {
+    id: 'perkemahan-anak-indonesia-hebat-smp-2026',
+    image: 'Aset UKS/hero/perkemahan-anak-indonesia-hebat-smp-2026.jpg',
+    category: 'Agenda',
+    date: '2 September 2026',
+    title: 'Perkemahan Anak Indonesia Hebat Jenjang Sekolah Menengah Pertama Tahun 2026',
+    excerpt: 'Kemendikdasmen menggelar perkemahan lima hari di Camp Hulu Cai, Bogor, yang diikuti 407 murid SMP dari berbagai daerah, dengan tema Tunas Aman, Sekolah Nyaman.'
+  }
+];
+
 export const contactInfo = {
   address: 'Gedung E Lantai 17, Kompleks Kemendikdasmen, Jl. Jenderal Sudirman, Senayan, Jakarta 10270',
   email: 'uks.dikdasmen@kemdikbud.go.id',
@@ -104,7 +129,7 @@ export const appsList = [
   }
 ];
 
-/* Logo files don't exist yet — drop them in public/logo/<id>.png and set
+/* Logo files don't exist yet. Drop them in public/logo/<id>.png and set
    `logo` to the matching path (e.g. 'logo/kemendikdasmen.png'). Until then
    `logo: null` renders a named placeholder tile instead of a broken <img>. */
 export const ministries = [

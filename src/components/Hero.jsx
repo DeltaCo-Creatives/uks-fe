@@ -1,11 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { realNewsList } from '../data/portalData';
+import { realNewsList, heroSlides } from '../data/portalData';
 
-export default function Hero() {
+const slides = heroSlides
+    .map((entry) => (entry.slug ? realNewsList.find((n) => n.slug === entry.slug) : entry))
+    .filter(Boolean);
+
+export default function Hero({ onNavigateView }) {
     const [current, setCurrent] = useState(0);
-    const total = realNewsList.length;
+    const total = slides.length;
     const heroRef = useRef(null);
 
     const goTo = (idx) => {
@@ -38,7 +42,7 @@ export default function Hero() {
         // Animate background image in next slide
         tl.fromTo(next.querySelector('.hero-bg img'),
             { scale: 1.12, opacity: 0 },
-            { scale: 1, opacity: 0.6, duration: 1.4, ease: 'power3.out' }
+            { scale: 1, opacity: 0.9, duration: 1.4, ease: 'power3.out' }
         );
         // Fade in the next slide
         tl.fromTo(next, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0);
@@ -87,9 +91,9 @@ export default function Hero() {
     return (
         <section className="hero" id="beranda">
             <div className="hero-stage" ref={heroRef}>
-                {realNewsList.map((slide, i) => (
+                {slides.map((slide, i) => (
                     <div
-                        key={i}
+                        key={slide.id}
                         className="hero-slide"
                         style={{
                             opacity: i === 0 ? 1 : 0,
@@ -102,16 +106,22 @@ export default function Hero() {
                         <div className="hero-content">
                             <h1>{slide.title}</h1>
                             <p>{slide.excerpt}</p>
-                            <a href="#berita" className="btn-massive">
-                                Baca Selengkapnya
-                            </a>
+                            {slide.slug && (
+                                <button
+                                    type="button"
+                                    className="btn-massive"
+                                    onClick={() => onNavigateView('berita-detail', null, slide.slug)}
+                                >
+                                    Baca Selengkapnya
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}
 
                 <div className="hero-nav">
                     <div className="hero-dots">
-                        {realNewsList.map((_, idx) => (
+                        {slides.map((_, idx) => (
                             <button
                                 key={idx}
                                 className={`hero-dot ${idx === current ? 'active' : ''}`}

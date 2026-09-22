@@ -19,7 +19,8 @@ const SRC = {
   asriJumatBersih: { label: 'Kemendikdasmen: siaran pers Jumat Bersih (Maret 2026)', url: 'https://www.kemendikdasmen.go.id/siaran-pers/14859-menanamkan-kepedulian-lingkungan-sejak-dini-melalui-gerakan-asri-di-sekolah' },
   saih2025: { label: 'Portal UKS: Informasi Lomba SAIH 2025', url: 'https://uks.kemendikdasmen.go.id/gala-kreasi/informasi-lomba-saih-2025' },
   gala2024: { label: 'Portal UKS: Gala Kreasi Video 2024', url: 'https://uks.kemendikdasmen.go.id/gala-kreasi/gala-kreasi-2024' },
-  gala2023: { label: 'Portal UKS: Gala Kreasi Video 2023', url: 'https://uks.kemendikdasmen.go.id/gala-kreasi/gala-kreasi-2023' }
+  gala2023: { label: 'Portal UKS: Gala Kreasi Video 2023', url: 'https://uks.kemendikdasmen.go.id/gala-kreasi/gala-kreasi-2023' },
+  gitaAdhiGizi2026: { label: 'Informasi dan pendaftaran Gita Adhi Gizi 2026', url: 'https://s.id/gitaadhigizi2026' }
 };
 
 // Kemendikdasmen berita 15766, used as the page intro
@@ -285,8 +286,8 @@ export const priorityProgramsList = [
     title: 'Prestasi UKS/M',
     icon: 'fa-solid fa-trophy',
     agency: 'Ditjen PAUD, Pendidikan Dasar, dan Pendidikan Menengah, bersama BBPMP dan BPMP',
-    desc: 'Kompetisi yang dijalankan lewat UKS/M untuk peserta didik dan satuan pendidikan, beserta pengumuman dan pemenangnya.',
-    lead: 'Tiga kompetisi terakhir yang dijalankan lewat UKS/M: Semarak Anak Indonesia Hebat 2025, serta Gala Kreasi Video Gerakan Sekolah Sehat edisi 2024 dan 2023. Masing-masing memuat mekanisme lomba, pengumuman pemenang, dan daftar pemenangnya sejauh sudah diterbitkan.',
+    desc: 'Kompetisi yang dijalankan lewat UKS/M untuk peserta didik, satuan pendidikan, pemerintah daerah, dan UPT, beserta pengumuman dan pemenangnya.',
+    lead: 'Empat kompetisi yang dijalankan lewat UKS/M: Gita Adhi Gizi 2026 yang pendaftarannya masih dibuka, Semarak Anak Indonesia Hebat 2025, serta Gala Kreasi Video Gerakan Sekolah Sehat edisi 2024 dan 2023. Masing-masing memuat mekanisme lomba, pengumuman pemenang, dan daftar pemenangnya sejauh sudah diterbitkan.',
     facts: [
       { label: 'Dasar', value: 'Tindak lanjut Surat Edaran Bersama No. 1 Tahun 2025 tentang Penguatan Pendidikan Karakter melalui Pembiasaan di Satuan Pendidikan' },
       { label: 'Informasi daerah', value: 'BBPMP/BPMP di provinsi masing-masing' }
@@ -305,6 +306,68 @@ export const priorityProgramsList = [
         type: 'prestasi',
         title: 'Kompetisi',
         items: [
+          {
+            id: 'gita-adhi-gizi-2026',
+            year: '2026',
+            title: 'Gita Adhi Gizi 2026: Lomba Edukasi Gizi',
+            status: 'Pendaftaran dibuka 21 September sampai 20 Oktober 2026',
+            faces: {
+              mekanisme: {
+                lead: 'Gita Adhi Gizi 2026 adalah Gerakan Integrasi Tata Kelola dan Apresiasi Edukasi Gizi, dengan Lomba Video Edukasi Gizi sebagai kegiatan utamanya. Berbeda dari lomba lain di halaman ini, pesertanya bukan satuan pendidikan, melainkan pemerintah daerah (provinsi, kabupaten, kota) serta UPT BBPMP dan BPMP. Temanya: Menguatkan Edukasi Gizi melalui Tata Kelola, Kolaborasi, dan Praktik Baik untuk Generasi Sehat.',
+                flyers: {
+                  caption: 'Dua halaman flyer resmi. Buka untuk ukuran penuh.',
+                  credit: SRC.gitaAdhiGizi2026,
+                  items: [
+                    {
+                      src: 'program/gita-adhi-gizi-2026-1.webp',
+                      alt: 'Flyer Gita Adhi Gizi 2026 Lomba Edukasi Gizi: tema, peserta dari pemerintah daerah dan UPT BBPMP/BPMP, karya berupa video edukasi gizi, apresiasi untuk praktik baik tata kelola, dan kode QR pendaftaran ke s.id/gitaadhigizi2026.',
+                      width: 1600,
+                      height: 2000
+                    },
+                    {
+                      src: 'program/gita-adhi-gizi-2026-2.webp',
+                      alt: 'Flyer kategori Lomba Video Edukasi Gizi: Rumpun A untuk pemerintah daerah dan Rumpun B untuk UPT, masing-masing dengan dua tema, disertai linimasa dari kick-off 15 September 2026 sampai acara puncak apresiasi November 2026 dan dua nomor narahubung.',
+                      width: 1600,
+                      height: 2000
+                    }
+                  ]
+                },
+                facts: [
+                  { label: 'Peserta', value: 'Pemerintah daerah (provinsi, kabupaten, kota) dan UPT BBPMP/BPMP' },
+                  { label: 'Karya', value: 'Video edukasi gizi yang informatif, inspiratif, dan kreatif' },
+                  { label: 'Apresiasi', value: 'Untuk praktik baik tata kelola dan edukasi gizi' },
+                  { label: 'Tema Rumpun A', value: 'Inovasi tata kelola pembiayaan dan infrastruktur edukasi gizi, serta sinergi lintas sektor dan pemberdayaan catur pusat pendidikan' },
+                  { label: 'Tema Rumpun B', value: 'Inovasi revitalisasi UKS dan TP-UKS, serta pendampingan teknis berkelanjutan edukasi gizi' },
+                  { label: 'Linimasa', value: 'Kick-off dan sosialisasi 15 September 2026. Pendaftaran dan pengunggahan karya 21 September sampai 20 Oktober 2026. Verifikasi administrasi, seleksi, dan kurasi Oktober 2026. Penilaian substantif oleh Dewan Juri, rapat pleno penetapan pemenang, dan acara puncak apresiasi pada November 2026.' },
+                  { label: 'Narahubung', value: 'Admin 1: 082278307443. Admin 2: 081573161981' }
+                ],
+                competitions: {
+                  open: true,
+                  note: 'Pendaftaran dan pengunggahan karya dibuka 21 September sampai 20 Oktober 2026, lewat formulir yang berbeda untuk tiap rumpun.',
+                  items: [
+                    { level: 'Rumpun A', title: 'Pendaftaran dan unggah karya Dinas Pendidikan', url: 'https://docs.google.com/forms/d/e/1FAIpQLSfJmt1p1n4tZFRmR98zy-kUazpcLVKGQ7305h9ODbiBvehUlQ/viewform' },
+                    { level: 'Rumpun B', title: 'Pendaftaran dan unggah video edukasi UPT BBPMP dan BPMP', url: 'https://forms.gle/CV5NAV4csdcFWg3z7' }
+                  ],
+                  guide: { title: 'Informasi lengkap dan pendaftaran', url: 'https://s.id/gitaadhigizi2026' }
+                },
+                downloads: {
+                  groups: [
+                    {
+                      title: 'Unduh',
+                      items: [
+                        { title: 'Panduan Gita Adhi Gizi', kind: 'slides', url: 'https://docs.google.com/presentation/d/12hPWeqi9O3IgyejBFWQfkKmVOp7Ga1fjrLm4IwPF8qg/edit' },
+                        { title: 'Surat Pernyataan Keaslian Karya, Etika, dan Izin Penggunaan Video Edukasi Gizi', kind: 'doc', url: 'https://docs.google.com/document/d/1KpT5YBMPalPDdLvQkNMP283cTXcGcZOT/edit' }
+                      ]
+                    }
+                  ]
+                }
+              },
+              pengumuman: {
+                note: 'Pemenang dijadwalkan ditetapkan lewat rapat pleno pada November 2026, jadi belum ada pengumuman yang bisa ditampilkan. Dicek terakhir pada 22 September 2026.'
+              },
+              showcase: null
+            }
+          },
           {
             id: 'saih-2025',
             year: '2025',
@@ -414,6 +477,6 @@ export const priorityProgramsList = [
         ]
       }
     ],
-    sources: [SRC.saih2025, SRC.gala2024, SRC.gala2023]
+    sources: [SRC.gitaAdhiGizi2026, SRC.saih2025, SRC.gala2024, SRC.gala2023]
   }
 ];
