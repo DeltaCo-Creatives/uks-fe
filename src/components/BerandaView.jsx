@@ -3,7 +3,7 @@ import Programs from './Programs';
 import Books from './Books';
 import Infografis from './Infografis';
 import HomeStratifikasi from './HomeStratifikasi';
-import { nationalMetrics, gssFocusAreas, triasPillarsDetail } from '../data/portalData';
+import { nationalMetrics, triasPillarsDetail } from '../data/portalData';
 
 export default function BerandaView({ onNavigateView }) {
   return (
@@ -194,53 +194,6 @@ export default function BerandaView({ onNavigateView }) {
 
       {/* 3b. Stratifikasi UKS/M — 4 strata teaser */}
       <HomeStratifikasi onNavigateView={onNavigateView} />
-
-      {/* 4. Fokus 5 Sehat GSS Teaser */}
-      <section id="sec-home-gss" className="section" style={{ paddingBottom: '30px' }}>
-        <div className="container">
-          <div style={{
-            background: '#FFFFFF',
-            borderRadius: 'var(--radius-lg)',
-            padding: '30px',
-            border: '1.5px solid rgba(0,0,0,0.06)',
-            boxShadow: 'var(--shadow-card)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '20px' }}>
-              <div>
-                <span className="section-kicker" style={{ background: '#FEF3C7', color: '#D97706' }}>Gerakan Sekolah Sehat</span>
-                <h2 style={{ fontSize: '22px', fontWeight: 800, margin: '4px 0' }}>
-                  5 Fokus Pembiasaan Sekolah Sehat (GSS)
-                </h2>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                  Sehat Bergizi, Sehat Fisik, Sehat Imunisasi, Sehat Jiwa, dan Sehat Lingkungan di satuan pendidikan.
-                </p>
-              </div>
-              <button
-                className="btn-pill primary"
-                onClick={() => onNavigateView('uksm-gss')}
-                style={{ padding: '10px 20px', fontSize: '12px' }}
-              >
-                Buka Halaman Sekolah Sehat
-              </button>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 150px), 1fr))', gap: '14px' }}>
-              {gssFocusAreas.map((fok) => (
-                <button
-                  key={fok.id}
-                  type="button"
-                  className="home-gss-focus"
-                  onClick={() => onNavigateView('uksm-gss', 'sec-gss-5sehat')}
-                >
-                  <i className={fok.icon} aria-hidden="true"></i>
-                  <span className="home-gss-focus-title">{fok.title}</span>
-                  <span className="home-gss-focus-count">{fok.activities.length} kegiatan</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 5. Program Unggulan Marquee & Kabar Terbaru */}
       <div id="sec-home-programs">

@@ -18,8 +18,6 @@ export * from './triasSummaries';
 export * from './stratifikasi';
 
 // Gerakan Sekolah Sehat, curated from PROD /sekolah-sehat/*
-export * from './gss';
-export * from './gssAdvokasi';
 
 // Priority Programs (MBG, CKG, 7KAIH, ASRI, SAIH, etc.)
 export * from './program';
