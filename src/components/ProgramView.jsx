@@ -8,6 +8,7 @@ import ProgramPanel from './program/ProgramPanel';
 import ProgramLink from './program/ProgramLink';
 import './program/program.css';
 
+// Clears the fixed navbar when a program switch scrolls the picker to the top.
 const NAV_OFFSET = 96;
 
 /**
@@ -37,12 +38,24 @@ export default function ProgramView({ activeSection, onNavigateSection, onNaviga
     });
   }, { dependencies: [active.id] });
 
-  // A switch from the drawer can happen far down the page: bring the picker back into view.
+  // Switching programs lands you at the top of the new one, not at whatever
+  // offset you were reading the previous one at. The jump is instant on
+  // purpose: a smooth scroll across a long page is still running while the
+  // new panel's embeds and images settle underneath it, so it ends up short.
+  const hasMounted = useRef(false);
   useEffect(() => {
-    const top = pickerRef.current?.getBoundingClientRect().top;
-    if (top !== undefined && top < NAV_OFFSET) {
-      pickerRef.current.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return undefined;
     }
+    // Queued rather than run inline: GSAP's ScrollTrigger re-anchors the
+    // scroll position after the panel swaps, and it would undo an inline jump.
+    const timer = setTimeout(() => {
+      const picker = pickerRef.current;
+      if (!picker) return;
+      window.scrollTo({ top: picker.getBoundingClientRect().top + window.scrollY - NAV_OFFSET, behavior: 'auto' });
+    }, 0);
+    return () => clearTimeout(timer);
   }, [active.id]);
 
   return (
