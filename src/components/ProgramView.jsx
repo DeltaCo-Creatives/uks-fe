@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { priorityProgramsList, programIntro } from '../data/portalData';
 import { prefersReducedMotion } from '../hooks/useCollapse';
+import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import ProgramPicker from './program/ProgramPicker';
 import ProgramPanel from './program/ProgramPanel';
 import ProgramLink from './program/ProgramLink';
@@ -16,8 +18,11 @@ const NAV_OFFSET = 96;
  * Content curated from the portal and official program sites, see
  * docs/program-curation.md.
  */
-export default function ProgramView({ activeSection, onNavigateSection, onNavigate }) {
-  const activeIndex = Math.max(0, priorityProgramsList.findIndex((p) => p.id === activeSection));
+export default function ProgramView() {
+  const { programSlug } = useParams();
+  const navigate = useNavigate();
+  const activeId = sectionIdFromSlug('program', programSlug);
+  const activeIndex = Math.max(0, priorityProgramsList.findIndex((p) => p.id === activeId));
   const active = priorityProgramsList[activeIndex];
   const pickerRef = useRef(null);
   const panelRef = useRef(null);
@@ -58,6 +63,8 @@ export default function ProgramView({ activeSection, onNavigateSection, onNaviga
     return () => clearTimeout(timer);
   }, [active.id]);
 
+  if (!activeId) return <Navigate to={`/program/${defaultTabSlug('program')}`} replace />;
+
   return (
     <div className="container prog-page" style={{ paddingBottom: '80px' }}>
       <div className="subpage-hero-banner" data-gsap="reveal">
@@ -76,11 +83,11 @@ export default function ProgramView({ activeSection, onNavigateSection, onNaviga
       <ProgramPicker
         programs={priorityProgramsList}
         activeId={active.id}
-        onSelect={onNavigateSection}
+        onSelect={(id) => navigate(pathForView('program', id))}
         pickerRef={pickerRef}
       />
 
-      <ProgramPanel ref={panelRef} program={active} number={activeIndex + 1} onNavigate={onNavigate} />
+      <ProgramPanel ref={panelRef} program={active} number={activeIndex + 1} />
     </div>
   );
 }

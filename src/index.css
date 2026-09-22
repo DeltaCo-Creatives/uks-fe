@@ -244,7 +244,11 @@ ul {
   justify-content: center;
 }
 
-.nav-links-nav a {
+/* Bar items only. The dropdown panels hanging off these items are full of
+   links of their own, and a pill radius on a cluster card turns it into a
+   lozenge. */
+.nav-links-nav > a,
+.nav-links-nav > .nav-item-has-dropdown > a {
   padding: 12px 20px;
   border-radius: var(--radius-pill);
   font-size: 15px;
@@ -253,8 +257,10 @@ ul {
   transition: var(--spring);
 }
 
-.nav-links-nav a:hover,
-.nav-links-nav a.active {
+.nav-links-nav > a:hover,
+.nav-links-nav > a.active,
+.nav-links-nav > .nav-item-has-dropdown > a:hover,
+.nav-links-nav > .nav-item-has-dropdown > a.active {
   background: var(--text-primary);
   color: white;
   transform: scale(1.05);

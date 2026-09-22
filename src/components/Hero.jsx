@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { realNewsList, heroSlides } from '../data/portalData';
+import { pathForArticle } from '../routes';
 
 const slides = heroSlides
     .map((entry) => (entry.slug ? realNewsList.find((n) => n.slug === entry.slug) : entry))
     .filter(Boolean);
 
-export default function Hero({ onNavigateView }) {
+export default function Hero() {
     const [current, setCurrent] = useState(0);
     const total = slides.length;
     const heroRef = useRef(null);
@@ -107,13 +109,12 @@ export default function Hero({ onNavigateView }) {
                             <h1>{slide.title}</h1>
                             <p>{slide.excerpt}</p>
                             {slide.slug && (
-                                <button
-                                    type="button"
+                                <Link
                                     className="btn-massive"
-                                    onClick={() => onNavigateView('berita-detail', null, slide.slug)}
+                                    to={pathForArticle(slide.slug)}
                                 >
                                     Baca Selengkapnya
-                                </button>
+                                </Link>
                             )}
                         </div>
                     </div>

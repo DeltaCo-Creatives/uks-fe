@@ -80,11 +80,11 @@ export const pageNavigationConfigs = {
     drawerTitle: 'PROGRAM PRIORITAS',
     footerText: 'MBG, CKG, 7KAIH, ASRI, Prestasi',
     sections: [
-      { id: 'sec-prog-mbg', label: '1. Makan Bergizi Gratis (MBG)', icon: 'fa-solid fa-utensils' },
-      { id: 'sec-prog-ckg', label: '2. Cek Kesehatan Gratis (CKG) Sekolah', icon: 'fa-solid fa-stethoscope' },
-      { id: 'sec-prog-7kaih', label: '3. Gerakan 7KAIH', icon: 'fa-solid fa-sun' },
-      { id: 'sec-prog-asri', label: '4. Gerakan Sekolah ASRI', icon: 'fa-solid fa-leaf' },
-      { id: 'sec-prog-prestasi', label: '5. Prestasi', icon: 'fa-solid fa-trophy' }
+      { id: 'sec-prog-mbg', slug: 'mbg', label: '1. Makan Bergizi Gratis (MBG)', icon: 'fa-solid fa-utensils' },
+      { id: 'sec-prog-ckg', slug: 'ckg', label: '2. Cek Kesehatan Gratis (CKG) Sekolah', icon: 'fa-solid fa-stethoscope' },
+      { id: 'sec-prog-7kaih', slug: '7kaih', label: '3. Gerakan 7KAIH', icon: 'fa-solid fa-sun' },
+      { id: 'sec-prog-asri', slug: 'asri', label: '4. Gerakan Sekolah ASRI', icon: 'fa-solid fa-leaf' },
+      { id: 'sec-prog-prestasi', slug: 'prestasi', label: '5. Prestasi', icon: 'fa-solid fa-trophy' }
     ]
   },
   mitra: {
@@ -111,11 +111,11 @@ export const pageNavigationConfigs = {
     drawerTitle: 'WARTA & AGENDA',
     footerText: 'Berita Terkini, Praktik Baik & Kalender 2026',
     sections: [
-      { id: 'sec-info-berita', label: 'Warta Terkini UKS/M', icon: 'fa-solid fa-newspaper' },
-      { id: 'sec-info-praktik', label: 'Praktik Baik Satpen', icon: 'fa-solid fa-award' },
-      { id: 'sec-info-upt', label: 'UPT Bercerita', icon: 'fa-solid fa-book-open-reader' },
-      { id: 'sec-info-agenda', label: 'Kalender Kegiatan 2026', icon: 'fa-solid fa-calendar-days' },
-      { id: 'sec-info-aplikasi', label: 'Aplikasi Terkait', icon: 'fa-solid fa-mobile-screen-button' }
+      { id: 'sec-info-berita', slug: 'berita', label: 'Warta Terkini UKS/M', icon: 'fa-solid fa-newspaper' },
+      { id: 'sec-info-praktik', slug: 'praktik', label: 'Praktik Baik Satpen', icon: 'fa-solid fa-award' },
+      { id: 'sec-info-upt', slug: 'upt', label: 'UPT Bercerita', icon: 'fa-solid fa-book-open-reader' },
+      { id: 'sec-info-agenda', slug: 'agenda', label: 'Kalender Kegiatan 2026', icon: 'fa-solid fa-calendar-days' },
+      { id: 'sec-info-aplikasi', slug: 'aplikasi', label: 'Aplikasi Terkait', icon: 'fa-solid fa-mobile-screen-button' }
     ]
   },
   publikasi: {
@@ -127,10 +127,10 @@ export const pageNavigationConfigs = {
     drawerTitle: 'PUSTAKA DIGITAL',
     footerText: 'Buku, Media Visual & Produk Hukum SKB',
     sections: [
-      { id: 'sec-pub-books', label: 'Buku Panduan & Juknis', icon: 'fa-solid fa-book' },
-      { id: 'sec-pub-infografis', label: 'Infografis Edukasi', icon: 'fa-solid fa-chart-pie' },
-      { id: 'sec-pub-video', label: 'Video Pembiasaan & Senam', icon: 'fa-solid fa-film' },
-      { id: 'sec-pub-regulasi', label: 'Produk Hukum (SKB 4 Menteri)', icon: 'fa-solid fa-scale-balanced' }
+      { id: 'sec-pub-books', slug: 'buku', label: 'Buku Panduan & Juknis', icon: 'fa-solid fa-book' },
+      { id: 'sec-pub-infografis', slug: 'infografis', label: 'Infografis Edukasi', icon: 'fa-solid fa-chart-pie' },
+      { id: 'sec-pub-video', slug: 'video', label: 'Video Pembiasaan & Senam', icon: 'fa-solid fa-film' },
+      { id: 'sec-pub-regulasi', slug: 'regulasi', label: 'Produk Hukum (SKB 4 Menteri)', icon: 'fa-solid fa-scale-balanced' }
     ]
   },
   kontak: {

@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import { profilManagementIntro, profilManagementComponents } from '../../../data/portalData';
+import { pathForView } from '../../../routes';
 import ProfilMonev from './ProfilMonev';
 
-function ComponentItem({ component, onNavigate }) {
+function ComponentItem({ component }) {
   return (
     <li className="profil-component" data-gsap="reveal">
       <span className="profil-component-num" aria-hidden="true">{String(component.number).padStart(2, '0')}</span>
@@ -21,13 +23,12 @@ function ComponentItem({ component, onNavigate }) {
         )}
 
         {component.link && (
-          <button
-            type="button"
+          <Link
             className="profil-text-link"
-            onClick={() => onNavigate(component.link.view, component.link.section)}
+            to={pathForView(component.link.view, component.link.section)}
           >
             {component.link.label}
-          </button>
+          </Link>
         )}
       </div>
     </li>
@@ -39,7 +40,7 @@ function ComponentItem({ component, onNavigate }) {
  * share one plain two-column list. Monitoring dan Evaluasi holds most of the
  * page's text and gets its own wide panel.
  */
-export default function ProfilManajemen({ onNavigate }) {
+export default function ProfilManajemen() {
   return (
     <section id="sec-profil-manajemen" className="section profil-section">
       <div className="section-header" data-gsap="reveal">
@@ -52,7 +53,7 @@ export default function ProfilManajemen({ onNavigate }) {
 
       <ol className="profil-component-list">
         {profilManagementComponents.map((component) => (
-          <ComponentItem key={component.id} component={component} onNavigate={onNavigate} />
+          <ComponentItem key={component.id} component={component} />
         ))}
       </ol>
 

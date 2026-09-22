@@ -50,9 +50,9 @@ export const priorityProgramsList = [
         type: 'audience',
         title: 'Siapa yang menerima',
         items: [
-          { title: 'Peserta didik', image: 'program/mbg-peserta-didik.jpg' },
-          { title: 'Anak-anak (balita)', image: 'program/mbg-anak-anak.jpg' },
-          { title: 'Ibu hamil dan menyusui', image: 'program/mbg-ibu-hamil.jpg' }
+          { title: 'Peserta didik', image: '/program/mbg-peserta-didik.jpg' },
+          { title: 'Anak-anak (balita)', image: '/program/mbg-anak-anak.jpg' },
+          { title: 'Ibu hamil dan menyusui', image: '/program/mbg-ibu-hamil.jpg' }
         ],
         note: 'Menurut Pasal 5 ayat 1 Perpres 83/2024, peserta didik yang dimaksud mencakup jenjang PAUD, pendidikan dasar dan menengah di lingkungan pendidikan umum, kejuruan, pendidikan keagamaan, pendidikan khusus, layanan khusus, dan pendidikan pesantren.',
         noteSource: SRC.bgnInklusif
@@ -176,13 +176,13 @@ export const priorityProgramsList = [
         type: 'habits',
         title: 'Tujuh kebiasaan',
         items: [
-          { title: 'Bangun Pagi', image: 'program/7kaih-bangun-pagi.png', text: 'Mengajarkan nilai disiplin, keseimbangan, produktivitas, dan menghargai waktu.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-bangun-pagi/' },
-          { title: 'Beribadah', image: 'program/7kaih-beribadah.png', text: 'Menyimpan makna spiritual dan moral yang membentuk kepribadian serta hubungan harmonis dengan Tuhan, alam, dan sesama.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-beribadah/' },
-          { title: 'Berolahraga', image: 'program/7kaih-berolah-raga.png', text: 'Menjaga kesehatan fisik sekaligus membangun disiplin, keseimbangan, dan ketahanan mental.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-berolahraga' },
-          { title: 'Makan Sehat dan Bergizi', image: 'program/7kaih-makan-sehat-bergizi.png', text: 'Memenuhi kebutuhan nutrisi tubuh dengan prinsip gizi seimbang.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-makan-sehat-dan-bergizi' },
-          { title: 'Gemar Belajar', image: 'program/7kaih-gemar-belajar.png', text: 'Mengajak setiap anak untuk terus tumbuh dalam pemahaman, karakter, dan kearifan.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-gemar-belajar/' },
-          { title: 'Bermasyarakat', image: 'program/7kaih-bermasyarakat.png', text: 'Mendorong setiap anak hidup bersama secara harmonis dan berkontribusi terhadap kesejahteraan bersama.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-bermasyarakat/' },
-          { title: 'Tidur Cepat', image: 'program/7kaih-tidur-cepat.png', text: 'Berdampak pada kesehatan fisik, kesejahteraan mental, serta kehidupan spiritual dan sosial.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-tidur-cepat/' }
+          { title: 'Bangun Pagi', image: '/program/7kaih-bangun-pagi.png', text: 'Mengajarkan nilai disiplin, keseimbangan, produktivitas, dan menghargai waktu.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-bangun-pagi/' },
+          { title: 'Beribadah', image: '/program/7kaih-beribadah.png', text: 'Menyimpan makna spiritual dan moral yang membentuk kepribadian serta hubungan harmonis dengan Tuhan, alam, dan sesama.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-beribadah/' },
+          { title: 'Berolahraga', image: '/program/7kaih-berolah-raga.png', text: 'Menjaga kesehatan fisik sekaligus membangun disiplin, keseimbangan, dan ketahanan mental.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-berolahraga' },
+          { title: 'Makan Sehat dan Bergizi', image: '/program/7kaih-makan-sehat-bergizi.png', text: 'Memenuhi kebutuhan nutrisi tubuh dengan prinsip gizi seimbang.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-makan-sehat-dan-bergizi' },
+          { title: 'Gemar Belajar', image: '/program/7kaih-gemar-belajar.png', text: 'Mengajak setiap anak untuk terus tumbuh dalam pemahaman, karakter, dan kearifan.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-gemar-belajar/' },
+          { title: 'Bermasyarakat', image: '/program/7kaih-bermasyarakat.png', text: 'Mendorong setiap anak hidup bersama secara harmonis dan berkontribusi terhadap kesejahteraan bersama.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-bermasyarakat/' },
+          { title: 'Tidur Cepat', image: '/program/7kaih-tidur-cepat.png', text: 'Berdampak pada kesehatan fisik, kesejahteraan mental, serta kehidupan spiritual dan sosial.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-tidur-cepat/' }
         ]
       },
       {
@@ -249,7 +249,7 @@ export const priorityProgramsList = [
       { label: 'Di sekolah', value: 'Terintegrasi dengan Trias UKS: pendidikan kesehatan, pelayanan kesehatan, pembinaan lingkungan sekolah sehat' }
     ],
     image: {
-      src: 'program/asri-jumat-bersih.jpg',
+      src: '/program/asri-jumat-bersih.jpg',
       alt: 'Dua murid SD tersenyum di dekat wastafel cuci tangan di halaman sekolah',
       caption: 'Jumat Bersih di SD Negeri 01 Cibadak, Kabupaten Sukabumi, 6 Maret 2026.',
       credit: SRC.asriJumatBersih,
@@ -293,7 +293,7 @@ export const priorityProgramsList = [
       { label: 'Informasi daerah', value: 'BBPMP/BPMP di provinsi masing-masing' }
     ],
     image: {
-      src: 'program/saih-2025-poster.jpg',
+      src: '/program/saih-2025-poster.jpg',
       alt: 'Poster Semarak Anak Indonesia Hebat dalam rangka Hari Pendidikan Nasional 2025 berisi lima lomba dan batas akhir 25 April 2025',
       caption: 'Poster resmi SAIH 2025.',
       credit: SRC.saih2025,
@@ -319,13 +319,13 @@ export const priorityProgramsList = [
                   credit: SRC.gitaAdhiGizi2026,
                   items: [
                     {
-                      src: 'program/gita-adhi-gizi-2026-1.webp',
+                      src: '/program/gita-adhi-gizi-2026-1.webp',
                       alt: 'Flyer Gita Adhi Gizi 2026 Lomba Edukasi Gizi: tema, peserta dari pemerintah daerah dan UPT BBPMP/BPMP, karya berupa video edukasi gizi, apresiasi untuk praktik baik tata kelola, dan kode QR pendaftaran ke s.id/gitaadhigizi2026.',
                       width: 1600,
                       height: 2000
                     },
                     {
-                      src: 'program/gita-adhi-gizi-2026-2.webp',
+                      src: '/program/gita-adhi-gizi-2026-2.webp',
                       alt: 'Flyer kategori Lomba Video Edukasi Gizi: Rumpun A untuk pemerintah daerah dan Rumpun B untuk UPT, masing-masing dengan dua tema, disertai linimasa dari kick-off 15 September 2026 sampai acara puncak apresiasi November 2026 dan dua nomor narahubung.',
                       width: 1600,
                       height: 2000
