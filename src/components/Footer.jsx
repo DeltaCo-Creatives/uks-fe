@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom';
 import { contactInfo } from '../data/portalData';
+import { pathForView } from '../routes';
 
-export default function Footer({ onNavigateView }) {
+export default function Footer() {
   const footerLinks = [
     { label: 'Beranda', key: 'beranda' },
     { label: '1. Profil & Tata Kelola', key: 'uksm-profil' },
@@ -12,13 +14,6 @@ export default function Footer({ onNavigateView }) {
     { label: 'Publikasi & Buku', key: 'publikasi' },
     { label: 'Kontak & Helpdesk', key: 'kontak' }
   ];
-
-  const handleLink = (e, key) => {
-    e.preventDefault();
-    if (onNavigateView) {
-      onNavigateView(key);
-    }
-  };
 
   return (
     <footer id="kontak" style={{ marginTop: 'auto' }}>
@@ -70,12 +65,7 @@ export default function Footer({ onNavigateView }) {
             <ul>
               {footerLinks.map((link) => (
                 <li key={link.key}>
-                  <a
-                    href={`#${link.key}`}
-                    onClick={(e) => handleLink(e, link.key)}
-                  >
-                    {link.label}
-                  </a>
+                  <Link to={pathForView(link.key)}>{link.label}</Link>
                 </li>
               ))}
             </ul>

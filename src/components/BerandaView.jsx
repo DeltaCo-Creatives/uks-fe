@@ -1,16 +1,19 @@
+import { Link } from 'react-router-dom';
 import Hero from './Hero';
 import Programs from './Programs';
 import Books from './Books';
 import Infografis from './Infografis';
 import HomeStratifikasi from './HomeStratifikasi';
-import { triasPillarsDetail } from '../data/portalData';
 
-export default function BerandaView({ onNavigateView }) {
+import { triasPillarsDetail } from '../data/portalData';
+import { pathForView } from '../routes';
+
+export default function BerandaView() {
   return (
     <div>
       {/* 1. Hero Stage */}
       <div id="sec-home-hero">
-        <Hero onNavigateView={onNavigateView} />
+        <Hero />
       </div>
 
       {/* 3. Trias UKS Bento Showcase */}
@@ -21,13 +24,13 @@ export default function BerandaView({ onNavigateView }) {
               <span className="section-kicker">3 Pilar Pelaksanaan</span>
               <h2 className="section-title">Trias UKS/M di Satuan Pendidikan</h2>
             </div>
-            <button
+            <Link
               className="btn-pill primary"
-              onClick={() => onNavigateView('uksm-trias')}
+              to={pathForView('uksm-trias')}
               style={{ padding: '10px 22px', fontSize: '13px' }}
             >
               Jelajahi Trias UKS/M &rarr;
-            </button>
+            </Link>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
@@ -63,13 +66,13 @@ export default function BerandaView({ onNavigateView }) {
                   {triasPillarsDetail.pendidikan.description}
                 </p>
               </div>
-              <button
+              <Link
                 className="btn-pill secondary"
-                onClick={() => onNavigateView('uksm-trias', 'sec-trias-pendidikan')}
+                to={pathForView('uksm-trias', 'sec-trias-pendidikan')}
                 style={{ width: '100%', padding: '10px', fontSize: '12px' }}
               >
                 Lihat 7 Sub-program &rarr;
-              </button>
+              </Link>
             </div>
 
             {/* Bento Card 2: Pelayanan */}
@@ -104,13 +107,13 @@ export default function BerandaView({ onNavigateView }) {
                   {triasPillarsDetail.pelayanan.description}
                 </p>
               </div>
-              <button
+              <Link
                 className="btn-pill secondary"
-                onClick={() => onNavigateView('uksm-trias', 'sec-trias-pelayanan')}
+                to={pathForView('uksm-trias', 'sec-trias-pelayanan')}
                 style={{ width: '100%', padding: '10px', fontSize: '12px' }}
               >
                 Lihat 4 Sub-program &rarr;
-              </button>
+              </Link>
             </div>
 
             {/* Bento Card 3: Lingkungan */}
@@ -145,24 +148,24 @@ export default function BerandaView({ onNavigateView }) {
                   {triasPillarsDetail.lingkungan.description}
                 </p>
               </div>
-              <button
+              <Link
                 className="btn-pill secondary"
-                onClick={() => onNavigateView('uksm-trias', 'sec-trias-lingkungan')}
+                to={pathForView('uksm-trias', 'sec-trias-lingkungan')}
                 style={{ width: '100%', padding: '10px', fontSize: '12px' }}
               >
                 Lihat 5 Sub-program &rarr;
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* 3b. Stratifikasi UKS/M — 4 strata teaser */}
-      <HomeStratifikasi onNavigateView={onNavigateView} />
+      <HomeStratifikasi />
 
       {/* 5. Program Unggulan Marquee & Kabar Terbaru */}
       <div id="sec-home-programs">
-        <Programs onNavigateView={onNavigateView} />
+        <Programs />
       </div>
 
       {/* 6. Rak Perpustakaan Buku Digital */}

@@ -15,7 +15,7 @@ const scrollToSection = (id) => {
  * /program/manajemen-uks-m (see docs/profil-tata-kelola-curation.md).
  * The org-structure tab lives here so links elsewhere on the page can open it.
  */
-export default function ProfilPage({ onNavigate }) {
+export default function ProfilPage() {
   const [orgTab, setOrgTab] = useState('pembina');
 
   const openOrgTab = (tabId) => {
@@ -33,10 +33,10 @@ export default function ProfilPage({ onNavigate }) {
         <p className="subpage-hero-desc">{profilDefinition}</p>
       </div>
 
-      <ProfilDeskripsi onNavigate={onNavigate} onOpenOrgTab={openOrgTab} onScrollTo={scrollToSection} />
+      <ProfilDeskripsi onOpenOrgTab={openOrgTab} onScrollTo={scrollToSection} />
       <ProfilTujuanSasaran />
       <ProfilStruktur activeTab={orgTab} onTabChange={setOrgTab} />
-      <ProfilManajemen onNavigate={onNavigate} />
+      <ProfilManajemen />
     </div>
   );
 }

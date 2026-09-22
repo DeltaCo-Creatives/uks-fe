@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { realBooksList, defaultInfografis, pageNavigationConfigs, videoList, regulationsList } from '../data/portalData';
+import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import DocViewerModal from './shared/DocViewerModal';
 import ImageLightbox from './shared/ImageLightbox';
 import LobbyTabs from './shared/LobbyTabs';
@@ -186,8 +188,13 @@ const publikasiPanels = {
   'sec-pub-regulasi': RegulasiPanel
 };
 
-export default function PublikasiView({ activeSection, onNavigateSection }) {
-  const activeId = publikasiTabs.some(t => t.id === activeSection) ? activeSection : publikasiTabs[0].id;
+export default function PublikasiView() {
+  const { tabSlug } = useParams();
+  const navigate = useNavigate();
+  const activeId = sectionIdFromSlug('publikasi', tabSlug);
+
+  if (!activeId) return <Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />;
+
   const Panel = publikasiPanels[activeId];
 
   return (
@@ -209,7 +216,7 @@ export default function PublikasiView({ activeSection, onNavigateSection }) {
       <LobbyTabs
         tabs={publikasiTabs}
         activeId={activeId}
-        onSelect={onNavigateSection}
+        onSelect={(id) => navigate(pathForView('publikasi', id))}
         label="Bagian publikasi"
       />
 

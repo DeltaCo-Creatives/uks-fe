@@ -1,4 +1,6 @@
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { pageNavigationConfigs } from '../data/portalData';
+import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import LobbyTabs from './shared/LobbyTabs';
 import BeritaPanel from './informasi/BeritaPanel';
 import PraktikPanel from './informasi/PraktikPanel';
@@ -9,17 +11,22 @@ import './informasi/informasi.css';
 
 const informasiTabs = pageNavigationConfigs.informasi.sections;
 
-export default function InformasiView({ activeSection, onNavigateSection, onNavigateView }) {
-  const infoPanels = {
-    'sec-info-berita': () => <BeritaPanel onNavigateView={onNavigateView} />,
-    'sec-info-praktik': PraktikPanel,
-    'sec-info-upt': UptBerceritaPanel,
-    'sec-info-agenda': AgendaPanel,
-    'sec-info-aplikasi': AplikasiPanel
-  };
+const infoPanels = {
+  'sec-info-berita': BeritaPanel,
+  'sec-info-praktik': PraktikPanel,
+  'sec-info-upt': UptBerceritaPanel,
+  'sec-info-agenda': AgendaPanel,
+  'sec-info-aplikasi': AplikasiPanel
+};
 
-  const activeId = infoPanels[activeSection] ? activeSection : informasiTabs[0].id;
-  const Panel = infoPanels[activeId] || infoPanels['sec-info-berita'];
+export default function InformasiView() {
+  const { tabSlug } = useParams();
+  const navigate = useNavigate();
+  const activeId = sectionIdFromSlug('informasi', tabSlug);
+
+  if (!activeId) return <Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />;
+
+  const Panel = infoPanels[activeId];
 
   return (
     <div className="container informasi-page">
@@ -38,7 +45,7 @@ export default function InformasiView({ activeSection, onNavigateSection, onNavi
       <LobbyTabs
         tabs={informasiTabs}
         activeId={activeId}
-        onSelect={onNavigateSection}
+        onSelect={(id) => navigate(pathForView('informasi', id))}
         label="Bagian informasi"
       />
 

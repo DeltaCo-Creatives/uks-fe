@@ -43,7 +43,7 @@ function ProgramFigure({ image }) {
  * One program: a header (what it is, who runs it, key facts, optional source
  * image), then its 2-3 content sections, then the sources it was curated from.
  */
-const ProgramPanel = forwardRef(function ProgramPanel({ program, number, onNavigate }, ref) {
+const ProgramPanel = forwardRef(function ProgramPanel({ program, number }, ref) {
   const hasImage = Boolean(program.image);
 
   return (
@@ -78,7 +78,7 @@ const ProgramPanel = forwardRef(function ProgramPanel({ program, number, onNavig
               <span className="prog-section-num" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
               {section.title}
             </h3>
-            <Section section={section} onNavigate={onNavigate} />
+            <Section section={section} />
           </section>
         );
       })}
