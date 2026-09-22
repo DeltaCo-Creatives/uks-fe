@@ -3,46 +3,31 @@ import { nationalAgendas } from '../../data/portalData';
 export default function AgendaPanel() {
   return (
     <div className="about-bento-frame">
-      <div style={{ marginBottom: '24px' }}>
+      <div className="info-panel-head is-stacked">
         <span className="section-kicker">Kalender Kegiatan</span>
-        <h2 style={{ fontSize: 'clamp(22px, 2.6vw, 28px)', fontWeight: 800, margin: '6px 0 10px', color: 'var(--text-primary)' }}>
-          Agenda Transformasi UKS/M 2026
-        </h2>
-        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '850px' }}>
-          Jadwal jambore dokter kecil, peringatan hari besar kesehatan, bimbingan teknis TP UKS provinsi, dan festival karya inovasi nasional.
+        <h2 className="info-panel-title">Agenda Transformasi UKS/M 2026</h2>
+        <p className="info-panel-desc">
+          Jambore dokter kecil, peringatan hari besar kesehatan, bimbingan teknis TP UKS provinsi, dan festival karya inovasi nasional.
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="info-agenda-list">
         {nationalAgendas.map((ev, i) => (
-          <div key={i} className="download-doc-item" style={{ padding: '20px 24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{
-                background: 'var(--brand-primary)', color: '#FFFFFF', padding: '10px 16px',
-                borderRadius: 'var(--radius-md)', textAlign: 'center', minWidth: '70px', flexShrink: 0
-              }}>
-                <div style={{ fontSize: '24px', fontWeight: 800, lineHeight: 1 }}>{ev.day}</div>
-                <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.05em' }}>{ev.month}</div>
-              </div>
-              <div>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)', textTransform: 'uppercase' }}>
-                  {ev.organizer}
-                </span>
-                <h3 style={{ fontSize: '17px', fontWeight: 800, margin: '4px 0 6px', color: 'var(--text-primary)' }}>
-                  {ev.title}
-                </h3>
-                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <i className="fa-solid fa-location-dot" style={{ color: 'var(--brand-primary)' }}></i>
-                  <span>{ev.location}</span>
-                </div>
-              </div>
+          <article key={i} className="info-agenda">
+            <div className="info-agenda-date">
+              <span className="info-agenda-day">{ev.day}</span>
+              <span className="info-agenda-month">{ev.month}</span>
             </div>
-            <div style={{ alignSelf: 'center' }}>
-              <span className="btn-pill secondary" style={{ fontSize: '12px', padding: '8px 16px', pointerEvents: 'none' }}>
-                {ev.status}
-              </span>
+            <div>
+              <span className="info-agenda-organizer">{ev.organizer}</span>
+              <h3 className="info-agenda-title">{ev.title}</h3>
+              <p className="info-agenda-place">
+                <i className="fa-solid fa-location-dot" aria-hidden="true"></i>
+                <span>{ev.location}</span>
+              </p>
             </div>
-          </div>
+            <span className="info-agenda-status">{ev.status}</span>
+          </article>
         ))}
       </div>
     </div>

@@ -1,4 +1,5 @@
 import ProgramLink from './ProgramLink';
+import { linkKind } from '../../utils/linkKind';
 
 /** Documents and official sites, grouped. Level variants (PAUD/SD/SMP/SMA) sit on one row. */
 export function ResourcesSection({ section }) {
@@ -8,25 +9,37 @@ export function ResourcesSection({ section }) {
         <div key={group.title} className="prog-resource-group">
           <h4>{group.title}</h4>
           {group.variants ? (
-            <ul className="prog-variants" aria-label={group.title}>
-              {group.variants.map((variant) => (
-                <li key={variant.label}>
-                  <ProgramLink url={variant.url} className="prog-variant">{variant.label}</ProgramLink>
-                </li>
-              ))}
-            </ul>
+            <>
+              <span className="prog-variants-kind">
+                <i className={linkKind(group.variants[0].url, group.variants[0].kind).icon} aria-hidden="true"></i>
+                {linkKind(group.variants[0].url, group.variants[0].kind).label}, per jenjang
+              </span>
+              <ul className="prog-variants" aria-label={group.title}>
+                {group.variants.map((variant) => (
+                  <li key={variant.label}>
+                    <ProgramLink url={variant.url} className="prog-variant">{variant.label}</ProgramLink>
+                  </li>
+                ))}
+              </ul>
+            </>
           ) : (
             <ul className="prog-resource-list">
-              {group.items.map((item) => (
-                <li key={item.title}>
-                  <ProgramLink url={item.url} className="prog-resource">
-                    <span className="prog-resource-text">
-                      <strong>{item.title}</strong>
-                      <span>{item.meta}</span>
-                    </span>
-                  </ProgramLink>
-                </li>
-              ))}
+              {group.items.map((item) => {
+                const kind = linkKind(item.url, item.kind);
+                return (
+                  <li key={item.title}>
+                    <ProgramLink url={item.url} className="prog-resource">
+                      <span className="prog-resource-main">
+                        <span className="prog-resource-icon" aria-hidden="true"><i className={kind.icon}></i></span>
+                        <span className="prog-resource-text">
+                          <strong>{item.title}</strong>
+                          <span>{item.url && item.meta ? `${kind.label} · ${item.meta}` : item.meta || kind.label}</span>
+                        </span>
+                      </span>
+                    </ProgramLink>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

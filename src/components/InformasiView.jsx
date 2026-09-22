@@ -1,9 +1,11 @@
 import { pageNavigationConfigs } from '../data/portalData';
+import LobbyTabs from './shared/LobbyTabs';
 import BeritaPanel from './informasi/BeritaPanel';
 import PraktikPanel from './informasi/PraktikPanel';
 import UptBerceritaPanel from './informasi/UptBerceritaPanel';
 import AgendaPanel from './informasi/AgendaPanel';
 import AplikasiPanel from './informasi/AplikasiPanel';
+import './informasi/informasi.css';
 
 const informasiTabs = pageNavigationConfigs.informasi.sections;
 
@@ -20,8 +22,7 @@ export default function InformasiView({ activeSection, onNavigateSection, onNavi
   const Panel = infoPanels[activeId] || infoPanels['sec-info-berita'];
 
   return (
-    <div className="container" style={{ padding: '24px 20px 80px' }}>
-      {/* Subpage Hero Banner */}
+    <div className="container informasi-page">
       <div className="subpage-hero-banner" data-gsap="reveal">
         <span className="subpage-hero-kicker">
           <i className="fa-solid fa-newspaper"></i> Warta, Cerita Daerah &amp; Agenda UKS/M
@@ -34,21 +35,13 @@ export default function InformasiView({ activeSection, onNavigateSection, onNavi
         </p>
       </div>
 
-      {/* LOBBY: pick a topic, the panel below shows it */}
-      <div className="lobby-tabs" data-gsap="reveal">
-        {informasiTabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`lobby-tab ${activeId === tab.id ? 'active' : ''}`}
-            onClick={() => onNavigateSection(tab.id)}
-          >
-            <i className={tab.icon}></i>
-            <span>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      <LobbyTabs
+        tabs={informasiTabs}
+        activeId={activeId}
+        onSelect={onNavigateSection}
+        label="Bagian informasi"
+      />
 
-      {/* GIANT DISPLAY PANEL */}
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
         <Panel />
       </div>
