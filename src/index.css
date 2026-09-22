@@ -1538,27 +1538,6 @@ footer {
     padding-top: 68px;
   }
 
-  .subnav-3bar-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 8px 10px 14px;
-    scrollbar-width: none;
-  }
-
-  .subnav-3bar-wrapper::-webkit-scrollbar {
-    display: none;
-  }
-
-  .subnav-3bar {
-    display: inline-flex;
-    gap: 6px;
-    max-width: 100%;
-  }
-
-  .react-edge-zone {
-    top: 90px;
-  }
-
   .react-edge-drawer {
     width: min(300px, 86vw);
     max-height: calc(100vh - 120px);
@@ -1737,6 +1716,27 @@ footer {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 24px;
+}
+
+.pdf-modal-close {
+  background: var(--bg-app);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--spring);
+  flex-shrink: 0;
+}
+
+.pdf-modal-close:hover {
+  background: #ff4757;
+  color: white;
+  transform: scale(1.1) rotate(90deg);
+}
 
 .pdf-modal-content iframe {
   flex: 1;
@@ -1771,27 +1771,6 @@ footer {
   }
 }
 
-}
-
-.pdf-modal-close {
-  background: var(--bg-app);
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: var(--spring);
-  flex-shrink: 0;
-}
-
-.pdf-modal-close:hover {
-  background: #ff4757;
-  color: white;
-  transform: scale(1.1) rotate(90deg);
-}
 /* ============================================================
    INFOGRAFIS GRID
    Posters are portrait and of differing ratios. object-fit: contain on a
@@ -2272,6 +2251,27 @@ footer {
   100% {
     transform: translateX(-50%);
   }
+}
+
+@keyframes logoScrollReverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================
+   3-CLUSTER NAVBAR DROPDOWN & MEGAMENU
+   ============================================================ */
+.nav-item-has-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 /* The cluster panel is 780px wide, and the UKS/M tab sits left of centre, so
    hanging the panel off the tab left the whole right half of the screen
    empty. Going static hands the panel to the fixed bar as its anchor — that
@@ -2294,27 +2294,6 @@ footer {
   left: 0;
   right: 0;
   height: 44px;
-}
-
-}
-
-@keyframes logoScrollReverse {
-  0% {
-    transform: translateX(-50%);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/* ============================================================
-   3-CLUSTER NAVBAR DROPDOWN & MEGAMENU
-   ============================================================ */
-.nav-item-has-dropdown {
-  position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .nav-cluster-dropdown {
@@ -2454,10 +2433,10 @@ footer {
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.45;
-  margin-bottom: 24px;
   margin-bottom: 14px;
   flex-grow: 1;
-.lobby-tabs-track {
+}
+
 .nav-cluster-btn {
   display: flex;
   align-items: center;
@@ -2467,7 +2446,6 @@ footer {
   color: var(--brand-primary);
   padding-top: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.04);
-  min-height: 44px;
 }
 
 /* ============================================================
@@ -2476,34 +2454,24 @@ footer {
    the picking happens on the page itself, not in a nav dropdown.
    ============================================================ */
 .lobby-tabs {
+  margin-bottom: 24px;
 }
 
+.lobby-tabs-track {
   display: flex;
   flex-wrap: wrap;
-}
-
   gap: 10px;
 }
 
 .lobby-tab {
   display: inline-flex;
-}
-
-.lobby-tab:focus-visible {
-  outline: 3px solid var(--text-primary);
-  outline-offset: 2px;
-}
-
   align-items: center;
   gap: 10px;
+  min-height: 44px;
   padding: 14px 22px;
   border-radius: var(--radius-pill);
-}
-
   background: var(--bg-card);
   border: 1.5px solid rgba(0, 0, 0, 0.06);
-}
-
   color: var(--text-secondary);
   font-size: 13px;
   font-weight: 700;
@@ -2519,12 +2487,23 @@ footer {
 .lobby-tab:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
+}
+
+.lobby-tab:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
 .lobby-tab.active {
   background: var(--text-primary);
   color: #FFFFFF;
   border-color: var(--text-primary);
+}
+
 .lobby-tab.active i {
   color: var(--brand-accent);
+}
+
 /* Below a tablet the five tabs scroll in one row. Wrapped, they stacked three
    deep and pushed the panel itself off the first screen. */
 @media (max-width: 768px) {
@@ -2556,7 +2535,6 @@ footer {
     white-space: nowrap;
   }
 
-  text-align: center;
   /* The lift needs room the scroll container does not have, and there is no
      hover on a touchscreen anyway. */
   .lobby-tab:hover {
@@ -2578,6 +2556,7 @@ footer {
   z-index: 990;
   padding: 10px 0 16px;
   margin-bottom: 24px;
+  text-align: center;
   background: linear-gradient(to bottom, rgba(244, 245, 244, 0.95), rgba(244, 245, 244, 0));
 }
 
@@ -2592,26 +2571,12 @@ footer {
   padding: 6px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
-/* The base reset drops every button's outline; these need one back */
-.subnav-pill:focus-visible {
-  outline: 3px solid var(--text-primary);
-  outline-offset: 2px;
-}
-
 
 .subnav-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-/* On a phone the cluster switcher is dropped: the hamburger menu and the
-   Daftar Isi drawer both already list these four clusters. */
-@media (max-width: 768px) {
-  .subnav-3bar-wrapper {
-    display: none;
-  }
-}
-
   border-radius: var(--radius-pill);
   font-size: 13px;
   font-weight: 800;
@@ -2627,14 +2592,28 @@ footer {
   color: var(--text-primary);
 }
 
+/* The base reset drops every button's outline; these need one back */
+.subnav-pill:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
 .subnav-pill.active {
   background: var(--brand-deep);
   color: #FFFFFF;
   box-shadow: 0 8px 24px rgba(9, 140, 76, 0.28);
 }
 
+/* On a phone the cluster switcher is dropped: the hamburger menu and the
+   Daftar Isi drawer both already list these four clusters. */
+@media (max-width: 768px) {
+  .subnav-3bar-wrapper {
+    display: none;
+  }
+}
+
 /* ============================================================
-   UNIVERSAL LEFT-EDGE HOVER NAVIGATION DRAWER
+   UNIVERSAL EDGE HOVER NAVIGATION DRAWER (left on desktop, right on phones)
    ============================================================ */
 .react-edge-backdrop {
   position: fixed;
@@ -2698,6 +2677,28 @@ footer {
   padding-right: 10px;
 }
 
+/* On a phone the handle moves to the right edge, halfway down, rather than
+   sitting under the header on the left. */
+@media (max-width: 768px) {
+  .react-edge-zone {
+    left: auto;
+    right: 0;
+  }
+
+  .react-edge-handle {
+    /* Fixed, not absolute: 50% of the zone would land the handle 130px low,
+       since the zone itself starts below the header. */
+    position: fixed;
+    top: 50%;
+    left: auto;
+    right: 0;
+    transform: translateY(-50%);
+    border-right: none;
+    border-left: 2px solid var(--brand-primary);
+    border-radius: 16px 0 0 16px;
+  }
+}
+
 .react-edge-drawer {
   pointer-events: auto;
   position: absolute;
@@ -2726,6 +2727,20 @@ footer {
 
 .react-edge-zone:hover .react-edge-drawer {
   transform: translateX(0);
+}
+
+/* Mirrors the handle: on a phone the drawer hangs off the right edge, so its
+   hidden offset and accent border flip sides too. Must sit after the base
+   .react-edge-drawer rule above -- same specificity, so source order decides. */
+@media (max-width: 768px) {
+  .react-edge-drawer {
+    left: auto;
+    right: 0;
+    border-left: none;
+    border-right: 4px solid var(--brand-primary);
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+    transform: translateX(105%);
+  }
 }
 
 .react-edge-header {
