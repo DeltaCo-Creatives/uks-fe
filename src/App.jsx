@@ -186,7 +186,7 @@ function App() {
           <BerandaView onNavigateView={handleNavigateView} />
         )}
 
-        {['uksm-profil', 'uksm-trias', 'uksm-stratifikasi', 'uksm-gss'].includes(currentView) && (
+        {['uksm-profil', 'uksm-trias', 'uksm-stratifikasi'].includes(currentView) && (
           <UksmClusters activeSubpage={currentView} onChangeView={handleNavigateView} />
         )}
 

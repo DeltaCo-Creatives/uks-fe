@@ -17,7 +17,6 @@ export const pageNavigationConfigs = {
       { id: 'sec-home-trias', label: 'Trias UKS Bento Preview', icon: 'fa-solid fa-shield-heart' },
       { id: 'sec-home-stratifikasi', label: 'Stratifikasi UKS/M (4 Strata)', icon: 'fa-solid fa-layer-group' },
       { id: 'sec-home-programs', label: 'Program Unggulan Nasional', icon: 'fa-solid fa-bolt' },
-      { id: 'sec-home-gss', label: '5 Fokus Pembiasaan (GSS)', icon: 'fa-solid fa-apple-whole' },
       { id: 'sec-home-news', label: 'Warta Terkini UKS/M', icon: 'fa-solid fa-newspaper' },
       { id: 'sec-home-books', label: 'Rak Buku Digital', icon: 'fa-solid fa-book-bookmark' },
       { id: 'sec-home-gallery', label: 'Visual Inspirasi', icon: 'fa-solid fa-images' },
@@ -70,20 +69,6 @@ export const pageNavigationConfigs = {
       { id: 'sec-strat-tujuan', label: 'Tujuan Stratifikasi UKS', icon: 'fa-solid fa-bullseye' },
       { id: 'sec-strat-penilaian', label: 'Cara Penilaian', icon: 'fa-solid fa-scale-balanced' },
       { id: 'sec-strat-indikator', label: 'Indikator per Strata', icon: 'fa-solid fa-layer-group' }
-    ]
-  },
-  'uksm-gss': {
-    id: 'uksm-gss',
-    title: 'Sekolah Sehat (GSS)',
-    path: 'PORTAL / UKS/M ➔ 4. SEKOLAH SEHAT (GSS & 5 SEHAT)',
-    icon: 'fa-solid fa-apple-whole',
-    badge: 'GSS',
-    drawerTitle: 'NAVIGASI GSS',
-    footerText: 'Pembudayaan 5 Sehat & Unduhan Advokasi',
-    sections: [
-      { id: 'sec-gss-overview', label: 'Konsep Gerakan Sekolah Sehat', icon: 'fa-solid fa-circle-info' },
-      { id: 'sec-gss-5sehat', label: '5 Fokus Pembiasaan Terpadu', icon: 'fa-solid fa-apple-whole' },
-      { id: 'sec-gss-advokasi', label: 'Bahan Advokasi & Listing Unduhan', icon: 'fa-solid fa-file-arrow-down' }
     ]
   },
   program: {

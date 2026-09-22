@@ -1,5 +1,5 @@
 /**
- * UKS/M PROFILE DATA (Trias lives in ./trias.js, strata in ./stratifikasi.js, GSS in ./gss.js)
+ * UKS/M PROFILE DATA (Trias lives in ./trias.js, strata in ./stratifikasi.js)
  */
 
 export const nationalMetrics = [

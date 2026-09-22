@@ -2,7 +2,6 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 import {
   triasPillarsDetail,
   strataLevels,
-  gssFocusAreas,
   priorityProgramsList,
   realBooksList,
   realNewsList,
@@ -63,21 +62,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 3. GSS 5 Fokus
-    gssFocusAreas.forEach((fok) => {
-      items.push({
-        id: `gss-${fok.id}`,
-        title: fok.title,
-        excerpt: `${fok.summary} Kegiatan: ${fok.activities.map((act) => act.label ?? act.text).join(' ')}`,
-        typeLabel: 'Gerakan Sekolah Sehat',
-        typeColor: '#098C4C',
-        icon: fok.icon,
-        viewKey: 'uksm-gss',
-        sectionId: 'sec-gss-5sehat'
-      });
-    });
-
-    // 4. Priority Programs
+    // 3. Priority Programs
     priorityProgramsList.forEach((prog) => {
       items.push({
         id: `prog-${prog.id}`,
@@ -91,7 +76,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 5. Digital Books
+    // 4. Digital Books
     realBooksList.forEach((book) => {
       items.push({
         id: `book-${book.id}`,
@@ -105,7 +90,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 6. News
+    // 5. News
     realNewsList.forEach((news) => {
       items.push({
         id: `news-${news.id}`,
@@ -119,7 +104,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 7. Best Practices
+    // 6. Best Practices
     bestPracticesList.forEach((bp, idx) => {
       items.push({
         id: `bp-${idx}`,
@@ -133,7 +118,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 8. Agenda
+    // 7. Agenda
     nationalAgendas.forEach((ag, idx) => {
       items.push({
         id: `agenda-${idx}`,
@@ -147,7 +132,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 9. Videos
+    // 8. Videos
     videoList.forEach((vid) => {
       items.push({
         id: `vid-${vid.id}`,
@@ -161,7 +146,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 10. Regulations
+    // 9. Regulations
     regulationsList.forEach((reg) => {
       items.push({
         id: `reg-${reg.code}`,
@@ -175,7 +160,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 11. Apps
+    // 10. Apps
     appsList.forEach((app) => {
       items.push({
         id: `app-${app.id}`,
@@ -189,7 +174,7 @@ export default function SearchView({ onNavigateView }) {
       });
     });
 
-    // 12. UPT Stories
+    // 11. UPT Stories
     uptStories.forEach((st) => {
       items.push({
         id: `upt-${st.id}`,

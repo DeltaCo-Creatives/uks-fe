@@ -39,7 +39,7 @@ export default function Navbar({ currentView, onNavigateView }) {
     onNavigateView(viewKey, sectionId);
   };
 
-  const isUksmActive = ['uksm-profil', 'uksm-trias', 'uksm-stratifikasi', 'uksm-gss'].includes(currentView);
+  const isUksmActive = ['uksm-profil', 'uksm-trias', 'uksm-stratifikasi'].includes(currentView);
 
   const plainTabs = [
     { key: 'program', label: 'Program' },
@@ -102,10 +102,10 @@ export default function Navbar({ currentView, onNavigateView }) {
                 <div className="nav-cluster-header">
                   <div className="nav-cluster-title">
                     <i className="fa-solid fa-table-cells-large" style={{ color: 'var(--brand-primary)' }}></i>
-                    <span>Peta 4 Kluster UKS/M (Masing-Masing Memiliki Halaman &amp; Navigasi Mandiri)</span>
+                    <span>Peta 3 Kluster UKS/M (Masing-Masing Memiliki Halaman &amp; Navigasi Mandiri)</span>
                   </div>
                   <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
-                    4 DEDICATED PAGES
+                    3 DEDICATED PAGES
                   </span>
                 </div>
 
@@ -160,24 +160,6 @@ export default function Navbar({ currentView, onNavigateView }) {
                     </div>
                     <div className="nav-cluster-btn" style={{ color: '#7C3AED' }}>
                       <span>Buka Halaman Stratifikasi</span>
-                      <i className="fa-solid fa-arrow-right"></i>
-                    </div>
-                  </div>
-
-                  {/* Cluster 4: GSS */}
-                  <div
-                    className="nav-cluster-card"
-                    onClick={(e) => handleNavClick(e, 'uksm-gss')}
-                  >
-                    <div>
-                      <div className="nav-cluster-icon" style={{ background: '#FEF3C7', color: '#D97706' }}>
-                        <i className="fa-solid fa-apple-whole"></i>
-                      </div>
-                      <h4>4. Sekolah Sehat (GSS)</h4>
-                      <p>Gerakan Sekolah Sehat dengan 5 fokus pembiasaan (Bergizi, Fisik, Imunisasi, Jiwa, Lingkungan) serta listing unduhan.</p>
-                    </div>
-                    <div className="nav-cluster-btn" style={{ color: '#D97706' }}>
-                      <span>Buka Halaman GSS</span>
                       <i className="fa-solid fa-arrow-right"></i>
                     </div>
                   </div>
@@ -315,15 +297,6 @@ export default function Navbar({ currentView, onNavigateView }) {
               >
                 <i className="fa-solid fa-layer-group"></i>
                 <span>3. Stratifikasi UKS/M</span>
-              </a>
-
-              <a
-                href="#gss"
-                className={`nav-mobile-item indent ${currentView === 'uksm-gss' ? 'active' : ''}`}
-                onClick={(e) => handleNavClick(e, 'uksm-gss')}
-              >
-                <i className="fa-solid fa-apple-whole"></i>
-                <span>4. Sekolah Sehat (GSS)</span>
               </a>
 
               <div className="nav-mobile-divider"></div>

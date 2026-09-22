@@ -171,9 +171,7 @@ export const profilManagementComponents = [
     number: 1,
     title: 'Kebijakan',
     text: 'Payung kebijakan diperlukan sebagai rujukan agar Trias UKS/M dilaksanakan secara konsisten, sistematis, dan berkelanjutan. Kebijakan di tingkat daerah mengatur lebih spesifik pelaksanaan Trias UKS/M di Sekolah/Madrasah Sehat, termasuk penganggaran serta peran dan fungsi masing-masing pihak.',
-    facts: [],
-    // "Kebijakan di tingkat pusat sudah dijabarkan pada bagian dasar hukum": the portal's legal-document list
-    link: { label: 'Lihat dasar hukum tingkat pusat', view: 'uksm-gss', section: 'sec-gss-advokasi' }
+    facts: []
   },
   {
     id: 'perencanaan',

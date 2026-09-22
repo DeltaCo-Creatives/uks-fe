@@ -6,7 +6,6 @@ export default function Footer({ onNavigateView }) {
     { label: '1. Profil & Tata Kelola', key: 'uksm-profil' },
     { label: '2. TRIAS UKS/M', key: 'uksm-trias' },
     { label: '3. Stratifikasi UKS/M', key: 'uksm-stratifikasi' },
-    { label: '4. Sekolah Sehat (GSS)', key: 'uksm-gss' },
     { label: 'Program Prioritas', key: 'program' },
     { label: 'Kemitraan', key: 'mitra' },
     { label: 'Informasi & Warta', key: 'informasi' },
