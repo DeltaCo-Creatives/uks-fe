@@ -1654,19 +1654,6 @@ footer {
     flex: 0 0 84vw;
   }
 
-  .subnav-3bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    border-radius: var(--radius-lg);
-  }
-
-  .subnav-pill {
-    padding: 8px 12px;
-    font-size: 11px;
-    gap: 6px;
-  }
-
   .about-stats {
     grid-template-columns: 1fr;
   }
@@ -1737,6 +1724,19 @@ footer {
 .pdf-modal-header {
   padding: 16px 24px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-light);
+  background: white;
+}
+
+.pdf-modal-header h3 {
+  font-size: 18px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 24px;
 
 .pdf-modal-content iframe {
   flex: 1;
@@ -1771,19 +1771,6 @@ footer {
   }
 }
 
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-light);
-  background: white;
-}
-
-.pdf-modal-header h3 {
-  font-size: 18px;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 24px;
 }
 
 .pdf-modal-close {
@@ -2272,6 +2259,19 @@ footer {
 }
 
 .screenshot-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@keyframes logoScroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 /* The cluster panel is 780px wide, and the UKS/M tab sits left of centre, so
    hanging the panel off the tab left the whole right half of the screen
    empty. Going static hands the panel to the fixed bar as its anchor — that
@@ -2296,19 +2296,6 @@ footer {
   height: 44px;
 }
 
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-@keyframes logoScroll {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
 }
 
 @keyframes logoScrollReverse {
@@ -2454,10 +2441,6 @@ footer {
   justify-content: center;
   font-size: 18px;
   margin-bottom: 12px;
-  margin-bottom: 24px;
-}
-
-.lobby-tabs-track {
 }
 
 .nav-cluster-card h4 {
@@ -2467,15 +2450,14 @@ footer {
   color: var(--text-primary);
 }
 
-  min-height: 44px;
 .nav-cluster-card p {
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.45;
+  margin-bottom: 24px;
   margin-bottom: 14px;
   flex-grow: 1;
-}
-
+.lobby-tabs-track {
 .nav-cluster-btn {
   display: flex;
   align-items: center;
@@ -2485,15 +2467,11 @@ footer {
   color: var(--brand-primary);
   padding-top: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.04);
+  min-height: 44px;
 }
 
 /* ============================================================
    LOBBY PATTERN (Program / Kemitraan / Informasi / Publikasi)
-.lobby-tab:focus-visible {
-  outline: 3px solid var(--text-primary);
-  outline-offset: 2px;
-}
-
    A row of tab buttons + one big display panel that swaps content —
    the picking happens on the page itself, not in a nav dropdown.
    ============================================================ */
@@ -2509,12 +2487,23 @@ footer {
 
 .lobby-tab {
   display: inline-flex;
+}
+
+.lobby-tab:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
   align-items: center;
   gap: 10px;
   padding: 14px 22px;
   border-radius: var(--radius-pill);
+}
+
   background: var(--bg-card);
   border: 1.5px solid rgba(0, 0, 0, 0.06);
+}
+
   color: var(--text-secondary);
   font-size: 13px;
   font-weight: 700;
@@ -2567,14 +2556,13 @@ footer {
     white-space: nowrap;
   }
 
+  text-align: center;
   /* The lift needs room the scroll container does not have, and there is no
      hover on a touchscreen anyway. */
   .lobby-tab:hover {
     transform: none;
     box-shadow: var(--shadow-card);
   }
-}
-
 }
 
 .lobby-panel {
@@ -2591,8 +2579,6 @@ footer {
   padding: 10px 0 16px;
   margin-bottom: 24px;
   background: linear-gradient(to bottom, rgba(244, 245, 244, 0.95), rgba(244, 245, 244, 0));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .subnav-3bar {
@@ -2606,12 +2592,26 @@ footer {
   padding: 6px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
+/* The base reset drops every button's outline; these need one back */
+.subnav-pill:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
 
 .subnav-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
+/* On a phone the cluster switcher is dropped: the hamburger menu and the
+   Daftar Isi drawer both already list these four clusters. */
+@media (max-width: 768px) {
+  .subnav-3bar-wrapper {
+    display: none;
+  }
+}
+
   border-radius: var(--radius-pill);
   font-size: 13px;
   font-weight: 800;
@@ -2628,7 +2628,7 @@ footer {
 }
 
 .subnav-pill.active {
-  background: var(--brand-primary);
+  background: var(--brand-deep);
   color: #FFFFFF;
   box-shadow: 0 8px 24px rgba(9, 140, 76, 0.28);
 }
@@ -2662,14 +2662,16 @@ footer {
   position: absolute;
   top: 0;
   left: 0;
-  background: #111C16;
+  background: var(--text-primary);
   color: #FFFFFF;
-  border: 1.5px solid var(--brand-primary);
+  border-top: 2px solid var(--brand-primary);
+  border-bottom: 2px solid var(--brand-primary);
+  border-right: 2px solid var(--brand-primary);
   border-left: none;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 16px 16px 0;
   padding: 14px 7px;
   cursor: pointer;
-  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2703,13 +2705,13 @@ footer {
   left: 0;
   width: 320px;
   max-height: calc(100vh - 160px);
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   border-left: 4px solid var(--brand-primary);
-  border-radius: 0 24px 24px 0;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  box-shadow: var(--shadow-pill);
   transform: translateX(-105%);
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
@@ -2767,7 +2769,7 @@ footer {
 }
 
 .react-edge-pin-btn.active {
-  background: var(--brand-deep);
+  background: var(--brand-primary);
   color: #FFFFFF;
   border-color: var(--brand-primary);
 }
