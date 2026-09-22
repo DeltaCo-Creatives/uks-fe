@@ -10,6 +10,8 @@
 
   --brand-primary: #098C4C;
   /* Brighter, friendlier green */
+  --brand-deep: #05703C;
+  /* White text on --brand-primary is only 4.31:1; this shade carries it at AA */
   --brand-light: #D2E8DA;
   --brand-accent: #FFD23F;
   /* Playful yellow accent */
@@ -122,7 +124,8 @@ ul {
 .section-kicker {
   display: inline-block;
   background: var(--brand-light);
-  color: var(--brand-primary);
+  /* --brand-primary on --brand-light is 3.35:1 and fails AA for text this size */
+  color: var(--brand-deep);
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   font-size: 12px;
@@ -2351,7 +2354,7 @@ footer {
 }
 
 .react-edge-pin-btn.active {
-  background: var(--brand-primary);
+  background: var(--brand-deep);
   color: #FFFFFF;
   border-color: var(--brand-primary);
 }
