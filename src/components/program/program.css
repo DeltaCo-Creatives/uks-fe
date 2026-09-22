@@ -774,6 +774,7 @@ a.prog-resource:hover strong {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .prog-resource-text strong {
@@ -784,6 +785,21 @@ a.prog-resource:hover strong {
 .prog-resource-text span {
   font-size: 13px;
   color: var(--text-secondary);
+}
+
+/* Names the file kind shared by every level variant below, once, instead of per chip */
+.prog-variants-kind {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.prog-variants-kind i {
+  color: var(--brand-primary);
 }
 
 /* Level variants are real download links, so they are the buttons here */
@@ -870,41 +886,32 @@ a.prog-competition:hover {
   text-decoration: underline;
 }
 
-/* Archive */
-.prog-archive {
+/* Prestasi: one card per competition, big year numeral shared with the
+   editions motif elsewhere on this page. Flat background (not the header's
+   shadow) since these sit in a list, not as the one elevated surface. */
+.prestasi-list-wrap {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 32px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
 }
 
-.prog-archive-text {
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.prog-editions {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 12px;
-}
-
-.prog-editions li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas:
-    'year focus'
-    'year links';
-  gap: 0 16px;
-  padding: 16px 18px;
-  border-radius: var(--radius-lg);
+.prestasi-contest {
+  padding: 24px 28px 28px;
+  border-radius: var(--radius-xl);
   background: var(--bg-card);
 }
 
+.prestasi-contest-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding-bottom: 16px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--prog-rule);
+}
+
 .prog-edition-year {
-  grid-area: year;
+  flex: none;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 30px;
   font-weight: 800;
@@ -912,18 +919,291 @@ a.prog-competition:hover {
   color: var(--text-primary);
 }
 
-.prog-edition-focus {
-  grid-area: focus;
-  font-size: 14px;
+.prestasi-contest-head h4 {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.prestasi-status {
+  margin-top: 4px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--prog-green-text);
 }
 
-.prog-edition-links {
-  grid-area: links;
+.prestasi-contest-body {
+  margin-top: 16px;
+}
+
+.prestasi-face {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.prestasi-list {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+  margin: 0;
+  list-style: disc;
+}
+
+.prestasi-list li {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.prestasi-list li::marker {
+  color: var(--brand-primary);
+}
+
+/* Honest empty state: no fake "coming soon", just the fact and why */
+.prestasi-empty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card-alt);
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.prestasi-empty i {
+  flex: none;
+  color: var(--brand-primary);
+  font-size: 18px;
+}
+
+.prestasi-showcase-toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.prestasi-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prestasi-filter span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--prog-green-text);
+}
+
+.prestasi-filter select {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--text-primary);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.prestasi-showcase-count {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Slider: fills the card width and shows as many slides as the breakpoint
+   allows (3 desktop, 2 tablet, 1 phone with a peek of the next). The single
+   grid column is pinned to minmax(0, 1fr) rather than the default "auto":
+   an implicit auto column sizes itself to the max-content width of its
+   item, which for a horizontally-scrolling flex track is the sum of every
+   slide's width. That size wins over the grid container's own max-width
+   because nothing here is a flexible (fr) track, so the column, and every
+   ancestor grid built the same way (.prestasi-face, .prestasi-list-wrap),
+   painted past its own box and inflated documentElement.scrollWidth even
+   though the track's own overflow-x: auto was clipping correctly. */
+.prestasi-slider {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.prestasi-slider-track {
+  display: flex;
+  gap: 16px;
+  min-width: 0;
+  overflow-x: auto;
+  /* The off-screen slides are clipped here, but they still counted toward the
+     document's scroll width. Paint containment states what is already true and
+     keeps them out of it. */
+  contain: paint;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.prestasi-slider-track::-webkit-scrollbar {
+  display: none;
+}
+
+.prestasi-slider-track:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 4px;
+}
+
+/* Desktop default: 3 slides in view, 2 gaps of 16px between them */
+.prestasi-slide {
+  flex: none;
+  width: calc((100% - 32px) / 3);
+  scroll-snap-align: start;
+}
+
+.prestasi-slide-media {
+  position: relative;
+  width: min(320px, 100%);
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+/* YouTube shorts are pure 9:16 video, so the frame can fit it exactly */
+.prestasi-slide-media.is-youtube {
+  aspect-ratio: 9 / 16;
+  max-height: 520px;
+}
+
+/* Instagram and TikTok add their own header and footer chrome around the
+   video, so an aspect-ratio box would clip it. At 300px wide the whole embed
+   runs about 690px; this fits that with a little slack, and keeps scrolling
+   as the safety valve rather than cutting content off. */
+.prestasi-slide-media.is-instagram,
+.prestasi-slide-media.is-tiktok {
+  height: 700px;
+  max-height: 78vh;
+  overflow-y: auto;
+}
+
+.prestasi-slide-media.is-offsite {
+  aspect-ratio: 9 / 16;
+  max-height: 400px;
+}
+
+/* The fallback below is absolutely positioned, so it would paint over a
+   static iframe. Positioning the frame puts the real embed back on top and
+   leaves the fallback showing only where the embed never paints. */
+.prestasi-slide-frame {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.prestasi-slide-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.prestasi-slide-fallback i {
+  font-size: 28px;
+  color: var(--brand-primary);
+}
+
+.prestasi-slide-fallback strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.prestasi-slide-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(320px, 100%);
+  margin: 0 auto;
+}
+
+.prestasi-slide-kategori {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--prog-green-text);
+}
+
+.prestasi-slide-info h4 {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.prestasi-slide-info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.prestasi-slide-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-top: 4px;
+}
+
+.prestasi-slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.prestasi-slider-arrow {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--text-primary);
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--spring);
+}
+
+.prestasi-slider-arrow:hover:not(:disabled) {
+  background: var(--text-primary);
+  color: var(--bg-card);
+}
+
+.prestasi-slider-arrow:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+.prestasi-slider-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.prestasi-slider-counter {
+  min-width: 56px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
 }
 
 /* Sources footer */
@@ -982,8 +1262,7 @@ a.prog-competition:hover {
 @media (max-width: 900px) {
   .prog-head,
   .prog-head.has-image,
-  .prog-contrast,
-  .prog-archive {
+  .prog-contrast {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -998,6 +1277,11 @@ a.prog-competition:hover {
   .prog-habits,
   .prog-outcomes {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Tablet: 2 slides in view, 1 gap of 16px between them */
+  .prestasi-slide {
+    width: calc((100% - 16px) / 2);
   }
 }
 
@@ -1031,6 +1315,45 @@ a.prog-competition:hover {
 
   .prog-competitions li {
     padding: 8px 0;
+  }
+
+  .prestasi-contest {
+    padding: 20px;
+  }
+
+  .prestasi-contest-head {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .prog-edition-year {
+    font-size: 22px;
+  }
+
+  .prestasi-filter {
+    width: 100%;
+  }
+
+  .prestasi-filter select {
+    width: 100%;
+  }
+
+  /* 1 slide in view at 88% width, so the next slide's edge peeks in on the
+     right as a swipe hint. scroll-snap-align: start (set on the base rule)
+     lines this peek up on one side instead of splitting it both ways. */
+  /* Full width, no peek: a sliver of the next slide only showed a few
+     chopped letters of its school name, which read as a rendering fault.
+     The counter and the arrows carry the "there are more" job instead. */
+  .prestasi-slide {
+    width: 100%;
+  }
+
+  /* Taller than a phone screen either way, so trade a little of the embed
+     for keeping the school's name and the links below it in view. */
+  .prestasi-slide-media.is-instagram,
+  .prestasi-slide-media.is-tiktok {
+    height: 560px;
+    max-height: 70vh;
   }
 
   .prog-audience {

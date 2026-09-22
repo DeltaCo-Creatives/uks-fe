@@ -280,17 +280,16 @@ export const priorityProgramsList = [
     sources: [SRC.devAsri, SRC.asriWorkshop, SRC.asriJumatBersih]
   },
   {
-    id: 'sec-prog-saih',
-    navLabel: 'SAIH & Gala Kreasi',
-    title: 'Semarak Anak Indonesia Hebat & Gala Kreasi Video',
+    id: 'sec-prog-prestasi',
+    navLabel: 'Prestasi',
+    title: 'Prestasi UKS/M',
     icon: 'fa-solid fa-trophy',
     agency: 'Ditjen PAUD, Pendidikan Dasar, dan Pendidikan Menengah, bersama BBPMP dan BPMP',
-    desc: 'Ajang lomba untuk peserta didik dan satuan pendidikan: Semarak Anak Indonesia Hebat 2025 dan Gala Kreasi Video Gerakan Sekolah Sehat.',
-    lead: 'Semarak Anak Indonesia Hebat (SAIH) 2025 diselenggarakan dalam rangka Hari Pendidikan Nasional 2025, sebagai bagian dari implementasi Gerakan 7 Kebiasaan Anak Indonesia Hebat. Sasarannya peserta didik semua jenjang (PAUD, SD, SMP, dan SMA) di seluruh Indonesia.',
+    desc: 'Kompetisi yang dijalankan lewat UKS/M untuk peserta didik dan satuan pendidikan, beserta pengumuman dan pemenangnya.',
+    lead: 'Tiga kompetisi terakhir yang dijalankan lewat UKS/M: Semarak Anak Indonesia Hebat 2025, serta Gala Kreasi Video Gerakan Sekolah Sehat edisi 2024 dan 2023. Masing-masing memuat mekanisme lomba, pengumuman pemenang, dan daftar pemenangnya sejauh sudah diterbitkan.',
     facts: [
       { label: 'Dasar', value: 'Tindak lanjut Surat Edaran Bersama No. 1 Tahun 2025 tentang Penguatan Pendidikan Karakter melalui Pembiasaan di Satuan Pendidikan' },
-      { label: 'Informasi daerah', value: 'BBPMP/BPMP di provinsi masing-masing' },
-      { label: 'Pemenang 2025', value: 'Halaman pengumuman di portal belum berisi konten' }
+      { label: 'Informasi daerah', value: 'BBPMP/BPMP di provinsi masing-masing' }
     ],
     image: {
       src: 'program/saih-2025-poster.jpg',
@@ -302,30 +301,117 @@ export const priorityProgramsList = [
     },
     sections: [
       {
-        id: 'lomba',
-        type: 'competitions',
-        title: 'Lomba SAIH 2025',
-        note: 'Batas akhir pendaftaran dan pengiriman materi: 25 April 2025 pukul 23.59 WIB. Pendaftaran edisi ini sudah ditutup.',
+        id: 'kompetisi',
+        type: 'prestasi',
+        title: 'Kompetisi',
         items: [
-          { level: 'Semua jenjang', title: 'Lomba Senam Anak Indonesia Hebat', url: 'https://s.id/InformasiLSAIH' },
-          { level: 'PAUD', title: 'Lomba Video Cerita Anak', url: null },
-          { level: 'SD', title: 'Lomba Potret Cerita', url: null },
-          { level: 'SMP', title: 'Lomba Video Cerita Pendek', url: 'https://s.id/ReelsvideoPendek7KAIHDitSMP_' },
-          { level: 'SMA', title: 'Lomba Video Cerita Pendek/Vlog', url: 'https://s.id/cerita7KAIH' }
-        ],
-        guide: { title: 'Surat edaran dan panduan lomba', url: 'https://drive.google.com/drive/u/0/folders/14aBSX1V5P9ZL1vHOEZwyao1UmUl2br_8' }
-      },
-      {
-        id: 'gala',
-        type: 'archive',
-        title: 'Gala Kreasi Video Gerakan Sekolah Sehat',
-        text: 'Lomba video praktik baik penerapan Gerakan Sekolah Sehat untuk satuan pendidikan negeri maupun swasta, bertema "Sekolah Sehat, Generasi Hebat". Penghargaan diberikan kepada video peringkat 1 sampai 10 terbaik untuk setiap jenjang pendidikan.',
-        audience: 'PAUD (TK, KB, TPA, SPS), SD, SMP, SMA, SMK, SLB, SKB, dan PKBM.',
-        editions: [
-          { year: '2024', focus: 'Fokus 5 sehat', page: SRC.gala2024.url, guide: 'https://uks.kemendikdasmen.go.id//storage/manajemen_uks/files/images/uPpuXgH6FalmAGQhTHwv6TGqfQI8ZJMXxk4fhdoM.pdf' },
-          { year: '2023', focus: 'Fokus 3 sehat', page: SRC.gala2023.url, guide: null }
-        ],
-        related: { label: 'Lihat 5 fokus Gerakan Sekolah Sehat', view: 'uksm-gss', section: 'sec-gss-5sehat' }
+          {
+            id: 'saih-2025',
+            year: '2025',
+            title: 'Semarak Anak Indonesia Hebat (SAIH) 2025',
+            status: 'Pendaftaran ditutup 25 April 2025',
+            faces: {
+              mekanisme: {
+                lead: 'Semarak Anak Indonesia Hebat (SAIH) 2025 diselenggarakan dalam rangka Hari Pendidikan Nasional 2025, sebagai bagian dari implementasi Gerakan 7 Kebiasaan Anak Indonesia Hebat. Sasarannya peserta didik semua jenjang (PAUD, SD, SMP, dan SMA) di seluruh Indonesia.',
+                competitions: {
+                  note: 'Batas akhir pendaftaran dan pengiriman materi: 25 April 2025 pukul 23.59 WIB. Pendaftaran edisi ini sudah ditutup.',
+                  items: [
+                    { level: 'Semua jenjang', title: 'Lomba Senam Anak Indonesia Hebat', url: 'https://s.id/InformasiLSAIH' },
+                    { level: 'PAUD', title: 'Lomba Video Cerita Anak', url: null },
+                    { level: 'SD', title: 'Lomba Potret Cerita', url: null },
+                    { level: 'SMP', title: 'Lomba Video Cerita Pendek', url: 'https://s.id/ReelsvideoPendek7KAIHDitSMP_' },
+                    { level: 'SMA', title: 'Lomba Video Cerita Pendek/Vlog', url: 'https://s.id/cerita7KAIH' }
+                  ],
+                  guide: { title: 'Surat edaran dan panduan lomba', url: 'https://drive.google.com/drive/u/0/folders/14aBSX1V5P9ZL1vHOEZwyao1UmUl2br_8' }
+                }
+              },
+              pengumuman: {
+                note: 'Pengumuman pemenang SAIH 2025 belum diterbitkan. Dicek terakhir pada 22 September 2026.'
+              },
+              showcase: null
+            }
+          },
+          {
+            id: 'gala-kreasi-2024',
+            year: '2024',
+            title: 'Gala Kreasi Video Gerakan Sekolah Sehat 2024',
+            status: 'Arsip, pemenang sudah diumumkan',
+            faces: {
+              mekanisme: {
+                lead: 'Gala Kreasi Video Gerakan Sekolah Sehat Tahun 2024 adalah ajang lomba video praktik baik implementasi sebagian atau seluruh fokus Gerakan Sekolah Sehat (5 sehat) di seluruh jenjang satuan pendidikan, bertema "Sekolah Sehat, Generasi Hebat". Penghargaan diberikan kepada satuan pendidikan berdasarkan hasil penilaian video yang menempati peringkat 1 sampai dengan 10 terbaik untuk setiap jenjang pendidikan.',
+                tujuan: [
+                  'Meningkatkan motivasi satuan pendidikan dalam melaksanakan implementasi atau mengaktivasi gerakan sekolah sehat (5 sehat) di satuannya.',
+                  'Memberikan apresiasi kepada satuan pendidikan yang telah dapat melaksanakan implementasi atau mengaktivasi gerakan sekolah sehat (5 sehat) dengan baik di satuannya.',
+                  'Memantik dan mengoptimalkan implementasi atau aktivasi pesan gerakan sekolah sehat.',
+                  'Ajang berbagi praktik baik implementasi atau aktivasi gerakan sekolah sehat (5 sehat) antar satuan pendidikan.'
+                ],
+                facts: [
+                  { label: 'Sasaran', value: 'PAUD (TK, KB, TPA, SPS), SD, SMP, SMA, SMK, SLB, SKB, dan PKBM, negeri maupun swasta' }
+                ],
+                downloads: {
+                  groups: [
+                    {
+                      title: 'Unduh',
+                      items: [
+                        { title: 'Buku Petunjuk Pelaksanaan', meta: 'PDF', kind: 'pdf', url: 'https://uks.kemendikdasmen.go.id//storage/manajemen_uks/files/images/uPpuXgH6FalmAGQhTHwv6TGqfQI8ZJMXxk4fhdoM.pdf' }
+                      ]
+                    }
+                  ]
+                }
+              },
+              pengumuman: {
+                groups: [
+                  {
+                    title: 'Pengumuman pemenang',
+                    items: [
+                      { title: 'Pengumuman Pemenang', meta: 'Instagram', kind: 'web', url: 'https://www.instagram.com/ditjen.paud.dikdasmen/p/C-hCBB3yrDz/' },
+                      { title: 'Daftar Pemenang per Jenjang', meta: 'Dokumen', kind: 'drive', url: 'https://drive.google.com/file/d/1ArEK0wExN4D2b1bg9yU6xi8dWugMH3g0/view' },
+                      { title: 'SK Pemenang Gala Kreasi Video GSS 2024', meta: 'PDF', kind: 'pdf', url: 'https://uks.kemendikdasmen.go.id/storage/manajemen_uks/files/produk_hukum/DXRUqW5K8kiaCOCm6aW29UNVK6uvVsQ3hSflYReR.pdf' }
+                    ]
+                  },
+                  {
+                    title: 'Dokumentasi apresiasi',
+                    items: [
+                      { title: 'Malam Apresiasi Gala Kreasi Video GSS 2024', meta: 'Instagram', kind: 'web', url: 'https://www.instagram.com/reel/C-mkY_PSqnK/' },
+                      { title: 'Puncak Acara Gala Kreasi Video GSS 2024', meta: 'Instagram', kind: 'web', url: 'https://www.instagram.com/p/C-mKw1wp_Ec/' }
+                    ]
+                  }
+                ],
+                source: 'Siaran Pers No.365/sipers/A6/VIII/2024, Biro Kerja Sama dan Hubungan Masyarakat, Sekretariat Jenderal, Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi.'
+              },
+              showcase: {
+                competitionId: 'gala-kreasi-2024',
+                note: 'Kategori pada data sumber memakai tiga sebutan sekaligus ("Terbaik", "Peringkat", "Inspiratif") dan nomornya diulang dari 1 di setiap jenjang; keduanya ditampilkan apa adanya. Hanya 11 dari 114 pemenang mencantumkan tautan YouTube, sisanya media sosial. Sejumlah baris berbagi satu tautan yang sama, dan beberapa provinsi pada data sumber tidak akurat (misalnya SDN Kanyoran 2 di Kabupaten Kediri, Jawa Timur, tercatat sebagai Kalimantan Selatan); semua tidak dikoreksi di sini.'
+              }
+            }
+          },
+          {
+            id: 'gala-kreasi-2023',
+            year: '2023',
+            title: 'Gala Kreasi Video Gerakan Sekolah Sehat 2023',
+            status: 'Arsip',
+            faces: {
+              mekanisme: {
+                lead: 'Gala Kreasi Video Gerakan Sekolah Sehat Tahun 2023 adalah ajang lomba video praktik baik implementasi sebagian atau seluruh fokus Gerakan Sekolah Sehat (3 sehat) di seluruh jenjang satuan pendidikan, bertema "Sekolah Sehat, Generasi Hebat". Penghargaan diberikan kepada satuan pendidikan berdasarkan hasil penilaian video yang menempati peringkat 1 sampai dengan 10 terbaik untuk setiap jenjang pendidikan.',
+                facts: [
+                  { label: 'Sasaran', value: 'PAUD (TK, KB, TPA, SPS), SD, SMP, SMA, SMK, SLB, SKB, dan PKBM, negeri maupun swasta' }
+                ],
+                downloads: {
+                  groups: [
+                    {
+                      title: 'Unduh',
+                      items: [
+                        { title: 'Petunjuk Pelaksanaan Gala Kreasi Video KSS 2023', meta: 'Sumber lama (ditpsd.kemdikbud.go.id) sudah tidak aktif', kind: 'pdf', url: null }
+                      ]
+                    }
+                  ]
+                }
+              },
+              pengumuman: null,
+              showcase: null
+            }
+          }
+        ]
       }
     ],
     sources: [SRC.saih2025, SRC.gala2024, SRC.gala2023]

@@ -48,7 +48,10 @@ export function ResourcesSection({ section }) {
   );
 }
 
-/** SAIH 2025: five competitions, each tied to a level. The deadline note says the edition is closed. */
+/**
+ * A competition's list of lomba, each tied to a level, plus a status note and
+ * a guide link. Reused by PrestasiSection for each competition's Mekanisme face.
+ */
 export function CompetitionsSection({ section }) {
   return (
     <>
@@ -63,45 +66,7 @@ export function CompetitionsSection({ section }) {
           </li>
         ))}
       </ul>
-      <ProgramLink url={section.guide.url} className="prog-inline-link">{section.guide.title}</ProgramLink>
+      {section.guide && <ProgramLink url={section.guide.url} className="prog-inline-link">{section.guide.title}</ProgramLink>}
     </>
-  );
-}
-
-/** Gala Kreasi Video: what it is, then one row per past edition with its page and guide. */
-export function ArchiveSection({ section, onNavigate }) {
-  return (
-    <div className="prog-archive">
-      <div>
-        <p className="prog-archive-text">{section.text}</p>
-        <dl className="prog-facts is-compact">
-          <div>
-            <dt>Peserta</dt>
-            <dd>{section.audience}</dd>
-          </div>
-        </dl>
-        {section.related && (
-          <button
-            type="button"
-            className="prog-text-btn"
-            onClick={() => onNavigate(section.related.view, section.related.section)}
-          >
-            {section.related.label}
-          </button>
-        )}
-      </div>
-      <ul className="prog-editions">
-        {section.editions.map((edition) => (
-          <li key={edition.year}>
-            <span className="prog-edition-year">{edition.year}</span>
-            <span className="prog-edition-focus">{edition.focus}</span>
-            <span className="prog-edition-links">
-              <ProgramLink url={edition.page} className="prog-inline-link">Halaman lomba</ProgramLink>
-              <ProgramLink url={edition.guide} className="prog-inline-link">Petunjuk pelaksanaan</ProgramLink>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
