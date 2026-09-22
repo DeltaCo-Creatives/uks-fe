@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { faqsList, contactInfo } from '../data/portalData';
+import { faqsList, contactInfo, ministries } from '../data/portalData';
+import './kontak/kontak.css';
 
 export default function KontakView() {
   const [openFaq, setOpenFaq] = useState(0);
@@ -42,50 +43,78 @@ export default function KontakView() {
               </h2>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-              
-              <div className="stat-box" style={{ alignItems: 'flex-start', textAlign: 'left', padding: '26px' }}>
-                <div className="program-icon" style={{ background: 'var(--brand-light)', color: 'var(--brand-primary)', marginBottom: '14px' }}>
+            <div className="kontak-card-grid">
+
+              <div className="kontak-card">
+                <div className="kontak-card-icon">
                   <i className="fa-solid fa-location-dot"></i>
                 </div>
-                <h4 style={{ fontSize: '17px', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>
-                  Alamat Sekretariat Pusat
-                </h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  <strong>Sekretariat Pembina UKS/M Pusat</strong><br />
-                  Kementerian Pendidikan Dasar dan Menengah RI<br />
-                  {contactInfo.address}
-                </p>
+                <h4 className="kontak-card-title">Alamat Sekretariat Pusat</h4>
+                <dl className="kontak-fields">
+                  <div>
+                    <dt>Instansi</dt>
+                    <dd>Sekretariat Pembina UKS/M Pusat, Kementerian Pendidikan Dasar dan Menengah RI</dd>
+                  </div>
+                  <div>
+                    <dt>Alamat</dt>
+                    <dd><address>{contactInfo.address}</address></dd>
+                  </div>
+                </dl>
               </div>
 
-              <div id="sec-kontak-helpdesk" className="stat-box" style={{ alignItems: 'flex-start', textAlign: 'left', padding: '26px' }}>
-                <div className="program-icon" style={{ background: '#DBEAFE', color: '#2563EB', marginBottom: '14px' }}>
+              <div id="sec-kontak-helpdesk" className="kontak-card">
+                <div className="kontak-card-icon" style={{ background: '#DBEAFE', color: '#2563EB' }}>
                   <i className="fa-solid fa-headset"></i>
                 </div>
-                <h4 style={{ fontSize: '17px', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>
-                  Helpdesk &amp; Call Center
-                </h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  <strong>Call Center ULT Kemendikdasmen:</strong> {contactInfo.ultPhone}<br />
-                  <strong>Hotline Khusus UKS/M:</strong> <a href={`tel:${contactInfo.phone}`} style={{ color: 'inherit', textDecoration: 'none' }}>{contactInfo.phone}</a><br />
-                  <strong>Email:</strong> <a href={`mailto:${contactInfo.email}`} style={{ color: 'var(--brand-primary)', fontWeight: 700 }}>{contactInfo.email}</a><br />
-                  <strong>Jam Layanan:</strong> {contactInfo.operatingHours}
-                </p>
+                <h4 className="kontak-card-title">Helpdesk &amp; Call Center</h4>
+                <dl className="kontak-fields">
+                  <div>
+                    <dt>Call Center ULT Kemendikdasmen</dt>
+                    <dd><a href={`tel:${contactInfo.ultPhone}`}>{contactInfo.ultPhone}</a></dd>
+                  </div>
+                  <div>
+                    <dt>Hotline Khusus UKS/M</dt>
+                    <dd><a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a></dd>
+                  </div>
+                  <div>
+                    <dt>Email</dt>
+                    <dd><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></dd>
+                  </div>
+                  <div>
+                    <dt>Jam Layanan</dt>
+                    <dd>{contactInfo.operatingHours}</dd>
+                  </div>
+                </dl>
               </div>
 
-              <div className="stat-box" style={{ alignItems: 'flex-start', textAlign: 'left', padding: '26px' }}>
-                <div className="program-icon" style={{ background: '#FEF3C7', color: '#D97706', marginBottom: '14px' }}>
+              <div className="kontak-card">
+                <div className="kontak-card-icon" style={{ background: '#FEF3C7', color: '#D97706' }}>
                   <i className="fa-solid fa-building-columns"></i>
                 </div>
-                <h4 style={{ fontSize: '17px', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>
-                  Kementerian Terkait
-                </h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                  • Kemendikdasmen RI (Sekretariat Utama)<br />
-                  • Kementerian Kesehatan RI (Dinkes &amp; Puskesmas)<br />
-                  • Kementerian Agama RI (Madrasah &amp; Ponpes)<br />
-                  • Kementerian Dalam Negeri RI (Pemda &amp; TP UKS)
-                </p>
+                <h4 className="kontak-card-title">Kementerian Terkait</h4>
+                <div className="kontak-ministry-grid">
+                  {ministries.map((ministry) => (
+                    <a
+                      key={ministry.id}
+                      className="kontak-ministry-tile"
+                      href={ministry.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {ministry.logo ? (
+                        <img className="kontak-ministry-logo" src={ministry.logo} alt={`Logo ${ministry.name}`} />
+                      ) : (
+                        <span className="kontak-ministry-placeholder" aria-hidden="true">
+                          <i className="fa-solid fa-building-columns"></i>
+                        </span>
+                      )}
+                      <span>
+                        <span className="kontak-ministry-short">{ministry.short}</span>
+                        <span className="kontak-ministry-unit">{ministry.unit}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
 
             </div>
