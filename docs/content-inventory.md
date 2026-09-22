@@ -151,6 +151,8 @@ Prod slugs marked `/program/…` aren't recorded in `docs/`; confirm them before
 | PR-10 | Gala Kreasi Video 2023 | Archive | prod `/gala-kreasi/gala-kreasi-2023` | Program ▸ `prestasi` ▸ Gala 2023 ▸ Mekanisme | 🟡 | fix | Juklak on a dead domain, shown as "tautan belum tersedia" |
 | PR-11 | Praktik Baik 7KAIH / MBG | Filtered list | prod `/informasi/praktik-baik?kategori=15`, `=16` | Informasi ▸ praktik baik (filter) | ⬜ | add | Needs category filter (I2) |
 | PR-12 | Program curation log | Doc | — | `docs/program-curation.md` | ⬜ | add | Referenced from `program.js`; file missing (R1) |
+| PR-13 | Gita Adhi Gizi 2026: lomba edukasi gizi | Program | — (official flyer and links supplied by the owner, 2026-09-22) | Program ▸ `prestasi` ▸ Gita Adhi Gizi 2026 ▸ Mekanisme | 🟡 | add | First competition aimed at pemda and UPT, not satuan pendidikan. Flyers in `public/program/gita-adhi-gizi-2026-*.webp`; no `docs/` content file yet |
+| PR-14 | Gita Adhi Gizi 2026: pengumuman pemenang | Page | — | Program ▸ `prestasi` ▸ Gita Adhi Gizi 2026 ▸ Pengumuman | ⬜ | add | Rapat pleno scheduled November 2026; renders as an empty state until then |
 
 ## Mitra (`/mitra`)
 

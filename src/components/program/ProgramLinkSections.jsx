@@ -49,14 +49,16 @@ export function ResourcesSection({ section }) {
 }
 
 /**
- * A competition's list of lomba, each tied to a level, plus a status note and
+ * A competition's list of lomba, each tied to a level, plus a deadline note and
  * a guide link. Reused by PrestasiSection for each competition's Mekanisme face.
+ * `section.open` swaps the deadline icon, so a lomba still taking entries is not
+ * marked with the closed-calendar glyph.
  */
 export function CompetitionsSection({ section }) {
   return (
     <>
-      <p className="prog-closed">
-        <i className="fa-regular fa-calendar-xmark" aria-hidden="true"></i> {section.note}
+      <p className="prog-deadline">
+        <i className={`fa-regular ${section.open ? 'fa-calendar-check' : 'fa-calendar-xmark'}`} aria-hidden="true"></i> {section.note}
       </p>
       <ul className="prog-competitions">
         {section.items.map((item) => (
