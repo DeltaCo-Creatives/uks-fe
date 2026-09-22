@@ -42,20 +42,11 @@ export default function EdgeDrawer({ currentView, activeSection, onNavigateSecti
         onMouseLeave={() => !isPinned && setIsOpen(false)}
         style={{ zIndex: 10002 }}
       >
-      {/* Tactile Left-Edge Tab Handle */}
+      {/* Edge Tab Handle; side follows .react-edge-handle (left on desktop, right on phones) */}
       <div
         className="react-edge-handle"
         onClick={() => setIsOpen(!isOpen)}
-        title="Daftar Isi Halaman (Tepi Kiri)"
-        style={{
-          background: 'var(--text-primary)',
-          borderLeft: 'none',
-          borderRight: '2px solid var(--brand-primary)',
-          borderTop: '2px solid var(--brand-primary)',
-          borderBottom: '2px solid var(--brand-primary)',
-          borderRadius: '0 16px 16px 0',
-          boxShadow: '0 12px 30px rgba(0,0,0,0.18)'
-        }}
+        title="Daftar Isi Halaman"
       >
         <i className="fa-solid fa-compass" style={{ color: 'var(--brand-accent)', fontSize: '15px' }}></i>
         <span style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.08em' }}>DAFTAR ISI</span>
@@ -64,15 +55,6 @@ export default function EdgeDrawer({ currentView, activeSection, onNavigateSecti
       {/* Frosted Glass Floating Drawer */}
       <div
         className={`react-edge-drawer ${isPinned ? 'pinned' : ''}`}
-        style={{
-          background: 'rgba(255, 255, 255, 0.94)',
-          backdropFilter: 'blur(28px)',
-          WebkitBackdropFilter: 'blur(28px)',
-          border: '1px solid rgba(255, 255, 255, 0.9)',
-          borderLeft: '4px solid var(--brand-primary)',
-          borderRadius: '0 var(--radius-xl) var(--radius-xl) 0',
-          boxShadow: 'var(--shadow-pill)'
-        }}
       >
         <div className="react-edge-header" style={{ background: 'transparent', padding: '18px 20px' }}>
           <div className="react-edge-header-title" style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
