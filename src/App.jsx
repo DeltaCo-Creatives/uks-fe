@@ -22,7 +22,7 @@ import BeritaDetailView from './components/BeritaDetailView';
 import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 
-import { pageNavigationConfigs, realNewsList } from './data/portalData';
+import { findArticle, pageNavigationConfigs } from './data/portalData';
 import {
   defaultTabSlug,
   pathForView,
@@ -38,10 +38,9 @@ function Breadcrumbs({ viewKey, pathname }) {
   if (!viewKey || viewKey === 'beranda') return null;
 
   const linkStyle = { color: 'var(--brand-primary)', fontWeight: 700 };
-  const articleKey = decodeURIComponent(pathname.split('/')[3] || '');
   const article =
     viewKey === 'berita-detail'
-      ? realNewsList.find((n) => n.id === Number(articleKey) || n.slug === articleKey) || realNewsList[0]
+      ? findArticle(decodeURIComponent(pathname.split('/')[3] || ''))
       : null;
 
   return (

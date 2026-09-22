@@ -1,23 +1,13 @@
-import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { realNewsList } from '../data/portalData';
+import { findArticle, realNewsList } from '../data/portalData';
 import { pathForArticle, pathForView } from '../routes';
 import SafeImage from './SafeImage';
 
 export default function BeritaDetailView() {
   const { idOrSlug } = useParams();
 
-  const article = useMemo(() => {
-    if (!idOrSlug) return realNewsList[0];
-    return (
-      realNewsList.find((n) => n.id === Number(idOrSlug) || n.slug === idOrSlug) ||
-      realNewsList[0]
-    );
-  }, [idOrSlug]);
-
-  const otherArticles = useMemo(() => {
-    return realNewsList.filter((n) => n.id !== article.id).slice(0, 3);
-  }, [article.id]);
+  const article = findArticle(idOrSlug);
+  const otherArticles = realNewsList.filter((n) => n.id !== article.id).slice(0, 3);
 
   return (
     <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
