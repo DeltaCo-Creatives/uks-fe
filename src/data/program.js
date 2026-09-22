@@ -76,7 +76,7 @@ export const priorityProgramsList = [
           {
             title: 'Panduan dan regulasi',
             items: [
-              { title: 'Pedoman Pendidikan Karakter dalam Makan Bergizi Gratis', meta: 'Buku panduan, Kemendikdasmen', url: 'https://s.id/pedomanmbg' },
+              { title: 'Pedoman Pendidikan Karakter dalam Makan Bergizi Gratis', meta: 'Buku panduan, Kemendikdasmen', kind: 'drive', url: 'https://s.id/pedomanmbg' },
               { title: 'Perpres No. 83 Tahun 2024 tentang Badan Gizi Nasional', meta: 'JDIH BPK', url: SRC.perpres83.url }
             ]
           },
@@ -206,25 +206,25 @@ export const priorityProgramsList = [
           {
             title: 'Kiat Jitu 7KAIH untuk guru',
             variants: [
-              { label: 'PAUD', url: 'https://s.id/kiatjitu7kaih-gurupaud' },
-              { label: 'SD', url: 'https://s.id/kiatjitu7kaih-gurusd' },
-              { label: 'SMP', url: 'https://s.id/kiatjitu7kaih-gurusmp' },
-              { label: 'SMA', url: 'https://s.id/kiatjitu7kaih-gurusma' }
+              { label: 'PAUD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurupaud' },
+              { label: 'SD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurusd' },
+              { label: 'SMP', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurusmp' },
+              { label: 'SMA', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurusma' }
             ]
           },
           {
             title: 'Kiat Jitu 7KAIH untuk orang tua',
             variants: [
-              { label: 'PAUD', url: 'https://s.id/kiatjitu7kaih-ortupaud' },
-              { label: 'SD', url: 'https://s.id/kiatjitu7kaih-ortusd' },
-              { label: 'SMP', url: 'https://s.id/kiatjitu7kaih-ortusmp' },
-              { label: 'SMA', url: 'https://s.id/kiatjitu7kaih-ortusma' }
+              { label: 'PAUD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortupaud' },
+              { label: 'SD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortusd' },
+              { label: 'SMP', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortusmp' },
+              { label: 'SMA', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortusma' }
             ]
           },
           {
             title: 'Lainnya',
             items: [
-              { title: 'Modul Penguatan 7KAIH dalam Kepramukaan', meta: 'Google Drive', url: 'https://s.id/modul7kaih-kepramukaan' },
+              { title: 'Modul Penguatan 7KAIH dalam Kepramukaan', meta: 'Kemendikdasmen', kind: 'drive', url: 'https://s.id/modul7kaih-kepramukaan' },
               { title: 'Laman resmi Gerakan 7KAIH', meta: 'cerdasberkarakter.kemendikdasmen.go.id', url: SRC.cerdas.url },
               { title: 'Surat Edaran Bersama No. 1 Tahun 2025', meta: 'JDIH Kemendikdasmen', url: null }
             ]
