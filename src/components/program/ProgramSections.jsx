@@ -60,7 +60,12 @@ export function TableSection({ section }) {
           ))}
         </tbody>
       </table>
-      {section.note && <p className="prog-note">{section.note}</p>}
+      {section.note && (
+        <p className="prog-note prog-note-labelled">
+          <strong>Catatan</strong>
+          {section.note}
+        </p>
+      )}
     </>
   );
 }
@@ -99,27 +104,30 @@ export function HabitsSection({ section }) {
   );
 }
 
-/** 7KAIH: challenges on one side, what the movement builds on the other, and where it leads. */
+/** 7KAIH: the capaian leads, then the two columns explain the challenge it
+    answers and what the movement builds to get there. */
 export function ContrastSection({ section }) {
   return (
-    <div className="prog-contrast">
-      <div className="prog-contrast-col">
-        <h4>{section.problem.title}</h4>
-        <ul>
-          {section.problem.items.map((item) => <li key={item}>{item}</li>)}
-        </ul>
+    <>
+      <div className="prog-outcome">
+        <span className="prog-outcome-label">Capaian</span>
+        <strong className="prog-outcome-text">{section.outcome}</strong>
       </div>
-      <div className="prog-contrast-col is-answer">
-        <h4>{section.answer.title}</h4>
-        <ul>
-          {section.answer.items.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-        <p className="prog-contrast-outcome">
-          <span>Capaian</span>
-          <strong>{section.outcome}</strong>
-        </p>
+      <div className="prog-contrast">
+        <div className="prog-contrast-col">
+          <h4>{section.problem.title}</h4>
+          <ul>
+            {section.problem.items.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
+        <div className="prog-contrast-col is-answer">
+          <h4>{section.answer.title}</h4>
+          <ul>
+            {section.answer.items.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -329,11 +329,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Section lead: reads as body copy so it is not mistaken for a footnote */
 .prog-intro {
   margin-bottom: 16px;
   font-size: 15px;
   line-height: 1.65;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  max-width: 80ch;
 }
 
 .prog-note {
@@ -342,6 +344,21 @@
   line-height: 1.65;
   color: var(--text-secondary);
   max-width: 80ch;
+}
+
+/* A caveat about the block above it, not another paragraph of description */
+.prog-note-labelled {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--prog-rule);
+  font-size: 13px;
+  max-width: none;
+}
+
+.prog-note-labelled strong {
+  display: block;
+  font-size: 12px;
+  color: var(--prog-green-text);
 }
 
 /* Audience: three illustrations */
@@ -600,24 +617,30 @@
   color: var(--brand-primary);
 }
 
-.prog-contrast-outcome {
+/* What both columns build to, so it leads and spans them: the one statement of the section */
+.prog-outcome {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid var(--prog-rule);
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: clamp(22px, 4vw, 32px) clamp(18px, 3vw, 28px);
+  border-radius: var(--radius-lg);
+  background: var(--brand-light);
+  text-align: center;
 }
 
-.prog-contrast-outcome span {
+.prog-outcome-label {
   font-size: 13px;
   font-weight: 700;
   color: var(--prog-green-text);
 }
 
-.prog-contrast-outcome strong {
+.prog-outcome-text {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 18px;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 /* Pillars: the acronym letter carries each pillar */
@@ -724,6 +747,27 @@ a.prog-resource:hover strong {
   align-items: flex-start;
   justify-content: center;
   gap: 4px;
+}
+
+/* Groups the file-kind icon with the title/meta, so space-between only
+   pushes the trailing "opens new tab" arrow to the far edge. */
+.prog-resource-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.prog-resource-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--brand-light);
+  color: var(--brand-primary);
+  font-size: 13px;
 }
 
 .prog-resource-text {
