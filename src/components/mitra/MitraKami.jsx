@@ -1,8 +1,23 @@
-import { useRef, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 import { mitraFields, mitraSupportTypes, partnersByYear } from '../../data/portalData';
 
 const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
 const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
+
+const TOTAL_PARTNERS = partnersByYear.reduce((sum, year) => sum + year.partners.length, 0);
+
+const normalize = (text) => text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+/* Searching one cohort at a time would hide a partner filed under another year,
+   so a query drops the year tabs and looks across all of them at once. */
+const searchAllYears = (query) => {
+  const terms = normalize(query).split(/\s+/).filter(Boolean);
+  return partnersByYear.flatMap((year) =>
+    year.partners
+      .filter((name) => terms.every((term) => normalize(name).includes(term)))
+      .map((name) => ({ name, year: year.label }))
+  );
+};
 
 /**
  * Partner directory by cohort year as ARIA tabs (roving tabindex, arrow/Home/End).
@@ -10,8 +25,12 @@ const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
  */
 export default function MitraKami() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [query, setQuery] = useState('');
   const tabRefs = useRef([]);
+  const searchId = useId();
   const cohort = partnersByYear[activeIndex];
+  const trimmed = query.trim();
+  const matches = useMemo(() => (trimmed ? searchAllYears(trimmed) : null), [trimmed]);
 
   const selectTab = (index) => {
     const next = (index + partnersByYear.length) % partnersByYear.length;
@@ -57,49 +76,94 @@ export default function MitraKami() {
       </div>
 
       <div className="mitra-card mitra-directory" data-gsap="reveal">
-        <div className="mitra-year-tabs" role="tablist" aria-label="Tahun kemitraan" onKeyDown={handleKeyDown}>
-          {partnersByYear.map((year, idx) => {
-            const isActive = idx === activeIndex;
-            return (
-              <button
-                key={year.id}
-                ref={(el) => { tabRefs.current[idx] = el; }}
-                id={`mitra-year-tab-${year.id}`}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                aria-controls="mitra-year-panel"
-                tabIndex={isActive ? 0 : -1}
-                className={`mitra-year-tab ${isActive ? 'is-active' : ''}`}
-                onClick={() => setActiveIndex(idx)}
-              >
-                <span className="mitra-year-label">Mitra {year.label}</span>
-                <span className="mitra-year-meta">{year.partners.length} lembaga</span>
-              </button>
-            );
-          })}
+        <div className="mitra-search">
+          <label htmlFor={searchId}>Cari nama lembaga</label>
+          <div className="mitra-search-field">
+            <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input
+              id={searchId}
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={`contoh: Danone, Unicef (${TOTAL_PARTNERS} lembaga)`}
+            />
+          </div>
         </div>
 
-        <div
-          id="mitra-year-panel"
-          role="tabpanel"
-          aria-labelledby={`mitra-year-tab-${cohort.id}`}
-          tabIndex={0}
-          className="mitra-year-panel"
-        >
-          {cohort.partners.length === 0 ? (
-            <p className="mitra-empty">Belum ada data mitra untuk tahun ini.</p>
-          ) : (
+        <p className="mitra-search-status" aria-live="polite">
+          {trimmed
+            ? `${matches.length} dari ${TOTAL_PARTNERS} lembaga cocok, dari semua tahun`
+            : `${TOTAL_PARTNERS} lembaga terdaftar di ${partnersByYear.length} periode`}
+        </p>
+
+        {trimmed ? (
+          matches.length > 0 ? (
             <ol className="mitra-partner-list">
-              {cohort.partners.map((name, idx) => (
-                <li key={name}>
+              {matches.map(({ name, year }, idx) => (
+                <li key={`${year}-${name}`}>
                   <span className="mitra-num" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
-                  <span>{name}</span>
+                  <span>
+                    {name}
+                    <span className="mitra-match-year">Mitra {year}</span>
+                  </span>
                 </li>
               ))}
             </ol>
-          )}
-        </div>
+          ) : (
+            <div className="mitra-search-empty">
+              <p>Tidak ada lembaga dengan nama yang memuat “{trimmed}”.</p>
+              <button type="button" className="btn-pill secondary" onClick={() => setQuery('')}>
+                Hapus pencarian
+              </button>
+            </div>
+          )
+        ) : (
+          <>
+            <div className="mitra-year-tabs" role="tablist" aria-label="Tahun kemitraan" onKeyDown={handleKeyDown}>
+              {partnersByYear.map((year, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <button
+                    key={year.id}
+                    ref={(el) => { tabRefs.current[idx] = el; }}
+                    id={`mitra-year-tab-${year.id}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="mitra-year-panel"
+                    tabIndex={isActive ? 0 : -1}
+                    className={`mitra-year-tab ${isActive ? 'is-active' : ''}`}
+                    onClick={() => setActiveIndex(idx)}
+                  >
+                    <span className="mitra-year-label">Mitra {year.label}</span>
+                    <span className="mitra-year-meta">{year.partners.length} lembaga</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              id="mitra-year-panel"
+              role="tabpanel"
+              aria-labelledby={`mitra-year-tab-${cohort.id}`}
+              tabIndex={0}
+              className="mitra-year-panel"
+            >
+              {cohort.partners.length === 0 ? (
+                <p className="mitra-empty">Belum ada data mitra untuk tahun ini.</p>
+              ) : (
+                <ol className="mitra-partner-list">
+                  {cohort.partners.map((name, idx) => (
+                    <li key={name}>
+                      <span className="mitra-num" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
+                      <span>{name}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
