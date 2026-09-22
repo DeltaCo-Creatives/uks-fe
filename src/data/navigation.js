@@ -78,13 +78,13 @@ export const pageNavigationConfigs = {
     icon: 'fa-solid fa-bullhorn',
     badge: 'PROGRAM',
     drawerTitle: 'PROGRAM PRIORITAS',
-    footerText: 'MBG, CKG, 7KAIH, ASRI, SAIH & Gala Kreasi',
+    footerText: 'MBG, CKG, 7KAIH, ASRI, Prestasi',
     sections: [
       { id: 'sec-prog-mbg', label: '1. Makan Bergizi Gratis (MBG)', icon: 'fa-solid fa-utensils' },
       { id: 'sec-prog-ckg', label: '2. Cek Kesehatan Gratis (CKG) Sekolah', icon: 'fa-solid fa-stethoscope' },
       { id: 'sec-prog-7kaih', label: '3. Gerakan 7KAIH', icon: 'fa-solid fa-sun' },
       { id: 'sec-prog-asri', label: '4. Gerakan Sekolah ASRI', icon: 'fa-solid fa-leaf' },
-      { id: 'sec-prog-saih', label: '5. SAIH & Gala Kreasi Video', icon: 'fa-solid fa-trophy' }
+      { id: 'sec-prog-prestasi', label: '5. Prestasi', icon: 'fa-solid fa-trophy' }
     ]
   },
   mitra: {

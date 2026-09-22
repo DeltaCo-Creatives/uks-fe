@@ -10,7 +10,9 @@ import {
   PillarsSection,
   ExampleSection
 } from './ProgramSections';
-import { ResourcesSection, CompetitionsSection, ArchiveSection } from './ProgramLinkSections';
+import { ResourcesSection } from './ProgramLinkSections';
+import PrestasiSection from './PrestasiSection';
+import FactList from './FactList';
 
 const SECTION_COMPONENTS = {
   audience: AudienceSection,
@@ -22,22 +24,8 @@ const SECTION_COMPONENTS = {
   pillars: PillarsSection,
   example: ExampleSection,
   resources: ResourcesSection,
-  competitions: CompetitionsSection,
-  archive: ArchiveSection
+  prestasi: PrestasiSection
 };
-
-function FactList({ facts }) {
-  return (
-    <dl className="prog-facts">
-      {facts.map((fact) => (
-        <div key={fact.label}>
-          <dt>{fact.label}</dt>
-          <dd>{fact.value}</dd>
-        </div>
-      ))}
-    </dl>
-  );
-}
 
 function ProgramFigure({ image }) {
   return (

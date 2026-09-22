@@ -19,8 +19,11 @@ export * from './stratifikasi';
 
 // Gerakan Sekolah Sehat, curated from PROD /sekolah-sehat/*
 
-// Priority Programs (MBG, CKG, 7KAIH, ASRI, SAIH, etc.)
+// Priority Programs (MBG, CKG, 7KAIH, ASRI, Prestasi, etc.)
 export * from './program';
+
+// Prestasi: competition winners, keyed by competition id
+export * from './prestasi';
 
 // Multi-stakeholder Partnership (Mitra, Activities, Support, Logos)
 export * from './mitra';
