@@ -2,45 +2,14 @@ import { useMemo, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { pageNavigationConfigs } from '../data/portalData';
 import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
-import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '../hooks/usePublikasi';
+import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '../hooks/usePublicLists';
 import DocViewerModal from './shared/DocViewerModal';
 import ImageLightbox from './shared/ImageLightbox';
 import LobbyTabs from './shared/LobbyTabs';
 import SafeImage from './SafeImage';
+import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 
 const publikasiTabs = pageNavigationConfigs.publikasi.sections;
-
-function LoadingState({ label }) {
-  return (
-    <div className="content-toolbar-empty" role="status" aria-live="polite">
-      <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-      <h4 className="info-empty-title">{label}</h4>
-    </div>
-  );
-}
-
-function ErrorState({ title, retry }) {
-  return (
-    <div className="content-toolbar-empty">
-      <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-      <h4 className="info-empty-title">{title}</h4>
-      <p className="info-empty-text">Terjadi gangguan saat mengambil data. Silakan coba lagi.</p>
-      <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-        Coba Lagi
-      </button>
-    </div>
-  );
-}
-
-function EmptyState({ icon, title, text }) {
-  return (
-    <div className="content-toolbar-empty">
-      <i className={icon} aria-hidden="true"></i>
-      <h4 className="info-empty-title">{title}</h4>
-      <p className="info-empty-text">{text}</p>
-    </div>
-  );
-}
 
 function BooksPanel() {
   const [selectedBook, setSelectedBook] = useState(null);

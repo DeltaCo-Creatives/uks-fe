@@ -1,5 +1,18 @@
 import { createCachedList } from './createCachedList';
 
+/** Praktik Baik list for the page, fetched once and shared by every consumer. */
+export const usePraktikBaikList = createCachedList('/public/praktik-baik');
+
+/** UPT Bercerita list for the page, fetched once and shared by every consumer. */
+export const useUptStoriesList = createCachedList('/public/upt-bercerita');
+
+/**
+ * Agenda list for the page, fetched once and shared by every consumer.
+ * The API already orders entries (upcoming/ongoing first, then past), so
+ * consumers render the list as-is instead of re-sorting it.
+ */
+export const useAgendaList = createCachedList('/public/agenda');
+
 /** Buku & pedoman list for the Publikasi page, fetched once and shared by every consumer. */
 export const useBukuPanduanList = createCachedList('/public/publikasi?jenisHalaman=buku-panduan');
 

@@ -2,10 +2,7 @@ import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { pathForView } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
-import { usePraktikBaikList } from '../hooks/usePraktikBaik';
-import { useUptStoriesList } from '../hooks/useUptStories';
-import { useAgendaList } from '../hooks/useAgenda';
-import { useBukuPanduanList, useVideoList, useProdukHukumList } from '../hooks/usePublikasi';
+import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
   strataLevels,

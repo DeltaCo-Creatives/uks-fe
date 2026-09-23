@@ -1,4 +1,5 @@
-import { useAgendaList } from '../../hooks/useAgenda';
+import { useAgendaList } from '../../hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 
 export default function AgendaPanel() {
   const { data, loading, error, retry } = useAgendaList();
@@ -14,31 +15,23 @@ export default function AgendaPanel() {
         </p>
       </div>
 
-      {loading && (
-        <div className="content-toolbar-empty" role="status" aria-live="polite">
-          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Memuat agenda...</h4>
-        </div>
-      )}
+      {loading && <LoadingState label="Memuat agenda..." />}
 
       {!loading && error && (
-        <div className="content-toolbar-empty">
-          <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Agenda tidak dapat dimuat</h4>
-          <p className="info-empty-text">Terjadi gangguan saat mengambil data agenda. Silakan coba lagi.</p>
-          <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-            Coba Lagi
-          </button>
-        </div>
+        <ErrorState
+          title="Agenda tidak dapat dimuat"
+          text="Terjadi gangguan saat mengambil data agenda. Silakan coba lagi."
+          retry={retry}
+        />
       )}
 
       {!loading && !error && (
         agendas.length === 0 ? (
-          <div className="content-toolbar-empty">
-            <i className="fa-solid fa-calendar-days" aria-hidden="true"></i>
-            <h4 className="info-empty-title">Belum ada agenda yang tersedia</h4>
-            <p className="info-empty-text">Agenda nasional akan tampil di sini begitu tersedia.</p>
-          </div>
+          <EmptyState
+            icon="fa-solid fa-calendar-days"
+            title="Belum ada agenda yang tersedia"
+            text="Agenda nasional akan tampil di sini begitu tersedia."
+          />
         ) : (
           <div className="info-agenda-list">
             {agendas.map((ev) => (

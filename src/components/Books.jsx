@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
-import { useBukuPanduanList } from '../hooks/usePublikasi';
+import { useBukuPanduanList } from '../hooks/usePublicLists';
 import SafeImage from './SafeImage';
+import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
@@ -125,28 +126,14 @@ export default function Books() {
                             <h2 className="section-title">Buku &amp; Panduan</h2>
                         </div>
                     </div>
-                    {loading && (
-                        <div className="content-toolbar-empty" role="status" aria-live="polite">
-                            <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-                            <h4 className="info-empty-title">Memuat buku &amp; panduan...</h4>
-                        </div>
-                    )}
-                    {!loading && error && (
-                        <div className="content-toolbar-empty">
-                            <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-                            <h4 className="info-empty-title">Buku &amp; panduan tidak dapat dimuat</h4>
-                            <p className="info-empty-text">Terjadi gangguan saat mengambil data. Silakan coba lagi.</p>
-                            <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-                                Coba Lagi
-                            </button>
-                        </div>
-                    )}
+                    {loading && <LoadingState label="Memuat buku & panduan..." />}
+                    {!loading && error && <ErrorState title="Buku & panduan tidak dapat dimuat" retry={retry} />}
                     {!loading && !error && (
-                        <div className="content-toolbar-empty">
-                            <i className="fa-solid fa-book-bookmark" aria-hidden="true"></i>
-                            <h4 className="info-empty-title">Belum ada buku yang tersedia</h4>
-                            <p className="info-empty-text">Buku dan pedoman akan tampil di sini begitu tersedia.</p>
-                        </div>
+                        <EmptyState
+                            icon="fa-solid fa-book-bookmark"
+                            title="Belum ada buku yang tersedia"
+                            text="Buku dan pedoman akan tampil di sini begitu tersedia."
+                        />
                     )}
                 </div>
             </section>
