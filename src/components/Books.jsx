@@ -1,23 +1,34 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
-import { realBooksList } from '../data/portalData';
+import { useBukuPanduanList } from '../hooks/usePublikasi';
 import SafeImage from './SafeImage';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
+/** `[category, year]` joined without printing a stray separator when either is missing. */
+function bookMeta(buku) {
+    return [buku.category, buku.year].filter(Boolean).join(' · ');
+}
+
 export default function Books() {
+    const { data: booksList, loading, error, retry } = useBukuPanduanList();
+    const hasBooks = !loading && !error && Boolean(booksList?.length);
+
     const [selectedBook, setSelectedBook] = useState(null);
     const marqueeTween = useRef(null);
     const overlayRef = useRef(null);
     const trackRef = useRef(null);
 
     // Repeat books 4x per half so the track is over 3500px wide, preventing empty space on wide displays
-    const marqueeBooks = useMemo(() => [
-        ...realBooksList, ...realBooksList, ...realBooksList, ...realBooksList
-    ], []);
+    const marqueeBooks = useMemo(() => {
+        const list = booksList || [];
+        return [...list, ...list, ...list, ...list];
+    }, [booksList]);
 
-    // Initialize GSAP Marquee
+    // Initialize GSAP Marquee once the list has loaded and the track has rendered.
     useEffect(() => {
+        if (!hasBooks || !trackRef.current) return undefined;
+
         marqueeTween.current = gsap.to(trackRef.current, {
             xPercent: -50,
             repeat: -1,
@@ -31,7 +42,7 @@ export default function Books() {
         return () => {
             if (marqueeTween.current) marqueeTween.current.kill();
         };
-    }, []);
+    }, [hasBooks]);
 
     // Lock scroll when PDF modal is open
     useEffect(() => {
@@ -86,6 +97,62 @@ export default function Books() {
         });
     };
 
+    // No PDF on the record: fall back to the source link when there is one,
+    // otherwise there is nothing to open.
+    const renderActions = (buku) => {
+        if (!buku.pdf && !buku.externalUrl) return null;
+        return (
+            <div className="book-swipe-actions">
+                {buku.pdf ? (
+                    <>
+                        <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
+                        <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
+                    </>
+                ) : (
+                    <a className="btn-pill secondary" href={buku.externalUrl} target="_blank" rel="noopener noreferrer">Buka</a>
+                )}
+            </div>
+        );
+    };
+
+    if (!hasBooks) {
+        return (
+            <section className="section" id="buku">
+                <div className="container">
+                    <div className="section-header" data-gsap="reveal">
+                        <div>
+                            <span className="section-kicker">Perpustakaan</span>
+                            <h2 className="section-title">Buku &amp; Panduan</h2>
+                        </div>
+                    </div>
+                    {loading && (
+                        <div className="content-toolbar-empty" role="status" aria-live="polite">
+                            <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+                            <h4 className="info-empty-title">Memuat buku &amp; panduan...</h4>
+                        </div>
+                    )}
+                    {!loading && error && (
+                        <div className="content-toolbar-empty">
+                            <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                            <h4 className="info-empty-title">Buku &amp; panduan tidak dapat dimuat</h4>
+                            <p className="info-empty-text">Terjadi gangguan saat mengambil data. Silakan coba lagi.</p>
+                            <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
+                                Coba Lagi
+                            </button>
+                        </div>
+                    )}
+                    {!loading && !error && (
+                        <div className="content-toolbar-empty">
+                            <i className="fa-solid fa-book-bookmark" aria-hidden="true"></i>
+                            <h4 className="info-empty-title">Belum ada buku yang tersedia</h4>
+                            <p className="info-empty-text">Buku dan pedoman akan tampil di sini begitu tersedia.</p>
+                        </div>
+                    )}
+                </div>
+            </section>
+        );
+    }
+
     return (
         <section className="section" id="buku">
             <div className="container">
@@ -109,11 +176,8 @@ export default function Books() {
                                 <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
                             </div>
                             <h3>{buku.title}</h3>
-                            <p>{buku.category} · {buku.year}</p>
-                            <div className="book-swipe-actions">
-                                <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
-                                <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
-                            </div>
+                            {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
+                            {renderActions(buku)}
                         </div>
                     ))}
                     {/* Duplicated half for seamless infinite loop */}
@@ -123,11 +187,8 @@ export default function Books() {
                                 <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
                             </div>
                             <h3>{buku.title}</h3>
-                            <p>{buku.category} · {buku.year}</p>
-                            <div className="book-swipe-actions">
-                                <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
-                                <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
-                            </div>
+                            {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
+                            {renderActions(buku)}
                         </div>
                     ))}
                 </div>
@@ -144,17 +205,14 @@ export default function Books() {
                     </div>
                     <div className="all-books-scroll-area">
                         <div className="all-books-grid">
-                            {realBooksList.map((buku) => (
+                            {(booksList || []).map((buku) => (
                                 <div key={`grid-${buku.id}`} className="swipe-card book-swipe-card grid-card">
                                     <div className="book-cover-large">
                                         <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
                                     </div>
                                     <h3>{buku.title}</h3>
-                                    <p>{buku.category} · {buku.year}</p>
-                                    <div className="book-swipe-actions">
-                                        <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
-                                        <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
-                                    </div>
+                                    {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
+                                    {renderActions(buku)}
                                 </div>
                             ))}
                         </div>

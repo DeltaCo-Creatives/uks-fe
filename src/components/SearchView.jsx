@@ -5,13 +5,11 @@ import { useBeritaList } from '../hooks/useBerita';
 import { usePraktikBaikList } from '../hooks/usePraktikBaik';
 import { useUptStoriesList } from '../hooks/useUptStories';
 import { useAgendaList } from '../hooks/useAgenda';
+import { useBukuPanduanList, useVideoList, useProdukHukumList } from '../hooks/usePublikasi';
 import {
   triasPillarsDetail,
   strataLevels,
   priorityProgramsList,
-  realBooksList,
-  videoList,
-  regulationsList,
   appsList
 } from '../data/portalData';
 
@@ -25,6 +23,9 @@ export default function SearchView() {
   const { data: bestPracticesList } = usePraktikBaikList();
   const { data: uptStories } = useUptStoriesList();
   const { data: agendaList } = useAgendaList();
+  const { data: booksList } = useBukuPanduanList();
+  const { data: videosList } = useVideoList();
+  const { data: regulationsList } = useProdukHukumList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -91,11 +92,12 @@ export default function SearchView() {
     });
 
     // 4. Digital Books
-    realBooksList.forEach((book) => {
+    (booksList || []).forEach((book) => {
+      const meta = [book.category, book.year && `(${book.year})`].filter(Boolean).join(' ');
       items.push({
         id: `book-${book.id}`,
         title: book.title,
-        excerpt: `${book.category} (${book.year}) - ${book.desc}`,
+        excerpt: [meta, book.desc].filter(Boolean).join(' - '),
         typeLabel: 'Buku & Juknis',
         typeColor: '#D97706',
         icon: 'fa-solid fa-book-bookmark',
@@ -152,11 +154,12 @@ export default function SearchView() {
     });
 
     // 8. Videos
-    videoList.forEach((vid) => {
+    (videosList || []).forEach((vid) => {
+      const parts = [vid.duration && `Durasi: ${vid.duration}`, vid.channel && `Kanal: ${vid.channel}`].filter(Boolean);
       items.push({
         id: `vid-${vid.id}`,
         title: vid.title,
-        excerpt: `Durasi: ${vid.duration} · Kanal: ${vid.channel}`,
+        excerpt: parts.join(' · '),
         typeLabel: 'Video Edukasi',
         typeColor: '#DC2626',
         icon: 'fa-solid fa-film',
@@ -166,11 +169,11 @@ export default function SearchView() {
     });
 
     // 9. Regulations
-    regulationsList.forEach((reg) => {
+    (regulationsList || []).forEach((reg) => {
       items.push({
-        id: `reg-${reg.code}`,
+        id: `reg-${reg.id}`,
         title: reg.title,
-        excerpt: `${reg.badge} · ${reg.number}`,
+        excerpt: [reg.badge, reg.number].filter(Boolean).join(' · '),
         typeLabel: 'Produk Hukum SKB',
         typeColor: '#1E293B',
         icon: 'fa-solid fa-scale-balanced',
@@ -208,7 +211,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
