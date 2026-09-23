@@ -3,8 +3,9 @@
  * Contact info, tautan links, applications directory, and ministry portals
  */
 
-// Curated hero slide list. Each entry is either a { slug } reference into
-// realNewsList, or a standalone slide with its own id/image/category/title/excerpt.
+// Curated hero slide list. Each entry is either a { slug } reference resolved
+// against the berita API list, or a standalone slide with its own
+// id/image/category/title/excerpt.
 export const heroSlides = [
   { slug: 'hari-anak-nasional-2026-kembali-bermain-kurangi-gawai' },
   { slug: 'kemendikdasmen-bagikan-30-laptop-guru-miangas' },

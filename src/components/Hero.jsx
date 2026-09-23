@@ -1,15 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { realNewsList, heroSlides } from '../data/portalData';
+import { heroSlides } from '../data/portalData';
 import { pathForArticle } from '../routes';
-
-const slides = heroSlides
-    .map((entry) => (entry.slug ? realNewsList.find((n) => n.slug === entry.slug) : entry))
-    .filter(Boolean);
+import { useBeritaList } from '../hooks/useBerita';
 
 export default function Hero() {
+    const { data: newsList } = useBeritaList();
+    // A slug-based slide has no destination until the berita list loads, so it
+    // is skipped rather than shown broken. Standalone slides never depend on it.
+    const slides = useMemo(
+        () => heroSlides
+            .map((entry) => (entry.slug ? (newsList || []).find((n) => n.slug === entry.slug) : entry))
+            .filter(Boolean),
+        [newsList]
+    );
     const [current, setCurrent] = useState(0);
     const total = slides.length;
     const heroRef = useRef(null);
@@ -103,7 +109,8 @@ export default function Hero() {
                         }}
                     >
                         <div className="hero-bg">
-                            <img src={slide.image} alt={slide.title} />
+                            {/* API berita can have a null image; the gradient overlay alone still reads fine. */}
+                            {slide.image && <img src={slide.image} alt={slide.title} />}
                         </div>
                         <div className="hero-content">
                             <h1>{slide.title}</h1>
