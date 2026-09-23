@@ -6,6 +6,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "uks-be",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "D:/GitHub/UKS/uks-be/Uks.Api", "--launch-profile", "http"],
+      "port": 5103
+    },
+    {
+      "name": "cms-uks-fe",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "D:/GitHub/UKS/cms-uks-fe", "run", "dev"],
+      "port": 5174
     }
   ]
 }
