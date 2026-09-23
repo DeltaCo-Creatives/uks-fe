@@ -5,6 +5,7 @@ import { priorityProgramsList } from '../data/portalData';
 import { pathForArticle } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import SafeImage from './SafeImage';
+import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
@@ -79,30 +80,22 @@ export default function Programs() {
                     </div>
                 </div>
 
-                {loading && (
-                    <div className="content-toolbar-empty" role="status" aria-live="polite">
-                        <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-                        <h4 className="info-empty-title">Memuat kabar terbaru...</h4>
-                    </div>
-                )}
+                {loading && <LoadingState label="Memuat kabar terbaru..." />}
 
                 {!loading && error && (
-                    <div className="content-toolbar-empty">
-                        <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-                        <h4 className="info-empty-title">Kabar terbaru tidak dapat dimuat</h4>
-                        <p className="info-empty-text">Terjadi gangguan saat mengambil data warta. Silakan coba lagi.</p>
-                        <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-                            Coba Lagi
-                        </button>
-                    </div>
+                    <ErrorState
+                        title="Kabar terbaru tidak dapat dimuat"
+                        text="Terjadi gangguan saat mengambil data warta. Silakan coba lagi."
+                        retry={retry}
+                    />
                 )}
 
                 {!loading && !error && latestNews.length === 0 && (
-                    <div className="content-toolbar-empty">
-                        <i className="fa-solid fa-newspaper" aria-hidden="true"></i>
-                        <h4 className="info-empty-title">Belum ada kabar terbaru</h4>
-                        <p className="info-empty-text">Warta terkini akan tampil di sini begitu tersedia.</p>
-                    </div>
+                    <EmptyState
+                        icon="fa-solid fa-newspaper"
+                        title="Belum ada kabar terbaru"
+                        text="Warta terkini akan tampil di sini begitu tersedia."
+                    />
                 )}
 
                 {!loading && !error && latestNews.length > 0 && (

@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import SafeImage from '../SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 import ContentToolbar from '../shared/ContentToolbar';
 import { useContentToolbar } from '../../hooks/useContentToolbar';
-import { useUptStoriesList } from '../../hooks/useUptStories';
+import { useUptStoriesList } from '../../hooks/usePublicLists';
 import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
 
 const GROUP_OPTIONS = [
@@ -84,22 +85,14 @@ export default function UptBerceritaPanel() {
         </div>
       </div>
 
-      {loading && (
-        <div className="content-toolbar-empty" role="status" aria-live="polite">
-          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Memuat cerita UPT...</h4>
-        </div>
-      )}
+      {loading && <LoadingState label="Memuat cerita UPT..." />}
 
       {!loading && error && (
-        <div className="content-toolbar-empty">
-          <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Cerita UPT tidak dapat dimuat</h4>
-          <p className="info-empty-text">Terjadi gangguan saat mengambil data cerita UPT. Silakan coba lagi.</p>
-          <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-            Coba Lagi
-          </button>
-        </div>
+        <ErrorState
+          title="Cerita UPT tidak dapat dimuat"
+          text="Terjadi gangguan saat mengambil data cerita UPT. Silakan coba lagi."
+          retry={retry}
+        />
       )}
 
       {!loading && !error && (
@@ -121,17 +114,15 @@ export default function UptBerceritaPanel() {
           />
 
           {resultCount === 0 ? (
-            <div className="content-toolbar-empty">
-              <i className="fa-solid fa-book-open-reader" aria-hidden="true"></i>
-              <h4 className="info-empty-title">
-                {totalCount === 0 ? 'Belum ada cerita UPT yang tersedia' : 'Tidak ada cerita yang cocok'}
-              </h4>
-              <p className="info-empty-text">
-                {totalCount === 0
+            <EmptyState
+              icon="fa-solid fa-book-open-reader"
+              title={totalCount === 0 ? 'Belum ada cerita UPT yang tersedia' : 'Tidak ada cerita yang cocok'}
+              text={
+                totalCount === 0
                   ? 'Cerita dari UPT daerah akan tampil di sini begitu tersedia.'
-                  : 'Coba kategori lain, kata kunci berbeda, atau ubah rentang tanggal.'}
-              </p>
-            </div>
+                  : 'Coba kategori lain, kata kunci berbeda, atau ubah rentang tanggal.'
+              }
+            />
           ) : (
             groups.map((group) => (
               <div key={group.label ?? 'flat'}>

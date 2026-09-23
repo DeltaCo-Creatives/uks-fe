@@ -1,4 +1,5 @@
-import { usePraktikBaikList } from '../../hooks/usePraktikBaik';
+import { usePraktikBaikList } from '../../hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 import ContentToolbar from '../shared/ContentToolbar';
 import { useContentToolbar } from '../../hooks/useContentToolbar';
 import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
@@ -36,22 +37,14 @@ export default function PraktikPanel() {
         </p>
       </div>
 
-      {loading && (
-        <div className="content-toolbar-empty" role="status" aria-live="polite">
-          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Memuat praktik baik...</h4>
-        </div>
-      )}
+      {loading && <LoadingState label="Memuat praktik baik..." />}
 
       {!loading && error && (
-        <div className="content-toolbar-empty">
-          <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Praktik baik tidak dapat dimuat</h4>
-          <p className="info-empty-text">Terjadi gangguan saat mengambil data praktik baik. Silakan coba lagi.</p>
-          <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-            Coba Lagi
-          </button>
-        </div>
+        <ErrorState
+          title="Praktik baik tidak dapat dimuat"
+          text="Terjadi gangguan saat mengambil data praktik baik. Silakan coba lagi."
+          retry={retry}
+        />
       )}
 
       {!loading && !error && (
@@ -73,17 +66,15 @@ export default function PraktikPanel() {
           />
 
           {resultCount === 0 ? (
-            <div className="content-toolbar-empty">
-              <i className="fa-solid fa-school-flag" aria-hidden="true"></i>
-              <h4 className="info-empty-title">
-                {totalCount === 0 ? 'Belum ada praktik baik yang tersedia' : 'Tidak ada praktik baik yang cocok'}
-              </h4>
-              <p className="info-empty-text">
-                {totalCount === 0
+            <EmptyState
+              icon="fa-solid fa-school-flag"
+              title={totalCount === 0 ? 'Belum ada praktik baik yang tersedia' : 'Tidak ada praktik baik yang cocok'}
+              text={
+                totalCount === 0
                   ? 'Praktik baik dari sekolah akan tampil di sini begitu tersedia.'
-                  : 'Coba kata kunci lain atau ubah rentang tanggal.'}
-              </p>
-            </div>
+                  : 'Coba kata kunci lain atau ubah rentang tanggal.'
+              }
+            />
           ) : (
             groups.map((group) => (
               <div key={group.label ?? 'flat'}>

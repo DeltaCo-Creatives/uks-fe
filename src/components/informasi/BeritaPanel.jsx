@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { pathForArticle } from '../../routes';
 import SafeImage from '../SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 import ContentToolbar from '../shared/ContentToolbar';
 import { useContentToolbar } from '../../hooks/useContentToolbar';
 import { useBeritaList } from '../../hooks/useBerita';
@@ -69,22 +70,14 @@ export default function BeritaPanel() {
         </div>
       </div>
 
-      {loading && (
-        <div className="content-toolbar-empty" role="status" aria-live="polite">
-          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Memuat warta terkini...</h4>
-        </div>
-      )}
+      {loading && <LoadingState label="Memuat warta terkini..." />}
 
       {!loading && error && (
-        <div className="content-toolbar-empty">
-          <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Warta tidak dapat dimuat</h4>
-          <p className="info-empty-text">Terjadi gangguan saat mengambil data warta. Silakan coba lagi.</p>
-          <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-            Coba Lagi
-          </button>
-        </div>
+        <ErrorState
+          title="Warta tidak dapat dimuat"
+          text="Terjadi gangguan saat mengambil data warta. Silakan coba lagi."
+          retry={retry}
+        />
       )}
 
       {!loading && !error && (
@@ -106,17 +99,15 @@ export default function BeritaPanel() {
           />
 
           {resultCount === 0 ? (
-            <div className="content-toolbar-empty">
-              <i className="fa-solid fa-newspaper" aria-hidden="true"></i>
-              <h4 className="info-empty-title">
-                {totalCount === 0 ? 'Belum ada warta yang tersedia' : 'Tidak ada warta yang cocok'}
-              </h4>
-              <p className="info-empty-text">
-                {totalCount === 0
+            <EmptyState
+              icon="fa-solid fa-newspaper"
+              title={totalCount === 0 ? 'Belum ada warta yang tersedia' : 'Tidak ada warta yang cocok'}
+              text={
+                totalCount === 0
                   ? 'Warta terkini akan tampil di sini begitu tersedia.'
-                  : 'Coba ubah kata kunci pencarian atau rentang tanggal.'}
-              </p>
-            </div>
+                  : 'Coba ubah kata kunci pencarian atau rentang tanggal.'
+              }
+            />
           ) : (
             groups.map((group) => (
               <div key={group.label ?? 'flat'}>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { defaultScreenshots } from '../data/portalData';
-import { useInfografisList } from '../hooks/usePublikasi';
+import { useInfografisList } from '../hooks/usePublicLists';
 import SafeImage from './SafeImage';
+import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 
 export default function Infografis() {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -18,30 +19,16 @@ export default function Infografis() {
                     </div>
                 </div>
 
-                {loading && (
-                    <div className="content-toolbar-empty" role="status" aria-live="polite">
-                        <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
-                        <h4 className="info-empty-title">Memuat infografis...</h4>
-                    </div>
-                )}
+                {loading && <LoadingState label="Memuat infografis..." />}
 
-                {!loading && error && (
-                    <div className="content-toolbar-empty">
-                        <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
-                        <h4 className="info-empty-title">Infografis tidak dapat dimuat</h4>
-                        <p className="info-empty-text">Terjadi gangguan saat mengambil data. Silakan coba lagi.</p>
-                        <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
-                            Coba Lagi
-                        </button>
-                    </div>
-                )}
+                {!loading && error && <ErrorState title="Infografis tidak dapat dimuat" retry={retry} />}
 
                 {!loading && !error && items.length === 0 && (
-                    <div className="content-toolbar-empty">
-                        <i className="fa-solid fa-image" aria-hidden="true"></i>
-                        <h4 className="info-empty-title">Belum ada infografis yang tersedia</h4>
-                        <p className="info-empty-text">Poster dan infografis akan tampil di sini begitu tersedia.</p>
-                    </div>
+                    <EmptyState
+                        icon="fa-solid fa-image"
+                        title="Belum ada infografis yang tersedia"
+                        text="Poster dan infografis akan tampil di sini begitu tersedia."
+                    />
                 )}
 
                 {!loading && !error && items.length > 0 && (
