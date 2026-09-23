@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { defaultInfografis, defaultScreenshots } from '../data/portalData';
+import { defaultScreenshots } from '../data/portalData';
+import { useInfografisList } from '../hooks/usePublikasi';
+import SafeImage from './SafeImage';
 
 export default function Infografis() {
     const [selectedImage, setSelectedImage] = useState(null);
+    const { data: infografisList, loading, error, retry } = useInfografisList();
+    const items = infografisList || [];
 
     return (
         <section className="section" id="infografis">
@@ -14,13 +18,41 @@ export default function Infografis() {
                     </div>
                 </div>
 
-                <div className="info-bento">
-                    {defaultInfografis.map((info, i) => (
-                        <div key={i} className={`info-item ${i === 0 ? 'large' : ''}`} data-gsap="reveal" onClick={() => setSelectedImage(info.image)}>
-                            <img src={info.image} alt={info.title} />
-                        </div>
-                    ))}
-                </div>
+                {loading && (
+                    <div className="content-toolbar-empty" role="status" aria-live="polite">
+                        <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+                        <h4 className="info-empty-title">Memuat infografis...</h4>
+                    </div>
+                )}
+
+                {!loading && error && (
+                    <div className="content-toolbar-empty">
+                        <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                        <h4 className="info-empty-title">Infografis tidak dapat dimuat</h4>
+                        <p className="info-empty-text">Terjadi gangguan saat mengambil data. Silakan coba lagi.</p>
+                        <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
+                            Coba Lagi
+                        </button>
+                    </div>
+                )}
+
+                {!loading && !error && items.length === 0 && (
+                    <div className="content-toolbar-empty">
+                        <i className="fa-solid fa-image" aria-hidden="true"></i>
+                        <h4 className="info-empty-title">Belum ada infografis yang tersedia</h4>
+                        <p className="info-empty-text">Poster dan infografis akan tampil di sini begitu tersedia.</p>
+                    </div>
+                )}
+
+                {!loading && !error && items.length > 0 && (
+                    <div className="info-bento">
+                        {items.map((info, i) => (
+                            <div key={info.id} className={`info-item ${i === 0 ? 'large' : ''}`} data-gsap="reveal" onClick={() => info.image && setSelectedImage(info.image)}>
+                                <SafeImage src={info.image} alt={info.title} />
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 <div className="screenshots-marquee" style={{ marginTop: '32px' }}>
                     <div className="screenshots-strip">

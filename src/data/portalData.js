@@ -28,7 +28,7 @@ export * from './prestasi';
 // Multi-stakeholder Partnership (Mitra, Activities, Support, Logos)
 export * from './mitra';
 
-// Digital Publications, Books, Infographics, Videos & Regulations
+// Partner marquee screenshots (Books/Infografis/Video/Regulasi now come from the API, see src/hooks/usePublikasi.js)
 export * from './publikasi';
 
 // Site Chrome, Contact Info, Apps Directory, FAQs & Ministry Links
