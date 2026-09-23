@@ -22,7 +22,8 @@ import BeritaDetailView from './components/BeritaDetailView';
 import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 
-import { pageNavigationConfigs, realNewsList } from './data/portalData';
+import { pageNavigationConfigs } from './data/portalData';
+import { useBeritaList } from './hooks/useBerita';
 import {
   defaultTabSlug,
   pathForView,
@@ -35,14 +36,16 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail'];
 
 function Breadcrumbs({ viewKey, pathname }) {
+  // Called unconditionally, before the early return below, so hook order stays
+  // stable across renders whatever viewKey (including 'beranda') turns out to be.
+  const { data: newsList } = useBeritaList();
+
   if (!viewKey || viewKey === 'beranda') return null;
 
   const linkStyle = { color: 'var(--brand-primary)', fontWeight: 700 };
-  const articleKey = decodeURIComponent(pathname.split('/')[3] || '');
-  const article =
-    viewKey === 'berita-detail'
-      ? realNewsList.find((n) => n.id === Number(articleKey) || n.slug === articleKey) || realNewsList[0]
-      : null;
+  const isBeritaDetail = viewKey === 'berita-detail';
+  const slug = isBeritaDetail ? decodeURIComponent(pathname.split('/')[3] || '') : null;
+  const article = slug ? (newsList || []).find((n) => n.slug === slug) : null;
 
   return (
     <div className="container" style={{ paddingTop: '20px', paddingBottom: '12px' }}>
@@ -56,16 +59,21 @@ function Breadcrumbs({ viewKey, pathname }) {
       }}>
         <Link to="/" style={linkStyle}>Beranda</Link>
 
-        {article ? (
+        {isBeritaDetail ? (
           <>
             <span>/</span>
             <Link to={pathForView('informasi', 'sec-info-berita')} style={linkStyle}>Informasi</Link>
             <span>/</span>
             <Link to={pathForView('informasi', 'sec-info-berita')} style={linkStyle}>Warta Terkini</Link>
-            <span>/</span>
-            <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {article.title}
-            </span>
+            {/* Title trails in once the berita list resolves; nothing broken shows while it loads. */}
+            {article && (
+              <>
+                <span>/</span>
+                <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {article.title}
+                </span>
+              </>
+            )}
           </>
         ) : (
           <>

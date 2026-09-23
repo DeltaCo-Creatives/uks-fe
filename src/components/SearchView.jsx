@@ -1,12 +1,12 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { pathForView } from '../routes';
+import { useBeritaList } from '../hooks/useBerita';
 import {
   triasPillarsDetail,
   strataLevels,
   priorityProgramsList,
   realBooksList,
-  realNewsList,
   bestPracticesList,
   nationalAgendas,
   videoList,
@@ -19,6 +19,9 @@ export default function SearchView() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const inputRef = useRef(null);
+  // Search never blocks on the berita fetch: newsList is empty until it
+  // resolves, and the index recomputes once it does.
+  const { data: newsList } = useBeritaList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -99,7 +102,7 @@ export default function SearchView() {
     });
 
     // 5. News
-    realNewsList.forEach((news) => {
+    (newsList || []).forEach((news) => {
       items.push({
         id: `news-${news.id}`,
         title: news.title,
@@ -197,7 +200,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, []);
+  }, [newsList]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>

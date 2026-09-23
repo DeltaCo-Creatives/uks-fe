@@ -1,0 +1,81 @@
+/* Rendered `content` HTML from the berita API (sanitized server-side).
+   Scoped so embedded markup matches the article typography around it and
+   never causes horizontal overflow on mobile. */
+.article-html-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.article-html-content p {
+  margin: 0;
+}
+
+.article-html-content h2,
+.article-html-content h3,
+.article-html-content h4 {
+  margin: 8px 0 0;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.article-html-content a {
+  color: var(--brand-primary);
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.article-html-content ul,
+.article-html-content ol {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.article-html-content li {
+  margin-bottom: 8px;
+}
+
+.article-html-content blockquote {
+  margin: 0;
+  padding-left: 20px;
+  border-left: 4px solid var(--brand-primary);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.article-html-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+.article-html-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.article-html-content th,
+.article-html-content td {
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.article-html-content iframe {
+  max-width: 100%;
+  border: none;
+  border-radius: var(--radius-lg);
+}
+
+/* YouTube embeds ship at a fixed pixel size; wrap and force 16:9 so they
+   scale down instead of overflowing on narrow viewports. */
+.article-html-content iframe[src*="youtube"],
+.article-html-content iframe[src*="youtu.be"] {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+}

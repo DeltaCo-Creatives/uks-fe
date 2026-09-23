@@ -1,13 +1,50 @@
 import { Link, useParams } from 'react-router-dom';
-import { findArticle, realNewsList } from '../data/portalData';
 import { pathForArticle, pathForView } from '../routes';
+import { useBerita, useBeritaList } from '../hooks/useBerita';
 import SafeImage from './SafeImage';
+import NotFoundView from './NotFoundView';
+import './BeritaDetailView.css';
 
 export default function BeritaDetailView() {
   const { idOrSlug } = useParams();
+  const { data: article, loading, error } = useBerita(idOrSlug);
+  const { data: newsList } = useBeritaList();
 
-  const article = findArticle(idOrSlug);
-  const otherArticles = realNewsList.filter((n) => n.id !== article.id).slice(0, 3);
+  if (loading) {
+    return (
+      <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
+        <div className="about-bento-frame" style={{ background: '#FFFFFF', padding: 'clamp(24px, 4vw, 44px)', textAlign: 'center' }} role="status" aria-live="polite">
+          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true" style={{ fontSize: '28px', color: 'var(--brand-primary)', marginBottom: '12px' }}></i>
+          <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 600 }}>Memuat warta...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error?.status === 404) {
+    return <NotFoundView />;
+  }
+
+  if (error) {
+    return (
+      <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
+        <div className="about-bento-frame" style={{ background: '#FFFFFF', padding: 'clamp(24px, 4vw, 44px)', textAlign: 'center' }}>
+          <i className="fa-solid fa-triangle-exclamation" aria-hidden="true" style={{ fontSize: '28px', color: '#DC2626', marginBottom: '12px' }}></i>
+          <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Warta tidak dapat dimuat</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>Terjadi gangguan saat mengambil data warta. Silakan coba lagi.</p>
+          <Link to={pathForView('informasi', 'sec-info-berita')} className="btn-pill secondary" style={{ padding: '10px 20px', fontSize: '13px' }}>
+            Kembali ke Daftar Warta
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!article) {
+    return <NotFoundView />;
+  }
+
+  const otherArticles = (newsList || []).filter((n) => n.slug !== article.slug).slice(0, 3);
 
   return (
     <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
@@ -102,27 +139,16 @@ export default function BeritaDetailView() {
           {article.excerpt}
         </p>
 
-        {/* Multi-paragraph Body */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px',
-            fontSize: '16px',
-            lineHeight: 1.85,
-            color: '#1E293B'
-          }}
-        >
-          {article.body && article.body.length > 0 ? (
-            article.body.map((paragraph, idx) => (
-              <p key={idx} style={{ margin: 0 }}>
-                {paragraph}
-              </p>
-            ))
-          ) : (
-            <p style={{ margin: 0 }}>{article.excerpt}</p>
-          )}
-        </div>
+        {/* Article body: sanitized server-side, rendered as HTML */}
+        {article.content ? (
+          <div
+            className="article-html-content"
+            style={{ fontSize: '16px', lineHeight: 1.85, color: '#1E293B' }}
+            dangerouslySetInnerHTML={{ __html: article.content }}
+          />
+        ) : (
+          <p style={{ fontSize: '16px', lineHeight: 1.85, color: '#1E293B', margin: 0 }}>{article.excerpt}</p>
+        )}
 
         {article.sourceUrl && (
           <a
@@ -179,6 +205,7 @@ export default function BeritaDetailView() {
       </div>
 
       {/* "Warta Lainnya" recommendations */}
+      {otherArticles.length > 0 && (
       <div>
         <div style={{ marginBottom: '20px' }}>
           <span className="section-kicker">Rekomendasi Terkini</span>
@@ -191,7 +218,7 @@ export default function BeritaDetailView() {
           {otherArticles.map((other) => (
             <Link
               key={other.id}
-              to={pathForArticle(other.id)}
+              to={pathForArticle(other.slug)}
               className="news-card-playful"
               style={{ display: 'flex', flexDirection: 'column' }}
             >
@@ -223,6 +250,7 @@ export default function BeritaDetailView() {
           ))}
         </div>
       </div>
+      )}
     </div>
   );
 }

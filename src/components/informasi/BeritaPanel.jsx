@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { realNewsList } from '../../data/portalData';
 import { pathForArticle } from '../../routes';
 import SafeImage from '../SafeImage';
 import ContentToolbar from '../shared/ContentToolbar';
 import { useContentToolbar } from '../../hooks/useContentToolbar';
+import { useBeritaList } from '../../hooks/useBerita';
 import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
 
 const GROUP_OPTIONS = [
@@ -24,10 +24,13 @@ const CATEGORIES = [
 
 export default function BeritaPanel() {
   const [activeCategory, setActiveCategory] = useState('all');
+  const { data: newsList, loading, error, retry } = useBeritaList();
 
-  const categoryFiltered = activeCategory === 'all'
-    ? realNewsList
-    : realNewsList.filter(n => n.categoryKey === activeCategory);
+  const categoryFiltered = !newsList
+    ? []
+    : activeCategory === 'all'
+      ? newsList
+      : newsList.filter(n => n.categoryKey === activeCategory);
 
   const {
     query, setQuery,
@@ -66,60 +69,88 @@ export default function BeritaPanel() {
         </div>
       </div>
 
-      <ContentToolbar
-        searchPlaceholder="Cari warta berdasarkan judul atau ringkasan"
-        query={query}
-        onQueryChange={setQuery}
-        sortDir={sortDir}
-        onSortChange={setSortDir}
-        groupOptions={GROUP_OPTIONS}
-        groupKey={groupKey}
-        onGroupChange={setGroupKey}
-        dateRange={dateRange}
-        onDateRangeChange={setDateRange}
-        markedDates={datesWithContent}
-        resultCount={resultCount}
-        totalCount={totalCount}
-      />
-
-      {resultCount === 0 ? (
-        <div className="content-toolbar-empty">
-          <i className="fa-solid fa-newspaper" aria-hidden="true"></i>
-          <h4 className="info-empty-title">Tidak ada warta yang cocok</h4>
-          <p className="info-empty-text">Coba ubah kata kunci pencarian atau rentang tanggal.</p>
+      {loading && (
+        <div className="content-toolbar-empty" role="status" aria-live="polite">
+          <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+          <h4 className="info-empty-title">Memuat warta terkini...</h4>
         </div>
-      ) : (
-        groups.map((group) => (
-          <div key={group.label ?? 'flat'}>
-            {group.label && <h3 className="content-group-heading">{group.label}</h3>}
-            <div className="info-grid">
-              {group.items.map(item => (
-                <Link
-                  key={item.id}
-                  to={pathForArticle(item.id)}
-                  className="news-card-playful info-card-btn"
-                >
-                  <div className="news-img-wrap">
-                    <SafeImage src={item.image} alt="" />
-                  </div>
-                  <div className="info-card-meta">
-                    <span className="section-kicker">{item.category}</span>
-                    <span className="info-card-date">
-                      <i className="fa-regular fa-calendar" aria-hidden="true"></i> {item.date}
-                    </span>
-                  </div>
-                  <h3 className="info-card-title">{item.title}</h3>
-                  <p className="info-card-excerpt">{item.excerpt}</p>
-                  <div className="info-card-foot">
-                    <span className="info-card-cta">
-                      Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                    </span>
-                  </div>
-                </Link>
-              ))}
+      )}
+
+      {!loading && error && (
+        <div className="content-toolbar-empty">
+          <i className="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+          <h4 className="info-empty-title">Warta tidak dapat dimuat</h4>
+          <p className="info-empty-text">Terjadi gangguan saat mengambil data warta. Silakan coba lagi.</p>
+          <button type="button" className="btn-pill secondary" onClick={retry} style={{ marginTop: '12px' }}>
+            Coba Lagi
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && (
+        <>
+          <ContentToolbar
+            searchPlaceholder="Cari warta berdasarkan judul atau ringkasan"
+            query={query}
+            onQueryChange={setQuery}
+            sortDir={sortDir}
+            onSortChange={setSortDir}
+            groupOptions={GROUP_OPTIONS}
+            groupKey={groupKey}
+            onGroupChange={setGroupKey}
+            dateRange={dateRange}
+            onDateRangeChange={setDateRange}
+            markedDates={datesWithContent}
+            resultCount={resultCount}
+            totalCount={totalCount}
+          />
+
+          {resultCount === 0 ? (
+            <div className="content-toolbar-empty">
+              <i className="fa-solid fa-newspaper" aria-hidden="true"></i>
+              <h4 className="info-empty-title">
+                {totalCount === 0 ? 'Belum ada warta yang tersedia' : 'Tidak ada warta yang cocok'}
+              </h4>
+              <p className="info-empty-text">
+                {totalCount === 0
+                  ? 'Warta terkini akan tampil di sini begitu tersedia.'
+                  : 'Coba ubah kata kunci pencarian atau rentang tanggal.'}
+              </p>
             </div>
-          </div>
-        ))
+          ) : (
+            groups.map((group) => (
+              <div key={group.label ?? 'flat'}>
+                {group.label && <h3 className="content-group-heading">{group.label}</h3>}
+                <div className="info-grid">
+                  {group.items.map(item => (
+                    <Link
+                      key={item.id}
+                      to={pathForArticle(item.slug)}
+                      className="news-card-playful info-card-btn"
+                    >
+                      <div className="news-img-wrap">
+                        <SafeImage src={item.image} alt="" />
+                      </div>
+                      <div className="info-card-meta">
+                        <span className="section-kicker">{item.category}</span>
+                        <span className="info-card-date">
+                          <i className="fa-regular fa-calendar" aria-hidden="true"></i> {item.date}
+                        </span>
+                      </div>
+                      <h3 className="info-card-title">{item.title}</h3>
+                      <p className="info-card-excerpt">{item.excerpt}</p>
+                      <div className="info-card-foot">
+                        <span className="info-card-cta">
+                          Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </>
       )}
     </div>
   );
