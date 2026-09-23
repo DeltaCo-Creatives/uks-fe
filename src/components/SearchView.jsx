@@ -4,12 +4,12 @@ import { pathForView } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import { usePraktikBaikList } from '../hooks/usePraktikBaik';
 import { useUptStoriesList } from '../hooks/useUptStories';
+import { useAgendaList } from '../hooks/useAgenda';
 import {
   triasPillarsDetail,
   strataLevels,
   priorityProgramsList,
   realBooksList,
-  nationalAgendas,
   videoList,
   regulationsList,
   appsList
@@ -24,6 +24,7 @@ export default function SearchView() {
   const { data: newsList } = useBeritaList();
   const { data: bestPracticesList } = usePraktikBaikList();
   const { data: uptStories } = useUptStoriesList();
+  const { data: agendaList } = useAgendaList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -132,11 +133,16 @@ export default function SearchView() {
     });
 
     // 7. Agenda
-    nationalAgendas.forEach((ag, idx) => {
+    (agendaList || []).forEach((ag) => {
+      const parts = [`${ag.day} ${ag.month}`];
+      const who = [ag.organizer, ag.location].filter(Boolean).join(' di ');
+      if (who) parts.push(who);
+      if (ag.status) parts.push(`(${ag.status})`);
+
       items.push({
-        id: `agenda-${idx}`,
+        id: `agenda-${ag.slug ?? ag.id}`,
         title: ag.title,
-        excerpt: `${ag.day} ${ag.month} · ${ag.organizer} di ${ag.location} (${ag.status})`,
+        excerpt: parts.join(' · '),
         typeLabel: 'Agenda Nasional',
         typeColor: '#7C3AED',
         icon: 'fa-solid fa-calendar-days',
@@ -202,7 +208,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories]);
+  }, [newsList, bestPracticesList, uptStories, agendaList]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
