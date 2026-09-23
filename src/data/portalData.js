@@ -28,7 +28,7 @@ export * from './prestasi';
 // Multi-stakeholder Partnership (Mitra, Activities, Support, Logos)
 export * from './mitra';
 
-// Information: Agenda & UPT Stories (Warta & Praktik Baik now come from the CMS API)
+// Information: Agenda (Warta, Praktik Baik & UPT Stories now come from the CMS API)
 export * from './informasi';
 
 // Digital Publications, Books, Infographics, Videos & Regulations
