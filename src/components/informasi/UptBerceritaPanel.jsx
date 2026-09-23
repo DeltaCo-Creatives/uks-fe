@@ -18,15 +18,16 @@ export default function UptBerceritaPanel() {
   const [activeCategory, setActiveCategory] = useState('all');
   const { data: stories, loading, error, retry } = useUptStoriesList();
 
-  // Tabs mirror whatever categories the CMS actually returns, in the order
-  // they first appear, instead of a hardcoded list going stale.
+  // Tabs mirror whatever categories the CMS actually returns, sorted
+  // alphabetically so the order stays stable as new stories are published.
   const categoryTabs = useMemo(() => {
     if (!stories) return [];
     const seen = new Map();
     stories.forEach((story) => {
       if (!seen.has(story.categoryKey)) seen.set(story.categoryKey, story.category);
     });
-    return Array.from(seen, ([key, label]) => ({ key, label }));
+    return Array.from(seen, ([key, label]) => ({ key, label }))
+      .sort((a, b) => a.label.localeCompare(b.label, 'id'));
   }, [stories]);
 
   const categoryFiltered = !stories
