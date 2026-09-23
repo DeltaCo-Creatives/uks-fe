@@ -3,7 +3,7 @@ import Programs from './Programs';
 import Books from './Books';
 import Infografis from './Infografis';
 import HomeStratifikasi from './HomeStratifikasi';
-import { nationalMetrics, triasPillarsDetail } from '../data/portalData';
+import { triasPillarsDetail } from '../data/portalData';
 
 export default function BerandaView({ onNavigateView }) {
   return (
@@ -12,41 +12,6 @@ export default function BerandaView({ onNavigateView }) {
       <div id="sec-home-hero">
         <Hero onNavigateView={onNavigateView} />
       </div>
-
-      {/* 2. Metrik Nasional 4 Kementerian */}
-      <section id="sec-home-stats" className="section" style={{ paddingTop: '20px', paddingBottom: '30px' }}>
-        <div className="container">
-          <div style={{
-            background: '#FFFFFF',
-            borderRadius: 'var(--radius-lg)',
-            padding: 'clamp(18px, 3vw, 28px)',
-            border: '1.5px solid rgba(0,0,0,0.06)',
-            boxShadow: 'var(--shadow-card)'
-          }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '20px', textAlign: 'center' }}>
-              {nationalMetrics.map((met, idx) => (
-                <div key={idx} style={{ padding: '10px' }}>
-                  <div style={{
-                    fontSize: 'clamp(28px, 3.5vw, 38px)',
-                    fontWeight: 800,
-                    color: met.color,
-                    lineHeight: 1.1,
-                    fontFamily: '"Plus Jakarta Sans", sans-serif'
-                  }}>
-                    {met.value}
-                  </div>
-                  <div style={{ fontSize: '14px', fontWeight: 800, color: 'var(--text-primary)', marginTop: '6px' }}>
-                    {met.label}
-                  </div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                    {met.sub}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 3. Trias UKS Bento Showcase */}
       <section id="sec-home-trias" className="section" style={{ paddingBottom: '30px' }}>
