@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { pathForView } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import { usePraktikBaikList } from '../hooks/usePraktikBaik';
+import { useUptStoriesList } from '../hooks/useUptStories';
 import {
   triasPillarsDetail,
   strataLevels,
@@ -11,8 +12,7 @@ import {
   nationalAgendas,
   videoList,
   regulationsList,
-  appsList,
-  uptStories
+  appsList
 } from '../data/portalData';
 
 export default function SearchView() {
@@ -23,6 +23,7 @@ export default function SearchView() {
   // resolves, and the index recomputes once it does.
   const { data: newsList } = useBeritaList();
   const { data: bestPracticesList } = usePraktikBaikList();
+  const { data: uptStories } = useUptStoriesList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -187,7 +188,7 @@ export default function SearchView() {
     });
 
     // 11. UPT Stories
-    uptStories.forEach((st) => {
+    (uptStories || []).forEach((st) => {
       items.push({
         id: `upt-${st.id}`,
         title: st.title,
@@ -201,7 +202,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList]);
+  }, [newsList, bestPracticesList, uptStories]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
