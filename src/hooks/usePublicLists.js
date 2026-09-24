@@ -1,5 +1,8 @@
 import { createCachedList } from './createCachedList';
 
+/** Hero slides for the home page, already ordered and filtered by the API. */
+export const useHeroSlideList = createCachedList('/public/hero-slide');
+
 /** Praktik Baik list for the page, fetched once and shared by every consumer. */
 export const usePraktikBaikList = createCachedList('/public/praktik-baik');
 
