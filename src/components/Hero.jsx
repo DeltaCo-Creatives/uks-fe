@@ -18,11 +18,15 @@ export default function Hero() {
     }, [hasHeroSlides, heroData, heroLoading, newsList]);
     const pending = heroLoading || (!hasHeroSlides && newsLoading);
     const [current, setCurrent] = useState(0);
+    // The auto-advance interval below is set up once per `total` and would
+    // otherwise call a goTo() closure permanently frozen on that render's
+    // `current` — this ref is what lets goTo check the live value instead.
+    const currentRef = useRef(0);
     const total = slides.length;
     const heroRef = useRef(null);
 
     const goTo = (idx) => {
-        if (idx === current) return;
+        if (idx === currentRef.current) return;
 
         const stage = heroRef.current;
         const slides = Array.from(stage.querySelectorAll('.hero-slide'));
@@ -64,6 +68,7 @@ export default function Hero() {
             0.2 // Start text animation slightly earlier for responsiveness
         );
 
+        currentRef.current = idx;
         setCurrent(idx);
     };
 
@@ -71,11 +76,7 @@ export default function Hero() {
     useEffect(() => {
         if (total < 2) return undefined;
         const timer = setInterval(() => {
-            setCurrent(c => {
-                const next = (c + 1) % total;
-                goTo(next);
-                return c;
-            });
+            goTo((currentRef.current + 1) % total);
         }, 8000);
         return () => clearInterval(timer);
     }, [total]);
