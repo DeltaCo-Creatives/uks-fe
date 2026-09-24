@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { faqsList, contactInfo, ministries } from '../data/portalData';
+import { faqsList, contactInfo } from '../data/portalData';
+import { useKementerianList } from '../hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 import './kontak/kontak.css';
 
 export default function KontakView() {
   const [openFaq, setOpenFaq] = useState(0);
+  const { data: ministries, loading: ministriesLoading, error: ministriesError, retry: retryMinistries } = useKementerianList();
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -92,29 +95,52 @@ export default function KontakView() {
                   <i className="fa-solid fa-building-columns"></i>
                 </div>
                 <h4 className="kontak-card-title">Kementerian Terkait</h4>
-                <div className="kontak-ministry-grid">
-                  {ministries.map((ministry) => (
-                    <a
-                      key={ministry.id}
-                      className="kontak-ministry-tile"
-                      href={ministry.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {ministry.logo ? (
-                        <img className="kontak-ministry-logo" src={ministry.logo} alt={`Logo ${ministry.name}`} />
-                      ) : (
-                        <span className="kontak-ministry-placeholder" aria-hidden="true">
-                          <i className="fa-solid fa-building-columns"></i>
-                        </span>
-                      )}
-                      <span>
-                        <span className="kontak-ministry-short">{ministry.short}</span>
-                        <span className="kontak-ministry-unit">{ministry.unit}</span>
-                      </span>
-                    </a>
-                  ))}
-                </div>
+
+                {ministriesLoading && <LoadingState label="Memuat daftar kementerian..." />}
+
+                {!ministriesLoading && ministriesError && (
+                  <ErrorState
+                    title="Daftar kementerian tidak dapat dimuat"
+                    text="Terjadi gangguan saat mengambil data kementerian. Silakan coba lagi."
+                    retry={retryMinistries}
+                  />
+                )}
+
+                {!ministriesLoading && !ministriesError && (
+                  (ministries?.length ?? 0) === 0 ? (
+                    <EmptyState
+                      icon="fa-solid fa-building-columns"
+                      title="Belum ada kementerian terkait"
+                      text="Daftar kementerian mitra akan tampil di sini begitu tersedia."
+                    />
+                  ) : (
+                    <div className="kontak-ministry-grid">
+                      {ministries.map((ministry) => (
+                        <a
+                          key={ministry.id}
+                          className="kontak-ministry-tile"
+                          href={ministry.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {ministry.logoUrl ? (
+                            <img className="kontak-ministry-logo" src={ministry.logoUrl} alt={`Logo ${ministry.nama}`} />
+                          ) : (
+                            <span className="kontak-ministry-placeholder" aria-hidden="true">
+                              <i className="fa-solid fa-building-columns"></i>
+                            </span>
+                          )}
+                          <span>
+                            <span className="kontak-ministry-short">{ministry.singkatan}</span>
+                            {ministry.unit && (
+                              <span className="kontak-ministry-unit">{ministry.unit}</span>
+                            )}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  )
+                )}
               </div>
 
             </div>

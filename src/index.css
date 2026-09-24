@@ -257,7 +257,22 @@ ul {
   font-size: 15px;
   font-weight: 700;
   color: var(--text-secondary);
+  white-space: nowrap;
   transition: var(--spring);
+}
+
+/* Between the mobile-nav breakpoint and ~1370px, "Kementerian Terkait" is
+   long enough to push Kontak and the search button off the pill. Tighten
+   gaps and padding just in this range instead of shortening the label. */
+@media (min-width: 1025px) and (max-width: 1370px) {
+  .nav-links-nav {
+    gap: 2px;
+  }
+
+  .nav-links-nav > a,
+  .nav-links-nav > .nav-item-has-dropdown > a {
+    padding: 12px 12px;
+  }
 }
 
 .nav-links-nav > a:hover,

@@ -1,33 +1,8 @@
 /**
  * SITE CHROME & EXTERNAL SERVICES DATA
- * Contact info, tautan links, applications directory, and ministry portals
+ * Contact info, applications directory, and FAQs. Ministry portals and
+ * their linked groups now come from the API (see src/hooks/usePublicLists.js).
  */
-
-// Curated hero slide list. Each entry is either a { slug } reference resolved
-// against the berita API list, or a standalone slide with its own
-// id/image/category/title/excerpt.
-export const heroSlides = [
-  { slug: 'hari-anak-nasional-2026-kembali-bermain-kurangi-gawai' },
-  { slug: 'kemendikdasmen-bagikan-30-laptop-guru-miangas' },
-  { slug: 'semarak-lomba-kemerdekaan-budaya-sehat-pendidikan-bermutu' },
-  { slug: 'kemendikdasmen-perkuat-uks-sekolah-sehat-berkarakter' },
-  {
-    id: 'rakor-upt-edukasi-gizi-2026',
-    image: '/Aset UKS/hero/rakor-upt-edukasi-gizi-2026.jpg',
-    category: 'Agenda',
-    date: '21 Agustus 2026',
-    title: 'Rapat Koordinasi UPT Implementasi Edukasi Gizi Perkuat Sinergi Pendampingan di Satuan Pendidikan',
-    excerpt: 'Direktorat SMP mempertemukan penanggung jawab Makan Bergizi Gratis dari 34 UPT BBPMP/BPMP se-Indonesia untuk menyamakan langkah pendampingan edukasi gizi di satuan pendidikan.'
-  },
-  {
-    id: 'perkemahan-anak-indonesia-hebat-smp-2026',
-    image: '/Aset UKS/hero/perkemahan-anak-indonesia-hebat-smp-2026.jpg',
-    category: 'Agenda',
-    date: '2 September 2026',
-    title: 'Perkemahan Anak Indonesia Hebat Jenjang Sekolah Menengah Pertama Tahun 2026',
-    excerpt: 'Kemendikdasmen menggelar perkemahan lima hari di Camp Hulu Cai, Bogor, yang diikuti 407 murid SMP dari berbagai daerah, dengan tema Tunas Aman, Sekolah Nyaman.'
-  }
-];
 
 export const contactInfo = {
   address: 'Gedung E Lantai 17, Kompleks Kemendikdasmen, Jl. Jenderal Sudirman, Senayan, Jakarta 10270',
@@ -38,48 +13,6 @@ export const contactInfo = {
   operatingHours: 'Senin - Jumat, 08.00 - 16.00 WIB',
   copyrightYear: '2026'
 };
-
-export const tautanGroups = [
-  {
-    group: 'Kemenkes',
-    title: 'Kementerian Kesehatan',
-    icon: 'fa-solid fa-heart-pulse',
-    links: [
-      { label: 'Kementerian Kesehatan', url: 'https://kemkes.go.id' },
-      { label: 'Ayo Sehat Kemenkes', url: 'https://ayosehat.kemkes.go.id' },
-      { label: 'Perangkat Ajar Kesehatan', url: 'https://ayosehat.kemkes.go.id/perangkat-ajar-kesehatan' }
-    ]
-  },
-  {
-    group: 'Kemendikdasmen',
-    title: 'Kementerian Pendidikan Dasar & Menengah',
-    icon: 'fa-solid fa-graduation-cap',
-    links: [
-      { label: 'Ditjen PAUDDIKDASMEN', url: 'https://pdm.kemendikdasmen.go.id' },
-      { label: 'Direktorat PAUD', url: 'https://paudpedia.kemendikdasmen.go.id' },
-      { label: 'Direktorat SD', url: 'https://ditsd.kemendikdasmen.go.id' },
-      { label: 'Direktorat SMP', url: 'https://ditsmp.kemendikdasmen.go.id' },
-      { label: 'Direktorat SMA', url: 'https://sma.kemendikdasmen.go.id' }
-    ]
-  },
-  {
-    group: 'Kemenag',
-    title: 'Kementerian Agama',
-    icon: 'fa-solid fa-mosque',
-    links: [
-      { label: 'Direktorat KSKK Madrasah', url: 'https://pendis.kemenag.go.id/ditkskkmadrasah' },
-      { label: 'Direktorat Pesantren', url: 'https://pendis.kemenag.go.id/ditpdpontren' }
-    ]
-  },
-  {
-    group: 'Kemendagri',
-    title: 'Kementerian Dalam Negeri',
-    icon: 'fa-solid fa-building-columns',
-    links: [
-      { label: 'Direktorat SUPD (Ditjen Bina Bangda)', url: 'https://bangda.kemendagri.go.id' }
-    ]
-  }
-];
 
 export const appsList = [
   {
@@ -127,44 +60,6 @@ export const appsList = [
     links: [
       { store: 'Portal Layanan', url: 'https://kemkes.go.id', icon: 'fa-solid fa-globe' }
     ]
-  }
-];
-
-/* Logo files don't exist yet. Drop them in public/logo/<id>.png and set
-   `logo` to the matching path (e.g. '/logo/kemendikdasmen.png'). Until then
-   `logo: null` renders a named placeholder tile instead of a broken <img>. */
-export const ministries = [
-  {
-    id: 'kemendikdasmen',
-    name: 'Kementerian Pendidikan Dasar dan Menengah',
-    short: 'Kemendikdasmen RI',
-    unit: 'Sekretariat Utama',
-    logo: null,
-    url: 'https://www.kemendikdasmen.go.id'
-  },
-  {
-    id: 'kemenkes',
-    name: 'Kementerian Kesehatan',
-    short: 'Kemenkes RI',
-    unit: 'Dinkes & Puskesmas',
-    logo: null,
-    url: 'https://kemkes.go.id'
-  },
-  {
-    id: 'kemenag',
-    name: 'Kementerian Agama',
-    short: 'Kemenag RI',
-    unit: 'Madrasah & Ponpes',
-    logo: null,
-    url: 'https://kemenag.go.id'
-  },
-  {
-    id: 'kemendagri',
-    name: 'Kementerian Dalam Negeri',
-    short: 'Kemendagri RI',
-    unit: 'Pemda & TP UKS',
-    logo: null,
-    url: 'https://kemendagri.go.id'
   }
 ];
 

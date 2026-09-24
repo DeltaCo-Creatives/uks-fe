@@ -1,6 +1,12 @@
-import { tautanGroups } from '../data/portalData';
+import { useKementerianList } from '../hooks/usePublicLists';
 
-export default function NavTautanDropdown({ isOpen, onClose }) {
+export default function NavKementerianDropdown({ isOpen, onClose }) {
+  // Every page mounts the navbar, so a loading/failed fetch must stay silent
+  // here: the dropdown just renders with nothing in it, never an error state.
+  const { data } = useKementerianList();
+  const groups = (data ?? []).filter((ministry) => ministry.tautan.length > 0);
+  const totalLinks = groups.reduce((sum, group) => sum + group.tautan.length, 0);
+
   return (
     <div
       className={`nav-cluster-dropdown ${isOpen ? 'is-open' : ''}`}
@@ -13,17 +19,19 @@ export default function NavTautanDropdown({ isOpen, onClose }) {
         <div className="nav-cluster-header">
           <div className="nav-cluster-title">
             <i className="fa-solid fa-link" style={{ color: 'var(--brand-primary)' }}></i>
-            <span>Tautan Lembaga &amp; Direktorat Pembina UKS/M</span>
+            <span>Kementerian Terkait &amp; Direktorat Pembina UKS/M</span>
           </div>
-          <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
-            4 KEMENTERIAN · 11 TAUTAN
-          </span>
+          {groups.length > 0 && (
+            <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
+              {groups.length} KEMENTERIAN · {totalLinks} TAUTAN
+            </span>
+          )}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
-          {tautanGroups.map((group) => (
+          {groups.map((group) => (
             <div
-              key={group.group}
+              key={group.id}
               style={{
                 background: 'var(--bg-card-alt)',
                 borderRadius: 'var(--radius-md)',
@@ -35,16 +43,16 @@ export default function NavTautanDropdown({ isOpen, onClose }) {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingBottom: '8px', borderBottom: '1px solid rgba(0, 0, 0, 0.06)' }}>
-                <i className={group.icon} style={{ color: 'var(--brand-primary)', fontSize: '14px' }}></i>
+                <i className={group.ikon} style={{ color: 'var(--brand-primary)', fontSize: '14px' }}></i>
                 <h4 style={{ fontSize: '13px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                  {group.group}
+                  {group.singkatan}
                 </h4>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {group.links.map((lnk) => (
+                {group.tautan.map((lnk, idx) => (
                   <a
-                    key={lnk.url}
+                    key={`${idx}-${lnk.label}`}
                     href={lnk.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -82,4 +90,3 @@ export default function NavTautanDropdown({ isOpen, onClose }) {
     </div>
   );
 }
-

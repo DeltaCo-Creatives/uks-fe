@@ -1,5 +1,8 @@
 import { createCachedList } from './createCachedList';
 
+/** Hero slides for the home page, already ordered and filtered by the API. */
+export const useHeroSlideList = createCachedList('/public/hero-slide');
+
 /** Praktik Baik list for the page, fetched once and shared by every consumer. */
 export const usePraktikBaikList = createCachedList('/public/praktik-baik');
 
@@ -24,3 +27,9 @@ export const useVideoList = createCachedList('/public/publikasi?jenisHalaman=vid
 
 /** Regulasi / produk hukum list, ordered by document date, newest first. */
 export const useProdukHukumList = createCachedList('/public/produk-hukum');
+
+/**
+ * Kementerian terkait list, fetched once and shared by every consumer: the
+ * Kontak page tiles and the navbar's Kementerian Terkait dropdown/mobile menu.
+ */
+export const useKementerianList = createCachedList('/public/kementerian');

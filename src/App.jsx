@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -92,13 +92,25 @@ function Layout() {
   const { pathname } = useLocation();
   const viewKey = viewKeyFromPathname(pathname);
   const [scrolledSection, setScrolledSection] = useState(null);
+  // Tracks which elements have already played their reveal, across the whole
+  // Layout lifetime, so a re-scan on every pathname change doesn't re-fade
+  // chrome (hero banner, tab nav) that never left the page.
+  const revealedRef = useRef(new WeakSet());
 
-  // Keyed off the view rather than the full path: switching tabs inside one
-  // view swaps a panel without remounting the page around it, so re-running
-  // this would re-fade the banner that never went away.
+  // Keyed off the full path rather than the view: /program, /informasi and
+  // /publikasi each redirect to a sibling URL with the SAME view key (e.g.
+  // /program -> /program/mbg is 'program' both before and after), so a
+  // [viewKey]-only dependency ran this scan once against the still-empty
+  // redirect placeholder and never again once the real content landed —
+  // that content just appeared at full opacity, no fade. Re-running per
+  // pathname fixes that; the revealedRef filter keeps it from re-animating
+  // content that was already shown.
   useGSAP(() => {
-    const reveals = gsap.utils.toArray('[data-gsap="reveal"]');
+    const reveals = gsap.utils
+      .toArray('[data-gsap="reveal"]')
+      .filter((el) => !revealedRef.current.has(el));
     reveals.forEach((el, i) => {
+      revealedRef.current.add(el);
       gsap.fromTo(el,
         { opacity: 0, y: 30 },
         {
@@ -137,7 +149,7 @@ function Layout() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [viewKey]);
+  }, [pathname]);
 
   // On a tab view the drawer follows the URL; elsewhere it follows the scroll.
   const activeSection = tabSectionFromPathname(pathname) ?? scrolledSection;
