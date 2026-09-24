@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavTautanDropdown from './NavTautanDropdown';
-import { tautanGroups } from '../data/portalData';
+import { useTautanList } from '../hooks/usePublicLists';
 import { pathForView, viewKeyFromPathname } from '../routes';
 
 export default function Navbar() {
@@ -14,6 +14,10 @@ export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileTautanOpen, setMobileTautanOpen] = useState(false);
+  // Shares the same cached fetch as NavTautanDropdown; a loading/failed
+  // fetch just means the collapsible section has nothing under it.
+  const { data: tautanData } = useTautanList();
+  const tautanGroups = tautanData ?? [];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -365,13 +369,13 @@ export default function Navbar() {
               {mobileTautanOpen && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px' }}>
                   {tautanGroups.map((grp) => (
-                    <div key={grp.group} style={{ marginBottom: '4px' }}>
+                    <div key={grp.id} style={{ marginBottom: '4px' }}>
                       <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)', padding: '4px 16px 2px' }}>
-                        {grp.group}
+                        {grp.nama}
                       </div>
-                      {grp.links.map((lnk) => (
+                      {grp.tautan.map((lnk) => (
                         <a
-                          key={lnk.url}
+                          key={lnk.id}
                           href={lnk.url}
                           target="_blank"
                           rel="noopener noreferrer"

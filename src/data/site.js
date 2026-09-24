@@ -1,6 +1,7 @@
 /**
  * SITE CHROME & EXTERNAL SERVICES DATA
- * Contact info, tautan links, applications directory, and ministry portals
+ * Contact info, applications directory, and FAQs. Tautan groups and
+ * ministry portals now come from the API (see src/hooks/usePublicLists.js).
  */
 
 // Curated hero slide list. Each entry is either a { slug } reference resolved
@@ -38,48 +39,6 @@ export const contactInfo = {
   operatingHours: 'Senin - Jumat, 08.00 - 16.00 WIB',
   copyrightYear: '2026'
 };
-
-export const tautanGroups = [
-  {
-    group: 'Kemenkes',
-    title: 'Kementerian Kesehatan',
-    icon: 'fa-solid fa-heart-pulse',
-    links: [
-      { label: 'Kementerian Kesehatan', url: 'https://kemkes.go.id' },
-      { label: 'Ayo Sehat Kemenkes', url: 'https://ayosehat.kemkes.go.id' },
-      { label: 'Perangkat Ajar Kesehatan', url: 'https://ayosehat.kemkes.go.id/perangkat-ajar-kesehatan' }
-    ]
-  },
-  {
-    group: 'Kemendikdasmen',
-    title: 'Kementerian Pendidikan Dasar & Menengah',
-    icon: 'fa-solid fa-graduation-cap',
-    links: [
-      { label: 'Ditjen PAUDDIKDASMEN', url: 'https://pdm.kemendikdasmen.go.id' },
-      { label: 'Direktorat PAUD', url: 'https://paudpedia.kemendikdasmen.go.id' },
-      { label: 'Direktorat SD', url: 'https://ditsd.kemendikdasmen.go.id' },
-      { label: 'Direktorat SMP', url: 'https://ditsmp.kemendikdasmen.go.id' },
-      { label: 'Direktorat SMA', url: 'https://sma.kemendikdasmen.go.id' }
-    ]
-  },
-  {
-    group: 'Kemenag',
-    title: 'Kementerian Agama',
-    icon: 'fa-solid fa-mosque',
-    links: [
-      { label: 'Direktorat KSKK Madrasah', url: 'https://pendis.kemenag.go.id/ditkskkmadrasah' },
-      { label: 'Direktorat Pesantren', url: 'https://pendis.kemenag.go.id/ditpdpontren' }
-    ]
-  },
-  {
-    group: 'Kemendagri',
-    title: 'Kementerian Dalam Negeri',
-    icon: 'fa-solid fa-building-columns',
-    links: [
-      { label: 'Direktorat SUPD (Ditjen Bina Bangda)', url: 'https://bangda.kemendagri.go.id' }
-    ]
-  }
-];
 
 export const appsList = [
   {
