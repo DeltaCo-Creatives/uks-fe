@@ -131,7 +131,10 @@ export default function KontakView() {
                             </span>
                           )}
                           <span>
-                            <span className="kontak-ministry-short">{ministry.nama}</span>
+                            <span className="kontak-ministry-short">{ministry.singkatan}</span>
+                            {ministry.unit && (
+                              <span className="kontak-ministry-unit">{ministry.unit}</span>
+                            )}
                           </span>
                         </a>
                       ))}
