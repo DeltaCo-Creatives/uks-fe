@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import NavTautanDropdown from './NavTautanDropdown';
-import { useTautanList } from '../hooks/usePublicLists';
+import NavKementerianDropdown from './NavKementerianDropdown';
+import { useKementerianList } from '../hooks/usePublicLists';
 import { pathForView, viewKeyFromPathname } from '../routes';
 
 export default function Navbar() {
@@ -10,14 +10,14 @@ export default function Navbar() {
   const currentView = viewKeyFromPathname(pathname);
 
   const [scrolled, setScrolled] = useState(false);
-  // Which single dropdown is open: null | 'uksm' | 'tautan'
+  // Which single dropdown is open: null | 'uksm' | 'kementerian'
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileTautanOpen, setMobileTautanOpen] = useState(false);
-  // Shares the same cached fetch as NavTautanDropdown; a loading/failed
+  const [mobileKementerianOpen, setMobileKementerianOpen] = useState(false);
+  // Shares the same cached fetch as NavKementerianDropdown; a loading/failed
   // fetch just means the collapsible section has nothing under it.
-  const { data: tautanData } = useTautanList();
-  const tautanGroups = tautanData ?? [];
+  const { data: kementerianData } = useKementerianList();
+  const kementerianGroups = (kementerianData ?? []).filter((ministry) => ministry.tautan.length > 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -196,31 +196,31 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Tautan Outbound Dropdown (A1) */}
+          {/* Kementerian Terkait Outbound Dropdown (A1) */}
           <div
             className="nav-item-has-dropdown"
-            onMouseEnter={() => setOpenMenu('tautan')}
+            onMouseEnter={() => setOpenMenu('kementerian')}
             onMouseLeave={() => setOpenMenu(null)}
           >
             <a
-              href="#tautan"
+              href="#kementerian-terkait"
               onClick={(e) => {
                 e.preventDefault();
-                setOpenMenu(openMenu === 'tautan' ? null : 'tautan');
+                setOpenMenu(openMenu === 'kementerian' ? null : 'kementerian');
               }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                fontWeight: openMenu === 'tautan' ? 800 : 600
+                fontWeight: openMenu === 'kementerian' ? 800 : 600
               }}
             >
               <i className="fa-solid fa-link" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
-              <span>Tautan</span>
+              <span>Kementerian Terkait</span>
               <i className="fa-solid fa-chevron-down" style={{ fontSize: '9px', opacity: 0.7 }}></i>
             </a>
 
-            <NavTautanDropdown isOpen={openMenu === 'tautan'} onClose={() => setOpenMenu(null)} />
+            <NavKementerianDropdown isOpen={openMenu === 'kementerian'} onClose={() => setOpenMenu(null)} />
           </div>
 
           <Link
@@ -353,29 +353,29 @@ export default function Navbar() {
                 <span>Pustaka Digital &amp; Modul</span>
               </Link>
 
-              {/* Collapsible Mobile Tautan (A1) */}
+              {/* Collapsible Mobile Kementerian Terkait (A1) */}
               <div
                 className="nav-mobile-group-header"
-                onClick={() => setMobileTautanOpen(!mobileTautanOpen)}
+                onClick={() => setMobileKementerianOpen(!mobileKementerianOpen)}
                 style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
               >
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                   <i className="fa-solid fa-link"></i>
-                  <span>Tautan 4 Kementerian:</span>
+                  <span>{kementerianGroups.length} Kementerian Terkait:</span>
                 </span>
-                <i className={`fa-solid fa-chevron-${mobileTautanOpen ? 'up' : 'down'}`} style={{ fontSize: '10px' }}></i>
+                <i className={`fa-solid fa-chevron-${mobileKementerianOpen ? 'up' : 'down'}`} style={{ fontSize: '10px' }}></i>
               </div>
 
-              {mobileTautanOpen && (
+              {mobileKementerianOpen && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px' }}>
-                  {tautanGroups.map((grp) => (
+                  {kementerianGroups.map((grp) => (
                     <div key={grp.id} style={{ marginBottom: '4px' }}>
                       <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)', padding: '4px 16px 2px' }}>
-                        {grp.nama}
+                        {grp.singkatan}
                       </div>
-                      {grp.tautan.map((lnk) => (
+                      {grp.tautan.map((lnk, idx) => (
                         <a
-                          key={lnk.id}
+                          key={`${idx}-${lnk.label}`}
                           href={lnk.url}
                           target="_blank"
                           rel="noopener noreferrer"

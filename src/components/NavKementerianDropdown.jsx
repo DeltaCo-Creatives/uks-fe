@@ -1,10 +1,10 @@
-import { useTautanList } from '../hooks/usePublicLists';
+import { useKementerianList } from '../hooks/usePublicLists';
 
-export default function NavTautanDropdown({ isOpen, onClose }) {
+export default function NavKementerianDropdown({ isOpen, onClose }) {
   // Every page mounts the navbar, so a loading/failed fetch must stay silent
   // here: the dropdown just renders with nothing in it, never an error state.
-  const { data } = useTautanList();
-  const groups = data ?? [];
+  const { data } = useKementerianList();
+  const groups = (data ?? []).filter((ministry) => ministry.tautan.length > 0);
   const totalLinks = groups.reduce((sum, group) => sum + group.tautan.length, 0);
 
   return (
@@ -19,7 +19,7 @@ export default function NavTautanDropdown({ isOpen, onClose }) {
         <div className="nav-cluster-header">
           <div className="nav-cluster-title">
             <i className="fa-solid fa-link" style={{ color: 'var(--brand-primary)' }}></i>
-            <span>Tautan Lembaga &amp; Direktorat Pembina UKS/M</span>
+            <span>Kementerian Terkait &amp; Direktorat Pembina UKS/M</span>
           </div>
           {groups.length > 0 && (
             <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
@@ -45,14 +45,14 @@ export default function NavTautanDropdown({ isOpen, onClose }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingBottom: '8px', borderBottom: '1px solid rgba(0, 0, 0, 0.06)' }}>
                 <i className={group.ikon} style={{ color: 'var(--brand-primary)', fontSize: '14px' }}></i>
                 <h4 style={{ fontSize: '13px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                  {group.nama}
+                  {group.singkatan}
                 </h4>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {group.tautan.map((lnk) => (
+                {group.tautan.map((lnk, idx) => (
                   <a
-                    key={lnk.id}
+                    key={`${idx}-${lnk.label}`}
                     href={lnk.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -90,4 +90,3 @@ export default function NavTautanDropdown({ isOpen, onClose }) {
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
 /**
  * SITE CHROME & EXTERNAL SERVICES DATA
- * Contact info, applications directory, and FAQs. Tautan groups and
- * ministry portals now come from the API (see src/hooks/usePublicLists.js).
+ * Contact info, applications directory, and FAQs. Ministry portals and
+ * their linked groups now come from the API (see src/hooks/usePublicLists.js).
  */
 
 // Curated hero slide list. Each entry is either a { slug } reference resolved

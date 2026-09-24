@@ -25,8 +25,8 @@ export const useVideoList = createCachedList('/public/publikasi?jenisHalaman=vid
 /** Regulasi / produk hukum list, ordered by document date, newest first. */
 export const useProdukHukumList = createCachedList('/public/produk-hukum');
 
-/** Tautan lembaga groups for the navbar dropdown, fetched once and shared by every consumer. */
-export const useTautanList = createCachedList('/public/tautan');
-
-/** Kementerian terkait list for the Kontak page, fetched once and shared by every consumer. */
+/**
+ * Kementerian terkait list, fetched once and shared by every consumer: the
+ * Kontak page tiles and the navbar's Kementerian Terkait dropdown/mobile menu.
+ */
 export const useKementerianList = createCachedList('/public/kementerian');
