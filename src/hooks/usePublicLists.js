@@ -27,3 +27,6 @@ export const useProdukHukumList = createCachedList('/public/produk-hukum');
 
 /** Tautan lembaga groups for the navbar dropdown, fetched once and shared by every consumer. */
 export const useTautanList = createCachedList('/public/tautan');
+
+/** Kementerian terkait list for the Kontak page, fetched once and shared by every consumer. */
+export const useKementerianList = createCachedList('/public/kementerian');

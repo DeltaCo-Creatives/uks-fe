@@ -89,44 +89,6 @@ export const appsList = [
   }
 ];
 
-/* Logo files don't exist yet. Drop them in public/logo/<id>.png and set
-   `logo` to the matching path (e.g. '/logo/kemendikdasmen.png'). Until then
-   `logo: null` renders a named placeholder tile instead of a broken <img>. */
-export const ministries = [
-  {
-    id: 'kemendikdasmen',
-    name: 'Kementerian Pendidikan Dasar dan Menengah',
-    short: 'Kemendikdasmen RI',
-    unit: 'Sekretariat Utama',
-    logo: null,
-    url: 'https://www.kemendikdasmen.go.id'
-  },
-  {
-    id: 'kemenkes',
-    name: 'Kementerian Kesehatan',
-    short: 'Kemenkes RI',
-    unit: 'Dinkes & Puskesmas',
-    logo: null,
-    url: 'https://kemkes.go.id'
-  },
-  {
-    id: 'kemenag',
-    name: 'Kementerian Agama',
-    short: 'Kemenag RI',
-    unit: 'Madrasah & Ponpes',
-    logo: null,
-    url: 'https://kemenag.go.id'
-  },
-  {
-    id: 'kemendagri',
-    name: 'Kementerian Dalam Negeri',
-    short: 'Kemendagri RI',
-    unit: 'Pemda & TP UKS',
-    logo: null,
-    url: 'https://kemendagri.go.id'
-  }
-];
-
 export const faqsList = [
   {
     q: 'Apakah dana Bantuan Operasional Satuan Pendidikan (BOSP) dapat digunakan untuk UKS?',
