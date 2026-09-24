@@ -2,20 +2,21 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { heroSlides } from '../data/portalData';
 import { pathForArticle } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
+import { useHeroSlideList } from '../hooks/usePublicLists';
 
 export default function Hero() {
-    const { data: newsList } = useBeritaList();
-    // A slug-based slide has no destination until the berita list loads, so it
-    // is skipped rather than shown broken. Standalone slides never depend on it.
-    const slides = useMemo(
-        () => heroSlides
-            .map((entry) => (entry.slug ? (newsList || []).find((n) => n.slug === entry.slug) : entry))
-            .filter(Boolean),
-        [newsList]
-    );
+    const { data: heroData, loading: heroLoading } = useHeroSlideList();
+    const { data: newsList, loading: newsLoading } = useBeritaList();
+    const hasHeroSlides = Boolean(heroData && heroData.length > 0);
+    // Berita only stands in once the hero request has settled empty or failed, so it never flashes first.
+    const slides = useMemo(() => {
+        if (hasHeroSlides) return heroData;
+        if (heroLoading) return [];
+        return (newsList || []).slice(0, 4);
+    }, [hasHeroSlides, heroData, heroLoading, newsList]);
+    const pending = heroLoading || (!hasHeroSlides && newsLoading);
     const [current, setCurrent] = useState(0);
     const total = slides.length;
     const heroRef = useRef(null);
@@ -68,6 +69,7 @@ export default function Hero() {
 
     // Auto-advance
     useEffect(() => {
+        if (total < 2) return undefined;
         const timer = setInterval(() => {
             setCurrent(c => {
                 const next = (c + 1) % total;
@@ -81,6 +83,7 @@ export default function Hero() {
     // Initial entrance animation
     useGSAP(() => {
         const stage = heroRef.current;
+        if (!stage) return;
         const firstSlide = stage.querySelector('.hero-slide');
         if (!firstSlide) return;
         gsap.set(firstSlide, { zIndex: 2, opacity: 1 });
@@ -89,16 +92,29 @@ export default function Hero() {
             { y: 60, opacity: 0 },
             { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'back.out(1.4)', delay: 0.5 }
         );
-        gsap.fromTo(
-            '.hero-nav',
-            { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 1 }
-        );
-    }, { scope: heroRef });
+        // The nav only renders with 2 or more slides.
+        if (stage.querySelector('.hero-nav')) {
+            gsap.fromTo(
+                '.hero-nav',
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 1 }
+            );
+        }
+    }, { scope: heroRef, dependencies: [total] });
+
+    if (total === 0 && !pending) return null;
 
     return (
         <section className="hero" id="beranda">
             <div className="hero-stage" ref={heroRef}>
+                {total === 0 && (
+                    <p
+                        role="status"
+                        style={{ position: 'absolute', width: 1, height: 1, margin: -1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}
+                    >
+                        Memuat slide beranda
+                    </p>
+                )}
                 {slides.map((slide, i) => (
                     <div
                         key={slide.id}
@@ -127,26 +143,28 @@ export default function Hero() {
                     </div>
                 ))}
 
-                <div className="hero-nav">
-                    <div className="hero-dots">
-                        {slides.map((_, idx) => (
-                            <button
-                                key={idx}
-                                className={`hero-dot ${idx === current ? 'active' : ''}`}
-                                onClick={() => goTo(idx)}
-                                aria-label={`Slide ${idx + 1}`}
-                            />
-                        ))}
+                {total >= 2 && (
+                    <div className="hero-nav">
+                        <div className="hero-dots">
+                            {slides.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    className={`hero-dot ${idx === current ? 'active' : ''}`}
+                                    onClick={() => goTo(idx)}
+                                    aria-label={`Slide ${idx + 1}`}
+                                />
+                            ))}
+                        </div>
+                        <div className="hero-arrows">
+                            <button className="hero-arrow" onClick={() => goTo((current - 1 + total) % total)}>
+                                <i className="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button className="hero-arrow" onClick={() => goTo((current + 1) % total)}>
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div className="hero-arrows">
-                        <button className="hero-arrow" onClick={() => goTo((current - 1 + total) % total)}>
-                            <i className="fa-solid fa-arrow-left"></i>
-                        </button>
-                        <button className="hero-arrow" onClick={() => goTo((current + 1) % total)}>
-                            <i className="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
+                )}
             </div>
         </section>
     );
