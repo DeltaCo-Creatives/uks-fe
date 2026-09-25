@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { useBukuPanduanList } from '../hooks/usePublicLists';
+import { countPublikasiView } from '../utils/counters';
 import SafeImage from './SafeImage';
 import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 
@@ -106,7 +107,7 @@ export default function Books() {
             <div className="book-swipe-actions">
                 {buku.pdf ? (
                     <>
-                        <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>Baca</button>
+                        <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); setSelectedBook(buku); }}>Baca</button>
                         <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
                     </>
                 ) : (

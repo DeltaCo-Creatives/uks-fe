@@ -22,3 +22,18 @@ export async function apiFetch(path, options = {}) {
 
   return response.json();
 }
+
+/**
+ * Fire-and-forget POST for counters: never throws and never blocks the UI.
+ * No body and no custom headers, so the browser sends it as a simple CORS request.
+ *
+ * @param {string} path - appended to VITE_API_BASE_URL
+ */
+export function apiPing(path) {
+  try {
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+    fetch(`${baseUrl}${path}`, { method: 'POST', keepalive: true }).catch(() => {});
+  } catch {
+    // Counting must never affect the popup.
+  }
+}
