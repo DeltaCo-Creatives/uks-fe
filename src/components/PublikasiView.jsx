@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { pageNavigationConfigs } from '../data/portalData';
 import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '../hooks/usePublicLists';
+import { countPublikasiView } from '../utils/counters';
 import DocViewerModal from './shared/DocViewerModal';
 import ImageLightbox from './shared/ImageLightbox';
 import LobbyTabs from './shared/LobbyTabs';
@@ -97,7 +98,7 @@ function BooksPanel() {
                     <div className="book-swipe-actions">
                       {buku.pdf ? (
                         <>
-                          <button className="btn-pill primary" onClick={() => setSelectedBook(buku)}>
+                          <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); setSelectedBook(buku); }}>
                             <i className="fa-solid fa-book-open" style={{ marginRight: '6px' }}></i>Baca Online
                           </button>
                           <a href={buku.pdf} download className="btn-pill secondary" style={{ textDecoration: 'none' }}>
@@ -172,7 +173,7 @@ function InfografisPanel() {
                 <button
                   type="button"
                   className="infografis-frame"
-                  onClick={() => item.image && setZoomed({ src: item.image, title: item.title })}
+                  onClick={() => { if (!item.image) return; countPublikasiView(item.slug); setZoomed({ src: item.image, title: item.title }); }}
                   disabled={!item.image}
                 >
                   <SafeImage src={item.image} alt={item.title} loading="lazy" style={{ aspectRatio: '3 / 4' }} />
