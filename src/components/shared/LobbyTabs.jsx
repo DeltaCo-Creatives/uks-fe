@@ -5,9 +5,11 @@ import { useEffect, useRef } from 'react';
  * tabs scroll in one row instead of wrapping, so five of them cost one band of
  * the screen rather than three.
  *
- * @param {{ tabs: {id: string, icon: string, label: string}[], activeId: string, onSelect: (id: string) => void, label: string }} props
+ * `pageNav` marks these tabs as the page's own top navigation, which the Daftar Isi handle watches.
+ *
+ * @param {{ tabs: {id: string, icon: string, label: string}[], activeId: string, onSelect: (id: string) => void, label: string, pageNav?: boolean }} props
  */
-export default function LobbyTabs({ tabs, activeId, onSelect, label }) {
+export default function LobbyTabs({ tabs, activeId, onSelect, label, pageNav = false }) {
   const activeRef = useRef(null);
 
   // The current tab can start out of frame on a phone; block:'nearest' keeps the page still.
@@ -16,7 +18,7 @@ export default function LobbyTabs({ tabs, activeId, onSelect, label }) {
   }, [activeId]);
 
   return (
-    <nav className="lobby-tabs" aria-label={label} data-gsap="reveal">
+    <nav className="lobby-tabs" aria-label={label} data-gsap="reveal" data-page-nav={pageNav ? '' : undefined}>
       <div className="lobby-tabs-track">
         {tabs.map((tab) => {
           const isActive = activeId === tab.id;

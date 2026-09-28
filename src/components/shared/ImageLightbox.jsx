@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useScrollLock } from '../../hooks/useScrollLock';
 
 /**
  * Full-size look at a poster that is already readable on the page, for the
@@ -13,6 +14,8 @@ import { createPortal } from 'react-dom';
 export default function ImageLightbox({ image, onClose }) {
   const closeRef = useRef(null);
 
+  useScrollLock(true);
+
   useEffect(() => {
     closeRef.current?.focus();
 
@@ -21,13 +24,7 @@ export default function ImageLightbox({ image, onClose }) {
     };
     document.addEventListener('keydown', onKeyDown);
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = overflow;
-    };
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, [onClose]);
 
   return createPortal(

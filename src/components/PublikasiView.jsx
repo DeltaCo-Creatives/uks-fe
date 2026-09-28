@@ -332,6 +332,7 @@ export default function PublikasiView() {
         activeId={activeId}
         onSelect={(id) => navigate(pathForView('publikasi', id))}
         label="Bagian publikasi"
+        pageNav
       />
 
       {/* GIANT DISPLAY PANEL */}
