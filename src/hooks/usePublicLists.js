@@ -33,3 +33,12 @@ export const useProdukHukumList = createCachedList('/public/produk-hukum');
  * Kontak page tiles and the navbar's Kementerian Terkait dropdown/mobile menu.
  */
 export const useKementerianList = createCachedList('/public/kementerian');
+
+/**
+ * Mitra Kemitraan UKS/M: yearly cohorts (`kelompokTahun`) and partners with no
+ * support record yet (`tanpaDukungan`), fetched once for the Mitra page.
+ */
+export const useMitraList = createCachedList('/public/mitra');
+
+/** Dukungan Mitra records for the Mitra page, fetched once and shared by every consumer. */
+export const useDukunganMitraList = createCachedList('/public/dukungan-mitra');
