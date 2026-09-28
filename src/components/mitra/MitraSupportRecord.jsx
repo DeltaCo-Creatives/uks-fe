@@ -24,11 +24,11 @@ export default function MitraSupportRecord({ record, index, isOpen, onToggle }) 
   const { ref, mounted } = useCollapse(isOpen, { keepInView: true });
 
   const fields = [
-    { label: 'Bentuk kolaborasi', items: record.collaboration },
-    { label: 'Kegiatan', items: record.activities, ordered: record.activitiesOrdered },
-    { label: 'Penerima manfaat', items: record.beneficiaries },
-    { label: 'Lokasi', items: record.locations },
-    { label: 'Pembiayaan', items: record.funding ? [record.funding] : [] }
+    { label: 'Bentuk kolaborasi', items: record.bentukKolaborasi ?? [] },
+    { label: 'Kegiatan', items: record.kegiatan ?? [], ordered: record.kegiatanBerurutan },
+    { label: 'Penerima manfaat', items: record.penerimaManfaat ?? [] },
+    { label: 'Lokasi', items: record.lokasi ?? [] },
+    { label: 'Pembiayaan', items: record.pembiayaan ? [record.pembiayaan] : [] }
   ].filter((field) => field.items.length > 0);
 
   return (
@@ -37,18 +37,18 @@ export default function MitraSupportRecord({ record, index, isOpen, onToggle }) 
         <span className="mitra-num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
         <span className="mitra-record-heading">
           <span className="mitra-record-name">
-            {record.name}
-            {record.unit && <span className="mitra-record-unit">{record.unit}</span>}
+            {record.mitraNama}
+            {record.unitKerja && <span className="mitra-record-unit">{record.unitKerja}</span>}
           </span>
-          <span className="mitra-record-summary">{record.collaboration.join('; ')}</span>
+          <span className="mitra-record-summary">{(record.bentukKolaborasi ?? []).join('; ')}</span>
         </span>
-        <span className="mitra-record-period">{record.period}</span>
+        {record.periode && <span className="mitra-record-period">{record.periode}</span>}
         <i className="fa-solid fa-chevron-down mitra-record-chevron" aria-hidden="true"></i>
       </button>
 
       {mounted && (
         <div ref={ref}>
-          <div id={panelId} role="region" aria-label={`Dukungan ${record.name}`} className="mitra-record-panel">
+          <div id={panelId} role="region" aria-label={`Dukungan ${record.mitraNama}`} className="mitra-record-panel">
             <dl className="mitra-record-fields">
               {fields.map((field) => (
                 <div key={field.label}>
