@@ -42,3 +42,6 @@ export const useMitraList = createCachedList('/public/mitra');
 
 /** Dukungan Mitra records for the Mitra page, fetched once and shared by every consumer. */
 export const useDukunganMitraList = createCachedList('/public/dukungan-mitra');
+
+/** Prestasi competitions (Lomba), with nested winners, for the Program Prioritas Prestasi section. */
+export const useLombaList = createCachedList('/public/lomba');

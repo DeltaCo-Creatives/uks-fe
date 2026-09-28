@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import LobbyTabs from '../shared/LobbyTabs';
 import { ResourcesSection, CompetitionsSection } from './ProgramLinkSections';
 import ShowcaseFace from './PrestasiShowcase';
 import ProgramLink, { NEW_TAB_HINT } from './ProgramLink';
 import FactList from './FactList';
+import { useLombaList } from '../../hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 
 const FACE_TABS = [
   { id: 'mekanisme', icon: 'fa-solid fa-list-check', label: 'Mekanisme' },
@@ -11,12 +13,84 @@ const FACE_TABS = [
   { id: 'showcase', icon: 'fa-solid fa-trophy', label: 'Showcase pemenang' }
 ];
 
+const orUndefined = (arr) => (arr.length ? arr : undefined);
+
+/** Groups LombaTautan-shaped items by `grup` (null → "Unduh"), first-seen order. */
+function groupTautan(items) {
+  const order = [];
+  const byTitle = new Map();
+  for (const item of items) {
+    const title = item.grup || 'Unduh';
+    if (!byTitle.has(title)) {
+      byTitle.set(title, []);
+      order.push(title);
+    }
+    byTitle.get(title).push({ title: item.judul, meta: item.keterangan, kind: item.jenis, url: item.url });
+  }
+  return order.map((title) => ({ title, items: byTitle.get(title) }));
+}
+
+/**
+ * Adapts a PublicLombaDto (GET /public/lomba) to the item shape the
+ * rendering components below already expect. Empty arrays become
+ * `undefined` so the existing `data.x &&` checks in MekanismeFace,
+ * PengumumanFace, etc. keep working unchanged.
+ */
+function mapLombaToItem(dto) {
+  return {
+    id: dto.id,
+    year: String(dto.tahun),
+    title: dto.judul,
+    status: dto.keterangan,
+    faces: {
+      mekanisme: {
+        lead: dto.deskripsi,
+        flyers: dto.flyer.length
+          ? { caption: dto.flyerKeterangan, credit: dto.sumber, items: dto.flyer.map((f) => ({ src: f.url, alt: f.alt })) }
+          : undefined,
+        tujuan: orUndefined(dto.tujuan),
+        facts: orUndefined(dto.fakta.map((f) => ({ label: f.label, value: f.nilai }))),
+        competitions: dto.pendaftaran
+          ? {
+              open: dto.pendaftaran.dibuka,
+              note: dto.pendaftaran.catatan,
+              items: dto.pendaftaran.items.map((i) => ({ level: i.jenjang, title: i.judul, url: i.url })),
+              guide: dto.pendaftaran.panduan
+                ? { title: dto.pendaftaran.panduan.judul, url: dto.pendaftaran.panduan.url }
+                : undefined
+            }
+          : undefined,
+        downloads: dto.unduhan.length ? { groups: groupTautan(dto.unduhan) } : undefined
+      },
+      pengumuman: dto.pengumuman && {
+        note: dto.pengumuman.catatan,
+        groups: dto.pengumuman.items.length ? groupTautan(dto.pengumuman.items) : undefined,
+        source: dto.pengumuman.sumber
+      },
+      showcase: dto.pemenang.length
+        ? {
+            winners: dto.pemenang.map((w) => ({
+              school: w.sekolah,
+              kabkota: w.kabKota,
+              provinsi: w.provinsi,
+              jenjang: w.jenjang,
+              kategori: w.kategori,
+              youtube: w.urlYoutube,
+              social: w.urlSosial
+            })),
+            note: dto.showcaseCatatan
+          }
+        : null
+    }
+  };
+}
+
 /**
  * The official flyers. At card width the text printed on them is too small to
  * read, so each one links out to the full-size file rather than pretending the
- * thumbnail is legible.
+ * thumbnail is legible. `credit` is optional: not every flyer has a source.
  *
- * @param {{ flyers: { caption: string, credit: {label: string, url: string}, items: {src: string, alt: string, width: number, height: number}[] } }} props
+ * @param {{ flyers: { caption: string, credit: {label: string, url: string} | null, items: {src: string, alt: string}[] } }} props
  */
 function FlyerStrip({ flyers }) {
   return (
@@ -24,14 +98,19 @@ function FlyerStrip({ flyers }) {
       <div className="prestasi-flyer-grid">
         {flyers.items.map((flyer) => (
           <a key={flyer.src} href={flyer.src} target="_blank" rel="noopener noreferrer">
-            <img src={flyer.src} alt={flyer.alt} width={flyer.width} height={flyer.height} loading="lazy" />
+            <img src={flyer.src} alt={flyer.alt} loading="lazy" />
             <span className="prog-sr-only">{NEW_TAB_HINT}</span>
           </a>
         ))}
       </div>
       <figcaption>
-        {flyers.caption}{' '}
-        <ProgramLink url={flyers.credit.url} className="prog-credit">Sumber: {flyers.credit.label}</ProgramLink>
+        {flyers.caption}
+        {flyers.credit && (
+          <>
+            {' '}
+            <ProgramLink url={flyers.credit.url} className="prog-credit">Sumber: {flyers.credit.label}</ProgramLink>
+          </>
+        )}
       </figcaption>
     </figure>
   );
@@ -96,17 +175,42 @@ function CompetitionCard({ item }) {
       <div className="prestasi-contest-body">
         {activeTab === 'mekanisme' && <MekanismeFace data={face} />}
         {activeTab === 'pengumuman' && <PengumumanFace data={face} />}
-        {activeTab === 'showcase' && <ShowcaseFace competitionId={face.competitionId} note={face.note} />}
+        {activeTab === 'showcase' && <ShowcaseFace winners={face.winners} note={face.note} />}
       </div>
     </article>
   );
 }
 
 /** Prestasi: every competition run through UKS/M, each with up to three faces. */
-export default function PrestasiSection({ section }) {
+export default function PrestasiSection() {
+  const { data, loading, error, retry } = useLombaList();
+  const items = useMemo(() => (data || []).map(mapLombaToItem), [data]);
+
+  if (loading) return <LoadingState label="Memuat daftar kompetisi..." />;
+
+  if (error) {
+    return (
+      <ErrorState
+        title="Daftar kompetisi tidak dapat dimuat"
+        text="Terjadi gangguan saat mengambil data kompetisi. Silakan coba lagi."
+        retry={retry}
+      />
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <EmptyState
+        icon="fa-solid fa-trophy"
+        title="Belum ada kompetisi terdaftar"
+        text="Daftar kompetisi akan tampil di sini begitu tersedia."
+      />
+    );
+  }
+
   return (
     <div className="prestasi-list-wrap">
-      {section.items.map((item) => <CompetitionCard key={item.id} item={item} />)}
+      {items.map((item) => <CompetitionCard key={item.id} item={item} />)}
     </div>
   );
 }

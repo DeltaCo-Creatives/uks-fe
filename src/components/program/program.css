@@ -964,6 +964,9 @@ a.prog-competition:hover {
   display: block;
   width: 100%;
   height: auto;
+  /* No width/height attrs from the API DTO, so reserve space up front
+     (flyers are portrait posters) to avoid layout shift while it loads. */
+  aspect-ratio: 4 / 5;
   border-radius: var(--radius-lg);
   background: var(--bg-card-alt);
 }
