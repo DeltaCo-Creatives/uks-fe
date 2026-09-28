@@ -2671,8 +2671,10 @@ footer {
 .react-edge-zone {
   /* One width for the drawer and for the phone handle that rides on its edge when open. */
   --edge-drawer-w: 320px;
+  /* Where the zone, and so the drawer, starts from the top of the screen. */
+  --edge-top: 130px;
   position: fixed;
-  top: 130px;
+  top: var(--edge-top);
   left: 0;
   z-index: 10002;
   display: flex;
@@ -2704,6 +2706,8 @@ footer {
   /* Only what actually changes, so nothing else (position, top/left at the 768px switch) animates. */
   transition:
     translate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    top 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.3s ease,
     visibility 0.3s,
     background-color 0.2s ease,
@@ -2776,8 +2780,10 @@ footer {
   }
 
   /* The open drawer would otherwise cover the handle, so a tap where it was would hit a menu
-     item. Riding on the drawer's outer edge keeps it tappable, to close. */
+     item. Riding on the drawer's outer edge, level with its top, keeps it tappable, to close. */
   .react-edge-zone.is-open .react-edge-handle {
+    top: var(--edge-top);
+    transform: none;
     translate: calc(-1 * var(--edge-drawer-w)) 0;
   }
 }
