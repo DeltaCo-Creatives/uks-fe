@@ -47,6 +47,7 @@ export default function InformasiView() {
         activeId={activeId}
         onSelect={(id) => navigate(pathForView('informasi', id))}
         label="Bagian informasi"
+        pageNav
       />
 
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { embedUrl, linkKind, NEW_TAB_HINT } from '../../utils/linkKind';
+import { useScrollLock } from '../../hooks/useScrollLock';
 
 /**
  * Reads a document without leaving the page: the file fills the dialog, and the
@@ -18,6 +19,8 @@ export default function DocViewerModal({ doc, onClose }) {
   const src = embedUrl(doc.url, doc.kind);
   const kind = linkKind(doc.url, doc.kind);
 
+  useScrollLock(true);
+
   useEffect(() => {
     closeRef.current?.focus();
 
@@ -26,13 +29,7 @@ export default function DocViewerModal({ doc, onClose }) {
     };
     document.addEventListener('keydown', onKeyDown);
 
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = overflow;
-    };
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, [onClose]);
 
   return createPortal(

@@ -33,7 +33,7 @@ export default function ProgramPicker({ programs, activeId, onSelect, pickerRef 
   };
 
   return (
-    <div ref={pickerRef} className="prog-picker" role="tablist" aria-label="Pilih program">
+    <div ref={pickerRef} className="prog-picker" data-page-nav role="tablist" aria-label="Pilih program">
       {programs.map((program, idx) => {
         const selected = program.id === activeId;
         return (
