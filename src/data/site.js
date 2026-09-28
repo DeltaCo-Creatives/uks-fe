@@ -14,55 +14,6 @@ export const contactInfo = {
   copyrightYear: '2026'
 };
 
-export const appsList = [
-  {
-    id: 'oky',
-    name: 'Oky Period Tracker',
-    publisher: 'UNICEF Indonesia',
-    badge: 'KESEHATAN REMAJA',
-    tagline: 'Aplikasi Edukasi Pubertas & Menstruasi Ramah Remaja',
-    description: 'Aplikasi pelacak menstruasi pertama di dunia yang dirancang bersama anak perempuan untuk memantau siklus, edukasi kebersihan reproduksi, dan tips kesehatan emosional.',
-    icon: '/Aset UKS/aplikasi/oky.png',
-    featuredOnHome: true,
-    color: '#BE185D',
-    bgColor: '#FCE7F3',
-    links: [
-      { store: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.oky.id', icon: 'fa-brands fa-google-play' }
-    ]
-  },
-  {
-    id: 'satusehat',
-    name: 'SATUSEHAT Mobile',
-    publisher: 'Kementerian Kesehatan RI',
-    badge: 'REKAM KESEHATAN',
-    tagline: 'Platform Resmi Catatan Imunisasi & Skrining Siswa',
-    description: 'Aplikasi kesehatan resmi Kemenkes RI untuk menyimpan sertifikat imunisasi anak sekolah (BIAS), rekam medis digital, dan skrining berkala terintegrasi fasilitas kesehatan.',
-    icon: '/Aset UKS/aplikasi/satusehat.png',
-    featuredOnHome: true,
-    color: '#0369A1',
-    bgColor: '#E0F2FE',
-    links: [
-      { store: 'Google Play', url: 'https://play.google.com/store/apps/details?id=dto.kemkes.satusehat', icon: 'fa-brands fa-google-play' },
-      { store: 'Portal Web', url: 'https://satusehat.kemkes.go.id/', icon: 'fa-solid fa-globe' }
-    ]
-  },
-  {
-    id: 'sijiwa',
-    name: 'SIJIWA (Sistem Informasi Jiwa)',
-    publisher: 'Garuda Teknologi Indonesia',
-    badge: 'KESEHATAN MENTAL',
-    tagline: 'Sistem Deteksi Dini & Konseling Ramah Anak',
-    description: 'Sistem informasi kesehatan jiwa anak sekolah untuk memfasilitasi guru BK dan wali kelas dalam melakukan skrining awal kesejahteraan mental dan psikososial peserta didik.',
-    icon: '/Aset UKS/aplikasi/sijiwa.png',
-    featuredOnHome: false,
-    color: '#7C3AED',
-    bgColor: '#EDE9FE',
-    links: [
-      { store: 'Portal Layanan', url: 'https://kemkes.go.id', icon: 'fa-solid fa-globe' }
-    ]
-  }
-];
-
 export const faqsList = [
   {
     q: 'Apakah dana Bantuan Operasional Satuan Pendidikan (BOSP) dapat digunakan untuk UKS?',
