@@ -1,7 +1,10 @@
-import { appsList } from '../../data/portalData';
+import { useAplikasiList } from '../../hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 import SafeImage from '../SafeImage';
 
 export default function AplikasiPanel() {
+  const { data: apps, loading, error, retry } = useAplikasiList();
+
   return (
     <div className="about-bento-frame">
       <div className="info-panel-head is-stacked">
@@ -12,55 +15,77 @@ export default function AplikasiPanel() {
         </p>
       </div>
 
-      <div className="info-grid">
-        {appsList.map((app) => (
-          <article key={app.id} className="info-app">
-            <div>
-              <div className="info-app-head">
-                <div className="info-app-icon" style={{ background: app.bgColor || 'var(--brand-light)' }}>
-                  <SafeImage
-                    src={app.icon}
-                    alt=""
-                    fallbackType="logo"
-                    icon="fa-solid fa-mobile-screen"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
+      {loading && <LoadingState label="Memuat daftar aplikasi..." />}
+
+      {!loading && error && (
+        <ErrorState
+          title="Daftar aplikasi tidak dapat dimuat"
+          text="Terjadi gangguan saat mengambil data aplikasi. Silakan coba lagi."
+          retry={retry}
+        />
+      )}
+
+      {!loading && !error && (
+        (apps?.length ?? 0) === 0 ? (
+          <EmptyState
+            icon="fa-solid fa-mobile-screen"
+            title="Belum ada aplikasi terkait"
+            text="Daftar aplikasi pendukung UKS/M akan tampil di sini begitu tersedia."
+          />
+        ) : (
+          <div className="info-grid">
+            {apps.map((app) => (
+              <article key={app.id} className="info-app">
                 <div>
-                  <span
-                    className="info-app-badge"
-                    style={{ color: app.color || 'var(--brand-deep)', background: app.bgColor || 'var(--brand-light)' }}
-                  >
-                    {app.badge}
-                  </span>
-                  <h3 className="info-app-name">{app.name}</h3>
-                  <div className="info-app-publisher">{app.publisher}</div>
+                  <div className="info-app-head">
+                    <div className="info-app-icon" style={{ background: app.warnaLatar || 'var(--brand-light)' }}>
+                      <SafeImage
+                        src={app.logoUrl}
+                        alt=""
+                        fallbackType="logo"
+                        icon="fa-solid fa-mobile-screen"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div>
+                      {app.badge && (
+                        <span
+                          className="info-app-badge"
+                          style={{ color: app.warna || 'var(--brand-deep)', background: app.warnaLatar || 'var(--brand-light)' }}
+                        >
+                          {app.badge}
+                        </span>
+                      )}
+                      <h3 className="info-app-name">{app.nama}</h3>
+                      <div className="info-app-publisher">{app.penerbit}</div>
+                    </div>
+                  </div>
+
+                  {app.tagline && <div className="info-app-tagline">{app.tagline}</div>}
+
+                  <p className="info-app-desc">{app.deskripsi}</p>
                 </div>
-              </div>
 
-              {app.tagline && <div className="info-app-tagline">{app.tagline}</div>}
-
-              <p className="info-app-desc">{app.description}</p>
-            </div>
-
-            <div className="info-app-links">
-              {app.links.map((lnk, idx) => (
-                <a
-                  key={idx}
-                  href={lnk.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-pill primary info-app-link"
-                >
-                  <i className={lnk.icon || 'fa-solid fa-download'} aria-hidden="true"></i>
-                  <span>Buka {lnk.store}</span>
-                  <span className="info-sr-only">(membuka tab baru)</span>
-                </a>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
+                <div className="info-app-links">
+                  {(app.tautan || []).map((lnk, idx) => (
+                    <a
+                      key={idx}
+                      href={lnk.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-pill primary info-app-link"
+                    >
+                      <i className={lnk.ikon || 'fa-solid fa-download'} aria-hidden="true"></i>
+                      <span>Buka {lnk.store}</span>
+                      <span className="info-sr-only">(membuka tab baru)</span>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        )
+      )}
     </div>
   );
 }

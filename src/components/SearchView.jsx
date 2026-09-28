@@ -2,12 +2,11 @@ import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { pathForView } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
-import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList } from '../hooks/usePublicLists';
+import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
   strataLevels,
-  priorityProgramsList,
-  appsList
+  priorityProgramsList
 } from '../data/portalData';
 
 export default function SearchView() {
@@ -23,6 +22,7 @@ export default function SearchView() {
   const { data: booksList } = useBukuPanduanList();
   const { data: videosList } = useVideoList();
   const { data: regulationsList } = useProdukHukumList();
+  const { data: apps } = useAplikasiList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -180,11 +180,11 @@ export default function SearchView() {
     });
 
     // 10. Apps
-    appsList.forEach((app) => {
+    (apps || []).forEach((app) => {
       items.push({
         id: `app-${app.id}`,
-        title: app.name,
-        excerpt: `${app.publisher} · ${app.tagline || ''} - ${app.description}`,
+        title: app.nama,
+        excerpt: `${app.penerbit} · ${app.tagline || ''} - ${app.deskripsi}`,
         typeLabel: 'Aplikasi Terkait',
         typeColor: '#0284C7',
         icon: 'fa-solid fa-mobile-screen',
@@ -208,7 +208,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>

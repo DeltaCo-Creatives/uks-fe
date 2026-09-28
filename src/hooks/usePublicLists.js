@@ -34,6 +34,9 @@ export const useProdukHukumList = createCachedList('/public/produk-hukum');
  */
 export const useKementerianList = createCachedList('/public/kementerian');
 
+/** Aplikasi terkait for the Informasi page and search, fetched once and shared by every consumer. */
+export const useAplikasiList = createCachedList('/public/aplikasi');
+
 /**
  * Mitra Kemitraan UKS/M: yearly cohorts (`kelompokTahun`) and partners with no
  * support record yet (`tanpaDukungan`), fetched once for the Mitra page.
