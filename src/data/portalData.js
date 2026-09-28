@@ -22,9 +22,6 @@ export * from './stratifikasi';
 // Priority Programs (MBG, CKG, 7KAIH, ASRI, Prestasi, etc.)
 export * from './program';
 
-// Prestasi: competition winners, keyed by competition id
-export * from './prestasi';
-
 // Multi-stakeholder Partnership (Mitra, Activities, Support, Logos)
 export * from './mitra';
 
