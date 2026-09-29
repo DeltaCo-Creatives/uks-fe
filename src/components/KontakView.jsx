@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { faqsList, contactInfo } from '../data/portalData';
-import { useKementerianList } from '../hooks/usePublicLists';
+import { contactInfo } from '../data/portalData';
+import { useFaqList, useKementerianList } from '../hooks/usePublicLists';
 import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 import './kontak/kontak.css';
 
 export default function KontakView() {
   const [openFaq, setOpenFaq] = useState(0);
   const { data: ministries, loading: ministriesLoading, error: ministriesError, retry: retryMinistries } = useKementerianList();
+  const { data: faqs, loading: faqLoading, error: faqError, retry: retryFaq } = useFaqList();
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -252,28 +253,49 @@ export default function KontakView() {
               </h2>
             </div>
 
-            <div className="faq-accordion-list">
-              {faqsList.map((faq, idx) => {
-                const isOpen = openFaq === idx;
-                return (
-                  <div
-                    key={idx}
-                    className={`faq-accordion-item ${isOpen ? 'is-open' : ''}`}
-                  >
-                    <button
-                      className="faq-accordion-trigger"
-                      onClick={() => toggleFaq(idx)}
-                    >
-                      <span>{faq.q}</span>
-                      <i className="fa-solid fa-chevron-down faq-accordion-icon"></i>
-                    </button>
-                    <div className="faq-accordion-answer">
-                      <p>{faq.a}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            {faqLoading && <LoadingState label="Memuat tanya jawab..." />}
+
+            {!faqLoading && faqError && (
+              <ErrorState
+                title="Tanya jawab tidak dapat dimuat"
+                text="Terjadi gangguan saat mengambil data FAQ. Silakan coba lagi."
+                retry={retryFaq}
+              />
+            )}
+
+            {!faqLoading && !faqError && (
+              (faqs?.length ?? 0) === 0 ? (
+                <EmptyState
+                  icon="fa-solid fa-circle-question"
+                  title="Belum ada tanya jawab"
+                  text="Daftar pertanyaan yang sering diajukan akan tampil di sini begitu tersedia."
+                />
+              ) : (
+                <div className="faq-accordion-list">
+                  {faqs.map((faq, idx) => {
+                    const isOpen = openFaq === idx;
+                    return (
+                      <div
+                        key={faq.id}
+                        className={`faq-accordion-item ${isOpen ? 'is-open' : ''}`}
+                      >
+                        <button
+                          className="faq-accordion-trigger"
+                          onClick={() => toggleFaq(idx)}
+                        >
+                          <span>{faq.pertanyaan}</span>
+                          <i className="fa-solid fa-chevron-down faq-accordion-icon"></i>
+                        </button>
+                        <div className="faq-accordion-answer">
+                          {/* jawaban is sanitized server-side, rendered as HTML the same way BeritaDetailView renders article.content */}
+                          <div className="faq-accordion-answer-html" dangerouslySetInnerHTML={{ __html: faq.jawaban }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )
+            )}
           </div>
         </section>
 

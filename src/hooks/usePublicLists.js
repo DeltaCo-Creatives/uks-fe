@@ -48,3 +48,6 @@ export const useDukunganMitraList = createCachedList('/public/dukungan-mitra');
 
 /** Prestasi competitions (Lomba), with nested winners, for the Program Prioritas Prestasi section. */
 export const useLombaList = createCachedList('/public/lomba');
+
+/** FAQ accordion for the Kontak page, active only, ordered by urutan then pertanyaan. */
+export const useFaqList = createCachedList('/public/faq');
