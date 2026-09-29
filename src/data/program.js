@@ -71,23 +71,7 @@ export const priorityProgramsList = [
       {
         id: 'rujukan',
         type: 'resources',
-        title: 'Rujukan untuk sekolah',
-        groups: [
-          {
-            title: 'Panduan dan regulasi',
-            items: [
-              { title: 'Pedoman Pendidikan Karakter dalam Makan Bergizi Gratis', meta: 'Buku panduan, Kemendikdasmen', kind: 'drive', url: 'https://s.id/pedomanmbg' },
-              { title: 'Perpres No. 83 Tahun 2024 tentang Badan Gizi Nasional', meta: 'JDIH BPK', url: SRC.perpres83.url }
-            ]
-          },
-          {
-            title: 'Situs resmi',
-            items: [
-              { title: 'Badan Gizi Nasional', meta: 'bgn.go.id', url: 'https://bgn.go.id' },
-              { title: 'Dasbor MBG Kemendikdasmen', meta: 'mbg.pdm.kemendikdasmen.go.id', url: null }
-            ]
-          }
-        ]
+        title: 'Rujukan untuk sekolah'
       }
     ],
     sources: [SRC.devMbg, SRC.perpres83, SRC.bgnInklusif, SRC.cerdas]
@@ -136,22 +120,7 @@ export const priorityProgramsList = [
       {
         id: 'rujukan',
         type: 'resources',
-        title: 'Rujukan',
-        groups: [
-          {
-            title: 'Regulasi',
-            items: [
-              { title: 'Petunjuk Teknis Cek Kesehatan Gratis Sekolah', meta: 'KMK HK.01.07/Menkes/770/2025, JDIH Kemenkes', url: SRC.kmk770.url }
-            ]
-          },
-          {
-            title: 'Situs resmi',
-            items: [
-              { title: 'Ayo Sehat Kemenkes', meta: 'Informasi dan jadwal CKG', url: 'https://ayosehat.kemkes.go.id' },
-              { title: 'Pendaftaran sekolah CKG', meta: 'ckg.kemkes.go.id', url: null }
-            ]
-          }
-        ]
+        title: 'Rujukan'
       }
     ],
     sources: [SRC.devCkg, SRC.kmk770]
@@ -175,13 +144,13 @@ export const priorityProgramsList = [
         type: 'habits',
         title: 'Tujuh kebiasaan',
         items: [
-          { title: 'Bangun Pagi', image: '/program/7kaih-bangun-pagi.png', text: 'Mengajarkan nilai disiplin, keseimbangan, produktivitas, dan menghargai waktu.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-bangun-pagi/' },
-          { title: 'Beribadah', image: '/program/7kaih-beribadah.png', text: 'Menyimpan makna spiritual dan moral yang membentuk kepribadian serta hubungan harmonis dengan Tuhan, alam, dan sesama.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-beribadah/' },
-          { title: 'Berolahraga', image: '/program/7kaih-berolah-raga.webp', text: 'Menjaga kesehatan fisik sekaligus membangun disiplin, keseimbangan, dan ketahanan mental.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-berolahraga' },
-          { title: 'Makan Sehat dan Bergizi', image: '/program/7kaih-makan-sehat-bergizi.webp', text: 'Memenuhi kebutuhan nutrisi tubuh dengan prinsip gizi seimbang.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-makan-sehat-dan-bergizi' },
-          { title: 'Gemar Belajar', image: '/program/7kaih-gemar-belajar.webp', text: 'Mengajak setiap anak untuk terus tumbuh dalam pemahaman, karakter, dan kearifan.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-gemar-belajar/' },
-          { title: 'Bermasyarakat', image: '/program/7kaih-bermasyarakat.png', text: 'Mendorong setiap anak hidup bersama secara harmonis dan berkontribusi terhadap kesejahteraan bersama.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-bermasyarakat/' },
-          { title: 'Tidur Cepat', image: '/program/7kaih-tidur-cepat.webp', text: 'Berdampak pada kesehatan fisik, kesejahteraan mental, serta kehidupan spiritual dan sosial.', url: 'https://cerdasberkarakter.kemendikdasmen.go.id/gerakan7kebiasaan-tidur-cepat/' }
+          { title: 'Bangun Pagi', image: '/program/7kaih-bangun-pagi.png', text: 'Mengajarkan nilai disiplin, keseimbangan, produktivitas, dan menghargai waktu.' },
+          { title: 'Beribadah', image: '/program/7kaih-beribadah.png', text: 'Menyimpan makna spiritual dan moral yang membentuk kepribadian serta hubungan harmonis dengan Tuhan, alam, dan sesama.' },
+          { title: 'Berolahraga', image: '/program/7kaih-berolah-raga.webp', text: 'Menjaga kesehatan fisik sekaligus membangun disiplin, keseimbangan, dan ketahanan mental.' },
+          { title: 'Makan Sehat dan Bergizi', image: '/program/7kaih-makan-sehat-bergizi.webp', text: 'Memenuhi kebutuhan nutrisi tubuh dengan prinsip gizi seimbang.' },
+          { title: 'Gemar Belajar', image: '/program/7kaih-gemar-belajar.webp', text: 'Mengajak setiap anak untuk terus tumbuh dalam pemahaman, karakter, dan kearifan.' },
+          { title: 'Bermasyarakat', image: '/program/7kaih-bermasyarakat.png', text: 'Mendorong setiap anak hidup bersama secara harmonis dan berkontribusi terhadap kesejahteraan bersama.' },
+          { title: 'Tidur Cepat', image: '/program/7kaih-tidur-cepat.webp', text: 'Berdampak pada kesehatan fisik, kesejahteraan mental, serta kehidupan spiritual dan sosial.' }
         ]
       },
       {
@@ -201,35 +170,7 @@ export const priorityProgramsList = [
       {
         id: 'panduan',
         type: 'resources',
-        title: 'Buku panduan',
-        groups: [
-          {
-            title: 'Kiat Jitu 7KAIH untuk guru',
-            variants: [
-              { label: 'PAUD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurupaud' },
-              { label: 'SD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurusd' },
-              { label: 'SMP', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurusmp' },
-              { label: 'SMA', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-gurusma' }
-            ]
-          },
-          {
-            title: 'Kiat Jitu 7KAIH untuk orang tua',
-            variants: [
-              { label: 'PAUD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortupaud' },
-              { label: 'SD', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortusd' },
-              { label: 'SMP', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortusmp' },
-              { label: 'SMA', kind: 'drive', url: 'https://s.id/kiatjitu7kaih-ortusma' }
-            ]
-          },
-          {
-            title: 'Lainnya',
-            items: [
-              { title: 'Modul Penguatan 7KAIH dalam Kepramukaan', meta: 'Kemendikdasmen', kind: 'drive', url: 'https://s.id/modul7kaih-kepramukaan' },
-              { title: 'Laman resmi Gerakan 7KAIH', meta: 'cerdasberkarakter.kemendikdasmen.go.id', url: SRC.cerdas.url },
-              { title: 'Surat Edaran Bersama No. 1 Tahun 2025', meta: 'JDIH Kemendikdasmen', url: null }
-            ]
-          }
-        ]
+        title: 'Buku panduan'
       }
     ],
     sources: [SRC.dev7kaih, SRC.cerdas]
