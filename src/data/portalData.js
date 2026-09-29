@@ -27,6 +27,3 @@ export * from './mitra';
 
 // Partner marquee screenshots (Books/Infografis/Video/Regulasi now come from the API, see src/hooks/usePublikasi.js)
 export * from './publikasi';
-
-// Site Chrome, Contact Info, Apps Directory, FAQs & Ministry Links
-export * from './site';

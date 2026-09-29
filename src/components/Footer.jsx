@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { contactInfo } from '../data/portalData';
+import { usePengaturanSettings } from '../hooks/usePublicLists';
 import { pathForView } from '../routes';
 
 export default function Footer() {
@@ -15,6 +15,12 @@ export default function Footer() {
     { label: 'Kontak & Helpdesk', key: 'kontak' }
   ];
 
+  const { data: settings } = usePengaturanSettings();
+  const address = settings?.['kontak.address'];
+  const email = settings?.['kontak.email'];
+  const phone = settings?.['kontak.phone'];
+  const websiteUrl = settings?.['kontak.websiteUrl'];
+
   return (
     <footer id="kontak" style={{ marginTop: 'auto' }}>
       <div className="container">
@@ -29,34 +35,42 @@ export default function Footer() {
           {/* Contact Details (A15) */}
           <div className="footer-links" style={{ flex: '1 1 260px', maxWidth: '340px' }}>
             <h5>Sekretariat Pembina</h5>
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '13px', lineHeight: 1.6, margin: 0 }}>
-              <i className="fa-solid fa-location-dot" style={{ marginRight: '8px', color: 'var(--brand-accent)' }}></i>
-              {contactInfo.address}
-            </p>
+            {address && (
+              <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '13px', lineHeight: 1.6, margin: 0 }}>
+                <i className="fa-solid fa-location-dot" style={{ marginRight: '8px', color: 'var(--brand-accent)' }}></i>
+                {address}
+              </p>
+            )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
-              <a
-                href={`mailto:${contactInfo.email}`}
-                style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-              >
-                <i className="fa-solid fa-envelope" style={{ color: 'var(--brand-accent)', fontSize: '12px' }}></i>
-                <span>{contactInfo.email}</span>
-              </a>
-              <a
-                href={`tel:${contactInfo.phone}`}
-                style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-              >
-                <i className="fa-solid fa-phone" style={{ color: 'var(--brand-accent)', fontSize: '12px' }}></i>
-                <span>{contactInfo.phone}</span>
-              </a>
-              <a
-                href={contactInfo.websiteUrl.trim()}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-              >
-                <i className="fa-solid fa-arrow-up-right-from-square" style={{ color: 'var(--brand-accent)', fontSize: '12px' }}></i>
-                <span>{contactInfo.websiteUrl.trim().replace(/^https?:\/\//, '')}</span>
-              </a>
+              {email && (
+                <a
+                  href={`mailto:${email}`}
+                  style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <i className="fa-solid fa-envelope" style={{ color: 'var(--brand-accent)', fontSize: '12px' }}></i>
+                  <span>{email}</span>
+                </a>
+              )}
+              {phone && (
+                <a
+                  href={`tel:${phone}`}
+                  style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <i className="fa-solid fa-phone" style={{ color: 'var(--brand-accent)', fontSize: '12px' }}></i>
+                  <span>{phone}</span>
+                </a>
+              )}
+              {websiteUrl && (
+                <a
+                  href={websiteUrl.trim()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <i className="fa-solid fa-arrow-up-right-from-square" style={{ color: 'var(--brand-accent)', fontSize: '12px' }}></i>
+                  <span>{websiteUrl.trim().replace(/^https?:\/\//, '')}</span>
+                </a>
+              )}
             </div>
           </div>
 

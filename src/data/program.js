@@ -25,8 +25,7 @@ const SRC = {
 
 // Kemendikdasmen berita 15766, used as the page intro
 export const programIntro = {
-  text: 'Usaha Kesehatan Sekolah (UKS) direvitalisasi menjadi "rumah" bagi program-program prioritas Kemendikdasmen di tingkat satuan pendidikan.',
-  source: SRC.asriWorkshop
+  text: 'Usaha Kesehatan Sekolah (UKS) direvitalisasi menjadi "rumah" bagi program-program prioritas Kemendikdasmen di tingkat satuan pendidikan.'
 };
 
 export const priorityProgramsList = [

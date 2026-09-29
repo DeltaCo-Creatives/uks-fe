@@ -7,7 +7,6 @@
  */
 
 export const STRATIFIKASI_SOURCE = 'portal-uks.demo.or.id/stratifikasi-uks';
-export const STRATIFIKASI_DASHBOARD_URL = 'https://stratifikasiuks.org/';
 
 export const stratifikasiIntro = {
   title: 'Apa itu Stratifikasi UKS/M?',

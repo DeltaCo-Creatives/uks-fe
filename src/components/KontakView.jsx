@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { contactInfo } from '../data/portalData';
-import { useFaqList, useKementerianList } from '../hooks/usePublicLists';
+import { useFaqList, useKementerianList, usePengaturanSettings } from '../hooks/usePublicLists';
 import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 import './kontak/kontak.css';
 
@@ -8,6 +7,13 @@ export default function KontakView() {
   const [openFaq, setOpenFaq] = useState(0);
   const { data: ministries, loading: ministriesLoading, error: ministriesError, retry: retryMinistries } = useKementerianList();
   const { data: faqs, loading: faqLoading, error: faqError, retry: retryFaq } = useFaqList();
+  const { data: settings } = usePengaturanSettings();
+  const address = settings?.['kontak.address'];
+  const email = settings?.['kontak.email'];
+  const phone = settings?.['kontak.phone'];
+  const ultPhone = settings?.['kontak.ultPhone'];
+  const operatingHours = settings?.['kontak.operatingHours'];
+  const mapsUrl = settings?.['kontak.mapsUrl'];
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -59,10 +65,12 @@ export default function KontakView() {
                     <dt>Instansi</dt>
                     <dd>Sekretariat Pembina UKS/M Pusat, Kementerian Pendidikan Dasar dan Menengah RI</dd>
                   </div>
-                  <div>
-                    <dt>Alamat</dt>
-                    <dd><address>{contactInfo.address}</address></dd>
-                  </div>
+                  {address && (
+                    <div>
+                      <dt>Alamat</dt>
+                      <dd><address>{address}</address></dd>
+                    </div>
+                  )}
                 </dl>
               </div>
 
@@ -72,22 +80,30 @@ export default function KontakView() {
                 </div>
                 <h4 className="kontak-card-title">Helpdesk &amp; Call Center</h4>
                 <dl className="kontak-fields">
-                  <div>
-                    <dt>Call Center ULT Kemendikdasmen</dt>
-                    <dd><a href={`tel:${contactInfo.ultPhone}`}>{contactInfo.ultPhone}</a></dd>
-                  </div>
-                  <div>
-                    <dt>Hotline Khusus UKS/M</dt>
-                    <dd><a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a></dd>
-                  </div>
-                  <div>
-                    <dt>Email</dt>
-                    <dd><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></dd>
-                  </div>
-                  <div>
-                    <dt>Jam Layanan</dt>
-                    <dd>{contactInfo.operatingHours}</dd>
-                  </div>
+                  {ultPhone && (
+                    <div>
+                      <dt>Call Center ULT Kemendikdasmen</dt>
+                      <dd><a href={`tel:${ultPhone}`}>{ultPhone}</a></dd>
+                    </div>
+                  )}
+                  {phone && (
+                    <div>
+                      <dt>Hotline Khusus UKS/M</dt>
+                      <dd><a href={`tel:${phone}`}>{phone}</a></dd>
+                    </div>
+                  )}
+                  {email && (
+                    <div>
+                      <dt>Email</dt>
+                      <dd><a href={`mailto:${email}`}>{email}</a></dd>
+                    </div>
+                  )}
+                  {operatingHours && (
+                    <div>
+                      <dt>Jam Layanan</dt>
+                      <dd>{operatingHours}</dd>
+                    </div>
+                  )}
                 </dl>
               </div>
 
@@ -325,15 +341,17 @@ export default function KontakView() {
                 </p>
               </div>
 
-              <a
-                href="https://maps.google.com/?q=Kementerian+Pendidikan+Dasar+dan+Menengah+Senayan+Jakarta"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-massive"
-              >
-                <i className="fa-solid fa-diamond-turn-right"></i>
-                <span>Petunjuk Arah Google Maps</span>
-              </a>
+              {mapsUrl && (
+                <a
+                  href={mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-massive"
+                >
+                  <i className="fa-solid fa-diamond-turn-right"></i>
+                  <span>Petunjuk Arah Google Maps</span>
+                </a>
+              )}
             </div>
           </div>
         </section>

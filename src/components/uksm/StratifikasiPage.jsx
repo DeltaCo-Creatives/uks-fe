@@ -1,6 +1,5 @@
 import {
   STRATIFIKASI_SOURCE,
-  STRATIFIKASI_DASHBOARD_URL,
   stratifikasiIntro,
   stratifikasiGoals,
   stratifikasiScoring,
@@ -8,6 +7,7 @@ import {
   strataCategories,
   strataLevels
 } from '../../data/portalData';
+import { usePengaturanSettings } from '../../hooks/usePublicLists';
 import ContentPlaceholder from '../ContentPlaceholder';
 import StrataExplorer from './StrataExplorer';
 
@@ -67,6 +67,9 @@ function ScoringCard() {
  * then the external dashboard.
  */
 export default function StratifikasiPage() {
+  const { data: settings } = usePengaturanSettings();
+  const dashboardUrl = settings?.['tautan.stratifikasiDashboardUrl'];
+
   return (
     <div>
       <div className="subpage-hero-banner" data-gsap="reveal">
@@ -75,9 +78,11 @@ export default function StratifikasiPage() {
         </span>
         <h1 className="subpage-hero-title">Stratifikasi UKS</h1>
         <p className="subpage-hero-desc">{stratifikasiIntro.body}</p>
-        <a className="btn-pill strat-hero-cta" href={STRATIFIKASI_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
-          Masuk ke Dasbor Stratifikasi UKS/M <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-        </a>
+        {dashboardUrl && (
+          <a className="btn-pill strat-hero-cta" href={dashboardUrl} target="_blank" rel="noopener noreferrer">
+            Masuk ke Dasbor Stratifikasi UKS/M <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+        )}
       </div>
 
       <section id="sec-strat-pengertian" className="section strat-section" style={{ paddingTop: '10px' }}>
@@ -120,9 +125,11 @@ export default function StratifikasiPage() {
             <h3>Dasbor Stratifikasi UKS/M</h3>
             <p>Penilaian strata sekolah/madrasah dilakukan melalui dasbor resmi Stratifikasi UKS/M.</p>
           </div>
-          <a className="btn-pill primary strat-dashboard-btn" href={STRATIFIKASI_DASHBOARD_URL} target="_blank" rel="noopener noreferrer">
-            Masuk ke Dasbor <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-          </a>
+          {dashboardUrl && (
+            <a className="btn-pill primary strat-dashboard-btn" href={dashboardUrl} target="_blank" rel="noopener noreferrer">
+              Masuk ke Dasbor <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
+          )}
         </div>
       </section>
     </div>

@@ -8,8 +8,6 @@
  * Wording is the source's; only typos are fixed and long paragraphs split.
  */
 
-export const PROFIL_SOURCE = 'https://uks.kemendikdasmen.go.id/tentang-uks/deskripsi-umum';
-
 // Deskripsi Umum, first paragraph
 export const profilDefinition =
   'Usaha Kesehatan Sekolah/Madrasah (UKS/M) adalah kegiatan yang dilakukan untuk meningkatkan kesehatan anak usia sekolah pada setiap jalur, jenis, dan jenjang pendidikan.';
