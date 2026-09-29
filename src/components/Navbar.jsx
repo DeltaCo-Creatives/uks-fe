@@ -71,7 +71,7 @@ export default function Navbar() {
           onClick={closeMenus}
           title="UKS Indonesia"
         >
-          <img src={scrolled ? "/Aset UKS/UKS-03.png" : "/Aset UKS/UKS-02.png"} alt="UKS Logo" />
+          <img src={scrolled ? "/Aset UKS/UKS-03.webp" : "/Aset UKS/UKS-02.webp"} alt="UKS Logo" />
         </Link>
 
         {/* Desktop Navigation Links */}

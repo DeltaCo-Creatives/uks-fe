@@ -8,11 +8,11 @@
  */
 
 export const defaultScreenshots = [
-  '/Aset UKS/Screenshot 2026-09-09 105341.png', '/Aset UKS/Screenshot 2026-09-09 105347.png',
-  '/Aset UKS/Screenshot 2026-09-09 105351.png', '/Aset UKS/Screenshot 2026-09-09 105355.png',
-  '/Aset UKS/Screenshot 2026-09-09 105400.png', '/Aset UKS/Screenshot 2026-09-09 105406.png',
-  '/Aset UKS/Screenshot 2026-09-09 105412.png', '/Aset UKS/Screenshot 2026-09-09 105418.png',
-  '/Aset UKS/Screenshot 2026-09-09 105423.png', '/Aset UKS/Screenshot 2026-09-09 105428.png',
-  '/Aset UKS/Screenshot 2026-09-09 105433.png', '/Aset UKS/Screenshot 2026-09-09 105500.png',
-  '/Aset UKS/Screenshot 2026-09-09 105505.png', '/Aset UKS/Screenshot 2026-09-09 105511.png'
+  '/Aset UKS/Screenshot 2026-09-09 105341.webp', '/Aset UKS/Screenshot 2026-09-09 105347.webp',
+  '/Aset UKS/Screenshot 2026-09-09 105351.webp', '/Aset UKS/Screenshot 2026-09-09 105355.webp',
+  '/Aset UKS/Screenshot 2026-09-09 105400.webp', '/Aset UKS/Screenshot 2026-09-09 105406.webp',
+  '/Aset UKS/Screenshot 2026-09-09 105412.webp', '/Aset UKS/Screenshot 2026-09-09 105418.webp',
+  '/Aset UKS/Screenshot 2026-09-09 105423.webp', '/Aset UKS/Screenshot 2026-09-09 105428.webp',
+  '/Aset UKS/Screenshot 2026-09-09 105433.webp', '/Aset UKS/Screenshot 2026-09-09 105500.webp',
+  '/Aset UKS/Screenshot 2026-09-09 105505.webp', '/Aset UKS/Screenshot 2026-09-09 105511.webp'
 ];
