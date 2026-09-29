@@ -51,3 +51,10 @@ export const useLombaList = createCachedList('/public/lomba');
 
 /** FAQ accordion for the Kontak page, active only, ordered by urutan then pertanyaan. */
 export const useFaqList = createCachedList('/public/faq');
+
+/**
+ * Site settings (Pengaturan Situs): a flat `{ "module.key": value }` object,
+ * not a list, but `createCachedList` only ever passes the JSON through, so it
+ * fits without a second cache helper.
+ */
+export const usePengaturanSettings = createCachedList('/public/pengaturan');

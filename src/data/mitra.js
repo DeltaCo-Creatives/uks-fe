@@ -4,11 +4,6 @@
  * Every edit against the source is listed in docs/kemitraan-curation.md.
  */
 
-export const MITRA_SOURCE = {
-  label: 'uks.kemendikdasmen.go.id/mitra',
-  url: 'https://uks.kemendikdasmen.go.id/mitra/panduan-kemitraan'
-};
-
 export const mitraIntro = {
   title: 'Kemitraan UKS/M',
   lead: 'Bentuk kerja sama, ketentuan, dan kriteria bagi lembaga yang ingin mendukung Sekolah Sehat, beserta daftar mitra sejak 2022 dan dukungan yang sudah tercatat.'

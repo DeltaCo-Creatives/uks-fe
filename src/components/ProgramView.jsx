@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { priorityProgramsList, programIntro } from '../data/portalData';
 import { prefersReducedMotion } from '../hooks/useCollapse';
+import { usePengaturanSettings } from '../hooks/usePublicLists';
 import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import ProgramPicker from './program/ProgramPicker';
 import ProgramPanel from './program/ProgramPanel';
@@ -27,6 +28,10 @@ export default function ProgramView() {
   const pickerRef = useRef(null);
   const panelRef = useRef(null);
   const shownId = useRef(active.id);
+
+  const { data: settings } = usePengaturanSettings();
+  const programSourceLabel = settings?.['tautan.programSumberLabel'];
+  const programSourceUrl = settings?.['tautan.programSumberUrl'];
 
   // Switching fades the new panel's blocks in, so the change reads as a change.
   useGSAP(() => {
@@ -75,9 +80,11 @@ export default function ProgramView() {
         <p className="subpage-hero-desc">
           {programIntro.text} Lima program di bawah ini menjelaskan apa isinya, siapa sasarannya, dan rujukan resminya.
         </p>
-        <ProgramLink url={programIntro.source.url} className="prog-hero-source">
-          Sumber: {programIntro.source.label}
-        </ProgramLink>
+        {programSourceUrl && (
+          <ProgramLink url={programSourceUrl} className="prog-hero-source">
+            Sumber: {programSourceLabel}
+          </ProgramLink>
+        )}
       </div>
 
       <ProgramPicker
