@@ -169,3 +169,19 @@
     gap: 12px;
   }
 }
+
+/* ---------- FAQ jawaban (sanitized HTML from the API) ---------- */
+.faq-accordion-answer-html p {
+  margin: 0 0 10px;
+}
+
+.faq-accordion-answer-html p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-accordion-answer-html a {
+  color: var(--brand-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  word-break: break-word;
+}
