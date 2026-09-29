@@ -4,7 +4,8 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { priorityProgramsList, programIntro } from '../data/portalData';
 import { prefersReducedMotion } from '../hooks/useCollapse';
-import { usePengaturanSettings } from '../hooks/usePublicLists';
+import { useProgramTautanList, usePengaturanSettings } from '../hooks/usePublicLists';
+import { buildResourceGroups, habitUrl } from '../utils/programTautan';
 import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import ProgramPicker from './program/ProgramPicker';
 import ProgramPanel from './program/ProgramPanel';
@@ -17,7 +18,9 @@ const NAV_OFFSET = 96;
 /**
  * Program Prioritas: pick one of five programs, the panel below shows it.
  * Content curated from the portal and official program sites, see
- * docs/program-curation.md.
+ * docs/program-curation.md. Each program's resource-link groups and the
+ * 7KAIH habit-card URLs come from /public/program-tautan, matched to a
+ * program by its `sec-prog-*` id (see src/utils/programTautan.js).
  */
 export default function ProgramView() {
   const { programSlug } = useParams();
@@ -29,6 +32,7 @@ export default function ProgramView() {
   const panelRef = useRef(null);
   const shownId = useRef(active.id);
 
+  const { data: tautanList } = useProgramTautanList();
   const { data: settings } = usePengaturanSettings();
   const programSourceLabel = settings?.['tautan.programSumberLabel'];
   const programSourceUrl = settings?.['tautan.programSumberUrl'];
@@ -70,6 +74,31 @@ export default function ProgramView() {
 
   if (!activeId) return <Navigate to={`/program/${defaultTabSlug('program')}`} replace />;
 
+  // sec-prog-mbg -> mbg, sec-prog-7kaih -> 7kaih, etc.
+  const programKey = active.id.replace('sec-prog-', '');
+  // The panel never waits on the links: a resources section with no groups
+  // yet (loading, failed, or none configured) is left out. A program without
+  // a resources section of its own (ASRI, Prestasi) gets a "Rujukan" one, so
+  // links added in the CMS always show up.
+  const hasResources = active.sections.some((section) => section.type === 'resources');
+  const sections = hasResources
+    ? active.sections
+    : [...active.sections, { id: 'rujukan', type: 'resources', title: 'Rujukan' }];
+  const activeWithLinks = {
+    ...active,
+    sections: sections
+      .map((section) => {
+        if (section.type === 'resources') {
+          return { ...section, groups: buildResourceGroups(tautanList, programKey) };
+        }
+        if (section.type === 'habits') {
+          return { ...section, items: section.items.map((item) => ({ ...item, url: habitUrl(tautanList, item.title) })) };
+        }
+        return section;
+      })
+      .filter((section) => section.type !== 'resources' || section.groups.length > 0)
+  };
+
   return (
     <div className="container prog-page" style={{ paddingBottom: '80px' }}>
       <div className="subpage-hero-banner" data-gsap="reveal">
@@ -94,7 +123,7 @@ export default function ProgramView() {
         pickerRef={pickerRef}
       />
 
-      <ProgramPanel ref={panelRef} program={active} number={activeIndex + 1} />
+      <ProgramPanel ref={panelRef} program={activeWithLinks} number={activeIndex + 1} />
     </div>
   );
 }
