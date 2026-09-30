@@ -8,9 +8,12 @@ function rangeLabel(range) {
   return `${formatDateID(range.start)} – ${formatDateID(range.end)}`;
 }
 
+const EMPTY_RANGE = { start: null, end: null };
+
 /**
  * Search + sort + group-by + date-range toolbar shared by the portal's
  * news-like content lists. Pair with useContentToolbar for the filtering logic.
+ * Pass showSort={false} and showDateRange={false} for a search-only bar.
  */
 export default function ContentToolbar({
   searchPlaceholder,
@@ -18,11 +21,13 @@ export default function ContentToolbar({
   onQueryChange,
   sortDir,
   onSortChange,
-  groupOptions,
+  groupOptions = [],
   groupKey,
   onGroupChange,
-  dateRange,
+  dateRange = EMPTY_RANGE,
   onDateRangeChange,
+  showSort = true,
+  showDateRange = true,
   markedDates,
   resultCount,
   totalCount
@@ -52,6 +57,8 @@ export default function ContentToolbar({
 
   const hasDateFilter = Boolean(dateRange.start || dateRange.end);
   const hasAnyFilter = Boolean(query.trim()) || hasDateFilter;
+  const showGroup = groupOptions.length > 0;
+  const hasControls = showGroup || showSort || showDateRange;
 
   return (
     <div className="content-toolbar">
@@ -77,56 +84,62 @@ export default function ContentToolbar({
           )}
         </div>
 
-        <div className="content-toolbar-controls">
-          {groupOptions.length > 0 && (
-            <label className="content-toolbar-select">
-              <span>Kelompokkan</span>
-              <select value={groupKey} onChange={(e) => onGroupChange(e.target.value)}>
-                <option value="none">Tidak dikelompokkan</option>
-                {groupOptions.map((g) => (
-                  <option key={g.key} value={g.key}>{g.label}</option>
-                ))}
-              </select>
-            </label>
-          )}
+        {hasControls && (
+          <div className="content-toolbar-controls">
+            {showGroup && (
+              <label className="content-toolbar-select">
+                <span>Kelompokkan</span>
+                <select value={groupKey} onChange={(e) => onGroupChange(e.target.value)}>
+                  <option value="none">Tidak dikelompokkan</option>
+                  {groupOptions.map((g) => (
+                    <option key={g.key} value={g.key}>{g.label}</option>
+                  ))}
+                </select>
+              </label>
+            )}
 
-          <button
-            type="button"
-            className="content-toolbar-pill-btn"
-            onClick={() => onSortChange(sortDir === 'desc' ? 'asc' : 'desc')}
-            aria-label={sortDir === 'desc' ? 'Urutan: terbaru lebih dulu' : 'Urutan: terlama lebih dulu'}
-          >
-            <i className={sortDir === 'desc' ? 'fa-solid fa-arrow-down-wide-short' : 'fa-solid fa-arrow-up-wide-short'}></i>
-            {sortDir === 'desc' ? 'Terbaru' : 'Terlama'}
-          </button>
+            {showSort && (
+              <button
+                type="button"
+                className="content-toolbar-pill-btn"
+                onClick={() => onSortChange(sortDir === 'desc' ? 'asc' : 'desc')}
+                aria-label={sortDir === 'desc' ? 'Urutan: terbaru lebih dulu' : 'Urutan: terlama lebih dulu'}
+              >
+                <i className={sortDir === 'desc' ? 'fa-solid fa-arrow-down-wide-short' : 'fa-solid fa-arrow-up-wide-short'}></i>
+                {sortDir === 'desc' ? 'Terbaru' : 'Terlama'}
+              </button>
+            )}
 
-          <div className="content-toolbar-calendar-wrap" ref={calendarWrapRef}>
-            <button
-              type="button"
-              className={`content-toolbar-pill-btn${hasDateFilter ? ' content-toolbar-pill-btn-active' : ''}`}
-              onClick={() => setCalendarOpen((open) => !open)}
-              aria-haspopup="dialog"
-              aria-expanded={calendarOpen}
-            >
-              <i className="fa-regular fa-calendar"></i>
-              {rangeLabel(dateRange)}
-            </button>
-            {calendarOpen && (
-              <DateRangeCalendar
-                range={dateRange}
-                onChange={onDateRangeChange}
-                markedDates={markedDates}
-                onClose={() => setCalendarOpen(false)}
-              />
+            {showDateRange && (
+              <div className="content-toolbar-calendar-wrap" ref={calendarWrapRef}>
+                <button
+                  type="button"
+                  className={`content-toolbar-pill-btn${hasDateFilter ? ' content-toolbar-pill-btn-active' : ''}`}
+                  onClick={() => setCalendarOpen((open) => !open)}
+                  aria-haspopup="dialog"
+                  aria-expanded={calendarOpen}
+                >
+                  <i className="fa-regular fa-calendar"></i>
+                  {rangeLabel(dateRange)}
+                </button>
+                {calendarOpen && (
+                  <DateRangeCalendar
+                    range={dateRange}
+                    onChange={onDateRangeChange}
+                    markedDates={markedDates}
+                    onClose={() => setCalendarOpen(false)}
+                  />
+                )}
+              </div>
             )}
           </div>
-        </div>
+        )}
       </div>
 
       {hasAnyFilter && (
         <p className="content-toolbar-summary">
           Menampilkan {resultCount} dari {totalCount} konten
-          <button type="button" className="content-toolbar-reset" onClick={() => { onQueryChange(''); onDateRangeChange({ start: null, end: null }); }}>
+          <button type="button" className="content-toolbar-reset" onClick={() => { onQueryChange(''); if (onDateRangeChange) onDateRangeChange({ start: null, end: null }); }}>
             Hapus filter
           </button>
         </p>

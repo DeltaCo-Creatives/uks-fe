@@ -1,14 +1,23 @@
-import { useMemo, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useId, useMemo, useRef, useState } from 'react';
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { pageNavigationConfigs } from '../data/portalData';
 import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
 import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '../hooks/usePublicLists';
-import { countPublikasiView } from '../utils/counters';
+import { useContentToolbar } from '../hooks/useContentToolbar';
 import DocViewerModal from './shared/DocViewerModal';
 import ImageLightbox from './shared/ImageLightbox';
 import LobbyTabs from './shared/LobbyTabs';
-import SafeImage from './SafeImage';
+import ContentToolbar from './shared/ContentToolbar';
 import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
+import { BookGrid, InfografisGrid, VideoGrid, RegulasiList } from './publikasi/PublikasiItems';
+import PublikasiSearchResults from './publikasi/PublikasiSearchResults';
+import {
+  BUKU_SEARCH_FIELDS,
+  INFOGRAFIS_SEARCH_FIELDS,
+  VIDEO_SEARCH_FIELDS,
+  REGULASI_SEARCH_FIELDS
+} from './publikasi/searchFields';
+import './publikasi/publikasi.css';
 
 const publikasiTabs = pageNavigationConfigs.publikasi.sections;
 
@@ -31,11 +40,22 @@ function BooksPanel() {
       .sort((a, b) => a.name.localeCompare(b.name, 'id'));
   }, [bukuList]);
 
-  const filteredBooks = !bukuList
-    ? []
-    : bookCategory === 'all'
-      ? bukuList
-      : bukuList.filter((b) => (b.tags || []).some((tag) => tag.slug === bookCategory));
+  const filteredBooks = useMemo(() => {
+    if (!bukuList) return [];
+    if (bookCategory === 'all') return bukuList;
+    return bukuList.filter((b) => (b.tags || []).some((tag) => tag.slug === bookCategory));
+  }, [bukuList, bookCategory]);
+
+  const {
+    query, setQuery,
+    groups, resultCount, totalCount
+  } = useContentToolbar({
+    items: filteredBooks,
+    dateField: null,
+    searchFields: BUKU_SEARCH_FIELDS
+  });
+
+  const searching = query.trim() !== '';
 
   return (
     <div className="about-bento-frame">
@@ -67,55 +87,38 @@ function BooksPanel() {
       {!loading && error && <ErrorState title="Buku & pedoman tidak dapat dimuat" retry={retry} />}
 
       {!loading && !error && (
-        filteredBooks.length === 0 ? (
+        (bukuList || []).length === 0 ? (
           <EmptyState
             icon="fa-solid fa-book-bookmark"
-            title={bukuList.length === 0 ? 'Belum ada buku yang tersedia' : 'Tidak ada buku pada kategori ini'}
-            text={bukuList.length === 0 ? 'Buku dan pedoman akan tampil di sini begitu tersedia.' : 'Coba pilih kategori lain.'}
+            title="Belum ada buku yang tersedia"
+            text="Buku dan pedoman akan tampil di sini begitu tersedia."
           />
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-            {filteredBooks.map((buku) => {
-              const metaParts = [buku.pages, buku.size].filter(Boolean);
-              return (
-                <div key={buku.id} className="book-swipe-card" style={{ background: '#FFFFFF', borderRadius: 'var(--radius-lg)', padding: '20px', boxShadow: 'var(--shadow-card)', display: 'flex', flexDirection: 'column', transition: 'var(--spring)' }}>
-                  <div className="book-cover-large"><SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" /></div>
-                  {buku.category && (
-                    <span className="section-kicker" style={{ margin: '0 0 8px', padding: '4px 10px', fontSize: '10px' }}>{buku.category}</span>
-                  )}
-                  <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>{buku.title}</h3>
-                  {buku.desc && (
-                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '14px' }}>{buku.desc}</p>
-                  )}
-                  {metaParts.length > 0 && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11px', fontWeight: 700, color: 'var(--brand-primary)', marginBottom: '16px' }}>
-                      {buku.pages && <span><i className="fa-regular fa-file-pdf" style={{ marginRight: '4px' }}></i>{buku.pages}</span>}
-                      {buku.pages && buku.size && <span>•</span>}
-                      {buku.size && <span>{buku.size}</span>}
-                    </div>
-                  )}
-                  {(buku.pdf || buku.externalUrl) && (
-                    <div className="book-swipe-actions">
-                      {buku.pdf ? (
-                        <>
-                          <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); setSelectedBook(buku); }}>
-                            <i className="fa-solid fa-book-open" style={{ marginRight: '6px' }}></i>Baca Online
-                          </button>
-                          <a href={buku.pdf} download className="btn-pill secondary" style={{ textDecoration: 'none' }}>
-                            <i className="fa-solid fa-download"></i>
-                          </a>
-                        </>
-                      ) : (
-                        <a href={buku.externalUrl} target="_blank" rel="noopener noreferrer" className="btn-pill secondary" style={{ textDecoration: 'none' }}>
-                          <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginRight: '6px' }}></i>Buka Tautan
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          <>
+            <ContentToolbar
+              showSort={false}
+              showDateRange={false}
+              searchPlaceholder="Cari buku berdasarkan judul, kategori, atau tag"
+              query={query}
+              onQueryChange={setQuery}
+              resultCount={resultCount}
+              totalCount={totalCount}
+            />
+
+            {resultCount === 0 ? (
+              <EmptyState
+                icon="fa-solid fa-book-bookmark"
+                title={searching ? 'Tidak ada buku yang cocok' : 'Tidak ada buku pada kategori ini'}
+                text={
+                  searching
+                    ? (bookCategory === 'all' ? 'Coba kata kunci lain.' : 'Coba kata kunci lain atau pilih kategori lain.')
+                    : 'Coba pilih kategori lain.'
+                }
+              />
+            ) : (
+              <BookGrid books={groups[0].items} onRead={setSelectedBook} />
+            )}
+          </>
         )
       )}
 
@@ -144,6 +147,15 @@ function InfografisPanel() {
   const [zoomed, setZoomed] = useState(null);
   const { data: infografisList, loading, error, retry } = useInfografisList();
 
+  const {
+    query, setQuery,
+    groups, resultCount, totalCount
+  } = useContentToolbar({
+    items: infografisList || [],
+    dateField: null,
+    searchFields: INFOGRAFIS_SEARCH_FIELDS
+  });
+
   return (
     <div className="about-bento-frame">
       <div style={{ marginBottom: '24px' }}>
@@ -167,30 +179,27 @@ function InfografisPanel() {
             text="Poster dan infografis akan tampil di sini begitu tersedia."
           />
         ) : (
-          <div className="infografis-grid">
-            {infografisList.map((item) => (
-              <figure key={item.id} className="infografis-tile">
-                <button
-                  type="button"
-                  className="infografis-frame"
-                  onClick={() => { if (!item.image) return; countPublikasiView(item.slug); setZoomed({ src: item.image, title: item.title }); }}
-                  disabled={!item.image}
-                >
-                  <SafeImage src={item.image} alt={item.title} loading="lazy" style={{ aspectRatio: '3 / 4' }} />
-                  {item.image && <span className="infografis-zoom" aria-hidden="true"><i className="fa-solid fa-expand"></i></span>}
-                </button>
-                <figcaption>
-                  <span className="infografis-title">{item.title}</span>
-                  {item.image && (
-                    <a className="infografis-download" href={item.image} download>
-                      <i className="fa-solid fa-download" aria-hidden="true"></i>
-                      <span>Unduh</span>
-                    </a>
-                  )}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <>
+            <ContentToolbar
+              showSort={false}
+              showDateRange={false}
+              searchPlaceholder="Cari infografis berdasarkan judul atau deskripsi"
+              query={query}
+              onQueryChange={setQuery}
+              resultCount={resultCount}
+              totalCount={totalCount}
+            />
+
+            {resultCount === 0 ? (
+              <EmptyState
+                icon="fa-solid fa-image"
+                title="Tidak ada infografis yang cocok"
+                text="Coba kata kunci lain."
+              />
+            ) : (
+              <InfografisGrid items={groups[0].items} onZoom={setZoomed} />
+            )}
+          </>
         )
       )}
 
@@ -201,6 +210,15 @@ function InfografisPanel() {
 
 function VideoPanel() {
   const { data: videos, loading, error, retry } = useVideoList();
+
+  const {
+    query, setQuery,
+    groups, resultCount, totalCount
+  } = useContentToolbar({
+    items: videos || [],
+    dateField: null,
+    searchFields: VIDEO_SEARCH_FIELDS
+  });
 
   return (
     <div className="about-bento-frame">
@@ -222,25 +240,27 @@ function VideoPanel() {
             text="Video edukasi akan tampil di sini begitu tersedia."
           />
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-            {videos.map(vid => (
-              <a key={vid.id} className="video-card-playful" href={vid.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                <div className="video-thumb-wrap">
-                  <img src={vid.thumb} alt={vid.title} />
-                  <div className="video-play-overlay"><div className="video-play-badge"><i className="fa-solid fa-play"></i></div></div>
-                  {vid.duration && (
-                    <span style={{ position: 'absolute', bottom: '12px', right: '12px', background: 'rgba(0,0,0,0.8)', color: 'white', padding: '4px 10px', borderRadius: 'var(--radius-pill)', fontSize: '11px', fontWeight: 800 }}>
-                      {vid.duration}
-                    </span>
-                  )}
-                </div>
-                <div style={{ padding: '20px' }}>
-                  {vid.channel && <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase' }}>{vid.channel}</span>}
-                  <h4 style={{ fontSize: '15px', fontWeight: 800, margin: '6px 0 0', color: 'var(--text-primary)', lineHeight: 1.4 }}>{vid.title}</h4>
-                </div>
-              </a>
-            ))}
-          </div>
+          <>
+            <ContentToolbar
+              showSort={false}
+              showDateRange={false}
+              searchPlaceholder="Cari video berdasarkan judul atau kanal"
+              query={query}
+              onQueryChange={setQuery}
+              resultCount={resultCount}
+              totalCount={totalCount}
+            />
+
+            {resultCount === 0 ? (
+              <EmptyState
+                icon="fa-solid fa-film"
+                title="Tidak ada video yang cocok"
+                text="Coba kata kunci lain."
+              />
+            ) : (
+              <VideoGrid videos={groups[0].items} />
+            )}
+          </>
         )
       )}
     </div>
@@ -249,6 +269,15 @@ function VideoPanel() {
 
 function RegulasiPanel() {
   const { data: regulations, loading, error, retry } = useProdukHukumList();
+
+  const {
+    query, setQuery,
+    groups, resultCount, totalCount
+  } = useContentToolbar({
+    items: regulations || [],
+    dateField: null,
+    searchFields: REGULASI_SEARCH_FIELDS
+  });
 
   return (
     <div className="about-bento-frame">
@@ -270,25 +299,27 @@ function RegulasiPanel() {
             text="Produk hukum akan tampil di sini begitu tersedia."
           />
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {regulations.map((reg) => (
-              <div key={reg.id} className="download-doc-item">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <div style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-md)', background: 'var(--brand-light)', color: 'var(--brand-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flexShrink: 0 }}>
-                    <i className="fa-solid fa-scale-balanced"></i>
-                  </div>
-                  <div>
-                    {reg.badge && <span className="indicator-card-tag" style={{ margin: '0 0 4px', fontSize: '9px' }}>{reg.badge}</span>}
-                    <h4 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text-primary)', margin: '2px 0 4px' }}>{reg.title}</h4>
-                    {reg.number && <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{reg.number}</p>}
-                  </div>
-                </div>
-                <a href={reg.file} download className="btn-massive" style={{ padding: '8px 18px', fontSize: '13px', whiteSpace: 'nowrap' }}>
-                  <i className="fa-solid fa-download"></i><span>Unduh{reg.size ? ` (${reg.size})` : ''}</span>
-                </a>
-              </div>
-            ))}
-          </div>
+          <>
+            <ContentToolbar
+              showSort={false}
+              showDateRange={false}
+              searchPlaceholder="Cari regulasi berdasarkan judul atau nomor"
+              query={query}
+              onQueryChange={setQuery}
+              resultCount={resultCount}
+              totalCount={totalCount}
+            />
+
+            {resultCount === 0 ? (
+              <EmptyState
+                icon="fa-solid fa-scale-balanced"
+                title="Tidak ada regulasi yang cocok"
+                text="Coba kata kunci lain."
+              />
+            ) : (
+              <RegulasiList regulations={groups[0].items} />
+            )}
+          </>
         )
       )}
     </div>
@@ -305,7 +336,24 @@ const publikasiPanels = {
 export default function PublikasiView() {
   const { tabSlug } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchId = useId();
+  const searchInputRef = useRef(null);
   const activeId = sectionIdFromSlug('publikasi', tabSlug);
+
+  const q = searchParams.get('q') || '';
+  const searching = q.trim() !== '';
+
+  // Replace rather than push: one history entry for the search, not one per keystroke.
+  const setQ = (value) => {
+    setSearchParams(value ? { q: value } : {}, { replace: true });
+  };
+
+  // The results, and the button that cleared them, unmount; keep keyboard focus in the search box.
+  const clearSearch = () => {
+    setQ('');
+    searchInputRef.current?.focus();
+  };
 
   if (!activeId) return <Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />;
 
@@ -325,11 +373,40 @@ export default function PublikasiView() {
         <p className="subpage-hero-desc">
           Akses perpustakaan dokumen resmi Kemendikdasmen: buku pedoman digital, infografis mading siap cetak, video edukasi animasi, serta regulasi SKB 4 Menteri.
         </p>
+
+        <div className="publikasi-search" role="search">
+          <label className="publikasi-search-label" htmlFor={searchId}>Cari di semua publikasi</label>
+          <div className="publikasi-search-field">
+            <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input
+              ref={searchInputRef}
+              id={searchId}
+              type="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && q) setQ('');
+              }}
+              placeholder="Judul buku, infografis, video, atau regulasi"
+            />
+            {q && (
+              <button
+                type="button"
+                className="content-toolbar-clear"
+                onClick={clearSearch}
+                aria-label="Hapus pencarian"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
+      {/* Stay mounted while searching: the Daftar Isi handle watches this nav. */}
       <LobbyTabs
         tabs={publikasiTabs}
-        activeId={activeId}
+        activeId={searching ? null : activeId}
         onSelect={(id) => navigate(pathForView('publikasi', id))}
         label="Bagian publikasi"
         pageNav
@@ -337,7 +414,7 @@ export default function PublikasiView() {
 
       {/* GIANT DISPLAY PANEL */}
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
-        <Panel />
+        {searching ? <PublikasiSearchResults query={q} onClear={clearSearch} /> : <Panel />}
       </div>
 
     </div>

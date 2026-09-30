@@ -901,7 +901,7 @@ ul {
 
 /* ============================================================
    CONTENT TOOLBAR (search, sort, group, date range)
-   Shared by Warta, UPT Bercerita, and Praktik Baik. Radius, shadow, and
+   Shared by Warta, UPT Bercerita, Praktik Baik, and Publikasi. Radius, shadow, and
    spring transition reuse the tokens already used by stat-box / news-card
    so the toolbar reads as part of the same component family.
    ============================================================ */
@@ -964,6 +964,15 @@ ul {
   border-radius: 50%;
   color: var(--text-secondary);
   background: var(--bg-app);
+  border: none;
+  position: relative;
+}
+
+/* Grows the tap target to 44x44 without changing the drawn size. */
+.content-toolbar-clear::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
 }
 
 .content-toolbar-clear:hover {
@@ -1053,9 +1062,11 @@ ul {
 }
 
 .content-toolbar-reset {
+  background: none;
+  border: none;
   font-size: 13px;
   font-weight: 700;
-  color: var(--brand-primary);
+  color: var(--brand-deep);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

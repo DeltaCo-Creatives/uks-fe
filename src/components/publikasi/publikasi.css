@@ -1,0 +1,81 @@
+/* Search-everything box in the Publikasi hero. */
+.publikasi-search {
+  /* Above the hero's decorative ::after glow, which would otherwise paint over the label. */
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin-top: 24px;
+}
+
+.publikasi-search-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.publikasi-search-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
+  background: var(--bg-card);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-pill);
+}
+
+/* The dark hero hides the toolbar's soft focus glow, so use the accent ring. */
+.publikasi-search-field:focus-within {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.publikasi-search-field i {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* 16px keeps iOS Safari from zooming the page when the field is focused. */
+.publikasi-search-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 13px 0;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.publikasi-search-field input::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+.publikasi-search-field input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+/* Search-everything results: every group heading is its wrapper's first child, so space the groups here. */
+.publikasi-results {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.publikasi-results > .content-toolbar-summary {
+  margin-top: 0;
+}
+
+.publikasi-results .content-toolbar-summary span,
+.publikasi-results .info-empty-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.publikasi-results .content-toolbar-reset {
+  min-height: 44px;
+}
