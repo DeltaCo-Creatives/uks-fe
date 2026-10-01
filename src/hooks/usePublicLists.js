@@ -4,17 +4,17 @@ import { createCachedList } from './createCachedList';
 export const useHeroSlideList = createCachedList('/public/hero-slide');
 
 /** Praktik Baik list for the page, fetched once and shared by every consumer. */
-export const usePraktikBaikList = createCachedList('/public/praktik-baik');
+export const usePraktikBaikList = createCachedList('/public/praktik-baik', { paginated: true });
 
 /** UPT Bercerita list for the page, fetched once and shared by every consumer. */
-export const useUptStoriesList = createCachedList('/public/upt-bercerita');
+export const useUptStoriesList = createCachedList('/public/upt-bercerita', { paginated: true });
 
 /**
  * Agenda list for the page, fetched once and shared by every consumer.
  * The API already orders entries (upcoming/ongoing first, then past), so
  * consumers render the list as-is instead of re-sorting it.
  */
-export const useAgendaList = createCachedList('/public/agenda');
+export const useAgendaList = createCachedList('/public/agenda', { paginated: true });
 
 /** Buku & pedoman list for the Publikasi page, fetched once and shared by every consumer. */
 export const useBukuPanduanList = createCachedList('/public/publikasi?jenisHalaman=buku-panduan');
@@ -44,7 +44,7 @@ export const useAplikasiList = createCachedList('/public/aplikasi');
 export const useMitraList = createCachedList('/public/mitra');
 
 /** Dukungan Mitra records for the Mitra page, fetched once and shared by every consumer. */
-export const useDukunganMitraList = createCachedList('/public/dukungan-mitra');
+export const useDukunganMitraList = createCachedList('/public/dukungan-mitra', { paginated: true });
 
 /** Prestasi competitions (Lomba), with nested winners, for the Program Prioritas Prestasi section. */
 export const useLombaList = createCachedList('/public/lomba');

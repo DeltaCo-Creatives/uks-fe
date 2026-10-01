@@ -7,15 +7,30 @@ import { apiFetch } from '../utils/apiClient';
  * SearchView, Hero...) instead of once per mount.
  *
  * @param {string} path - appended to VITE_API_BASE_URL, e.g. "/public/berita"
+ * @param {{ paginated?: boolean }} [options] - paginated endpoints answer with
+ *   `{ items, hasNextPage, ... }` (max 50 per page); every page is fetched and
+ *   flattened so consumers (search, home "latest N", calendar) still get the
+ *   full array. A plain-array response (old API) passes through untouched.
  */
-export function createCachedList(path) {
+export function createCachedList(path, { paginated = false } = {}) {
   let cachedList = null;
   let listRequest = null;
+
+  async function fetchAllPages() {
+    const sep = path.includes('?') ? '&' : '?';
+    const all = [];
+    for (let page = 1; ; page++) {
+      const data = await apiFetch(`${path}${sep}page=${page}&pageSize=50`);
+      if (Array.isArray(data)) return data;
+      all.push(...data.items);
+      if (!data.hasNextPage) return all;
+    }
+  }
 
   function loadList() {
     if (cachedList) return Promise.resolve(cachedList);
     if (!listRequest) {
-      listRequest = apiFetch(path)
+      listRequest = (paginated ? fetchAllPages() : apiFetch(path))
         .then((data) => { cachedList = data; return data; })
         .finally(() => { listRequest = null; });
     }
