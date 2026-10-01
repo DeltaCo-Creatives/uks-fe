@@ -177,12 +177,12 @@
 .info-card-title {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   overflow: hidden;
-  min-height: 2.7em;
+  min-height: 4.05em;
   margin: 6px 0 8px;
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.35;
   color: var(--text-primary);
 }
@@ -190,8 +190,9 @@
 .info-card-excerpt {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   overflow: hidden;
+  min-height: 7.75em;
   flex-grow: 1;
   margin-bottom: 16px;
   font-size: 13px;

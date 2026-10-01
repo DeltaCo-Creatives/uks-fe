@@ -2,7 +2,7 @@ import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { priorityProgramsList } from '../data/portalData';
-import { pathForArticle } from '../routes';
+import { pathForArticle, pathForView } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import SafeImage from './SafeImage';
 import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
@@ -12,7 +12,7 @@ const MARQUEE_PX_PER_SECOND = 40;
 export default function Programs() {
     const trackRef = useRef(null);
     const { data: newsList, loading, error, retry } = useBeritaList();
-    const latestNews = (newsList || []).slice(0, 6);
+    const latestNews = (newsList || []).slice(0, 4);
 
     // Repeat programs so each half is sufficiently wide (> 3500px)
     const marqueePrograms = useMemo(() => [
@@ -47,28 +47,30 @@ export default function Programs() {
                 </div>
             </div>
 
-            <div className="cards-marquee" data-gsap="reveal">
-                <div className="cards-marquee-track" ref={trackRef}>
-                    {/* First set */}
-                    {marqueePrograms.map((p, i) => (
-                        <div key={`p1-${i}`} className="swipe-card">
-                            <div className="program-icon">
-                                <i className={p.icon || 'fa-solid fa-star'}></i>
+            <div className="container">
+                <div className="cards-marquee is-contained" data-gsap="reveal">
+                    <div className="cards-marquee-track" ref={trackRef}>
+                        {/* First set */}
+                        {marqueePrograms.map((p, i) => (
+                            <div key={`p1-${i}`} className="swipe-card">
+                                <div className="program-icon">
+                                    <i className={p.icon || 'fa-solid fa-star'}></i>
+                                </div>
+                                <h3>{p.title}</h3>
+                                <p>{p.desc}</p>
                             </div>
-                            <h3>{p.title}</h3>
-                            <p>{p.desc}</p>
-                        </div>
-                    ))}
-                    {/* Duplicated set for seamless infinite loop */}
-                    {marqueePrograms.map((p, i) => (
-                        <div key={`p2-${i}`} className="swipe-card">
-                            <div className="program-icon">
-                                <i className={p.icon || 'fa-solid fa-star'}></i>
+                        ))}
+                        {/* Duplicated set for seamless infinite loop */}
+                        {marqueePrograms.map((p, i) => (
+                            <div key={`p2-${i}`} className="swipe-card">
+                                <div className="program-icon">
+                                    <i className={p.icon || 'fa-solid fa-star'}></i>
+                                </div>
+                                <h3>{p.title}</h3>
+                                <p>{p.desc}</p>
                             </div>
-                            <h3>{p.title}</h3>
-                            <p>{p.desc}</p>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -78,6 +80,9 @@ export default function Programs() {
                         <span className="section-kicker">Update</span>
                         <h2 className="section-title">Kabar Terbaru</h2>
                     </div>
+                    <Link to={pathForView('informasi', 'sec-info-berita')} className="btn-pill primary home-section-more">
+                        Lihat Semua Warta <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </Link>
                 </div>
 
                 {loading && <LoadingState label="Memuat kabar terbaru..." />}
@@ -112,10 +117,8 @@ export default function Programs() {
                                     <SafeImage src={item.image} alt={item.title} />
                                 </div>
                                 <h3>{item.title}</h3>
-                                <p>{item.excerpt.substring(0, 100)}...</p>
-                                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)' }}>
-                                    Baca Selengkapnya &rarr;
-                                </span>
+                                <p>{item.excerpt}</p>
+                                <span className="news-card-more">Baca Selengkapnya &rarr;</span>
                             </Link>
                         ))}
                     </div>
