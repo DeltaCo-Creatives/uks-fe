@@ -149,36 +149,38 @@ export default function Books() {
                         <span className="section-kicker">Perpustakaan</span>
                         <h2 className="section-title">Buku &amp; Panduan</h2>
                     </div>
-                    <button className="btn-pill secondary" onClick={handleLihatSemua} style={{ padding: '12px 24px', flex: 'none' }}>
-                        Lihat Semua <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                    <button className="btn-pill primary home-section-more" onClick={handleLihatSemua}>
+                        Lihat Semua Buku <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
 
-            <div className="cards-marquee" data-gsap="reveal">
-                <div className="cards-marquee-track" ref={trackRef}>
-                    {/* First half */}
-                    {marqueeBooks.map((buku, idx) => (
-                        <div key={`b1-${idx}`} className="swipe-card book-swipe-card">
-                            <div className="book-cover-large">
-                                <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
+            <div className="container">
+                <div className="cards-marquee is-contained" data-gsap="reveal">
+                    <div className="cards-marquee-track" ref={trackRef}>
+                        {/* First half */}
+                        {marqueeBooks.map((buku, idx) => (
+                            <div key={`b1-${idx}`} className="swipe-card book-swipe-card">
+                                <div className="book-cover-large">
+                                    <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
+                                </div>
+                                <h3>{buku.title}</h3>
+                                {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
+                                {renderActions(buku)}
                             </div>
-                            <h3>{buku.title}</h3>
-                            {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
-                            {renderActions(buku)}
-                        </div>
-                    ))}
-                    {/* Duplicated half for seamless infinite loop */}
-                    {marqueeBooks.map((buku, idx) => (
-                        <div key={`b2-${idx}`} className="swipe-card book-swipe-card">
-                            <div className="book-cover-large">
-                                <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
+                        ))}
+                        {/* Duplicated half for seamless infinite loop */}
+                        {marqueeBooks.map((buku, idx) => (
+                            <div key={`b2-${idx}`} className="swipe-card book-swipe-card">
+                                <div className="book-cover-large">
+                                    <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
+                                </div>
+                                <h3>{buku.title}</h3>
+                                {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
+                                {renderActions(buku)}
                             </div>
-                            <h3>{buku.title}</h3>
-                            {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
-                            {renderActions(buku)}
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
 
