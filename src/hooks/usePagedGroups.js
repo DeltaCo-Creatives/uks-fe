@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const PAGE_SIZE = 3;
+export const PAGE_SIZE = 6;
 
 /**
  * Client-side paging over the toolbar's `groups` (search, category and month

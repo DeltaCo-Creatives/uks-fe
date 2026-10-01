@@ -1,0 +1,93 @@
+/* Matches .content-toolbar-pill-btn so the group-by control sits with sort and date. */
+.select-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 6px 0 18px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-card);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.select-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 12px 0 4px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font: inherit;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.select-menu-btn:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+.select-menu-chevron {
+  font-size: 11px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.select-menu-btn[aria-expanded="true"] .select-menu-chevron {
+  transform: rotate(180deg);
+}
+
+.select-menu-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-hover);
+}
+
+.select-menu-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.select-menu-opt.is-active {
+  background: var(--bg-app);
+}
+
+.select-menu-opt.is-selected {
+  color: var(--brand-deep);
+  font-weight: 800;
+}
+
+@media (max-width: 768px) {
+  .select-menu {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .select-menu-list {
+    right: 0;
+  }
+}
