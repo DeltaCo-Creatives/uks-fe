@@ -3,7 +3,7 @@ import { apiFetch } from '../utils/apiClient';
 import { createCachedList } from './createCachedList';
 
 /** Berita list for the page, fetched once and shared by every consumer. */
-export const useBeritaList = createCachedList('/public/berita');
+export const useBeritaList = createCachedList('/public/berita', { paginated: true });
 
 /** A single berita article by slug, including the full HTML `content`. */
 export function useBerita(slug) {
