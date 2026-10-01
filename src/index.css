@@ -2577,8 +2577,17 @@ footer {
   }
 }
 
+/* Fade only. The modalPop spring scaled the whole panel past 100% and back,
+   so on every tab change the content swelled past its column and then shrank,
+   leaving a gap at the sides. Any slide-in comes from the GSAP reveal. */
 .lobby-panel {
-  animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: lobbyFade 0.3s ease-out;
+}
+
+@keyframes lobbyFade {
+  from {
+    opacity: 0;
+  }
 }
 
 /* ============================================================

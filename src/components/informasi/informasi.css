@@ -13,6 +13,19 @@
   padding: 24px 0 80px;
 }
 
+/* The shared glass frame insets everything 16px, so the panel title and cards
+   sat inside the hero banner's and tabs' edges. Here the content aligns to
+   the page edge instead, as it already does on a phone. */
+.informasi-page .about-bento-frame {
+  padding: 0;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .info-panel-head {
   display: flex;
   align-items: flex-end;
@@ -116,6 +129,17 @@
   outline-offset: 3px;
 }
 
+/* The global card style staggers the second card down 12px and lifts a hovered
+   one 8px; in a tidy grid that eats the 18px gap and cards touch. Keep every
+   card on the grid line and lift only a little. */
+.info-grid .news-card-playful.news-card-playful {
+  transform: none;
+}
+
+.info-grid .news-card-playful.news-card-playful:hover {
+  transform: translateY(-4px);
+}
+
 /* A touchscreen has no hover, so the press needs feedback of its own */
 .info-card-btn:active,
 .info-filter-btn:active,
@@ -151,6 +175,11 @@
 }
 
 .info-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.7em;
   margin: 6px 0 8px;
   font-size: 17px;
   font-weight: 800;
@@ -159,6 +188,10 @@
 }
 
 .info-card-excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
   flex-grow: 1;
   margin-bottom: 16px;
   font-size: 13px;
@@ -508,11 +541,7 @@
 
   /* The decorative stagger on every second card just reads as a misaligned
      card once the grid is a single column. */
-  .info-grid .news-card-playful:nth-child(2) {
-    transform: none;
-  }
-
-  .info-grid .news-card-playful:hover {
+  .info-grid .news-card-playful.news-card-playful:hover {
     transform: none;
     box-shadow: var(--shadow-card);
   }

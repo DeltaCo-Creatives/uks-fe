@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { formatDateID } from '../../utils/dateID';
 import DateRangeCalendar from './DateRangeCalendar';
+import SelectMenu from './SelectMenu';
 
 function rangeLabel(range) {
   if (!range.start && !range.end) return 'Tanggal';
@@ -87,15 +88,12 @@ export default function ContentToolbar({
         {hasControls && (
           <div className="content-toolbar-controls">
             {showGroup && (
-              <label className="content-toolbar-select">
-                <span>Kelompokkan</span>
-                <select value={groupKey} onChange={(e) => onGroupChange(e.target.value)}>
-                  <option value="none">Tidak dikelompokkan</option>
-                  {groupOptions.map((g) => (
-                    <option key={g.key} value={g.key}>{g.label}</option>
-                  ))}
-                </select>
-              </label>
+              <SelectMenu
+                label="Kelompokkan"
+                value={groupKey}
+                onChange={onGroupChange}
+                options={[{ value: 'none', label: 'Tidak dikelompokkan' }, ...groupOptions.map((g) => ({ value: g.key, label: g.label }))]}
+              />
             )}
 
             {showSort && (
