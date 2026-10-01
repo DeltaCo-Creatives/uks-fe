@@ -39,7 +39,8 @@ export const useAplikasiList = createCachedList('/public/aplikasi');
 
 /**
  * Mitra Kemitraan UKS/M: yearly cohorts (`kelompokTahun`) and partners with no
- * support record yet (`tanpaDukungan`), fetched once for the Mitra page.
+ * support record yet (`tanpaDukungan`), fetched once and shared by the Mitra
+ * page and the Beranda partner-logo strip.
  */
 export const useMitraList = createCachedList('/public/mitra');
 

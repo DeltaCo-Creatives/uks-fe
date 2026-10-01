@@ -24,6 +24,3 @@ export * from './program';
 
 // Multi-stakeholder Partnership (Mitra, Activities, Support, Logos)
 export * from './mitra';
-
-// Partner marquee screenshots (Books/Infografis/Video/Regulasi now come from the API, see src/hooks/usePublikasi.js)
-export * from './publikasi';
