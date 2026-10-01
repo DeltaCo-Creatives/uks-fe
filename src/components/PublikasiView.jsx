@@ -8,6 +8,8 @@ import DocViewerModal from './shared/DocViewerModal';
 import ImageLightbox from './shared/ImageLightbox';
 import LobbyTabs from './shared/LobbyTabs';
 import ContentToolbar from './shared/ContentToolbar';
+import Pagination from './shared/Pagination';
+import { usePagedGroups } from '../hooks/usePagedGroups';
 import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
 import { BookGrid, InfografisGrid, VideoGrid, RegulasiList } from './publikasi/PublikasiItems';
 import PublikasiSearchResults from './publikasi/PublikasiSearchResults';
@@ -54,6 +56,8 @@ function BooksPanel() {
     dateField: null,
     searchFields: BUKU_SEARCH_FIELDS
   });
+
+  const { pagedGroups, page, totalPages, setPage } = usePagedGroups(groups, `${query}|${bookCategory}`);
 
   const searching = query.trim() !== '';
 
@@ -116,8 +120,9 @@ function BooksPanel() {
                 }
               />
             ) : (
-              <BookGrid books={groups[0].items} onRead={setSelectedBook} />
+              <BookGrid books={pagedGroups[0].items} onRead={setSelectedBook} />
             )}
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </>
         )
       )}
@@ -155,6 +160,8 @@ function InfografisPanel() {
     dateField: null,
     searchFields: INFOGRAFIS_SEARCH_FIELDS
   });
+
+  const { pagedGroups, page, totalPages, setPage } = usePagedGroups(groups, query);
 
   return (
     <div className="about-bento-frame">
@@ -197,8 +204,9 @@ function InfografisPanel() {
                 text="Coba kata kunci lain."
               />
             ) : (
-              <InfografisGrid items={groups[0].items} onZoom={setZoomed} />
+              <InfografisGrid items={pagedGroups[0].items} onZoom={setZoomed} />
             )}
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </>
         )
       )}
@@ -219,6 +227,8 @@ function VideoPanel() {
     dateField: null,
     searchFields: VIDEO_SEARCH_FIELDS
   });
+
+  const { pagedGroups, page, totalPages, setPage } = usePagedGroups(groups, query);
 
   return (
     <div className="about-bento-frame">
@@ -258,8 +268,9 @@ function VideoPanel() {
                 text="Coba kata kunci lain."
               />
             ) : (
-              <VideoGrid videos={groups[0].items} />
+              <VideoGrid videos={pagedGroups[0].items} />
             )}
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </>
         )
       )}

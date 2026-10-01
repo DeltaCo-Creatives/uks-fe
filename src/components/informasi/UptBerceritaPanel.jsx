@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import SafeImage from '../SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 import ContentToolbar from '../shared/ContentToolbar';
+import Pagination from '../shared/Pagination';
+import { usePagedGroups } from '../../hooks/usePagedGroups';
 import { useContentToolbar } from '../../hooks/useContentToolbar';
 import { useUptStoriesList } from '../../hooks/usePublicLists';
 import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
@@ -48,6 +50,8 @@ export default function UptBerceritaPanel() {
     searchFields: ['title', 'excerpt', 'region', 'category'],
     groupOptions: GROUP_OPTIONS
   });
+
+  const { pagedGroups, page, totalPages, setPage } = usePagedGroups(groups, `${query}|${sortDir}|${groupKey}|${JSON.stringify(dateRange)}|${activeCategory}`);
 
   return (
     <div className="about-bento-frame">
@@ -124,7 +128,7 @@ export default function UptBerceritaPanel() {
               }
             />
           ) : (
-            groups.map((group) => (
+            pagedGroups.map((group) => (
               <div key={group.label ?? 'flat'}>
                 {group.label && <h3 className="content-group-heading">{group.label}</h3>}
                 <div className="info-grid">
@@ -155,6 +159,7 @@ export default function UptBerceritaPanel() {
               </div>
             ))
           )}
+          <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </>
       )}
     </div>
