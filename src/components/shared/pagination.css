@@ -1,0 +1,81 @@
+/* Styled to match the category filter strip (.info-filter-*) on the Informasi
+   page, but self-contained so Publikasi can use it without that stylesheet. */
+.pager {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.pager-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-app);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.pager-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--ease);
+}
+
+.pager-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-primary);
+}
+
+.pager-btn.is-active {
+  background: var(--brand-deep);
+  color: #FFFFFF;
+}
+
+.pager-btn:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+.pager-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.pager-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pager-gap {
+  min-width: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-weight: 800;
+}
+
+/* On a phone the arrows alone carry prev/next, so the numbers fit. */
+@media (max-width: 600px) {
+  .pager-label {
+    display: none;
+  }
+
+  .pager-btn {
+    padding: 8px 12px;
+  }
+}

@@ -1,9 +1,13 @@
 import { useAgendaList } from '../../hooks/usePublicLists';
+import Pagination from '../shared/Pagination';
+import { usePagedGroups } from '../../hooks/usePagedGroups';
 import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 
 export default function AgendaPanel() {
   const { data, loading, error, retry } = useAgendaList();
-  const agendas = data || [];
+  const { pagedGroups, page, totalPages, setPage } = usePagedGroups([{ items: data || [] }], '');
+  const agendas = data ? pagedGroups[0]?.items ?? [] : [];
+  const hasAgendas = !!data?.length;
 
   return (
     <div className="about-bento-frame">
@@ -26,7 +30,7 @@ export default function AgendaPanel() {
       )}
 
       {!loading && !error && (
-        agendas.length === 0 ? (
+        !hasAgendas ? (
           <EmptyState
             icon="fa-solid fa-calendar-days"
             title="Belum ada agenda yang tersedia"
@@ -56,6 +60,7 @@ export default function AgendaPanel() {
           </div>
         )
       )}
+      {!loading && !error && <Pagination page={page} totalPages={totalPages} onChange={setPage} />}
     </div>
   );
 }
