@@ -2274,6 +2274,8 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  /* Leaves room beside a focused logo so focus scrolling never parks it against the clipped edge. */
+  scroll-padding-inline: clamp(40px, 8vw, 96px);
 }
 
 /* White Vignette edges */
@@ -2299,9 +2301,17 @@ footer {
   background: linear-gradient(to left, var(--bg-app) 0%, transparent 100%);
 }
 
+/* A keyboard-focused logo and its ring must not sit under a fade. */
+.screenshots-marquee:has(:focus-visible)::before,
+.screenshots-marquee:has(:focus-visible)::after {
+  opacity: 0;
+}
+
 .screenshots-strip {
   display: flex;
   gap: 48px;
+  /* Half the gap on each side makes -50% land exactly on the second copy, and keeps the first focus ring off the clipped edge. */
+  padding-inline: 24px;
   width: max-content;
   animation: logoScroll 70s linear infinite;
   align-items: center;
@@ -2309,6 +2319,16 @@ footer {
 
 .screenshots-strip.strip-reverse {
   animation: logoScrollReverse 70s linear infinite;
+}
+
+/* Hold a row still under the pointer so a logo link can be hit. */
+.screenshots-strip:hover {
+  animation-play-state: paused;
+}
+
+/* Keyboard focus parks the row at its start, so focus scrolling can reach every exposed logo. */
+.screenshots-strip:has(:focus-visible) {
+  animation: none;
 }
 
 .screenshot-item {
@@ -2319,12 +2339,22 @@ footer {
   align-items: center;
   opacity: 0.8;
   transition: opacity 0.3s, transform 0.3s;
-  cursor: pointer;
 }
 
-.screenshot-item:hover {
+a.screenshot-item {
+  cursor: pointer;
+  border-radius: var(--radius-md, 8px);
+}
+
+a.screenshot-item:hover,
+a.screenshot-item:focus-visible {
   opacity: 1;
   transform: scale(1.05);
+}
+
+a.screenshot-item:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 4px;
 }
 
 .screenshot-item img {
