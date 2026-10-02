@@ -1630,7 +1630,41 @@ footer {
 
 @media (max-width: 768px) {
   :root {
-    --nav-offset: 68px;
+    /* is-top bar: 8 + 44 + 8 padding + 2 border */
+    --nav-offset: 62px;
+  }
+
+  .is-scrolled {
+    padding: 8px 12px;
+  }
+
+  .is-top .nav-dynamic-bar {
+    padding: 8px 16px;
+  }
+
+  .is-scrolled .nav-dynamic-bar {
+    width: 100%;
+    max-width: 100%;
+    padding: 4px 8px;
+  }
+
+  /* The logo is a 4:1 wordmark, so a 36px circle would shrink it to a sliver. */
+  .is-top .brand-icon-nav,
+  .is-scrolled .brand-icon-nav {
+    width: 112px;
+    height: 36px;
+    padding: 4px;
+  }
+
+  .is-scrolled .brand-icon-nav {
+    margin-right: 0;
+    border-radius: 12px;
+  }
+
+  .nav-search-btn,
+  .nav-mobile-toggle {
+    width: 44px;
+    height: 44px;
   }
 
   .info-item {
