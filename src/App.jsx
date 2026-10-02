@@ -16,7 +16,7 @@ import ProgramPage from './pages/ProgramPage';
 import MitraPage from './pages/MitraPage';
 import InformasiPage from './pages/InformasiPage';
 import PublikasiPage from './pages/PublikasiPage';
-import KontakView from './components/KontakView';
+import KontakPage from './pages/KontakPage';
 import SearchView from './components/SearchView';
 import BeritaDetailView from './components/BeritaDetailView';
 import NotFoundView from './components/NotFoundView';
@@ -213,7 +213,7 @@ function App() {
         <Route path="publikasi" element={<Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />} />
         <Route path="publikasi/:tabSlug" element={<PublikasiPage />} />
 
-        <Route path="kontak" element={<KontakView />} />
+        <Route path="kontak" element={<KontakPage />} />
         <Route path="search" element={<SearchView />} />
 
         <Route path="*" element={<NotFoundView />} />
