@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import { profilDefinition } from '../../../data/portalData';
-import ProfilDeskripsi from './ProfilDeskripsi';
-import ProfilTujuanSasaran from './ProfilTujuanSasaran';
-import ProfilStruktur from './ProfilStruktur';
-import ProfilManajemen from './ProfilManajemen';
-import './profil.css';
+import { profilDefinition } from '@/data/portalData';
+import { ProfilDeskripsi, ProfilTujuanSasaran, ProfilStruktur, ProfilManajemen } from '@/features/uksm';
 
 const scrollToSection = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
