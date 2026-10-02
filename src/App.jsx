@@ -13,7 +13,7 @@ import ProfilPage from './pages/ProfilPage';
 import TriasPage from './pages/TriasPage';
 import StratifikasiPage from './pages/StratifikasiPage';
 import ProgramPage from './pages/ProgramPage';
-import MitraView from './components/MitraView';
+import MitraPage from './pages/MitraPage';
 import InformasiView from './components/InformasiView';
 import PublikasiView from './components/PublikasiView';
 import KontakView from './components/KontakView';
@@ -203,7 +203,7 @@ function App() {
         <Route path="program" element={<Navigate to={`/program/${defaultTabSlug('program')}`} replace />} />
         <Route path="program/:programSlug" element={<ProgramPage />} />
 
-        <Route path="mitra" element={<MitraView />} />
+        <Route path="mitra" element={<MitraPage />} />
 
         <Route path="informasi" element={<Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />} />
         <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
