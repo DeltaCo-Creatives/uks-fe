@@ -1,18 +1,14 @@
-import { mitraIntro } from '../data/portalData';
-import MitraPanduan from './mitra/MitraPanduan';
-import MitraKriteria from './mitra/MitraKriteria';
-import MitraKami from './mitra/MitraKami';
-import MitraDukungan from './mitra/MitraDukungan';
-import './mitra/mitra.css';
+import { mitraIntro } from '@/data/portalData';
+import { MitraPanduan, MitraKriteria, MitraKami, MitraDukungan } from '@/features/mitra';
 
 /**
  * Mitra ▸ Kemitraan UKS/M. Content curated from PROD /mitra/* (see
  * docs/kemitraan-curation.md). One scrolling page; the drawer jumps between
  * the four sections.
  */
-export default function MitraView() {
+export default function MitraPage() {
   return (
-    <div className="container" style={{ padding: '24px 20px 80px' }}>
+    <div className="container px-5 pt-6 pb-20">
       <div className="subpage-hero-banner" data-gsap="reveal">
         <span className="subpage-hero-kicker">
           <i className="fa-solid fa-handshake-angle"></i> Mitra

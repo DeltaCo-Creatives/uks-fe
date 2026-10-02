@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useDukunganMitraList } from '../../hooks/usePublicLists';
-import { LoadingState, ErrorState } from '../shared/AsyncState';
+import { useDukunganMitraList } from '@/hooks/usePublicLists';
+import { LoadingState, ErrorState } from '@/components/shared/AsyncState';
 import MitraSupportRecord from './MitraSupportRecord';
+import { SECTION, EMPTY } from '../styles';
 
 /**
  * Filled-in support records as an accordion, the first one open.
@@ -16,13 +17,13 @@ export default function MitraDukungan() {
   const activeOpenId = openId ?? defaultOpenId;
 
   return (
-    <section id="sec-mitra-dukungan" className="section mitra-section">
+    <section id="sec-mitra-dukungan" className={SECTION}>
       <div className="section-header" data-gsap="reveal">
         <div>
           <span className="section-kicker">Dukungan Mitra</span>
           <h2 className="section-title">Dukungan yang sudah tercatat</h2>
           {!loading && !error && (
-            <p className="mitra-section-lead">
+            <p className="mt-3 text-[16px] leading-[1.6] text-ink-muted">
               {partnerSupport.length} mitra sudah memiliki rincian dukungan.
             </p>
           )}
@@ -42,9 +43,9 @@ export default function MitraDukungan() {
       {!loading && !error && (
         <>
           {partnerSupport.length === 0 ? (
-            <p className="mitra-empty" data-gsap="reveal">Belum ada rincian dukungan mitra yang tercatat.</p>
+            <p className={EMPTY} data-gsap="reveal">Belum ada rincian dukungan mitra yang tercatat.</p>
           ) : (
-            <ol className="mitra-records" data-gsap="reveal">
+            <ol className="m-0 list-none overflow-hidden rounded-panel bg-card p-0" data-gsap="reveal">
               {partnerSupport.map((record, idx) => (
                 <MitraSupportRecord
                   key={record.id}

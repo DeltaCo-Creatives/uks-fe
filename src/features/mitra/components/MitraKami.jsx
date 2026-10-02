@@ -1,7 +1,12 @@
 import { useId, useMemo, useRef, useState } from 'react';
-import { mitraFields, mitraSupportTypes } from '../../data/portalData';
-import { useMitraList } from '../../hooks/usePublicLists';
-import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
+import { mitraFields, mitraSupportTypes } from '@/data/portalData';
+import { useMitraList } from '@/hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import { SECTION, MINI_LABEL, NUM, COMPACT_NUM, EMPTY, FOCUS_INSET } from '../styles';
+
+const YEAR_TAB = `flex min-h-16 cursor-pointer flex-col items-start gap-0.5 border-b-[3px] bg-transparent px-6 py-3.5 text-left hover:bg-card-alt [&+&]:border-l [&+&]:border-l-rule max-[600px]:px-3.5 max-[600px]:py-3 ${FOCUS_INSET}`;
+const PARTNER_LIST = 'm-0 list-none [columns:3_240px] gap-x-8 p-0';
+const PARTNER = 'grid grid-cols-[28px_1fr] gap-2 border-b border-rule py-[9px] text-[14px] leading-[1.5] text-ink break-inside-avoid';
 
 const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
 const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
@@ -55,7 +60,7 @@ export default function MitraKami() {
   };
 
   return (
-    <section id="sec-mitra-kami" className="section mitra-section">
+    <section id="sec-mitra-kami" className={SECTION}>
       <div className="section-header" data-gsap="reveal">
         <div>
           <span className="section-kicker">Mitra Kami</span>
@@ -63,18 +68,19 @@ export default function MitraKami() {
         </div>
       </div>
 
-      <div className="mitra-about-grid" data-gsap="reveal">
+      <div className="mb-6 grid grid-cols-2 gap-8 max-[960px]:grid-cols-[minmax(0,1fr)]" data-gsap="reveal">
         <div>
-          <h3 className="mitra-mini-label">Bidang usaha mitra</h3>
-          <ul className="mitra-inline-list">
+          <h3 className={MINI_LABEL}>Bidang usaha mitra</h3>
+          {/* Static names separated by a dot, no pill shapes. */}
+          <ul className="m-0 flex list-none flex-wrap gap-y-1 p-0 text-[15px] leading-[1.6] font-semibold text-ink">
             {mitraFields.map((field) => (
-              <li key={field}>{field}</li>
+              <li key={field} className="not-last:after:mx-2.5 not-last:after:font-bold not-last:after:text-ink-muted not-last:after:content-['·']">{field}</li>
             ))}
           </ul>
         </div>
         <div>
-          <h3 className="mitra-mini-label">Bentuk dukungan mitra</h3>
-          <ol className="mitra-compact-num">
+          <h3 className={MINI_LABEL}>Bentuk dukungan mitra</h3>
+          <ol className={COMPACT_NUM}>
             {mitraSupportTypes.map((type) => (
               <li key={type}>{type}</li>
             ))}
@@ -82,7 +88,7 @@ export default function MitraKami() {
         </div>
       </div>
 
-      <div className="mitra-card mitra-directory" data-gsap="reveal">
+      <div className="overflow-hidden rounded-panel bg-card" data-gsap="reveal">
         {loading && <LoadingState label="Memuat daftar mitra..." />}
 
         {!loading && error && (
@@ -102,11 +108,13 @@ export default function MitraKami() {
             />
           ) : (
             <>
-              <div className="mitra-search">
-                <label htmlFor={searchId}>Cari nama lembaga</label>
-                <div className="mitra-search-field">
-                  <i className="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              <div className="flex flex-col gap-1.5 px-6 pt-[18px]">
+                <label className="text-[13px] font-bold text-ink" htmlFor={searchId}>Cari nama lembaga</label>
+                <div className="flex items-center gap-2.5 rounded-soft border-[1.5px] border-rule bg-card px-3.5 focus-within:border-brand">
+                  <i className="fa-solid fa-magnifying-glass text-[13px] text-ink-muted" aria-hidden="true"></i>
+                  {/* The field's border turns green on focus instead of an outline. */}
                   <input
+                    className="min-h-[44px] min-w-0 flex-1 border-none bg-none text-[14px] text-ink focus:[outline:none]"
                     id={searchId}
                     type="search"
                     value={query}
@@ -116,7 +124,7 @@ export default function MitraKami() {
                 </div>
               </div>
 
-              <p className="mitra-search-status" aria-live="polite">
+              <p className="m-0 px-6 pt-2.5 pb-3.5 text-[13px] text-ink-muted" aria-live="polite">
                 {trimmed
                   ? `${matches.length} dari ${totalPartners} lembaga cocok, dari semua tahun`
                   : `${totalPartners} lembaga terdaftar di ${kelompokTahun.length} periode`}
@@ -124,20 +132,21 @@ export default function MitraKami() {
 
               {trimmed ? (
                 matches.length > 0 ? (
-                  <ol className="mitra-partner-list">
+                  <ol className={PARTNER_LIST}>
                     {matches.map(({ name, year }, idx) => (
-                      <li key={`${year}-${name}`}>
-                        <span className="mitra-num" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
+                      <li key={`${year}-${name}`} className={PARTNER}>
+                        <span className={`${NUM} leading-[1.6]`} aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
                         <span>
                           {name}
-                          <span className="mitra-match-year">Mitra {year}</span>
+                          {/* A match shows its cohort, since the year tabs are hidden while searching. */}
+                          <span className="mt-0.5 block text-[12px] font-bold text-brand-deep">Mitra {year}</span>
                         </span>
                       </li>
                     ))}
                   </ol>
                 ) : (
-                  <div className="mitra-search-empty">
-                    <p>Tidak ada lembaga dengan nama yang memuat “{trimmed}”.</p>
+                  <div className="mx-6 mt-0 mb-6 flex flex-col items-start gap-3 rounded-soft border-2 border-dashed border-[#CBD5CE] p-6 text-[15px]">
+                    <p className="m-0">Tidak ada lembaga dengan nama yang memuat “{trimmed}”.</p>
                     <button type="button" className="btn-pill secondary" onClick={() => setQuery('')}>
                       Hapus pencarian
                     </button>
@@ -145,7 +154,7 @@ export default function MitraKami() {
                 )
               ) : (
                 <>
-                  <div className="mitra-year-tabs" role="tablist" aria-label="Tahun kemitraan" onKeyDown={handleKeyDown}>
+                  <div className="grid grid-cols-3 border-b border-rule" role="tablist" aria-label="Tahun kemitraan" onKeyDown={handleKeyDown}>
                     {kelompokTahun.map((year, idx) => {
                       const isActive = idx === activeIndex;
                       return (
@@ -158,11 +167,11 @@ export default function MitraKami() {
                           aria-selected={isActive}
                           aria-controls="mitra-year-panel"
                           tabIndex={isActive ? 0 : -1}
-                          className={`mitra-year-tab ${isActive ? 'is-active' : ''}`}
+                          className={`${YEAR_TAB} ${isActive ? 'border-b-brand text-ink' : 'border-b-transparent text-ink-muted'}`}
                           onClick={() => setActiveIndex(idx)}
                         >
-                          <span className="mitra-year-label">Mitra {year.label}</span>
-                          <span className="mitra-year-meta">{year.mitra.length} lembaga</span>
+                          <span className="text-[16px] font-extrabold max-[600px]:text-[14px]">Mitra {year.label}</span>
+                          <span className="text-[13px] font-semibold text-ink-muted">{year.mitra.length} lembaga</span>
                         </button>
                       );
                     })}
@@ -173,15 +182,15 @@ export default function MitraKami() {
                     role="tabpanel"
                     aria-labelledby={`mitra-year-tab-${cohort.label}`}
                     tabIndex={0}
-                    className="mitra-year-panel"
+                    className={`p-6 max-[600px]:px-5 max-[600px]:py-4 ${FOCUS_INSET}`}
                   >
                     {cohort.mitra.length === 0 ? (
-                      <p className="mitra-empty">Belum ada data mitra untuk tahun ini.</p>
+                      <p className={EMPTY}>Belum ada data mitra untuk tahun ini.</p>
                     ) : (
-                      <ol className="mitra-partner-list">
+                      <ol className={PARTNER_LIST}>
                         {cohort.mitra.map((partner, idx) => (
-                          <li key={partner.id}>
-                            <span className="mitra-num" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
+                          <li key={partner.id} className={PARTNER}>
+                            <span className={`${NUM} leading-[1.6]`} aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
                             <span>{partner.nama}</span>
                           </li>
                         ))}
