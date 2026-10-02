@@ -1,5 +1,8 @@
 import { useRef } from 'react';
 
+const TAB = 'flex min-h-16 cursor-pointer items-center gap-3 rounded-card px-3 py-2.5 text-left [transition:background-color_0.2s_ease] max-[600px]:gap-2 max-[600px]:p-2';
+const TAB_ICON = 'grid size-10 flex-none place-items-center rounded-soft text-[16px] max-[600px]:size-[34px] max-[600px]:text-[14px]';
+
 const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
 const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
 
@@ -33,7 +36,7 @@ export default function ProgramPicker({ programs, activeId, onSelect, pickerRef 
   };
 
   return (
-    <div ref={pickerRef} className="prog-picker" data-page-nav role="tablist" aria-label="Pilih program">
+    <div ref={pickerRef} className="mb-7 grid scroll-mt-24 grid-cols-5 gap-2 rounded-panel bg-card p-2 max-[1100px]:grid-cols-3 max-[600px]:grid-cols-2 max-[600px]:p-1.5" data-page-nav role="tablist" aria-label="Pilih program">
       {programs.map((program, idx) => {
         const selected = program.id === activeId;
         return (
@@ -46,14 +49,14 @@ export default function ProgramPicker({ programs, activeId, onSelect, pickerRef 
             aria-selected={selected}
             aria-controls="prog-panel"
             tabIndex={selected ? 0 : -1}
-            className={`prog-tab ${selected ? 'is-active' : ''}`}
+            className={`${TAB} ${selected ? 'bg-ink text-white' : 'bg-transparent text-ink hover:bg-card-alt'}`}
             onClick={() => onSelect(program.id)}
             onKeyDown={handleKeyDown}
           >
-            <span className="prog-tab-icon" aria-hidden="true"><i className={program.icon}></i></span>
-            <span className="prog-tab-text">
-              <span className="prog-tab-num" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
-              <span className="prog-tab-label">{program.navLabel}</span>
+            <span className={`${TAB_ICON} ${selected ? 'bg-[rgba(255,255,255,0.12)] text-brand-accent' : 'bg-brand-light text-brand'}`} aria-hidden="true"><i className={program.icon}></i></span>
+            <span className="flex min-w-0 flex-col">
+              <span className={`text-[12px] font-extrabold ${selected ? 'text-[rgba(255,255,255,0.75)]' : 'text-brand-deep'}`} aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
+              <span className="text-[14px] leading-[1.25] font-extrabold">{program.navLabel}</span>
             </span>
           </button>
         );

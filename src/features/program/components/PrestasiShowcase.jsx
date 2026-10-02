@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import PrestasiSlider from './PrestasiSlider';
+import { NOTE, EMPTY, EMPTY_ICON } from '../styles';
 
 const JENJANG_ORDER = ['PAUD/TK', 'SD', 'SMP', 'SMA', 'SMK', 'SLB/SKH', 'SKB & PKBM'];
 
@@ -35,8 +36,8 @@ export default function ShowcaseFace({ winners, note }) {
 
   if (winners.length === 0) {
     return (
-      <div className="prestasi-empty">
-        <i className="fa-regular fa-file-lines" aria-hidden="true"></i>
+      <div className={EMPTY}>
+        <i className={`fa-regular fa-file-lines ${EMPTY_ICON}`} aria-hidden="true"></i>
         <p>Belum ada pemenang yang tercatat untuk kompetisi ini.</p>
       </div>
     );
@@ -45,22 +46,24 @@ export default function ShowcaseFace({ winners, note }) {
   const shown = winners.filter((winner) => winner.jenjang === jenjang);
 
   return (
-    <div className="prestasi-face">
-      <div className="prestasi-showcase-toolbar">
-        <label className="prestasi-filter" htmlFor={filterId}>
-          <span>Filter jenjang</span>
-          <select id={filterId} value={jenjang} onChange={(event) => setJenjang(event.target.value)}>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <label className="flex flex-col gap-1 max-[600px]:w-full" htmlFor={filterId}>
+          <span className="text-[12px] font-bold text-brand-deep">Filter jenjang</span>
+          <select
+            className="min-h-[44px] rounded-soft border-2 border-ink bg-card px-3.5 text-[14px] font-bold text-ink max-[600px]:w-full"
+            id={filterId} value={jenjang} onChange={(event) => setJenjang(event.target.value)}>
             {order.filter((level) => counts[level]).map((level) => (
               <option key={level} value={level}>{level} ({counts[level]})</option>
             ))}
           </select>
         </label>
-        <p className="prestasi-showcase-count">Menampilkan {shown.length} pemenang jenjang {jenjang}</p>
+        <p className="text-[13px] text-ink-muted">Menampilkan {shown.length} pemenang jenjang {jenjang}</p>
       </div>
 
       <PrestasiSlider key={jenjang} winners={shown} />
 
-      {note && <p className="prog-note">{note}</p>}
+      {note && <p className={NOTE}>{note}</p>}
     </div>
   );
 }

@@ -2,15 +2,13 @@ import { useEffect, useRef } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { priorityProgramsList, programIntro } from '../data/portalData';
-import { prefersReducedMotion } from '../hooks/useCollapse';
-import { useProgramTautanList, usePengaturanSettings } from '../hooks/usePublicLists';
-import { buildResourceGroups, habitUrl } from '../utils/programTautan';
-import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
-import ProgramPicker from './program/ProgramPicker';
-import ProgramPanel from './program/ProgramPanel';
-import ProgramLink from './program/ProgramLink';
-import './program/program.css';
+import { priorityProgramsList, programIntro } from '@/data/portalData';
+import { prefersReducedMotion } from '@/hooks/useCollapse';
+import { useProgramTautanList, usePengaturanSettings } from '@/hooks/usePublicLists';
+import { buildResourceGroups, habitUrl } from '@/utils/programTautan';
+import { defaultTabSlug, pathForView, sectionIdFromSlug } from '@/routes';
+import { ProgramPicker, ProgramPanel, ProgramLink } from '@/features/program';
+import { PAGE_FOCUS, HERO_SOURCE_LINK } from '@/features/program/styles';
 
 // Clears the fixed navbar when a program switch scrolls the picker to the top.
 const NAV_OFFSET = 96;
@@ -22,7 +20,7 @@ const NAV_OFFSET = 96;
  * 7KAIH habit-card URLs come from /public/program-tautan, matched to a
  * program by its `sec-prog-*` id (see src/utils/programTautan.js).
  */
-export default function ProgramView() {
+export default function ProgramPage() {
   const { programSlug } = useParams();
   const navigate = useNavigate();
   const activeId = sectionIdFromSlug('program', programSlug);
@@ -42,6 +40,7 @@ export default function ProgramView() {
     if (shownId.current === active.id) return;
     shownId.current = active.id;
     if (prefersReducedMotion()) return;
+    // prog-block marks the panel's blocks for this tween; it carries no CSS.
     gsap.from(panelRef.current.querySelectorAll('.prog-block'), {
       opacity: 0,
       y: 12,
@@ -100,7 +99,7 @@ export default function ProgramView() {
   };
 
   return (
-    <div className="container prog-page" style={{ paddingBottom: '80px' }}>
+    <div className={`container pb-20 ${PAGE_FOCUS}`}>
       <div className="subpage-hero-banner" data-gsap="reveal">
         <span className="subpage-hero-kicker">
           <i className="fa-solid fa-bullhorn"></i> Program Prioritas
@@ -110,7 +109,7 @@ export default function ProgramView() {
           {programIntro.text} Lima program di bawah ini menjelaskan apa isinya, siapa sasarannya, dan rujukan resminya.
         </p>
         {programSourceUrl && (
-          <ProgramLink url={programSourceUrl} className="prog-hero-source">
+          <ProgramLink url={programSourceUrl} className={HERO_SOURCE_LINK}>
             Sumber: {programSourceLabel}
           </ProgramLink>
         )}
