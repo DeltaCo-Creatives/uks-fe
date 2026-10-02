@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import { prefersReducedMotion } from '@/hooks/useCollapse';
 import { strataCategories, strataLevels } from '@/data/portalData';
 import StrataCategoryCard from './StrataCategoryCard';
-import { FOCUS_RING } from '../styles';
+import { FOCUS_RING } from '../../styles';
 
 // --strata-color / --strata-bg / --step-rise are set inline per step, so the colors and height follow the data.
 const STEP = 'flex min-h-[calc(104px_+_var(--step-rise,0px))] cursor-pointer flex-col items-start justify-end gap-1 rounded-card border-2 border-t-[6px] border-t-[var(--strata-color)] px-5 py-[18px] text-left text-ink [transition:var(--spring)] hover:shadow-raised hover:[transform:translateY(-3px)] max-[768px]:min-h-0 max-[768px]:px-4 max-[768px]:py-3.5';
