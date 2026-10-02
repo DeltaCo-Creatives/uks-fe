@@ -6,62 +6,38 @@ import { pathForView } from '@/routes';
  * Beranda ▸ Stratifikasi UKS/M teaser — dev homepage's 4 strata boxes +
  * "Lihat Detail", both leading to UKS/M ▸ Stratifikasi UKS/M.
  */
+// Strata colors come from data shared with the Stratifikasi page, so they stay inline.
+// The trailing "!" beats the unlayered .btn-pill/.section rules; drop it once those move to Tailwind.
 export default function HomeStratifikasi() {
   return (
-    <section id="sec-home-stratifikasi" className="section" style={{ paddingBottom: '30px' }}>
+    <section id="sec-home-stratifikasi" className="section pb-[30px]!">
       <div className="container">
         <div className="section-header" data-gsap="reveal">
           <div>
             <span className="section-kicker">Standar Kesiapan Satpen</span>
             <h2 className="section-title">Stratifikasi UKS/M</h2>
           </div>
-          <Link
-            className="btn-pill primary"
-            to={pathForView('uksm-stratifikasi')}
-            style={{ padding: '10px 22px', fontSize: '13px' }}
-          >
+          <Link className="btn-pill primary py-2.5! px-[22px]!" to={pathForView('uksm-stratifikasi')}>
             Lihat Detail &rarr;
           </Link>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '16px' }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-4">
           {strataLevels.map((lvl) => (
             <Link
               key={lvl.key}
               data-gsap="reveal"
               to={pathForView('uksm-stratifikasi', 'sec-strat-indikator')}
-              style={{
-                background: '#FFFFFF',
-                borderRadius: 'var(--radius-lg)',
-                borderTop: `6px solid ${lvl.color}`,
-                borderRight: '1.5px solid rgba(0,0,0,0.06)',
-                borderBottom: '1.5px solid rgba(0,0,0,0.06)',
-                borderLeft: '1.5px solid rgba(0,0,0,0.06)',
-                boxShadow: 'var(--shadow-card)',
-                padding: '24px',
-                textAlign: 'left',
-                cursor: 'pointer',
-                font: 'inherit',
-                color: 'inherit',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px'
-              }}
+              className="flex flex-col gap-2 rounded-card border-[1.5px] border-t-6 border-black/[0.06] bg-card p-6 text-left shadow-raised"
+              style={{ borderTopColor: lvl.color }}
             >
-              <span style={{
-                alignSelf: 'flex-start',
-                fontSize: '11px',
-                fontWeight: 800,
-                color: lvl.color,
-                background: lvl.bgColor,
-                padding: '4px 10px',
-                borderRadius: 'var(--radius-pill)'
-              }}>
+              <span
+                className="self-start rounded-full px-2.5 py-1 text-[11px] font-extrabold"
+                style={{ color: lvl.color, background: lvl.bgColor }}
+              >
                 STRATA {lvl.code}
               </span>
-              <h3 style={{ fontSize: '18px', fontWeight: 800, margin: 0 }}>
-                {lvl.name}
-              </h3>
+              <h3 className="text-[18px] font-extrabold">{lvl.name}</h3>
             </Link>
           ))}
         </div>
