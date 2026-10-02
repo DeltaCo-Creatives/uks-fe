@@ -23,7 +23,9 @@ import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 
 import { pageNavigationConfigs } from './data/portalData';
+import UptBerceritaDetailView from './components/UptBerceritaDetailView';
 import { useBeritaList } from './hooks/useBerita';
+import { useUptStoriesList } from './hooks/usePublicLists';
 import {
   defaultTabSlug,
   pathForView,
@@ -33,19 +35,37 @@ import {
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail'];
+const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail'];
+
+// Article-style detail pages: the Informasi tab they belong to and the list
+// their title is looked up in.
+const DETAIL_CRUMBS = {
+  'berita-detail': { sectionId: 'sec-info-berita', label: 'Warta Terkini', useList: useBeritaList },
+  'upt-detail': { sectionId: 'sec-info-upt', label: 'UPT Bercerita', useList: useUptStoriesList }
+};
+
+/** Trailing crumb: the article title, once the list resolves; nothing broken shows while it loads. */
+function DetailTitleCrumb({ useList, slug }) {
+  const { data: list } = useList();
+  const article = slug ? (list || []).find((n) => n.slug === slug) : null;
+  if (!article) return null;
+
+  return (
+    <>
+      <span>/</span>
+      <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {article.title}
+      </span>
+    </>
+  );
+}
 
 function Breadcrumbs({ viewKey, pathname }) {
-  // Called unconditionally, before the early return below, so hook order stays
-  // stable across renders whatever viewKey (including 'beranda') turns out to be.
-  const { data: newsList } = useBeritaList();
-
   if (!viewKey || viewKey === 'beranda') return null;
 
   const linkStyle = { color: 'var(--brand-primary)', fontWeight: 700 };
-  const isBeritaDetail = viewKey === 'berita-detail';
-  const slug = isBeritaDetail ? decodeURIComponent(pathname.split('/')[3] || '') : null;
-  const article = slug ? (newsList || []).find((n) => n.slug === slug) : null;
+  const detailCrumb = DETAIL_CRUMBS[viewKey];
+  const slug = detailCrumb ? decodeURIComponent(pathname.split('/')[3] || '') : null;
 
   return (
     <div className="container" style={{ paddingTop: '20px', paddingBottom: '12px' }}>
@@ -59,21 +79,13 @@ function Breadcrumbs({ viewKey, pathname }) {
       }}>
         <Link to="/" style={linkStyle}>Beranda</Link>
 
-        {isBeritaDetail ? (
+        {detailCrumb ? (
           <>
             <span>/</span>
-            <Link to={pathForView('informasi', 'sec-info-berita')} style={linkStyle}>Informasi</Link>
+            <Link to={pathForView('informasi', detailCrumb.sectionId)} style={linkStyle}>Informasi</Link>
             <span>/</span>
-            <Link to={pathForView('informasi', 'sec-info-berita')} style={linkStyle}>Warta Terkini</Link>
-            {/* Title trails in once the berita list resolves; nothing broken shows while it loads. */}
-            {article && (
-              <>
-                <span>/</span>
-                <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {article.title}
-                </span>
-              </>
-            )}
+            <Link to={pathForView('informasi', detailCrumb.sectionId)} style={linkStyle}>{detailCrumb.label}</Link>
+            <DetailTitleCrumb key={viewKey} useList={detailCrumb.useList} slug={slug} />
           </>
         ) : (
           <>
@@ -195,6 +207,7 @@ function App() {
 
         <Route path="informasi" element={<Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />} />
         <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
+        <Route path="informasi/upt-bercerita/:idOrSlug" element={<UptBerceritaDetailView />} />
         <Route path="informasi/:tabSlug" element={<InformasiView />} />
 
         <Route path="publikasi" element={<Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />} />

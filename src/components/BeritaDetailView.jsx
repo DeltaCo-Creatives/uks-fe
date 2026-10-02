@@ -5,17 +5,36 @@ import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
 
-export default function BeritaDetailView() {
+/**
+ * What differs between article-style detail pages: the data hooks, where
+ * "back" goes, the related-list link target, and the page copy. Hooks are
+ * called as `config.useDetail()`, so a config must stay the same object for
+ * the life of a mounted component.
+ */
+const BERITA_CONFIG = {
+  useDetail: useBerita,
+  useRelated: useBeritaList,
+  pathForItem: pathForArticle,
+  backTo: pathForView('informasi', 'sec-info-berita'),
+  backLabel: 'Kembali ke Daftar Warta',
+  loadingLabel: 'Memuat warta...',
+  errorTitle: 'Warta tidak dapat dimuat',
+  errorText: 'Terjadi gangguan saat mengambil data warta. Silakan coba lagi.',
+  copiedMessage: 'Tautan warta berhasil disalin!',
+  relatedTitle: 'Warta Terkait Lainnya'
+};
+
+export default function BeritaDetailView({ config = BERITA_CONFIG }) {
   const { idOrSlug } = useParams();
-  const { data: article, loading, error } = useBerita(idOrSlug);
-  const { data: newsList } = useBeritaList();
+  const { data: article, loading, error } = config.useDetail(idOrSlug);
+  const { data: relatedList } = config.useRelated();
 
   if (loading) {
     return (
       <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
         <div className="about-bento-frame" style={{ background: '#FFFFFF', padding: 'clamp(24px, 4vw, 44px)', textAlign: 'center' }} role="status" aria-live="polite">
           <i className="fa-solid fa-circle-notch fa-spin" aria-hidden="true" style={{ fontSize: '28px', color: 'var(--brand-primary)', marginBottom: '12px' }}></i>
-          <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 600 }}>Memuat warta...</p>
+          <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 600 }}>{config.loadingLabel}</p>
         </div>
       </div>
     );
@@ -30,10 +49,10 @@ export default function BeritaDetailView() {
       <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
         <div className="about-bento-frame" style={{ background: '#FFFFFF', padding: 'clamp(24px, 4vw, 44px)', textAlign: 'center' }}>
           <i className="fa-solid fa-triangle-exclamation" aria-hidden="true" style={{ fontSize: '28px', color: '#DC2626', marginBottom: '12px' }}></i>
-          <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>Warta tidak dapat dimuat</h2>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>Terjadi gangguan saat mengambil data warta. Silakan coba lagi.</p>
-          <Link to={pathForView('informasi', 'sec-info-berita')} className="btn-pill secondary" style={{ padding: '10px 20px', fontSize: '13px' }}>
-            Kembali ke Daftar Warta
+          <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>{config.errorTitle}</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>{config.errorText}</p>
+          <Link to={config.backTo} className="btn-pill secondary" style={{ padding: '10px 20px', fontSize: '13px' }}>
+            {config.backLabel}
           </Link>
         </div>
       </div>
@@ -44,7 +63,7 @@ export default function BeritaDetailView() {
     return <NotFoundView />;
   }
 
-  const otherArticles = (newsList || []).filter((n) => n.slug !== article.slug).slice(0, 3);
+  const otherArticles = (relatedList || []).filter((n) => n.slug !== article.slug).slice(0, 3);
 
   return (
     <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
@@ -70,6 +89,12 @@ export default function BeritaDetailView() {
             <i className="fa-regular fa-calendar"></i>
             {article.date}
           </span>
+          {article.region && (
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <i className="fa-solid fa-location-dot" aria-hidden="true"></i>
+              {article.region}
+            </span>
+          )}
         </div>
 
         <h1
@@ -177,12 +202,12 @@ export default function BeritaDetailView() {
           }}
         >
           <Link
-            to={pathForView('informasi', 'sec-info-berita')}
+            to={config.backTo}
             className="btn-pill secondary"
             style={{ padding: '10px 20px', fontSize: '13px' }}
           >
             <i className="fa-solid fa-arrow-left" style={{ marginRight: '8px' }}></i>
-            Kembali ke Daftar Warta
+            {config.backLabel}
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -191,7 +216,7 @@ export default function BeritaDetailView() {
               onClick={() => {
                 if (navigator.clipboard) {
                   navigator.clipboard.writeText(window.location.href);
-                  alert('Tautan warta berhasil disalin!');
+                  alert(config.copiedMessage);
                 }
               }}
               className="btn-pill"
@@ -204,13 +229,13 @@ export default function BeritaDetailView() {
         </div>
       </div>
 
-      {/* "Warta Lainnya" recommendations */}
+      {/* Related recommendations */}
       {otherArticles.length > 0 && (
       <div>
         <div style={{ marginBottom: '20px' }}>
           <span className="section-kicker">Rekomendasi Terkini</span>
           <h3 style={{ fontSize: '22px', fontWeight: 800, margin: '4px 0', color: 'var(--text-primary)' }}>
-            Warta Terkait Lainnya
+            {config.relatedTitle}
           </h3>
         </div>
 
@@ -218,7 +243,7 @@ export default function BeritaDetailView() {
           {otherArticles.map((other) => (
             <Link
               key={other.id}
-              to={pathForArticle(other.slug)}
+              to={config.pathForItem(other.slug)}
               className="news-card-playful"
               style={{ display: 'flex', flexDirection: 'column' }}
             >
