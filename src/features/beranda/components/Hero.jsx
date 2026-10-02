@@ -6,6 +6,14 @@ import { pathForArticle } from '@/routes';
 import { useBeritaList } from '@/hooks/useBerita';
 import { useHeroSlideList } from '@/hooks/usePublicLists';
 
+// hero-slide, hero-bg, hero-content and hero-nav have no CSS of their own: the GSAP code below finds them by class.
+// GSAP also writes inline opacity/transform/z-index, so animated elements avoid translate-* and scale-* utilities.
+// "!" on the button beats the unlayered .btn-massive rule, which other pages still use.
+const DOT = 'h-2.5 border-none [transition:var(--spring)] max-[600px]:h-2';
+const DOT_IDLE = 'w-2.5 rounded-[50%] bg-[rgba(255,255,255,0.3)] max-[600px]:w-2';
+const DOT_ACTIVE = 'w-7 rounded-[999px] bg-white max-[600px]:w-5';
+const ARROW = 'size-11 rounded-[50%] border-none bg-[rgba(255,255,255,0.15)] text-[16px] text-white backdrop-blur-[12px] [transition:var(--spring)] hover:bg-white hover:text-ink hover:[transform:scale(1.1)] max-[600px]:size-9 max-[600px]:text-[13px]';
+
 export default function Hero() {
     const { data: heroData, loading: heroLoading } = useHeroSlideList();
     const { data: newsList, loading: newsLoading } = useBeritaList();
@@ -106,35 +114,37 @@ export default function Hero() {
     if (total === 0 && !pending) return null;
 
     return (
-        <section className="hero" id="beranda">
-            <div className="hero-stage" ref={heroRef}>
+        <section className="w-full px-5 pt-7 max-[600px]:px-2 max-[600px]:pt-4 max-[600px]:pb-2" id="beranda">
+            <div
+                // Sits below the fixed navbar, so the nav offset and 40px of gaps come off the viewport (dvh: the mobile URL bar is not space the stage gets).
+                className="relative h-[calc(100dvh_-_var(--nav-offset)_-_40px)] min-h-[520px] w-full overflow-hidden rounded-panel bg-ink shadow-raised max-[600px]:rounded-card"
+                ref={heroRef}
+            >
                 {total === 0 && (
-                    <p
-                        role="status"
-                        style={{ position: 'absolute', width: 1, height: 1, margin: -1, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap' }}
-                    >
+                    <p role="status" className="sr-only">
                         Memuat slide beranda
                     </p>
                 )}
                 {slides.map((slide, i) => (
                     <div
                         key={slide.id}
-                        className="hero-slide"
+                        className="hero-slide absolute inset-0 flex items-center justify-center max-[600px]:pb-20"
                         style={{
                             opacity: i === 0 ? 1 : 0,
                             zIndex: i === 0 ? 2 : 1,
                         }}
                     >
-                        <div className="hero-bg">
+                        <div className="hero-bg absolute inset-0 z-[1] after:absolute after:inset-0 after:bg-[linear-gradient(to_top,rgba(0,0,0,0.8),rgba(0,0,0,0.2))] after:content-['']">
                             {/* API berita can have a null image; the gradient overlay alone still reads fine. */}
-                            {slide.image && <img src={slide.image} alt={slide.title} />}
+                            {slide.image && <img className="h-full w-full object-cover opacity-90" src={slide.image} alt={slide.title} />}
                         </div>
-                        <div className="hero-content">
-                            <h1>{slide.title}</h1>
-                            <p>{slide.excerpt}</p>
+                        <div className="hero-content relative z-[3] max-w-[900px] px-6 py-[30px] text-center text-white max-[600px]:px-4 max-[600px]:py-5">
+                            {/* Titles come from the API and can run long; on phones cap them so they never reach the slider controls. */}
+                            <h1 className="mb-4 text-[clamp(24px,6vw,62px)] leading-[1.08] font-extrabold text-balance text-white max-[600px]:line-clamp-4 max-[600px]:leading-[1.2]">{slide.title}</h1>
+                            <p className="mb-6 text-[clamp(15px,1.8vw,18px)] text-[rgba(255,255,255,0.8)]">{slide.excerpt}</p>
                             {slide.slug && (
                                 <Link
-                                    className="btn-massive"
+                                    className="btn-massive max-[600px]:min-h-[40px] max-[600px]:px-5! max-[600px]:py-2.5! max-[600px]:text-[13px]!"
                                     to={pathForArticle(slide.slug)}
                                 >
                                     Baca Selengkapnya
@@ -145,22 +155,22 @@ export default function Hero() {
                 ))}
 
                 {total >= 2 && (
-                    <div className="hero-nav">
-                        <div className="hero-dots">
+                    <div className="hero-nav absolute inset-x-6 bottom-6 z-10 flex items-center justify-between max-[600px]:inset-x-5 max-[600px]:bottom-5 max-[600px]:flex-col max-[600px]:gap-5">
+                        <div className="flex gap-2.5 max-[600px]:gap-2">
                             {slides.map((_, idx) => (
                                 <button
                                     key={idx}
-                                    className={`hero-dot ${idx === current ? 'active' : ''}`}
+                                    className={`${DOT} ${idx === current ? DOT_ACTIVE : DOT_IDLE}`}
                                     onClick={() => goTo(idx)}
                                     aria-label={`Slide ${idx + 1}`}
                                 />
                             ))}
                         </div>
-                        <div className="hero-arrows">
-                            <button className="hero-arrow" onClick={() => goTo((current - 1 + total) % total)}>
+                        <div className="flex gap-3 max-[600px]:gap-2.5">
+                            <button className={ARROW} onClick={() => goTo((current - 1 + total) % total)}>
                                 <i className="fa-solid fa-arrow-left"></i>
                             </button>
-                            <button className="hero-arrow" onClick={() => goTo((current + 1) % total)}>
+                            <button className={ARROW} onClick={() => goTo((current + 1) % total)}>
                                 <i className="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
