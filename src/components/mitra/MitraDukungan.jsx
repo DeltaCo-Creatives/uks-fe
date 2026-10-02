@@ -1,30 +1,15 @@
 import { useState } from 'react';
-import { useMitraList, useDukunganMitraList } from '../../hooks/usePublicLists';
+import { useDukunganMitraList } from '../../hooks/usePublicLists';
 import { LoadingState, ErrorState } from '../shared/AsyncState';
 import MitraSupportRecord from './MitraSupportRecord';
 
 /**
- * Filled-in records come first as an accordion (the first one open). Partners
- * whose record is still empty are named in one plain list below, so the gap in
- * the data stays visible instead of being padded out.
- *
- * Needs both `/public/mitra` (for `tanpaDukungan`) and `/public/dukungan-mitra`
- * for the "X of Y" lead line, so loading/error is gated on both together.
- * ponytail: a failure in either endpoint blanks the whole section instead of
- * showing the half that loaded; split the gate if that partial view is wanted.
+ * Filled-in support records as an accordion, the first one open.
  */
 export default function MitraDukungan() {
-  const mitraList = useMitraList();
-  const dukunganList = useDukunganMitraList();
-  const loading = mitraList.loading || dukunganList.loading;
-  const error = mitraList.error || dukunganList.error;
-  const retry = () => {
-    mitraList.retry();
-    dukunganList.retry();
-  };
+  const { data, loading, error, retry } = useDukunganMitraList();
 
-  const partnerSupport = dukunganList.data ?? [];
-  const partnersWithoutRecord = mitraList.data?.tanpaDukungan ?? [];
+  const partnerSupport = data ?? [];
 
   const [openId, setOpenId] = useState(null);
   const defaultOpenId = partnerSupport[0]?.id ?? null;
@@ -38,7 +23,7 @@ export default function MitraDukungan() {
           <h2 className="section-title">Dukungan yang sudah tercatat</h2>
           {!loading && !error && (
             <p className="mitra-section-lead">
-              {partnerSupport.length} dari {partnerSupport.length + partnersWithoutRecord.length} mitra sudah memiliki rincian dukungan.
+              {partnerSupport.length} mitra sudah memiliki rincian dukungan.
             </p>
           )}
         </div>
@@ -70,20 +55,6 @@ export default function MitraDukungan() {
                 />
               ))}
             </ol>
-          )}
-
-          {partnersWithoutRecord.length > 0 && (
-            <div className="mitra-tinted mitra-pending" data-gsap="reveal">
-              <h3 className="mitra-block-title">Belum ada rincian dukungan</h3>
-              <ul className="mitra-pending-list">
-                {partnersWithoutRecord.map((partner) => (
-                  <li key={partner.id}>
-                    <span>{partner.nama}</span>
-                    {partner.catatan && <small>{partner.catatan}</small>}
-                  </li>
-                ))}
-              </ul>
-            </div>
           )}
         </>
       )}
