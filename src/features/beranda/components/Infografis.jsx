@@ -1,8 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
-import { useInfografisList, useMitraList } from '../hooks/usePublicLists';
-import { NEW_TAB_HINT } from '../utils/linkKind';
-import SafeImage from './SafeImage';
-import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
+import { useInfografisList, useMitraList } from '@/hooks/usePublicLists';
+import { NEW_TAB_HINT } from '@/utils/linkKind';
+import SafeImage from '@/components/SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 
 // Each strip scrolls by half its width, so a half must be wider than the container or a gap shows at the loop point.
 const MIN_LOGOS_PER_HALF = 8;

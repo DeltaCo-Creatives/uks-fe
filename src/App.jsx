@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from './components/Navbar';
 import EdgeDrawer from './components/EdgeDrawer';
 import ScrollManager from './components/ScrollManager';
-import BerandaView from './components/BerandaView';
+import BerandaPage from './pages/BerandaPage';
 import UksmClusters from './components/UksmClusters';
 import ProfilPage from './components/uksm/profil/ProfilPage';
 import TriasPage from './components/uksm/TriasPage';
@@ -191,7 +191,7 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<BerandaView />} />
+        <Route index element={<BerandaPage />} />
 
         <Route path="uksm" element={<UksmClusters />}>
           <Route index element={<Navigate to="profil" replace />} />

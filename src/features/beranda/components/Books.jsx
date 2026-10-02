@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
-import { useBukuPanduanList } from '../hooks/usePublicLists';
-import { countPublikasiView } from '../utils/counters';
-import SafeImage from './SafeImage';
-import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
+import { useBukuPanduanList } from '@/hooks/usePublicLists';
+import { countPublikasiView } from '@/utils/counters';
+import SafeImage from '@/components/SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 
 const MARQUEE_PX_PER_SECOND = 40;
 

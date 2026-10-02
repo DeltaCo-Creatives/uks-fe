@@ -2,9 +2,9 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { pathForArticle } from '../routes';
-import { useBeritaList } from '../hooks/useBerita';
-import { useHeroSlideList } from '../hooks/usePublicLists';
+import { pathForArticle } from '@/routes';
+import { useBeritaList } from '@/hooks/useBerita';
+import { useHeroSlideList } from '@/hooks/usePublicLists';
 
 export default function Hero() {
     const { data: heroData, loading: heroLoading } = useHeroSlideList();
