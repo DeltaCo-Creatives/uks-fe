@@ -1,4 +1,5 @@
 import { createCachedList } from './createCachedList';
+import { useSlugDetail } from './useSlugDetail';
 
 /** Hero slides for the home page, already ordered and filtered by the API. */
 export const useHeroSlideList = createCachedList('/public/hero-slide');
@@ -8,6 +9,9 @@ export const usePraktikBaikList = createCachedList('/public/praktik-baik', { pag
 
 /** UPT Bercerita list for the page, fetched once and shared by every consumer. */
 export const useUptStoriesList = createCachedList('/public/upt-bercerita', { paginated: true });
+
+/** A single UPT Bercerita story by slug, including the full HTML `content`. */
+export const useUptBercerita = (slug) => useSlugDetail('/public/upt-bercerita', slug);
 
 /**
  * Agenda list for the page, fetched once and shared by every consumer.

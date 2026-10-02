@@ -46,11 +46,14 @@ export function pathForView(viewKey, sectionId = null) {
 
 export const pathForArticle = (idOrSlug) => `/informasi/berita/${idOrSlug}`;
 
+export const pathForUptStory = (slug) => `/informasi/upt-bercerita/${slug}`;
+
 const SUBPAGE_PATHS = Object.entries(VIEW_PATHS).filter(([, path]) => path !== '/');
 
 export function viewKeyFromPathname(pathname) {
   if (pathname === '/') return 'beranda';
   if (pathname.startsWith('/informasi/berita/')) return 'berita-detail';
+  if (pathname.startsWith('/informasi/upt-bercerita/')) return 'upt-detail';
   const match = SUBPAGE_PATHS.find(
     ([, path]) => pathname === path || pathname.startsWith(`${path}/`)
   );

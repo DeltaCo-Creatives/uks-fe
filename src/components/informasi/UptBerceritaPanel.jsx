@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { pathForUptStory } from '../../routes';
 import SafeImage from '../SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
 import ContentToolbar from '../shared/ContentToolbar';
@@ -132,29 +134,51 @@ export default function UptBerceritaPanel() {
               <div key={group.label ?? 'flat'}>
                 {group.label && <h3 className="content-group-heading">{group.label}</h3>}
                 <div className="info-grid">
-                  {group.items.map((story) => (
-                    <article key={story.id} className="news-card-playful info-story">
-                      <div className="news-img-wrap">
-                        <SafeImage src={story.image} alt="" />
-                      </div>
+                  {group.items.map((story) => {
+                    const cardBody = (
+                      <>
+                        <div className="news-img-wrap">
+                          <SafeImage src={story.image} alt="" />
+                        </div>
 
-                      <div className="info-card-meta">
-                        <span className="section-kicker">{story.category}</span>
-                        <span className="info-card-date">
-                          <i className="fa-regular fa-calendar" aria-hidden="true"></i> {story.date}
-                        </span>
-                      </div>
+                        <div className="info-card-meta">
+                          <span className="section-kicker">{story.category}</span>
+                          <span className="info-card-date">
+                            <i className="fa-regular fa-calendar" aria-hidden="true"></i> {story.date}
+                          </span>
+                        </div>
 
-                      <h3 className="info-card-title">{story.title}</h3>
-                      <p className="info-card-excerpt">{story.excerpt}</p>
+                        <h3 className="info-card-title">{story.title}</h3>
+                        <p className="info-card-excerpt">{story.excerpt}</p>
 
-                      <div className="info-card-foot">
-                        <span className="info-card-region">
-                          <i className="fa-solid fa-location-dot" aria-hidden="true"></i> {story.region}
-                        </span>
-                      </div>
-                    </article>
-                  ))}
+                        <div className="info-card-foot">
+                          <span className="info-card-region">
+                            <i className="fa-solid fa-location-dot" aria-hidden="true"></i> {story.region}
+                          </span>
+                          {story.slug && (
+                            <span className="info-card-cta">
+                              Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                            </span>
+                          )}
+                        </div>
+                      </>
+                    );
+
+                    // No slug means no detail page to open, so it stays a plain card.
+                    return story.slug ? (
+                      <Link
+                        key={story.id}
+                        to={pathForUptStory(story.slug)}
+                        className="news-card-playful info-card-btn info-story"
+                      >
+                        {cardBody}
+                      </Link>
+                    ) : (
+                      <article key={story.id} className="news-card-playful info-story">
+                        {cardBody}
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             ))
