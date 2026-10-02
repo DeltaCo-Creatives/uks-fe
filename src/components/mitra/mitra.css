@@ -599,32 +599,6 @@
   color: var(--text-primary);
 }
 
-.mitra-pending {
-  margin-top: 24px;
-}
-
-.mitra-pending-list {
-  columns: 3 220px;
-  column-gap: 32px;
-  list-style: none;
-  padding: 0;
-  margin: 14px 0 0;
-}
-
-.mitra-pending-list li {
-  break-inside: avoid;
-  padding: 6px 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-primary);
-}
-
-.mitra-pending-list small {
-  display: block;
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
 /* ---------- Focus ---------- */
 .mitra-register-btn:focus-visible,
 .mitra-year-tab:focus-visible,
