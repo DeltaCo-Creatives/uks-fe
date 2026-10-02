@@ -20,9 +20,11 @@ const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290p
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
 
 const LOGO_BASE = 'flex h-[85px] w-[220px] items-center justify-center opacity-80 transition-[opacity,scale] duration-300 ease-[ease]';
-const LOGO_LINK = 'cursor-pointer rounded-soft hover:scale-105 hover:opacity-100 focus-visible:scale-105 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
+const LOGO_LINK = 'cursor-pointer rounded-soft [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:opacity-100 focus-visible:scale-105 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
-const STRIP_BASE = 'flex w-max items-center gap-12 px-6 hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
+// Hover effects apply only under a real pointer: on touch, :hover sticks after a tap, so a tapped logo
+// would leave the row paused (and the logo enlarged) until the next tap elsewhere.
+const STRIP_BASE = 'flex w-max items-center gap-12 px-6 [@media(hover:hover)]:hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
 
 const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 
