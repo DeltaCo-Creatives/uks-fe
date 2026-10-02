@@ -187,13 +187,14 @@
   color: var(--text-primary);
 }
 
+/* No flex-grow: a stretched clamp box shows a sliver of the next line.
+   The footer's margin-top: auto keeps card bottoms aligned instead. */
 .info-card-excerpt {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
   overflow: hidden;
-  min-height: 7.75em;
-  flex-grow: 1;
   margin-bottom: 16px;
   font-size: 13px;
   line-height: 1.55;
