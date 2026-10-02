@@ -1449,18 +1449,6 @@ footer {
     height: 44px;
   }
 
-  .download-doc-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .download-doc-item .btn-massive,
-  .download-doc-item .btn-pill {
-    width: 100%;
-    justify-content: center;
-  }
-
   .content-toolbar-controls {
     width: 100%;
   }
@@ -1552,107 +1540,6 @@ footer {
     border-radius: var(--radius-xl);
     /* Snap into squircle */
   }
-}
-
-/* ============================================================
-   INFOGRAFIS GRID
-   Posters are portrait and of differing ratios. object-fit: contain on a
-   shared portrait frame shows each one whole, so a poster can be read in the
-   grid instead of being cropped into an unreadable tile.
-   ============================================================ */
-.infografis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-  gap: 20px;
-}
-
-.infografis-tile {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  overflow: hidden;
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-}
-
-.infografis-frame {
-  position: relative;
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: none;
-  background: var(--bg-app);
-  cursor: zoom-in;
-}
-
-.infografis-frame img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: contain;
-}
-
-.infografis-zoom {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(17, 28, 22, 0.78);
-  color: #FFFFFF;
-  font-size: 13px;
-}
-
-.infografis-frame:hover .infografis-zoom {
-  background: var(--text-primary);
-}
-
-.infografis-frame:focus-visible {
-  outline: 3px solid var(--text-primary);
-  outline-offset: -3px;
-}
-
-.infografis-tile figcaption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-}
-
-.infografis-title {
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.35;
-  color: var(--text-primary);
-}
-
-.infografis-download {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: none;
-  min-height: 44px;
-  padding: 0 10px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-decoration: underline;
-  text-decoration-color: var(--brand-primary);
-  text-underline-offset: 4px;
-}
-
-.infografis-download:hover {
-  color: var(--brand-deep);
-}
-
-.infografis-download:focus-visible {
-  outline: 3px solid var(--text-primary);
-  outline-offset: 2px;
 }
 
 /* ============================================================
@@ -2577,28 +2464,6 @@ footer {
 }
 
 /* ============================================================
-   DOWNLOAD ITEM COMPONENT
-   ============================================================ */
-.download-doc-item {
-  background: #FFFFFF;
-  border: 1.5px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-  transition: var(--spring);
-}
-
-.download-doc-item:hover {
-  transform: translateY(-2px);
-  border-color: var(--brand-primary);
-  box-shadow: var(--shadow-card);
-}
-
-/* ============================================================
    COHESIVE SUBPAGE ANCHOR DESIGN SYSTEM
    ============================================================ */
 .subpage-hero-banner {
@@ -2727,18 +2592,6 @@ footer {
   box-shadow: var(--shadow-hover);
 }
 
-.indicator-card-tag {
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--brand-primary);
-  background: var(--brand-light);
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  display: inline-block;
-  margin-bottom: 12px;
-  align-self: flex-start;
-}
-
 .indicator-card h4 {
   font-size: 17px;
   font-weight: 800;
@@ -2783,71 +2636,6 @@ footer {
 .quote-bento-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
-}
-
-/* Video Card Playful */
-.video-card-playful {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  transition: var(--spring);
-}
-
-.video-card-playful:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-hover);
-}
-
-.video-thumb-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #000;
-  overflow: hidden;
-}
-
-.video-thumb-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.85;
-  transition: var(--ease);
-}
-
-.video-card-playful:hover .video-thumb-wrap img {
-  transform: scale(1.06);
-  opacity: 0.95;
-}
-
-.video-play-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  transition: var(--ease);
-}
-
-.video-play-badge {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--brand-accent);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-  transition: var(--spring);
-}
-
-.video-card-playful:hover .video-play-badge {
-  transform: scale(1.15);
-  background: #FFFFFF;
-  color: var(--brand-primary);
 }
 
 /* Modal Bento Overlay & Dialog */
