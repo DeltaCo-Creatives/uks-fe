@@ -45,6 +45,9 @@
   --nav-offset: 84px;
 }
 
+/* Tailwind's hover: only fires on hover-capable devices; the existing CSS uses plain :hover (tap-to-hover on touch). */
+@custom-variant hover (&:hover);
+
 /* Tailwind aliases of the :root tokens above. Edit values there, not here. */
 @theme inline {
   --color-app: var(--bg-app);
@@ -56,6 +59,9 @@
   --color-brand-accent: var(--brand-accent);
   --color-ink: var(--text-primary);
   --color-ink-muted: var(--text-secondary);
+
+  --animate-logo-scroll: logoScroll 70s linear infinite;
+  --animate-logo-scroll-reverse: logoScrollReverse 70s linear infinite;
 
   --font-sans: "Inter", system-ui, sans-serif;
   --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
@@ -1341,62 +1347,6 @@
 /* ============================================================
    INFOGRAFIS & FOOTER
    ============================================================ */
-.info-bento {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  min-height: 280px;
-  /* Reserves space so expanding bubbles don't push the content below */
-}
-
-.info-item {
-  flex: 0 0 auto;
-  height: 230px;
-  /* Base height for all bubbles */
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  position: relative;
-  box-shadow: var(--shadow-card);
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  cursor: pointer;
-  will-change: height, opacity;
-}
-
-/* First item is distinctively wider */
-.info-item.large {
-  flex: 0 0 clamp(200px, 35vw, 400px);
-  height: 260px;
-}
-
-/* The Bubble Cluster Magic */
-/* When the cluster is hovered, shrink the unhovered ones */
-.info-bento:has(.info-item:hover) .info-item:not(:hover) {
-  height: 200px !important;
-  opacity: 0.5 !important;
-  transform: none !important;
-}
-
-/* The hovered item expands massively */
-.info-bento .info-item:hover {
-  height: 290px !important;
-  z-index: 10;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12) !important;
-  transform: none !important;
-}
-
-.info-item img {
-  /* width:auto left blank card background showing on either side of any
-     portrait-oriented poster (it never stretched to fill the tile's width).
-     Filling both axes and letting object-fit:cover crop the overflow keeps
-     every tile fully covered, no matter the source image's aspect ratio. */
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* Lightbox Image Modal */
 .lightbox-overlay {
   position: fixed;
@@ -1414,25 +1364,6 @@
   padding: 40px;
   animation: fadeIn 0.3s ease;
   cursor: zoom-out;
-}
-
-.lightbox-content {
-  position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
-  animation: bubblyPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  cursor: default;
-}
-
-.lightbox-content img {
-  width: 100%;
-  height: 100%;
-  max-height: 90vh;
-  object-fit: contain;
-  display: block;
 }
 
 .lightbox-close {
@@ -1695,18 +1626,6 @@ footer {
   .nav-mobile-toggle {
     width: 44px;
     height: 44px;
-  }
-
-  .info-item {
-    height: 180px;
-  }
-
-  .info-bento:has(.info-item:hover) .info-item:not(:hover) {
-    height: 160px !important;
-  }
-
-  .info-bento .info-item:hover {
-    height: 220px !important;
   }
 
   .download-doc-item {
@@ -2364,106 +2283,6 @@ footer {
   width: 100%;
 }
 
-
-/* ============================================================
-   PARTNER LOGOS MARQUEE (2 Rows)
-   ============================================================ */
-.screenshots-marquee {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  padding: 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  /* Leaves room beside a focused logo so focus scrolling never parks it against the clipped edge. */
-  scroll-padding-inline: clamp(40px, 8vw, 96px);
-}
-
-/* White Vignette edges */
-.screenshots-marquee::before,
-.screenshots-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  /* Fade stays inside the content width, so it is narrow */
-  width: clamp(40px, 8vw, 96px);
-  z-index: 10;
-  pointer-events: none;
-}
-
-.screenshots-marquee::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-app) 0%, transparent 100%);
-}
-
-.screenshots-marquee::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-app) 0%, transparent 100%);
-}
-
-/* A keyboard-focused logo and its ring must not sit under a fade. */
-.screenshots-marquee:has(:focus-visible)::before,
-.screenshots-marquee:has(:focus-visible)::after {
-  opacity: 0;
-}
-
-.screenshots-strip {
-  display: flex;
-  gap: 48px;
-  /* Half the gap on each side makes -50% land exactly on the second copy, and keeps the first focus ring off the clipped edge. */
-  padding-inline: 24px;
-  width: max-content;
-  animation: logoScroll 70s linear infinite;
-  align-items: center;
-}
-
-.screenshots-strip.strip-reverse {
-  animation: logoScrollReverse 70s linear infinite;
-}
-
-/* Hold a row still under the pointer so a logo link can be hit. */
-.screenshots-strip:hover {
-  animation-play-state: paused;
-}
-
-/* Keyboard focus parks the row at its start, so focus scrolling can reach every exposed logo. */
-.screenshots-strip:has(:focus-visible) {
-  animation: none;
-}
-
-.screenshot-item {
-  width: 220px;
-  height: 85px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.8;
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-a.screenshot-item {
-  cursor: pointer;
-  border-radius: var(--radius-md, 8px);
-}
-
-a.screenshot-item:hover,
-a.screenshot-item:focus-visible {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-a.screenshot-item:focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 4px;
-}
-
-.screenshot-item img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
 
 @keyframes logoScroll {
   0% {
