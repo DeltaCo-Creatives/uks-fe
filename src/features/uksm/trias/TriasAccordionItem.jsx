@@ -1,20 +1,21 @@
 import { useState } from 'react';
-import ContentPlaceholder from '../ContentPlaceholder';
-import useCollapse from '../../hooks/useCollapse';
+import ContentPlaceholder from '@/components/ContentPlaceholder';
+import useCollapse from '@/hooks/useCollapse';
 import TriasOfficialText from './TriasOfficialText';
-import { TRIAS_SOURCE, triasItemSummaries } from '../../data/portalData';
+import { TRIAS_SOURCE, triasItemSummaries } from '@/data/portalData';
+import { FOCUS_RING } from '../styles';
 
 const FALLBACK_SUMMARY = { icon: 'fa-solid fa-circle-info', short: '', summary: null, facts: [] };
 
 function FactTiles({ facts, pillar }) {
   return (
-    <div className="trias-facts">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-3">
       {facts.map((fact) => (
-        <div key={fact.label} className="trias-fact" style={{ background: pillar.bgBadge }}>
-          <i className={fact.icon} style={{ color: pillar.color }} aria-hidden="true"></i>
+        <div key={fact.label} className="flex items-center gap-3 rounded-soft px-4 py-3.5" style={{ background: pillar.bgBadge }}>
+          <i className={`${fact.icon} w-[22px] shrink-0 text-center text-[18px]`} style={{ color: pillar.color }} aria-hidden="true"></i>
           <div>
-            <span className="trias-fact-label" style={{ color: pillar.color }}>{fact.label}</span>
-            <span className="trias-fact-value">{fact.value}</span>
+            <span className="block text-[12px] font-extrabold tracking-[0.05em] uppercase" style={{ color: pillar.color }}>{fact.label}</span>
+            <span className="block text-[14px] leading-[1.45] font-semibold text-ink">{fact.value}</span>
           </div>
         </div>
       ))}
@@ -44,27 +45,33 @@ export default function TriasAccordionItem({ item, index, pillar, isOpen, onTogg
   return (
     <div
       id={`trias-item-${item.id}`}
-      className={`trias-accordion-item ${isOpen ? 'is-open' : ''}`}
+      className={`overflow-hidden rounded-card border-[1.5px] bg-card [transition:var(--ease)] hover:border-[var(--pillar-color)] ${isOpen ? 'border-[var(--pillar-color)] shadow-raised' : 'border-line'}`}
       style={{ '--pillar-color': pillar.color }}
     >
-      <button type="button" className="trias-accordion-trigger" aria-expanded={isOpen} aria-controls={panelId} onClick={handleToggle}>
-        <span className="trias-accordion-icon" style={{ background: pillar.bgBadge, color: pillar.color }} aria-hidden="true">
+      <button
+        type="button"
+        className={`flex min-h-[84px] w-full cursor-pointer items-center gap-[18px] px-6 py-[18px] text-left text-ink max-[600px]:gap-3 max-[600px]:px-4 max-[600px]:py-3.5 ${FOCUS_RING}`}
+        aria-expanded={isOpen} aria-controls={panelId} onClick={handleToggle}>
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-soft text-[20px] max-[600px]:size-[42px] max-[600px]:text-[18px]" style={{ background: pillar.bgBadge, color: pillar.color }} aria-hidden="true">
           <i className={info.icon}></i>
         </span>
-        <span className="trias-accordion-heading">
-          <span className="trias-accordion-title">
-            <span className="trias-accordion-num">{String(index + 1).padStart(2, '0')}</span>
+        <span className="flex min-w-0 flex-1 flex-col gap-1">
+          <span className="font-display text-[17px] leading-[1.35] font-extrabold max-[600px]:text-[16px]">
+            <span className="mr-2.5 font-bold text-ink-muted">{String(index + 1).padStart(2, '0')}</span>
             {item.title}
           </span>
-          {!isOpen && info.short && <span className="trias-accordion-short">{info.short}</span>}
+          {!isOpen && info.short && <span className="text-[14px] leading-[1.5] text-ink-muted">{info.short}</span>}
         </span>
-        <i className="fa-solid fa-chevron-down trias-accordion-chevron" aria-hidden="true"></i>
+        <i
+          className={`fa-solid fa-chevron-down shrink-0 [transition:transform_0.3s_ease] ${isOpen ? 'text-[var(--pillar-color)] [transform:rotate(180deg)]' : 'text-ink-muted'}`}
+          aria-hidden="true"
+        ></i>
       </button>
 
       {panelMounted && (
         <div ref={panelRef}>
-          <div id={panelId} role="region" aria-label={item.title} className="trias-accordion-panel">
-            {info.summary && <p className="trias-summary">{info.summary}</p>}
+          <div id={panelId} role="region" aria-label={item.title} className="flex flex-col gap-[18px] pr-6 pb-6 pl-[90px] max-[600px]:px-4 max-[600px]:pb-5">
+            {info.summary && <p className="text-[17px] leading-[1.7] text-ink">{info.summary}</p>}
 
             {item.placeholder && (
               <ContentPlaceholder
@@ -77,10 +84,10 @@ export default function TriasAccordionItem({ item, index, pillar, isOpen, onTogg
             {info.facts.length > 0 && <FactTiles facts={info.facts} pillar={pillar} />}
 
             {hasFullText && (
-              <div className="trias-full">
+              <div className="flex flex-col">
                 <button
                   type="button"
-                  className="btn-pill secondary trias-full-toggle"
+                  className={`btn-pill secondary min-h-[44px] cursor-pointer self-start px-5! py-2.5! text-[14px]! ${FOCUS_RING}`}
                   aria-expanded={showFull}
                   onClick={() => setShowFull((open) => !open)}
                   style={{ color: pillar.color }}

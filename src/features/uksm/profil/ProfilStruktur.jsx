@@ -1,9 +1,14 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { prefersReducedMotion } from '../../../hooks/useCollapse';
+import { prefersReducedMotion } from '@/hooks/useCollapse';
 import ProfilPembina from './ProfilPembina';
 import ProfilPelaksana from './ProfilPelaksana';
+import { SECTION, FOCUS_DARK } from './styles';
+
+const TAB = `flex min-h-14 cursor-pointer flex-col items-start gap-0.5 rounded-soft px-4 py-2.5 text-left [transition:background-color_0.2s_ease] max-[600px]:px-3 ${FOCUS_DARK}`;
+const TAB_IDLE = 'bg-transparent text-ink hover:bg-[rgba(255,255,255,0.7)]';
+const TAB_ACTIVE = 'bg-ink text-white';
 
 const TABS = [
   { id: 'pembina', label: 'Tim Pembina', hint: 'Pusat sampai kecamatan' },
@@ -23,6 +28,7 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
     if (shownTab.current === activeTab) return;
     shownTab.current = activeTab;
     if (prefersReducedMotion()) return;
+    // profil-org-block is a hook for this tween; it carries no CSS.
     gsap.from('.profil-org-block', {
       opacity: 0,
       y: 10,
@@ -55,7 +61,7 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
   };
 
   return (
-    <section id="sec-profil-struktur" className="section profil-section">
+    <section id="sec-profil-struktur" className={SECTION}>
       <div className="section-header" data-gsap="reveal">
         <div>
           <span className="section-kicker">Struktur Organisasi</span>
@@ -63,8 +69,8 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
         </div>
       </div>
 
-      <div className="profil-org" data-gsap="reveal">
-        <div className="profil-org-tabs" role="tablist" aria-label="Struktur organisasi">
+      <div className="rounded-panel bg-card px-2 pt-2 pb-7 max-[600px]:px-1.5 max-[600px]:pt-1.5 max-[600px]:pb-5" data-gsap="reveal">
+        <div className="grid grid-cols-2 gap-1.5 rounded-card bg-card-alt p-1.5" role="tablist" aria-label="Struktur organisasi">
           {TABS.map((tab) => {
             const selected = tab.id === activeTab;
             return (
@@ -77,12 +83,12 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
                 aria-selected={selected}
                 aria-controls="profil-org-panel"
                 tabIndex={selected ? 0 : -1}
-                className={`profil-org-tab ${selected ? 'is-active' : ''}`}
+                className={`${TAB} ${selected ? TAB_ACTIVE : TAB_IDLE}`}
                 onClick={() => onTabChange(tab.id)}
                 onKeyDown={handleKeyDown}
               >
-                <span className="profil-org-tab-label">{tab.label}</span>
-                <span className="profil-org-tab-hint">{tab.hint}</span>
+                <span className="text-[15px] font-extrabold">{tab.label}</span>
+                <span className={`text-[13px] ${selected ? 'text-[rgba(255,255,255,0.8)]' : 'text-ink-muted'}`}>{tab.hint}</span>
               </button>
             );
           })}
@@ -94,7 +100,7 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
           role="tabpanel"
           aria-labelledby={`profil-tab-${activeTab}`}
           tabIndex={0}
-          className="profil-org-panel"
+          className={`px-5 pt-6 max-[600px]:px-2.5 max-[600px]:pt-5 ${FOCUS_DARK}`}
         >
           {activeTab === 'pembina'
             ? <ProfilPembina onShowPelaksana={() => switchTo('pelaksana')} />

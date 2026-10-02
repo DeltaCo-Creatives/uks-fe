@@ -1,5 +1,6 @@
-import { profilPembina } from '../../../data/portalData';
+import { profilPembina } from '@/data/portalData';
 import ProfilChartPlaceholder from './ProfilChartPlaceholder';
+import { MINI_LABEL, TEXT_LINK, SPLIT, ORG_LEAD, ORDERED_LIST, ORDERED_ITEM } from './styles';
 
 /**
  * Tim Pembina: the definition and the four government levels from the page
@@ -7,18 +8,18 @@ import ProfilChartPlaceholder from './ProfilChartPlaceholder';
  */
 export default function ProfilPembina({ onShowPelaksana }) {
   return (
-    <div className="profil-org-split">
+    <div className={SPLIT}>
       <div className="profil-org-block">
-        <p className="profil-org-lead">{profilPembina.definition}</p>
+        <p className={ORG_LEAD}>{profilPembina.definition}</p>
 
-        <h3 className="profil-mini-label">Dibentuk di setiap jenjang pemerintahan</h3>
-        <ol className="profil-level-list">
+        <h3 className={MINI_LABEL}>Dibentuk di setiap jenjang pemerintahan</h3>
+        <ol className={ORDERED_LIST}>
           {profilPembina.levels.map((level) => (
-            <li key={level}>{level}</li>
+            <li key={level} className={ORDERED_ITEM}>{level}</li>
           ))}
         </ol>
 
-        <button type="button" className="profil-text-link" onClick={onShowPelaksana}>
+        <button type="button" className={TEXT_LINK} onClick={onShowPelaksana}>
           Lihat tim yang bekerja di sekolah (Tim Pelaksana)
         </button>
       </div>
