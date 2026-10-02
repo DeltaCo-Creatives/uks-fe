@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useCollapse from '@/hooks/useCollapse';
 
-import { FOCUS_RING } from '../styles';
+import { FOCUS_RING } from '../../styles';
 
 const PREVIEW_COUNT = 4;
 

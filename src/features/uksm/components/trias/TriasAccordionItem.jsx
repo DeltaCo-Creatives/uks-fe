@@ -3,7 +3,7 @@ import ContentPlaceholder from '@/components/ContentPlaceholder';
 import useCollapse from '@/hooks/useCollapse';
 import TriasOfficialText from './TriasOfficialText';
 import { TRIAS_SOURCE, triasItemSummaries } from '@/data/portalData';
-import { FOCUS_RING } from '../styles';
+import { FOCUS_RING } from '../../styles';
 
 const FALLBACK_SUMMARY = { icon: 'fa-solid fa-circle-info', short: '', summary: null, facts: [] };
 
