@@ -1,19 +1,24 @@
 import { useMemo, useState } from 'react';
-import { pageNavigationConfigs } from '../../data/portalData';
-import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '../../hooks/usePublicLists';
-import { matchesQuery } from '../../hooks/useContentToolbar';
-import DocViewerModal from '../shared/DocViewerModal';
-import ImageLightbox from '../shared/ImageLightbox';
-import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
+import { pageNavigationConfigs } from '@/data/portalData';
+import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '@/hooks/usePublicLists';
+import { matchesQuery } from '@/hooks/useContentToolbar';
+import DocViewerModal from '@/components/shared/DocViewerModal';
+import ImageLightbox from '@/components/shared/ImageLightbox';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { BookGrid, InfografisGrid, VideoGrid, RegulasiList } from './PublikasiItems';
 import {
   BUKU_SEARCH_FIELDS,
   INFOGRAFIS_SEARCH_FIELDS,
   VIDEO_SEARCH_FIELDS,
   REGULASI_SEARCH_FIELDS
-} from './searchFields';
+} from '../searchFields';
 
 const sections = pageNavigationConfigs.publikasi.sections;
+
+// "!" beats the unlayered shared toolbar rules this list adjusts.
+const RESULTS =
+  'about-bento-frame flex flex-col gap-7 [&>.content-toolbar-summary]:mt-0! [&_.content-toolbar-reset]:min-h-[44px]! ' +
+  '[&_.content-toolbar-summary_span]:min-w-0 [&_.content-toolbar-summary_span]:[overflow-wrap:anywhere] [&_.info-empty-text]:min-w-0 [&_.info-empty-text]:[overflow-wrap:anywhere]';
 
 function sectionById(id) {
   return sections.find((section) => section.id === id);
@@ -60,7 +65,8 @@ export default function PublikasiSearchResults({ query, onClear }) {
   );
 
   return (
-    <div className="about-bento-frame publikasi-results">
+        // Every group heading is its wrapper's first child, so the groups are spaced here.
+    <div className={RESULTS}>
       <p className="content-toolbar-summary" aria-live="polite">
         {anyLoading && total === 0
           ? <span>Mencari "{trimmed}"...</span>
