@@ -14,7 +14,7 @@ import TriasPage from './pages/TriasPage';
 import StratifikasiPage from './pages/StratifikasiPage';
 import ProgramPage from './pages/ProgramPage';
 import MitraPage from './pages/MitraPage';
-import InformasiView from './components/InformasiView';
+import InformasiPage from './pages/InformasiPage';
 import PublikasiView from './components/PublikasiView';
 import KontakView from './components/KontakView';
 import SearchView from './components/SearchView';
@@ -208,7 +208,7 @@ function App() {
         <Route path="informasi" element={<Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />} />
         <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
         <Route path="informasi/upt-bercerita/:idOrSlug" element={<UptBerceritaDetailView />} />
-        <Route path="informasi/:tabSlug" element={<InformasiView />} />
+        <Route path="informasi/:tabSlug" element={<InformasiPage />} />
 
         <Route path="publikasi" element={<Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />} />
         <Route path="publikasi/:tabSlug" element={<PublikasiView />} />

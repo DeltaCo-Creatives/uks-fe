@@ -1145,6 +1145,26 @@
   border-radius: var(--radius-lg);
 }
 
+/* Icon, title and text inside AsyncState (loading, error and empty states on every page). */
+.content-toolbar-empty > i {
+  margin-bottom: 12px;
+  font-size: 30px;
+  color: var(--text-secondary);
+}
+
+.info-empty-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.info-empty-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
 /* ============================================================
    INFOGRAFIS & FOOTER
    ============================================================ */
@@ -2100,6 +2120,11 @@ footer {
 .lobby-tab i {
   color: var(--brand-primary);
   font-size: 15px;
+}
+
+/* A touchscreen has no hover, so the press needs feedback of its own */
+.lobby-tab:active {
+  transform: scale(0.985);
 }
 
 .lobby-tab:hover {

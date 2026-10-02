@@ -1,10 +1,11 @@
-import { usePraktikBaikList } from '../../hooks/usePublicLists';
-import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
-import ContentToolbar from '../shared/ContentToolbar';
-import Pagination from '../shared/Pagination';
-import { usePagedGroups } from '../../hooks/usePagedGroups';
-import { useContentToolbar } from '../../hooks/useContentToolbar';
-import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
+import { usePraktikBaikList } from '@/hooks/usePublicLists';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import ContentToolbar from '@/components/shared/ContentToolbar';
+import Pagination from '@/components/shared/Pagination';
+import { usePagedGroups } from '@/hooks/usePagedGroups';
+import { useContentToolbar } from '@/hooks/useContentToolbar';
+import { formatMonthYearID, parseIndonesianDate } from '@/utils/dateID';
+import { PANEL_HEAD_STACKED, PANEL_TITLE, PANEL_DESC, GRID } from '../styles';
 
 const GROUP_OPTIONS = [
   { key: 'month', label: 'Bulan', getGroup: (item) => {
@@ -33,10 +34,10 @@ export default function PraktikPanel() {
 
   return (
     <div className="about-bento-frame">
-      <div className="info-panel-head is-stacked">
+      <div className={PANEL_HEAD_STACKED}>
         <span className="section-kicker">Inspirasi Dari Sekolah</span>
-        <h2 className="info-panel-title">Praktik Baik Pembiasaan Trias &amp; 5 Sehat</h2>
-        <p className="info-panel-desc">
+        <h2 className={PANEL_TITLE}>Praktik Baik Pembiasaan Trias &amp; 5 Sehat</h2>
+        <p className={PANEL_DESC}>
           Cara yang sudah berjalan di sekolah dasar dan menengah, untuk ditiru sekolah lain.
         </p>
       </div>
@@ -83,14 +84,14 @@ export default function PraktikPanel() {
             pagedGroups.map((group) => (
               <div key={group.label ?? 'flat'}>
                 {group.label && <h3 className="content-group-heading">{group.label}</h3>}
-                <div className="info-grid">
+                <div className={GRID}>
                   {group.items.map((bp) => (
-                    <article key={bp.id} className="info-practice">
-                      <span className="info-practice-icon" aria-hidden="true"><i className={bp.icon}></i></span>
-                      <span className="info-practice-level">{bp.level}</span>
-                      <h3 className="info-practice-title">{bp.title}</h3>
-                      <p className="info-practice-desc">{bp.desc}</p>
-                      <span className="info-practice-date">
+                    <article key={bp.id} className="flex flex-col items-start rounded-card bg-card p-6 shadow-raised max-[768px]:p-[18px]">
+                      <span className="mb-3.5 grid size-11 place-items-center rounded-soft bg-brand-light text-[18px] text-brand" aria-hidden="true"><i className={bp.icon}></i></span>
+                      <span className="mb-2.5 inline-block rounded-[999px] bg-brand-light px-2.5 py-1 text-[11px] font-extrabold text-brand-deep">{bp.level}</span>
+                      <h3 className="mb-2 text-[17px] leading-[1.35] font-extrabold text-ink max-[768px]:text-[16px]">{bp.title}</h3>
+                      <p className="mb-3 text-[13px] leading-[1.6] text-ink-muted">{bp.desc}</p>
+                      <span className="mt-auto text-[11px] font-semibold text-ink-muted">
                         <i className="fa-regular fa-calendar" aria-hidden="true"></i> {bp.date}
                       </span>
                     </article>

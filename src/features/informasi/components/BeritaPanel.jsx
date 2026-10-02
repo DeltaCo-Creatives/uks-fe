@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { pathForArticle } from '../../routes';
-import SafeImage from '../SafeImage';
-import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
-import ContentToolbar from '../shared/ContentToolbar';
-import Pagination from '../shared/Pagination';
-import { usePagedGroups } from '../../hooks/usePagedGroups';
-import { useContentToolbar } from '../../hooks/useContentToolbar';
-import { useBeritaList } from '../../hooks/useBerita';
-import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
+import { pathForArticle } from '@/routes';
+import SafeImage from '@/components/SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import ContentToolbar from '@/components/shared/ContentToolbar';
+import Pagination from '@/components/shared/Pagination';
+import { usePagedGroups } from '@/hooks/usePagedGroups';
+import { useContentToolbar } from '@/hooks/useContentToolbar';
+import { useBeritaList } from '@/hooks/useBerita';
+import { formatMonthYearID, parseIndonesianDate } from '@/utils/dateID';
+import {
+  PANEL_HEAD, PANEL_TITLE, FILTER, FILTER_TRACK, filterButton, GRID,
+  NEWS_CARD_LINK, CARD_META, CARD_KICKER, CARD_DATE, CARD_TITLE, CARD_EXCERPT, CARD_FOOT, CARD_FOOT_ITEM
+} from '../styles';
 
 const GROUP_OPTIONS = [
   { key: 'month', label: 'Bulan', getGroup: (item) => {
@@ -51,19 +55,19 @@ export default function BeritaPanel() {
 
   return (
     <div className="about-bento-frame">
-      <div className="info-panel-head">
+      <div className={PANEL_HEAD}>
         <div>
           <span className="section-kicker">Rilis Resmi Kementerian</span>
-          <h2 className="info-panel-title">Warta Terkini Usaha Kesehatan Sekolah</h2>
+          <h2 className={PANEL_TITLE}>Warta Terkini Usaha Kesehatan Sekolah</h2>
         </div>
 
-        <div className="info-filter">
-          <div className="info-filter-track" role="group" aria-label="Saring warta menurut kategori">
+        <div className={FILTER}>
+          <div className={FILTER_TRACK} role="group" aria-label="Saring warta menurut kategori">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.key}
                 type="button"
-                className={`info-filter-btn ${activeCategory === cat.key ? 'is-active' : ''}`}
+                className={filterButton(activeCategory === cat.key)}
                 aria-pressed={activeCategory === cat.key}
                 onClick={() => setActiveCategory(cat.key)}
               >
@@ -116,26 +120,26 @@ export default function BeritaPanel() {
             pagedGroups.map((group) => (
               <div key={group.label ?? 'flat'}>
                 {group.label && <h3 className="content-group-heading">{group.label}</h3>}
-                <div className="info-grid">
+                <div className={GRID}>
                   {group.items.map(item => (
                     <Link
                       key={item.id}
                       to={pathForArticle(item.slug)}
-                      className="news-card-playful info-card-btn"
+                      className={NEWS_CARD_LINK}
                     >
                       <div className="news-img-wrap">
                         <SafeImage src={item.image} alt="" />
                       </div>
-                      <div className="info-card-meta">
-                        <span className="section-kicker">{item.category}</span>
-                        <span className="info-card-date">
+                      <div className={CARD_META}>
+                        <span className={CARD_KICKER}>{item.category}</span>
+                        <span className={CARD_DATE}>
                           <i className="fa-regular fa-calendar" aria-hidden="true"></i> {item.date}
                         </span>
                       </div>
-                      <h3 className="info-card-title">{item.title}</h3>
-                      <p className="info-card-excerpt">{item.excerpt}</p>
-                      <div className="info-card-foot">
-                        <span className="info-card-cta">
+                      <h3 className={CARD_TITLE}>{item.title}</h3>
+                      <p className={CARD_EXCERPT}>{item.excerpt}</p>
+                      <div className={CARD_FOOT}>
+                        <span className={CARD_FOOT_ITEM}>
                           Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                         </span>
                       </div>
