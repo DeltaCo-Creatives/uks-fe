@@ -3,9 +3,11 @@ import PrestasiSlide from './PrestasiSlide';
 
 const VISIBLE_RATIO = 0.5;
 
+const ARROW = 'flex size-11 flex-none cursor-pointer items-center justify-center rounded-[999px] border-2 border-ink bg-card text-ink [transition:var(--spring)] enabled:hover:bg-ink enabled:hover:text-card disabled:cursor-not-allowed disabled:opacity-35 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink';
+
 /**
  * A responsive number of winners per slide (1 phone, 2 tablet, 3 desktop,
- * set in program.css) on a native scroll-snap track: swipe on touch works
+ * set on PrestasiSlide) on a native scroll-snap track: swipe on touch works
  * for free, the arrows page by a screenful via scrollBy(track.clientWidth)
  * so they never need to know how many slides fit. Only slides more than half
  * inside the track mount an iframe, so 3-up desktop never means more than 3
@@ -71,11 +73,14 @@ export default function PrestasiSlider({ winners }) {
   const last = sortedVisible[sortedVisible.length - 1] ?? 0;
   const counterLabel = first === last ? `${first + 1} / ${total}` : `${first + 1}-${last + 1} / ${total}`;
 
+  // The one column is pinned to minmax(0, 1fr): an auto column would size to the track's full
+  // scroll width and paint past the card, inflating the page's scroll width.
   return (
-    <div className="prestasi-slider">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-3">
       <div
         ref={trackRef}
-        className="prestasi-slider-track"
+        // Paint containment keeps the clipped off-screen slides out of the document's scroll width.
+        className="flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth [contain:paint] [scrollbar-width:none] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-ink [&::-webkit-scrollbar]:hidden"
         role="region"
         aria-roledescription="carousel"
         aria-label="Video pemenang"
@@ -93,20 +98,20 @@ export default function PrestasiSlider({ winners }) {
         ))}
       </div>
 
-      <div className="prestasi-slider-controls">
+      <div className="flex items-center justify-center gap-4">
         <button
           type="button"
-          className="prestasi-slider-arrow"
+          className={ARROW}
           onClick={() => page(-1)}
           disabled={atStart}
           aria-label="Pemenang sebelumnya"
         >
           <i className="fa-solid fa-chevron-left" aria-hidden="true"></i>
         </button>
-        <span className="prestasi-slider-counter">{counterLabel}</span>
+        <span className="min-w-14 text-center text-[13px] font-bold text-ink-muted tabular-nums">{counterLabel}</span>
         <button
           type="button"
-          className="prestasi-slider-arrow"
+          className={ARROW}
           onClick={() => page(1)}
           disabled={atEnd}
           aria-label="Pemenang berikutnya"

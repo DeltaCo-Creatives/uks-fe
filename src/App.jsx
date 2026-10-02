@@ -12,7 +12,7 @@ import UksmClusters from './pages/UksmClusters';
 import ProfilPage from './pages/ProfilPage';
 import TriasPage from './pages/TriasPage';
 import StratifikasiPage from './pages/StratifikasiPage';
-import ProgramView from './components/ProgramView';
+import ProgramPage from './pages/ProgramPage';
 import MitraView from './components/MitraView';
 import InformasiView from './components/InformasiView';
 import PublikasiView from './components/PublikasiView';
@@ -201,7 +201,7 @@ function App() {
         </Route>
 
         <Route path="program" element={<Navigate to={`/program/${defaultTabSlug('program')}`} replace />} />
-        <Route path="program/:programSlug" element={<ProgramView />} />
+        <Route path="program/:programSlug" element={<ProgramPage />} />
 
         <Route path="mitra" element={<MitraView />} />
 
