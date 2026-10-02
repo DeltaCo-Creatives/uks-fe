@@ -470,7 +470,7 @@ ul {
 }
 
 .hero-content h1 {
-  font-size: clamp(40px, 6vw, 62px);
+  font-size: clamp(24px, 6vw, 62px);
   font-weight: 800;
   line-height: 1.08;
   margin-bottom: 16px;
@@ -1695,6 +1695,20 @@ footer {
     padding: 20px 16px;
   }
 
+  /* Bottom padding on the flex slide moves the centered content up by half of it. */
+  .hero-slide {
+    padding-bottom: 80px;
+  }
+
+  /* Titles come from the API and can run long; cap them so they never reach the slider controls. */
+  .hero-content h1 {
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+  }
+
   .hero-nav {
     bottom: 20px;
     left: 20px;
@@ -1705,8 +1719,32 @@ footer {
 
   /* Only hero btn-massive goes full width — inline btns should stay natural */
   .hero-content .btn-massive {
-    width: 100%;
-    justify-content: center;
+    padding: 10px 20px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+
+  .hero-dots {
+    gap: 8px;
+  }
+
+  .hero-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .hero-dot.active {
+    width: 20px;
+  }
+
+  .hero-arrows {
+    gap: 10px;
+  }
+
+  .hero-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
   }
 
   .hero-nav .btn-massive {
