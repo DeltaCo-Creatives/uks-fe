@@ -1,13 +1,8 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { pageNavigationConfigs } from '../data/portalData';
-import { defaultTabSlug, pathForView, sectionIdFromSlug } from '../routes';
-import LobbyTabs from './shared/LobbyTabs';
-import BeritaPanel from './informasi/BeritaPanel';
-import PraktikPanel from './informasi/PraktikPanel';
-import UptBerceritaPanel from './informasi/UptBerceritaPanel';
-import AgendaPanel from './informasi/AgendaPanel';
-import AplikasiPanel from './informasi/AplikasiPanel';
-import './informasi/informasi.css';
+import { pageNavigationConfigs } from '@/data/portalData';
+import { defaultTabSlug, pathForView, sectionIdFromSlug } from '@/routes';
+import LobbyTabs from '@/components/shared/LobbyTabs';
+import { BeritaPanel, PraktikPanel, UptBerceritaPanel, AgendaPanel, AplikasiPanel } from '@/features/informasi';
 
 const informasiTabs = pageNavigationConfigs.informasi.sections;
 
@@ -19,7 +14,7 @@ const infoPanels = {
   'sec-info-aplikasi': AplikasiPanel
 };
 
-export default function InformasiView() {
+export default function InformasiPage() {
   const { tabSlug } = useParams();
   const navigate = useNavigate();
   const activeId = sectionIdFromSlug('informasi', tabSlug);
@@ -28,8 +23,10 @@ export default function InformasiView() {
 
   const Panel = infoPanels[activeId];
 
+  // No horizontal padding: the tab and filter strips cancel exactly the container's own inset to reach
+  // the screen edges, and extra padding here would knock that alignment out.
   return (
-    <div className="container informasi-page">
+    <div className="container pt-6 pb-20 max-[768px]:pt-3 max-[768px]:pb-14">
       <div className="subpage-hero-banner" data-gsap="reveal">
         <span className="subpage-hero-kicker">
           <i className="fa-solid fa-newspaper"></i> Warta, Cerita Daerah &amp; Agenda UKS/M

@@ -1,5 +1,5 @@
-/* Styled to match the category filter strip (.info-filter-*) on the Informasi
-   page, but self-contained so Publikasi can use it without that stylesheet. */
+/* Styled to match the category filter strip on the Informasi page
+   (FILTER_* in features/informasi/styles.js), but self-contained so Publikasi can use it too. */
 .pager {
   display: flex;
   justify-content: center;

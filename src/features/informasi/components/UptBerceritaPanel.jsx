@@ -1,14 +1,18 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { pathForUptStory } from '../../routes';
-import SafeImage from '../SafeImage';
-import { LoadingState, ErrorState, EmptyState } from '../shared/AsyncState';
-import ContentToolbar from '../shared/ContentToolbar';
-import Pagination from '../shared/Pagination';
-import { usePagedGroups } from '../../hooks/usePagedGroups';
-import { useContentToolbar } from '../../hooks/useContentToolbar';
-import { useUptStoriesList } from '../../hooks/usePublicLists';
-import { formatMonthYearID, parseIndonesianDate } from '../../utils/dateID';
+import { pathForUptStory } from '@/routes';
+import SafeImage from '@/components/SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import ContentToolbar from '@/components/shared/ContentToolbar';
+import Pagination from '@/components/shared/Pagination';
+import { usePagedGroups } from '@/hooks/usePagedGroups';
+import { useContentToolbar } from '@/hooks/useContentToolbar';
+import { useUptStoriesList } from '@/hooks/usePublicLists';
+import { formatMonthYearID, parseIndonesianDate } from '@/utils/dateID';
+import {
+  PANEL_HEAD, PANEL_TITLE, PANEL_DESC, FILTER, FILTER_TRACK, filterButton, GRID,
+  NEWS_CARD, NEWS_CARD_LINK, CARD_META, CARD_KICKER, CARD_DATE, CARD_TITLE, CARD_EXCERPT, CARD_FOOT, CARD_FOOT_ITEM
+} from '../styles';
 
 const GROUP_OPTIONS = [
   { key: 'month', label: 'Bulan', getGroup: (item) => {
@@ -57,20 +61,20 @@ export default function UptBerceritaPanel() {
 
   return (
     <div className="about-bento-frame">
-      <div className="info-panel-head">
+      <div className={PANEL_HEAD}>
         <div>
           <span className="section-kicker">Kabar Unit Pelaksana Teknis</span>
-          <h2 className="info-panel-title">UPT Bercerita: Gerak Sehat di Daerah</h2>
-          <p className="info-panel-desc">
+          <h2 className={PANEL_TITLE}>UPT Bercerita: Gerak Sehat di Daerah</h2>
+          <p className={PANEL_DESC}>
             Catatan lapangan dari Balai Penjaminan Mutu Pendidikan (BPMP) dan Balai Guru Penggerak (BGP) se-Indonesia.
           </p>
         </div>
 
-        <div className="info-filter">
-          <div className="info-filter-track" role="group" aria-label="Saring cerita menurut topik">
+        <div className={FILTER}>
+          <div className={FILTER_TRACK} role="group" aria-label="Saring cerita menurut topik">
             <button
               type="button"
-              className={`info-filter-btn ${activeCategory === 'all' ? 'is-active' : ''}`}
+              className={filterButton(activeCategory === 'all')}
               aria-pressed={activeCategory === 'all'}
               onClick={() => setActiveCategory('all')}
             >
@@ -80,7 +84,7 @@ export default function UptBerceritaPanel() {
               <button
                 key={cat.key}
                 type="button"
-                className={`info-filter-btn ${activeCategory === cat.key ? 'is-active' : ''}`}
+                className={filterButton(activeCategory === cat.key)}
                 aria-pressed={activeCategory === cat.key}
                 onClick={() => setActiveCategory(cat.key)}
               >
@@ -133,7 +137,7 @@ export default function UptBerceritaPanel() {
             pagedGroups.map((group) => (
               <div key={group.label ?? 'flat'}>
                 {group.label && <h3 className="content-group-heading">{group.label}</h3>}
-                <div className="info-grid">
+                <div className={GRID}>
                   {group.items.map((story) => {
                     const cardBody = (
                       <>
@@ -141,22 +145,22 @@ export default function UptBerceritaPanel() {
                           <SafeImage src={story.image} alt="" />
                         </div>
 
-                        <div className="info-card-meta">
-                          <span className="section-kicker">{story.category}</span>
-                          <span className="info-card-date">
+                        <div className={CARD_META}>
+                          <span className={CARD_KICKER}>{story.category}</span>
+                          <span className={CARD_DATE}>
                             <i className="fa-regular fa-calendar" aria-hidden="true"></i> {story.date}
                           </span>
                         </div>
 
-                        <h3 className="info-card-title">{story.title}</h3>
-                        <p className="info-card-excerpt">{story.excerpt}</p>
+                        <h3 className={CARD_TITLE}>{story.title}</h3>
+                        <p className={CARD_EXCERPT}>{story.excerpt}</p>
 
-                        <div className="info-card-foot">
-                          <span className="info-card-region">
+                        <div className={CARD_FOOT}>
+                          <span className={CARD_FOOT_ITEM}>
                             <i className="fa-solid fa-location-dot" aria-hidden="true"></i> {story.region}
                           </span>
                           {story.slug && (
-                            <span className="info-card-cta">
+                            <span className={CARD_FOOT_ITEM}>
                               Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                             </span>
                           )}
@@ -169,12 +173,12 @@ export default function UptBerceritaPanel() {
                       <Link
                         key={story.id}
                         to={pathForUptStory(story.slug)}
-                        className="news-card-playful info-card-btn info-story"
+                        className={NEWS_CARD_LINK}
                       >
                         {cardBody}
                       </Link>
                     ) : (
-                      <article key={story.id} className="news-card-playful info-story">
+                      <article key={story.id} className={NEWS_CARD}>
                         {cardBody}
                       </article>
                     );
