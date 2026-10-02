@@ -1,13 +1,9 @@
 import { Link } from 'react-router-dom';
-import Hero from './Hero';
-import Programs from './Programs';
-import Books from './Books';
-import Infografis from './Infografis';
-import HomeStratifikasi from './HomeStratifikasi';
-import { triasPillarsDetail } from '../data/portalData';
-import { pathForView } from '../routes';
+import { Hero, Programs, Books, Infografis, HomeStratifikasi } from '@/features/beranda';
+import { triasPillarsDetail } from '@/data/portalData';
+import { pathForView } from '@/routes';
 
-export default function BerandaView() {
+export default function BerandaPage() {
   return (
     <div>
       {/* 1. Hero Stage */}

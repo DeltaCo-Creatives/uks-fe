@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { strataLevels } from '../data/portalData';
-import { pathForView } from '../routes';
+import { strataLevels } from '@/data/portalData';
+import { pathForView } from '@/routes';
 
 /**
  * Beranda ▸ Stratifikasi UKS/M teaser — dev homepage's 4 strata boxes +

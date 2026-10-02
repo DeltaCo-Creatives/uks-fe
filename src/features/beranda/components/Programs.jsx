@@ -1,11 +1,11 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { priorityProgramsList } from '../data/portalData';
-import { pathForArticle, pathForView } from '../routes';
-import { useBeritaList } from '../hooks/useBerita';
-import SafeImage from './SafeImage';
-import { LoadingState, ErrorState, EmptyState } from './shared/AsyncState';
+import { priorityProgramsList } from '@/data/portalData';
+import { pathForArticle, pathForView } from '@/routes';
+import { useBeritaList } from '@/hooks/useBerita';
+import SafeImage from '@/components/SafeImage';
+import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
