@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* ============================================================
    DESIGN TOKENS - TACTILE & PLAYFUL
    ============================================================ */
@@ -43,61 +45,89 @@
   --nav-offset: 84px;
 }
 
+/* Tailwind aliases of the :root tokens above. Edit values there, not here. */
+@theme inline {
+  --color-app: var(--bg-app);
+  --color-card: var(--bg-card);
+  --color-card-alt: var(--bg-card-alt);
+  --color-brand: var(--brand-primary);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-light: var(--brand-light);
+  --color-brand-accent: var(--brand-accent);
+  --color-ink: var(--text-primary);
+  --color-ink-muted: var(--text-secondary);
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* Own names: Tailwind already ships shadow-sm and rounded-md/lg/xl */
+  --shadow-soft: var(--shadow-sm);
+  --shadow-raised: var(--shadow-card);
+  --shadow-lift: var(--shadow-hover);
+  --shadow-float: var(--shadow-pill);
+
+  --radius-soft: var(--radius-md);
+  --radius-card: var(--radius-lg);
+  --radius-panel: var(--radius-xl);
+}
+
 /* ============================================================
    RESET & BASE
    ============================================================ */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  font-family: "Inter", system-ui, sans-serif;
-  background: var(--bg-app);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
-  line-height: 1.5;
-  padding-top: var(--nav-offset);
-}
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: var(--bg-app);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    padding-top: var(--nav-offset);
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.font-heading {
-  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-  color: var(--text-primary);
-  letter-spacing: -0.03em;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-heading {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+  }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 
-img {
-  max-width: 100%;
-  display: block;
-}
+  img {
+    max-width: 100%;
+    display: block;
+  }
 
-button {
-  cursor: pointer;
-  font: inherit;
-  outline: none;
-}
+  button {
+    cursor: pointer;
+    font: inherit;
+    outline: none;
+  }
 
-ul {
-  list-style: none;
+  ul {
+    list-style: none;
+  }
 }
 
 /* GSAP animates initial states via JS - no CSS hiding needed here */
