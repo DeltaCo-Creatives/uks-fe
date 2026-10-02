@@ -17,8 +17,9 @@ export function useMarqueeHold(tweenRef) {
   }, [tweenRef]);
 
   const trackProps = {
-    onMouseEnter: () => hold('hover', true),
-    onMouseLeave: () => hold('hover', false),
+    // Touch emulates mouseenter on tap but never fires the matching leave, which would leave the row stopped.
+    onPointerEnter: (e) => e.pointerType !== 'touch' && hold('hover', true),
+    onPointerLeave: (e) => e.pointerType !== 'touch' && hold('hover', false),
     onFocus: (e) => e.target.matches(':focus-visible') && hold('focus', true),
     onBlur: (e) => !e.currentTarget.contains(e.relatedTarget) && hold('focus', false)
   };
