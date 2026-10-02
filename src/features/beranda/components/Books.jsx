@@ -4,6 +4,8 @@ import { useBukuPanduanList } from '@/hooks/usePublicLists';
 import { countPublikasiView } from '@/utils/counters';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
+import { useMarqueeHold } from '../useMarqueeHold';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
@@ -27,17 +29,7 @@ export default function Books() {
     const marqueeTween = useRef(null);
     const overlayRef = useRef(null);
     const trackRef = useRef(null);
-    // The row holds still while a card is hovered, keyboard-focused, or its PDF is open.
-    const hold = useRef({ hover: false, focus: false, modal: false });
-    const syncMarquee = () => {
-        const { hover, focus, modal } = hold.current;
-        if (hover || focus || modal) marqueeTween.current?.pause();
-        else marqueeTween.current?.play();
-    };
-    const holdMarquee = (key, value) => {
-        hold.current[key] = value;
-        syncMarquee();
-    };
+    const { hold: holdMarquee, trackProps } = useMarqueeHold(marqueeTween);
 
     // Repeat books 4x per half so the track is over 3500px wide, preventing empty space on wide displays
     const marqueeBooks = useMemo(() => {
@@ -74,7 +66,7 @@ export default function Books() {
             document.body.style.overflow = '';
             gsap.to('.nav-dynamic-wrapper', { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(1.2)', clearProps: 'all' });
         }
-    }, [selectedBook]);
+    }, [selectedBook, holdMarquee]);
 
     const handleLihatSemua = () => {
         // Ramp up warp speed
@@ -168,22 +160,18 @@ export default function Books() {
                         <span className="section-kicker">Perpustakaan</span>
                         <h2 className="section-title">Buku &amp; Panduan</h2>
                     </div>
-                    <button className="btn-pill primary home-section-more" onClick={handleLihatSemua}>
+                    <button className={`btn-pill primary ${SECTION_MORE_BUTTON}`} onClick={handleLihatSemua}>
                         Lihat Semua Buku <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
 
             <div className="container">
-                <div className="cards-marquee is-contained" data-gsap="reveal">
+                <div className={MARQUEE_FRAME} data-gsap="reveal">
                     <div
-                        className="cards-marquee-track"
+                        className={MARQUEE_TRACK}
                         ref={trackRef}
-                        onMouseEnter={() => holdMarquee('hover', true)}
-                        onMouseLeave={() => holdMarquee('hover', false)}
-                        // Mouse-click focus must not pin the row; only keyboard focus does.
-                        onFocus={(e) => e.target.matches(':focus-visible') && holdMarquee('focus', true)}
-                        onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && holdMarquee('focus', false)}
+                        {...trackProps}
                     >
                         {/* First half */}
                         {marqueeBooks.map((buku, idx) => (
