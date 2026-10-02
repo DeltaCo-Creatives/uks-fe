@@ -6,11 +6,15 @@ import { pathForArticle, pathForView } from '@/routes';
 import { useBeritaList } from '@/hooks/useBerita';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
+import { useMarqueeHold } from '../useMarqueeHold';
 
 const MARQUEE_PX_PER_SECOND = 40;
 
 export default function Programs() {
     const trackRef = useRef(null);
+    const marqueeTween = useRef(null);
+    const { trackProps } = useMarqueeHold(marqueeTween);
     const { data: newsList, loading, error, retry } = useBeritaList();
     const latestNews = (newsList || []).slice(0, 4);
 
@@ -21,7 +25,7 @@ export default function Programs() {
 
     // Initialize unstoppable GSAP Marquee
     useEffect(() => {
-        const marqueeTween = gsap.to(trackRef.current, {
+        marqueeTween.current = gsap.to(trackRef.current, {
             xPercent: -50,
             repeat: -1,
             // Constant speed rather than a constant duration: the track holds
@@ -32,7 +36,7 @@ export default function Programs() {
         });
 
         return () => {
-            if (marqueeTween) marqueeTween.kill();
+            if (marqueeTween.current) marqueeTween.current.kill();
         };
     }, []);
 
@@ -48,39 +52,38 @@ export default function Programs() {
             </div>
 
             <div className="container">
-                <div className="cards-marquee is-contained" data-gsap="reveal">
-                    <div className="cards-marquee-track" ref={trackRef}>
-                        {/* First set */}
-                        {marqueePrograms.map((p, i) => (
-                            <div key={`p1-${i}`} className="swipe-card">
-                                <div className="program-icon">
-                                    <i className={p.icon || 'fa-solid fa-star'}></i>
-                                </div>
-                                <h3>{p.title}</h3>
-                                <p>{p.desc}</p>
-                            </div>
-                        ))}
-                        {/* Duplicated set for seamless infinite loop */}
-                        {marqueePrograms.map((p, i) => (
-                            <div key={`p2-${i}`} className="swipe-card">
-                                <div className="program-icon">
-                                    <i className={p.icon || 'fa-solid fa-star'}></i>
-                                </div>
-                                <h3>{p.title}</h3>
-                                <p>{p.desc}</p>
-                            </div>
-                        ))}
+                <div className={MARQUEE_FRAME} data-gsap="reveal">
+                    <div className={MARQUEE_TRACK} ref={trackRef} {...trackProps}>
+                        {/* Each card opens its program page. Only the first pass is exposed to keyboard and screen readers; the rest are loop copies. */}
+                        {[...marqueePrograms, ...marqueePrograms].map((p, i) => {
+                            const hidden = i >= priorityProgramsList.length;
+                            return (
+                                <Link
+                                    key={i}
+                                    to={pathForView('program', p.id)}
+                                    className="swipe-card"
+                                    aria-hidden={hidden || undefined}
+                                    tabIndex={hidden ? -1 : undefined}
+                                >
+                                    <div className="mb-3.5 flex size-14 items-center justify-center rounded-[50%] bg-app text-[24px] text-brand">
+                                        <i className={p.icon || 'fa-solid fa-star'}></i>
+                                    </div>
+                                    <h3>{p.title}</h3>
+                                    <p>{p.desc}</p>
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
 
-            <div id="sec-home-news" className="container" style={{ marginTop: '28px' }}>
+            <div id="sec-home-news" className="container mt-7!">
                 <div className="section-header" data-gsap="reveal">
                     <div>
                         <span className="section-kicker">Update</span>
                         <h2 className="section-title">Kabar Terbaru</h2>
                     </div>
-                    <Link to={pathForView('informasi', 'sec-info-berita')} className="btn-pill primary home-section-more">
+                    <Link to={pathForView('informasi', 'sec-info-berita')} className={`btn-pill primary ${SECTION_MORE_BUTTON}`}>
                         Lihat Semua Warta <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </Link>
                 </div>
@@ -111,14 +114,13 @@ export default function Programs() {
                                 to={pathForArticle(item.slug)}
                                 className="news-card-playful"
                                 data-gsap="reveal"
-                                style={{ cursor: 'pointer' }}
                             >
                                 <div className="news-img-wrap">
                                     <SafeImage src={item.image} alt={item.title} />
                                 </div>
                                 <h3>{item.title}</h3>
                                 <p>{item.excerpt}</p>
-                                <span className="news-card-more">Baca Selengkapnya &rarr;</span>
+                                <span className="mt-auto text-[12px] font-bold text-brand-deep">Baca Selengkapnya &rarr;</span>
                             </Link>
                         ))}
                     </div>

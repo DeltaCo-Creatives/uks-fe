@@ -3,6 +3,7 @@ import { useInfografisList, useMitraList } from '@/hooks/usePublicLists';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import { MARQUEE_FADE } from '../styles';
 
 // Each strip scrolls by half its width, so a half must be wider than the container or a gap shows at the loop point.
 const MIN_LOGOS_PER_HALF = 8;
@@ -15,10 +16,6 @@ const TILE_HOVER = 'hover:z-10 hover:transform-none! hover:shadow-[0_24px_48px_r
 const TILE_SIZE = 'h-[230px] hover:h-[290px]! group-has-[:hover]/bento:not-hover:h-[200px]! max-md:h-[180px] max-md:hover:h-[220px]! max-md:group-has-[:hover]/bento:not-hover:h-[160px]!';
 const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290px]! group-has-[:hover]/bento:not-hover:h-[200px]! max-md:hover:h-[220px]! max-md:group-has-[:hover]/bento:not-hover:h-[160px]!';
 
-// Edge fades on the marquee. Raw gradient keeps the original sRGB blend (Tailwind's gradients blend in oklab).
-const FADE_EDGE = 'before:pointer-events-none before:absolute before:inset-y-0 before:z-10 before:w-[clamp(40px,8vw,96px)] before:content-[\'\'] after:pointer-events-none after:absolute after:inset-y-0 after:z-10 after:w-[clamp(40px,8vw,96px)] after:content-[\'\']';
-const FADE_LEFT = 'before:left-0 before:bg-[linear-gradient(to_right,var(--bg-app)_0%,transparent_100%)]';
-const FADE_RIGHT = 'after:right-0 after:bg-[linear-gradient(to_left,var(--bg-app)_0%,transparent_100%)]';
 // A keyboard-focused logo and its ring must not sit under a fade.
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
 
@@ -120,7 +117,7 @@ export default function Infografis() {
 
                 {track.length > 0 && (
                     <div
-                        className={`relative mt-8 flex w-full scroll-px-[clamp(40px,8vw,96px)] flex-col gap-4 overflow-hidden py-4 ${FADE_EDGE} ${FADE_LEFT} ${FADE_RIGHT} ${FADE_OFF_ON_FOCUS}`}
+                        className={`relative mt-8 flex w-full scroll-px-[clamp(40px,8vw,96px)] flex-col gap-4 overflow-hidden py-4 ${MARQUEE_FADE} ${FADE_OFF_ON_FOCUS}`}
                         ref={marqueeRef}
                     >
                         {/* Only the first pass of the first row is exposed to keyboard and screen readers; the rest are loop copies. */}

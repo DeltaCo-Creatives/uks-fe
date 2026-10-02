@@ -593,56 +593,6 @@
   transform: scale(1.1);
 }
 
-/* ============================================================
-   ENDLESS AUTOSCROLL MARQUEE (For Programs & Books)
-   ============================================================ */
-.cards-marquee {
-  width: 100%;
-  overflow: hidden;
-  padding: 10px 0 24px 0;
-  position: relative;
-  /* Added for vignette positioning */
-}
-
-/* Vignette fade on the edges so cards don't just abruptly disappear */
-.cards-marquee::before,
-.cards-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 15vw;
-  z-index: 10;
-  pointer-events: none;
-  /* Let clicks pass through to the cards below */
-}
-
-.cards-marquee::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-app) 0%, transparent 100%);
-}
-
-.cards-marquee::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-app) 0%, transparent 100%);
-}
-
-.cards-marquee.is-contained::before,
-.cards-marquee.is-contained::after {
-  width: clamp(40px, 8vw, 96px);
-}
-
-.cards-marquee-track {
-  display: flex;
-  gap: 20px;
-  width: max-content;
-  padding: 0 20px;
-  /* Force GPU acceleration and cache the filter shader to prevent black-box stutters on first warp */
-  filter: blur(0px) contrast(1);
-  transform: translateZ(0);
-  will-change: filter, transform;
-}
-
 .swipe-card {
   scroll-snap-align: center;
   flex: 0 0 clamp(260px, 28vw, 340px);
@@ -665,19 +615,6 @@
 }
 
 /* Program Card Details */
-.program-icon {
-  width: 56px;
-  height: 56px;
-  background: var(--bg-app);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: var(--brand-primary);
-  margin-bottom: 14px;
-}
-
 .swipe-card h3 {
   font-size: 20px;
   margin-bottom: 8px;
@@ -945,18 +882,6 @@
   min-height: 7.25em;
   flex-grow: 1;
   overflow-wrap: anywhere;
-}
-
-.news-card-more {
-  margin-top: auto;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--brand-deep);
-}
-
-.home-section-more {
-  min-height: 44px;
-  padding: 0 22px;
 }
 
 .news-img-wrap {
