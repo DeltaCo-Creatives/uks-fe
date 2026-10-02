@@ -2359,9 +2359,12 @@ footer {
   animation: logoScrollReverse 70s linear infinite;
 }
 
-/* Hold a row still under the pointer so a logo link can be hit. */
-.screenshots-strip:hover {
-  animation-play-state: paused;
+/* Hold a row still under the pointer so a logo link can be hit. Mouse only: on touch,
+   :hover sticks after a tap, so returning from a tapped logo's tab left the row stopped. */
+@media (hover: hover) {
+  .screenshots-strip:hover {
+    animation-play-state: paused;
+  }
 }
 
 /* Keyboard focus parks the row at its start, so focus scrolling can reach every exposed logo. */
@@ -2384,10 +2387,17 @@ a.screenshot-item {
   border-radius: var(--radius-md, 8px);
 }
 
-a.screenshot-item:hover,
 a.screenshot-item:focus-visible {
   opacity: 1;
   transform: scale(1.05);
+}
+
+/* Same sticky-hover reason as the strip above: a tapped logo must not stay enlarged. */
+@media (hover: hover) {
+  a.screenshot-item:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 
 a.screenshot-item:focus-visible {
