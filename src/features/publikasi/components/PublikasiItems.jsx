@@ -35,7 +35,7 @@ export function BookGrid({ books, onRead }) {
                     <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); onRead(buku); }}>
                       <i className="fa-solid fa-book-open mr-1.5"></i>Baca Online
                     </button>
-                    <a href={buku.pdf} download className="btn-pill secondary no-underline" aria-label={`Unduh ${buku.title}`} onClick={(e) => downloadFile(e, buku.pdf, buku.title)}>
+                    <a href={buku.pdf} download className="btn-pill secondary no-underline" onClick={(e) => downloadFile(e, buku.pdf, buku.title)}>
                       <i className="fa-solid fa-download"></i>
                     </a>
                   </>
