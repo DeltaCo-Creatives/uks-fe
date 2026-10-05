@@ -8,7 +8,8 @@ import {
   HabitsSection,
   ContrastSection,
   PillarsSection,
-  ExampleSection
+  ExampleSection,
+  RichTextSection
 } from './ProgramSections';
 import { ResourcesSection } from './ProgramLinkSections';
 import PrestasiSection from './PrestasiSection';
@@ -25,7 +26,8 @@ const SECTION_COMPONENTS = {
   pillars: PillarsSection,
   example: ExampleSection,
   resources: ResourcesSection,
-  prestasi: PrestasiSection
+  prestasi: PrestasiSection,
+  richtext: RichTextSection
 };
 
 function ProgramFigure({ image }) {
@@ -36,7 +38,7 @@ function ProgramFigure({ image }) {
         src={image.src} alt={image.alt} width={image.width} height={image.height} loading="lazy" />
       <figcaption className="mt-2 text-[13px] leading-[1.5] text-ink-muted">
         {image.caption}{' '}
-        <ProgramLink url={image.credit.url} className={CREDIT_LINK}>Sumber: {image.credit.label}</ProgramLink>
+        {image.credit && <ProgramLink url={image.credit.url} className={CREDIT_LINK}>Sumber: {image.credit.label}</ProgramLink>}
       </figcaption>
     </figure>
   );
@@ -48,6 +50,7 @@ function ProgramFigure({ image }) {
  */
 const ProgramPanel = forwardRef(function ProgramPanel({ program, number }, ref) {
   const hasImage = Boolean(program.image);
+  const facts = program.facts.length > 0 && <FactList facts={program.facts} />;
 
   return (
     <div
@@ -69,10 +72,10 @@ const ProgramPanel = forwardRef(function ProgramPanel({ program, number }, ref) 
             <i className="fa-solid fa-building-columns text-brand" aria-hidden="true"></i> {program.agency}
           </p>
           <p className={LEAD}>{program.lead}</p>
-          {hasImage && <FactList facts={program.facts} />}
+          {hasImage && facts}
         </div>
         <div className="[&>dl]:mt-0">
-          {hasImage ? <ProgramFigure image={program.image} /> : <FactList facts={program.facts} />}
+          {hasImage ? <ProgramFigure image={program.image} /> : facts}
         </div>
       </header>
 
@@ -90,16 +93,18 @@ const ProgramPanel = forwardRef(function ProgramPanel({ program, number }, ref) 
       })}
 
       {/* "!" beats the global unlayered footer rule (the site footer's dark bar), which also matches this element. */}
-      <footer className="prog-block mt-4! rounded-card! bg-card-alt! px-[22px]! py-[18px]!">
-        <h3 className="mb-1 text-[13px] font-bold text-brand-deep">Sumber konten</h3>
-        <ul className="m-0 flex list-none flex-wrap gap-x-6 gap-y-0 p-0">
-          {program.sources.map((source) => (
-            <li key={source.url}>
-              <ProgramLink url={source.url} className={SOURCE_LINK}>{source.label}</ProgramLink>
-            </li>
-          ))}
-        </ul>
-      </footer>
+      {program.sources.length > 0 && (
+        <footer className="prog-block mt-4! rounded-card! bg-card-alt! px-[22px]! py-[18px]!">
+          <h3 className="mb-1 text-[13px] font-bold text-brand-deep">Sumber konten</h3>
+          <ul className="m-0 flex list-none flex-wrap gap-x-6 gap-y-0 p-0">
+            {program.sources.map((source) => (
+              <li key={source.label}>
+                <ProgramLink url={source.url} className={SOURCE_LINK}>{source.label}</ProgramLink>
+              </li>
+            ))}
+          </ul>
+        </footer>
+      )}
     </div>
   );
 });

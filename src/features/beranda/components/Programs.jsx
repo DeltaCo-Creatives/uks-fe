@@ -1,9 +1,9 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { priorityProgramsList } from '@/data/portalData';
-import { pathForArticle, pathForView } from '@/routes';
+import { pathForArticle, pathForProgram, pathForView } from '@/routes';
 import { useBeritaList } from '@/hooks/useBerita';
+import { useProgramList } from '@/hooks/usePublicLists';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
@@ -17,14 +17,18 @@ export default function Programs() {
     const { trackProps } = useMarqueeHold(marqueeTween);
     const { data: newsList, loading, error, retry } = useBeritaList();
     const latestNews = (newsList || []).slice(0, 4);
+    // Decorative row: it stays out until the programs load and is skipped if they fail.
+    const { data: programs } = useProgramList();
 
     // Repeat programs so each half is sufficiently wide (> 3500px)
-    const marqueePrograms = useMemo(() => [
-        ...priorityProgramsList, ...priorityProgramsList, ...priorityProgramsList
-    ], []);
+    const marqueePrograms = useMemo(() => {
+        const list = programs || [];
+        return [...list, ...list, ...list];
+    }, [programs]);
 
     // Initialize unstoppable GSAP Marquee
     useEffect(() => {
+        if (marqueePrograms.length === 0) return undefined;
         marqueeTween.current = gsap.to(trackRef.current, {
             xPercent: -50,
             repeat: -1,
@@ -38,44 +42,48 @@ export default function Programs() {
         return () => {
             if (marqueeTween.current) marqueeTween.current.kill();
         };
-    }, []);
+    }, [marqueePrograms]);
 
     return (
         <section className="section" id="berita">
-            <div className="container">
-                <div className="section-header" data-gsap="reveal">
-                    <div>
-                        <span className="section-kicker">Eksplorasi</span>
-                        <h2 className="section-title">Program Unggulan</h2>
+            {marqueePrograms.length > 0 && (
+                <>
+                    <div className="container">
+                        <div className="section-header" data-gsap="reveal">
+                            <div>
+                                <span className="section-kicker">Eksplorasi</span>
+                                <h2 className="section-title">Program Unggulan</h2>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div className="container">
-                <div className={MARQUEE_FRAME} data-gsap="reveal">
-                    <div className={MARQUEE_TRACK} ref={trackRef} {...trackProps}>
-                        {/* Each card opens its program page. Only the first pass is exposed to keyboard and screen readers; the rest are loop copies. */}
-                        {[...marqueePrograms, ...marqueePrograms].map((p, i) => {
-                            const hidden = i >= priorityProgramsList.length;
-                            return (
-                                <Link
-                                    key={i}
-                                    to={pathForView('program', p.id)}
-                                    className="swipe-card"
-                                    aria-hidden={hidden || undefined}
-                                    tabIndex={hidden ? -1 : undefined}
-                                >
-                                    <div className="mb-3.5 flex size-14 items-center justify-center rounded-[50%] bg-app text-[24px] text-brand">
-                                        <i className={p.icon || 'fa-solid fa-star'}></i>
-                                    </div>
-                                    <h3>{p.title}</h3>
-                                    <p>{p.desc}</p>
-                                </Link>
-                            );
-                        })}
+                    <div className="container">
+                        <div className={MARQUEE_FRAME} data-gsap="reveal">
+                            <div className={MARQUEE_TRACK} ref={trackRef} {...trackProps}>
+                                {/* Each card opens its program page. Only the first pass is exposed to keyboard and screen readers; the rest are loop copies. */}
+                                {[...marqueePrograms, ...marqueePrograms].map((p, i) => {
+                                    const hidden = i >= programs.length;
+                                    return (
+                                        <Link
+                                            key={i}
+                                            to={pathForProgram(p.slug)}
+                                            className="swipe-card"
+                                            aria-hidden={hidden || undefined}
+                                            tabIndex={hidden ? -1 : undefined}
+                                        >
+                                            <div className="mb-3.5 flex size-14 items-center justify-center rounded-[50%] bg-app text-[24px] text-brand">
+                                                <i className={p.ikon || 'fa-solid fa-star'}></i>
+                                            </div>
+                                            <h3>{p.judul}</h3>
+                                            <p>{p.ringkasan}</p>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
+            )}
 
             <div id="sec-home-news" className="container mt-7!">
                 <div className="section-header" data-gsap="reveal">

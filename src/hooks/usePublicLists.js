@@ -57,8 +57,11 @@ export const useLombaList = createCachedList('/public/lomba');
 /** FAQ accordion for the Kontak page, active only, ordered by urutan then pertanyaan. */
 export const useFaqList = createCachedList('/public/faq');
 
-/** Program link groups (Tautan Program) for the Program Prioritas page's resource sections and 7KAIH habit cards. */
-export const useProgramTautanList = createCachedList('/public/program-tautan');
+/**
+ * Program Prioritas, active only, ordered by urutan, with their sections and
+ * links. Shared by the Program page, the Beranda cards and search.
+ */
+export const useProgramList = createCachedList('/public/program');
 
 /**
  * Site settings (Pengaturan Situs): a flat `{ "module.key": value }` object,
