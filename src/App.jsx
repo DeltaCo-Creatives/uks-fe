@@ -21,6 +21,7 @@ import SearchView from './components/SearchView';
 import BeritaDetailView from './components/BeritaDetailView';
 import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
+import DownloadToast from './components/shared/DownloadToast';
 
 import { pageNavigationConfigs } from './data/portalData';
 import UptBerceritaDetailView from './components/UptBerceritaDetailView';
@@ -183,6 +184,7 @@ function Layout() {
       </main>
 
       <Footer />
+      <DownloadToast />
     </div>
   );
 }
