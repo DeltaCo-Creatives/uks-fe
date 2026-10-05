@@ -1,4 +1,39 @@
 import { HOVER_CAPABLE_QUERY } from '../hooks/useHoverCapable';
+import { readWithProgress } from './readWithProgress';
+
+const DONE_VISIBLE_MS = 6000;
+
+/*
+ * The one download in flight, shared with <DownloadToast /> through a tiny store so the
+ * progress shows no matter which button started it:
+ * null | { status: 'loading' | 'done' | 'error', name, url, loaded?, total? }
+ */
+let state = null;
+let controller = null;
+let hideTimer = null;
+const listeners = new Set();
+
+function setState(next) {
+  state = next;
+  listeners.forEach((listener) => listener());
+}
+
+export function subscribeDownload(listener) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+export function getDownloadState() {
+  return state;
+}
+
+/** Stops the running download, if any, and clears the card. */
+export function cancelDownload() {
+  controller?.abort();
+  controller = null;
+  clearTimeout(hideTimer);
+  setState(null);
+}
 
 /**
  * Builds a safe file name for a download: the human title when there is one,
@@ -24,9 +59,12 @@ function fileNameFor(url, title) {
  * the file. Phones then show a blank page or a PDF viewer instead of saving it.
  * Fetching the file and saving it from a same-origin blob URL forces the
  * download. This only runs on touch devices; on desktops the click is left
- * alone. The anchor keeps its own `href` and `download` for modified clicks,
- * and if the fetch fails (storage without CORS for this origin, offline) the
- * file opens in a new tab.
+ * alone. The anchor keeps its own `href` and `download` for modified clicks.
+ *
+ * Progress is published to the store above, since a big file on a slow
+ * connection otherwise looks like the tap did nothing. If the fetch fails
+ * (storage without CORS for this origin, offline) the card offers the file in a
+ * new tab; opening it automatically would be blocked as a popup by then.
  *
  * @param {import('react').MouseEvent<HTMLAnchorElement>} event
  * @param {string} url
@@ -44,22 +82,44 @@ export async function downloadFile(event, url, title) {
 
   event.preventDefault();
 
+  // A new tap replaces whatever was running.
+  controller?.abort();
+  clearTimeout(hideTimer);
+  const current = new AbortController();
+  controller = current;
+
+  const name = fileNameFor(url, title);
+  setState({ status: 'loading', name, url, loaded: 0, total: 0 });
+
   try {
     // no-cache: a copy cached earlier from a plain navigation lacks the CORS headers.
-    const response = await fetch(url, { cache: 'no-cache' });
+    const response = await fetch(url, { cache: 'no-cache', signal: current.signal });
     if (!response.ok) throw new Error(`Download responded with ${response.status}`);
 
-    const objectUrl = URL.createObjectURL(await response.blob());
+    const chunks = await readWithProgress(response, ({ loaded, total }) => {
+      setState({ status: 'loading', name, url, loaded, total });
+    });
+
+    const objectUrl = URL.createObjectURL(new Blob(chunks, { type: response.headers.get('content-type') || '' }));
     const link = document.createElement('a');
     link.href = objectUrl;
-    link.download = fileNameFor(url, title);
+    link.download = name;
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     link.remove();
     // Safari needs the URL to outlive the click for a moment.
     setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+
+    setState({ status: 'done', name, url });
+    hideTimer = setTimeout(() => {
+      if (state?.status === 'done') setState(null);
+    }, DONE_VISIBLE_MS);
   } catch {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    // Cancelled or replaced by a newer tap: whoever aborted already owns the card.
+    if (current.signal.aborted) return;
+    setState({ status: 'error', name, url });
+  } finally {
+    if (controller === current) controller = null;
   }
 }

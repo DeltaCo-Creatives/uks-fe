@@ -4,6 +4,7 @@ import { embedUrl, isDirectPdf, linkKind, NEW_TAB_HINT } from '../../utils/linkK
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { useHoverCapable } from '../../hooks/useHoverCapable';
 import { downloadFile } from '../../utils/downloadFile';
+import ProgressBar from './ProgressBar';
 
 // pdf.js is large, and only touch devices ever need it.
 const PdfReader = lazy(() => import('./PdfReader'));
@@ -61,7 +62,16 @@ export default function DocViewerModal({ doc, onClose }) {
         </div>
 
         {readInPage ? (
-          <Suspense fallback={<div className="doc-viewer-offsite" role="status"><p>Memuat dokumen…</p></div>}>
+          <Suspense
+            fallback={
+              <div className="doc-viewer-offsite">
+                <div className="doc-viewer-pdf-status">
+                  <p role="status">Memuat dokumen…</p>
+                  <ProgressBar label="Kemajuan memuat dokumen" />
+                </div>
+              </div>
+            }
+          >
             <PdfReader url={doc.url} title={doc.title} />
           </Suspense>
         ) : src ? (

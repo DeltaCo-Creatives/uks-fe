@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 // plain script, so hosts that mis-serve .mjs files can't break it.
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import PdfWorker from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?worker';
+import { joinChunks, readWithProgress } from '../../utils/readWithProgress';
+import { progressText } from '../../utils/formatBytes';
+import ProgressBar from './ProgressBar';
 
 GlobalWorkerOptions.workerPort = new PdfWorker();
 
@@ -74,6 +77,8 @@ function PdfPage({ pdf, pageNumber, width, ratio, root }) {
       className="doc-viewer-pdf-page"
       style={{ width, height: Math.round(width * pageRatio) }}
     >
+      {/* Sits under the canvas, which is blank until drawn and opaque after, so no state is needed */}
+      <span className="doc-viewer-pdf-page-label" aria-hidden="true">Halaman {pageNumber}</span>
       <canvas ref={canvasRef} aria-label={`Halaman ${pageNumber}`} role="img" />
     </div>
   );
@@ -86,12 +91,17 @@ function PdfPage({ pdf, pageNumber, width, ratio, root }) {
  * The file is fetched here, so its host must allow this site's origin via CORS.
  * If it doesn't, the reader says so and the viewer's footer actions still apply.
  *
+ * It downloads the whole file rather than loading by byte ranges: pdf.js has to check the last
+ * page before it opens a document, and in a PDF not built for web streaming (Canva exports
+ * among them) that touches every page, so ranges end up fetching the entire file in many
+ * sequential round trips, which is slower than one download.
+ *
  * @param {{ url: string, title: string }} props
  */
 export default function PdfReader({ url, title }) {
   const [scroller, setScroller] = useState(null);
   const [width, setWidth] = useState(0);
-  const [doc, setDoc] = useState({ status: 'loading' });
+  const [doc, setDoc] = useState({ status: 'loading', loaded: 0, total: 0, preparing: false });
 
   useEffect(() => {
     if (!scroller) return undefined;
@@ -118,7 +128,13 @@ export default function PdfReader({ url, title }) {
       const response = await fetch(url, { cache: 'no-cache', signal: controller.signal });
       if (!response.ok) throw new Error(`PDF responded with ${response.status}`);
 
-      loadingTask = getDocument({ data: new Uint8Array(await response.arrayBuffer()) });
+      const chunks = await readWithProgress(response, ({ loaded, total }) => {
+        setDoc((current) => (current.status === 'loading' ? { ...current, loaded, total } : current));
+      });
+
+      // Parsing a big file takes a moment of its own; say so rather than sit at 100%.
+      setDoc((current) => (current.status === 'loading' ? { ...current, preparing: true } : current));
+      loadingTask = getDocument({ data: joinChunks(chunks) });
       const pdf = await loadingTask.promise;
       const first = (await pdf.getPage(1)).getViewport({ scale: 1 });
 
@@ -151,7 +167,13 @@ export default function PdfReader({ url, title }) {
       aria-busy={doc.status === 'loading'}
       tabIndex={0}
     >
-      {doc.status === 'loading' && <p className="doc-viewer-pdf-status" role="status">Memuat dokumen…</p>}
+      {doc.status === 'loading' && (
+        <div className="doc-viewer-pdf-status">
+          <p role="status">{doc.preparing ? 'Menyiapkan halaman…' : 'Memuat dokumen…'}</p>
+          <ProgressBar loaded={doc.loaded} total={doc.preparing ? 0 : doc.total} label="Kemajuan memuat dokumen" />
+          {!doc.preparing && doc.loaded > 0 && <p aria-hidden="true">{progressText(doc.loaded, doc.total)}</p>}
+        </div>
+      )}
       {doc.status === 'ready' &&
         width > 0 &&
         Array.from({ length: doc.numPages }, (_, index) => (
