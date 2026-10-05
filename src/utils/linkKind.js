@@ -52,4 +52,16 @@ export function embedUrl(url, kind) {
   return null;
 }
 
+/**
+ * True for a PDF file served straight from a host (not a Drive preview), the one
+ * kind phones can't frame and need an in-page reader for.
+ *
+ * @param {string | null} url
+ * @param {string | undefined} kind
+ */
+export function isDirectPdf(url, kind) {
+  if (!url || DRIVE_FILE.test(url)) return false;
+  return kind === 'pdf' || url.toLowerCase().endsWith('.pdf');
+}
+
 export const NEW_TAB_HINT = '(membuka tab baru)';

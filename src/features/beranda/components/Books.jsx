@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
 import { useBukuPanduanList } from '@/hooks/usePublicLists';
 import { countPublikasiView } from '@/utils/counters';
+import { downloadFile } from '@/utils/downloadFile';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
@@ -119,7 +120,7 @@ export default function Books() {
                 {buku.pdf ? (
                     <>
                         <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); setSelectedBook(buku); }}>Baca</button>
-                        <a className="btn-pill secondary" href={buku.pdf} download>Unduh</a>
+                        <a className="btn-pill secondary" href={buku.pdf} download onClick={(e) => downloadFile(e, buku.pdf, buku.title)}>Unduh</a>
                     </>
                 ) : (
                     <a className="btn-pill secondary" href={buku.externalUrl} target="_blank" rel="noopener noreferrer">Buka</a>
