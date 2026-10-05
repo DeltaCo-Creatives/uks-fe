@@ -2,3 +2,9 @@ node_modules
 dist
 .git
 .env*
+.claude
+.github
+docs
+mocks
+README.md
+*.md
