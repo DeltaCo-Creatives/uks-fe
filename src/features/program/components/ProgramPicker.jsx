@@ -7,7 +7,7 @@ const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
 const PREV_KEYS = ['ArrowLeft', 'ArrowUp'];
 
 /**
- * The five programs as ARIA tabs (roving tabindex, arrow keys, Home/End).
+ * The programs as ARIA tabs (roving tabindex, arrow keys, Home/End).
  *
  * @param {{
  *   programs: Array<{ id: string, navLabel: string, icon: string }>,

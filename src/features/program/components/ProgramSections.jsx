@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import ProgramLink from './ProgramLink';
-import { pathForView } from '@/routes';
 import { NUM, NOTE, INLINE_LINK, TEXT_BUTTON } from '../styles';
 
 /* Timeline: ordered in time, so a line runs through the markers (a dot per step). Stacked on
@@ -28,10 +27,12 @@ export function AudienceSection({ section }) {
           </li>
         ))}
       </ul>
-      <p className={NOTE}>
-        {section.note}{' '}
-        <ProgramLink url={section.noteSource.url} className={INLINE_LINK}>{section.noteSource.label}</ProgramLink>
-      </p>
+      {section.note && (
+        <p className={NOTE}>
+          {section.note}{' '}
+          {section.noteSource && <ProgramLink url={section.noteSource.url} className={INLINE_LINK}>{section.noteSource.label}</ProgramLink>}
+        </p>
+      )}
     </>
   );
 }
@@ -177,9 +178,11 @@ export function PillarsSection({ section }) {
           </li>
         ))}
       </ol>
-      <p className={NOTE}>
-        Rumusan pilar: <ProgramLink url={section.source.url} className={INLINE_LINK}>{section.source.label}</ProgramLink>
-      </p>
+      {section.source && (
+        <p className={NOTE}>
+          Rumusan pilar: <ProgramLink url={section.source.url} className={INLINE_LINK}>{section.source.label}</ProgramLink>
+        </p>
+      )}
     </>
   );
 }
@@ -190,16 +193,25 @@ export function ExampleSection({ section }) {
     <div>
       <p className="max-w-[72ch] text-[15px] leading-[1.7]">{section.text}</p>
       <div className="mt-1.5 flex flex-wrap gap-x-7 gap-y-0">
-        <ProgramLink url={section.source.url} className={INLINE_LINK}>{section.source.label}</ProgramLink>
+        {section.source && <ProgramLink url={section.source.url} className={INLINE_LINK}>{section.source.label}</ProgramLink>}
         {section.related && (
-          <Link
-            className={TEXT_BUTTON}
-            to={pathForView(section.related.view, section.related.section)}
-          >
+          <Link className={TEXT_BUTTON} to={section.related.url}>
             {section.related.label}
           </Link>
         )}
       </div>
     </div>
   );
+}
+
+// html is sanitized by the API. Preflight strips list and heading styles, so they are restored here.
+const RICH_TEXT =
+  'max-w-[72ch] text-[15px] leading-[1.7] [&_p]:mt-0 [&_p]:mb-3 [&_p:last-child]:mb-0 ' +
+  '[&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_li]:marker:text-brand ' +
+  '[&_:is(h2,h3,h4)]:mt-5 [&_:is(h2,h3,h4)]:mb-2 [&_:is(h2,h3,h4)]:text-[16px] [&_:is(h2,h3,h4)]:font-extrabold [&_strong]:font-extrabold ' +
+  '[&_a]:font-bold [&_a]:text-brand [&_a]:underline [&_a]:[word-break:break-word]';
+
+/** Free-form content written in the CMS editor. */
+export function RichTextSection({ section }) {
+  return <div className={RICH_TEXT} dangerouslySetInnerHTML={{ __html: section.html }} />;
 }

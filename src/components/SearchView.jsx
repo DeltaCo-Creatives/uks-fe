@@ -1,12 +1,11 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { pathForView } from '../routes';
+import { pathForProgram, pathForView } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
-import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList } from '../hooks/usePublicLists';
+import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
-  strataLevels,
-  priorityProgramsList
+  strataLevels
 } from '../data/portalData';
 
 export default function SearchView() {
@@ -23,6 +22,7 @@ export default function SearchView() {
   const { data: videosList } = useVideoList();
   const { data: regulationsList } = useProdukHukumList();
   const { data: apps } = useAplikasiList();
+  const { data: programs } = useProgramList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -75,16 +75,17 @@ export default function SearchView() {
     });
 
     // 3. Priority Programs
-    priorityProgramsList.forEach((prog) => {
+    (programs || []).forEach((prog) => {
       items.push({
-        id: `prog-${prog.id}`,
-        title: prog.title,
-        excerpt: `${prog.agency}. ${prog.lead} ${prog.sections.map((section) => section.title).join(' · ')}`,
+        id: `prog-${prog.slug}`,
+        title: prog.judul,
+        excerpt: `${prog.instansi}. ${prog.deskripsi} ${prog.bagian.map((bagian) => bagian.judul).join(' · ')}`,
         typeLabel: 'Program Prioritas',
         typeColor: '#098C4C',
-        icon: prog.icon,
+        icon: prog.ikon,
         viewKey: 'program',
-        sectionId: prog.id
+        sectionId: prog.slug,
+        path: pathForProgram(prog.slug)
       });
     });
 
@@ -208,7 +209,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
@@ -430,7 +431,7 @@ export default function SearchView() {
             {results.map((item) => (
               <Link
                 key={item.id}
-                to={pathForView(item.viewKey, item.sectionId)}
+                to={item.path ?? pathForView(item.viewKey, item.sectionId)}
                 style={{
                   background: '#FFFFFF',
                   borderRadius: 'var(--radius-lg)',

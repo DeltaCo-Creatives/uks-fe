@@ -48,6 +48,8 @@ export const pathForArticle = (idOrSlug) => `/informasi/berita/${idOrSlug}`;
 
 export const pathForUptStory = (slug) => `/informasi/upt-bercerita/${slug}`;
 
+export const pathForProgram = (slug) => `${VIEW_PATHS.program}/${slug}`;
+
 const SUBPAGE_PATHS = Object.entries(VIEW_PATHS).filter(([, path]) => path !== '/');
 
 export function viewKeyFromPathname(pathname) {
