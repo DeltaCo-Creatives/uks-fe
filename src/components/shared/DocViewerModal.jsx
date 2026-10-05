@@ -1,7 +1,12 @@
-import { useEffect, useId, useRef } from 'react';
+import { lazy, Suspense, useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { embedUrl, linkKind, NEW_TAB_HINT } from '../../utils/linkKind';
+import { embedUrl, isDirectPdf, linkKind, NEW_TAB_HINT } from '../../utils/linkKind';
 import { useScrollLock } from '../../hooks/useScrollLock';
+import { useHoverCapable } from '../../hooks/useHoverCapable';
+import { downloadFile } from '../../utils/downloadFile';
+
+// pdf.js is large, and only touch devices ever need it.
+const PdfReader = lazy(() => import('./PdfReader'));
 
 /**
  * Reads a document without leaving the page: the file fills the dialog, and the
@@ -18,6 +23,8 @@ export default function DocViewerModal({ doc, onClose }) {
   const titleId = useId();
   const src = embedUrl(doc.url, doc.kind);
   const kind = linkKind(doc.url, doc.kind);
+  // Phones can't frame a PDF (blank page), so they get the in-page reader.
+  const readInPage = !useHoverCapable() && isDirectPdf(doc.url, doc.kind);
 
   useScrollLock(true);
 
@@ -53,7 +60,11 @@ export default function DocViewerModal({ doc, onClose }) {
           </button>
         </div>
 
-        {src ? (
+        {readInPage ? (
+          <Suspense fallback={<div className="doc-viewer-offsite" role="status"><p>Memuat dokumen…</p></div>}>
+            <PdfReader url={doc.url} title={doc.title} />
+          </Suspense>
+        ) : src ? (
           <iframe className="doc-viewer-frame" src={src} title={doc.title} allow="fullscreen" />
         ) : (
           <div className="doc-viewer-offsite">
@@ -64,7 +75,7 @@ export default function DocViewerModal({ doc, onClose }) {
 
         <div className="doc-viewer-foot">
           {/* Some hosts refuse to be framed, and that failure is silent, so the way out stays visible */}
-          <p className="doc-viewer-note">{src ? 'Dokumen tidak tampil? Buka di tab baru.' : ''}</p>
+          <p className="doc-viewer-note">{src && !readInPage ? 'Dokumen tidak tampil? Buka di tab baru.' : ''}</p>
           <div className="doc-viewer-actions">
             <a className="btn-pill secondary" href={doc.url} target="_blank" rel="noopener noreferrer">
               <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
@@ -72,7 +83,7 @@ export default function DocViewerModal({ doc, onClose }) {
               <span className="doc-viewer-sr">{NEW_TAB_HINT}</span>
             </a>
             {doc.download && (
-              <a className="btn-pill secondary" href={doc.download} download>
+              <a className="btn-pill secondary" href={doc.download} download onClick={(e) => downloadFile(e, doc.download, doc.title)}>
                 <i className="fa-solid fa-download" aria-hidden="true"></i>
                 <span>Unduh</span>
               </a>

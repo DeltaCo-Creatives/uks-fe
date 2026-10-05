@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 // One definition of "has a real cursor", shared by the drawer's hover, blur and scroll lock.
-const QUERY = '(hover: hover) and (pointer: fine)';
+export const HOVER_CAPABLE_QUERY = '(hover: hover) and (pointer: fine)';
+const QUERY = HOVER_CAPABLE_QUERY;
 
 /**
  * True on devices with a mouse or trackpad, false on touch-only devices.

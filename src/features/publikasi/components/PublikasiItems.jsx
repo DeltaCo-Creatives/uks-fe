@@ -1,5 +1,6 @@
 import { countPublikasiView } from '@/utils/counters';
 import SafeImage from '@/components/SafeImage';
+import { downloadFile } from '@/utils/downloadFile';
 
 /*
  * Book cards build on the shared book-swipe-card / book-cover-large / book-swipe-actions classes, which
@@ -34,7 +35,7 @@ export function BookGrid({ books, onRead }) {
                     <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); onRead(buku); }}>
                       <i className="fa-solid fa-book-open mr-1.5"></i>Baca Online
                     </button>
-                    <a href={buku.pdf} download className="btn-pill secondary no-underline">
+                    <a href={buku.pdf} download className="btn-pill secondary no-underline" aria-label={`Unduh ${buku.title}`} onClick={(e) => downloadFile(e, buku.pdf, buku.title)}>
                       <i className="fa-solid fa-download"></i>
                     </a>
                   </>
@@ -84,6 +85,7 @@ export function InfografisGrid({ items, onZoom }) {
                 className="inline-flex min-h-[44px] flex-none items-center gap-1.5 px-2.5 text-[13px] font-bold text-ink underline decoration-brand underline-offset-4 hover:text-brand-deep focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
                 href={item.image}
                 download
+                onClick={(e) => downloadFile(e, item.image, item.title)}
               >
                 <i className="fa-solid fa-download" aria-hidden="true"></i>
                 <span>Unduh</span>
@@ -159,6 +161,7 @@ export function RegulasiList({ regulations }) {
           <a
             href={reg.file}
             download
+            onClick={(e) => downloadFile(e, reg.file, reg.title)}
             className="btn-massive px-[18px]! py-2! text-[13px]! whitespace-nowrap max-[768px]:w-full max-[768px]:justify-center"
           >
             <i className="fa-solid fa-download"></i><span>Unduh{reg.size ? ` (${reg.size})` : ''}</span>
