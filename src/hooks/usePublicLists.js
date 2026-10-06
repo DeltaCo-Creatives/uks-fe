@@ -64,6 +64,12 @@ export const useFaqList = createCachedList('/public/faq');
 export const useProgramList = createCachedList('/public/program');
 
 /**
+ * Tabs of the Informasi and Publikasi pages (`menu`, `slug`, `label`, `ikon`,
+ * `template`), active only, ordered by menu then urutan. One call serves both menus.
+ */
+export const useSubmenuList = createCachedList('/public/submenu');
+
+/**
  * Site settings (Pengaturan Situs): a flat `{ "module.key": value }` object,
  * not a list, but `createCachedList` only ever passes the JSON through, so it
  * fits without a second cache helper.

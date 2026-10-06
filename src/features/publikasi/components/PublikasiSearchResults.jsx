@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { pageNavigationConfigs } from '@/data/portalData';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavConfig } from '@/hooks/useNavConfig';
 import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '@/hooks/usePublicLists';
 import { matchesQuery } from '@/hooks/useContentToolbar';
 import DocViewerModal from '@/components/shared/DocViewerModal';
@@ -13,16 +13,10 @@ import {
   REGULASI_SEARCH_FIELDS
 } from '../searchFields';
 
-const sections = pageNavigationConfigs.publikasi.sections;
-
 // "!" beats the unlayered shared toolbar rules this list adjusts.
 const RESULTS =
   'about-bento-frame flex flex-col gap-7 [&>.content-toolbar-summary]:mt-0! [&_.content-toolbar-reset]:min-h-[44px]! ' +
   '[&_.content-toolbar-summary_span]:min-w-0 [&_.content-toolbar-summary_span]:[overflow-wrap:anywhere] [&_.info-empty-text]:min-w-0 [&_.info-empty-text]:[overflow-wrap:anywhere]';
-
-function sectionById(id) {
-  return sections.find((section) => section.id === id);
-}
 
 function useMatches(list, fields, query) {
   return useMemo(
@@ -31,38 +25,90 @@ function useMatches(list, fields, query) {
   );
 }
 
+// Per template: which list a tab searches, the fields it matches on, and how its hits render.
+// A static fallback tab has no submenuId, so each hook falls back to the unfiltered seeded list.
+const SOURCES = {
+  buku: {
+    useSource: () => useBukuPanduanList,
+    fields: BUKU_SEARCH_FIELDS,
+    render: (items, { onRead }) => <BookGrid books={items} onRead={onRead} />
+  },
+  infografis: {
+    useSource: () => useInfografisList,
+    fields: INFOGRAFIS_SEARCH_FIELDS,
+    render: (items, { onZoom }) => <InfografisGrid items={items} onZoom={onZoom} />
+  },
+  video: {
+    useSource: () => useVideoList,
+    fields: VIDEO_SEARCH_FIELDS,
+    render: (items) => <VideoGrid videos={items} />
+  },
+  dokumen: {
+    useSource: () => useProdukHukumList,
+    fields: REGULASI_SEARCH_FIELDS,
+    render: (items) => <RegulasiList regulations={items} />
+  }
+};
+
+const PENDING = { loading: true, error: false, count: 0 };
+
 /**
- * Searches every Publikasi type at once and shows the matches grouped by type,
+ * One Publikasi tab's matches. A component per tab, so each calls its own cached list hook (no hooks
+ * in a loop); it reports loading/error/count up so the parent can sum the total.
+ */
+function SectionResults({ section, query, actions, report }) {
+  const { useSource, fields, render } = SOURCES[section.template];
+  const useList = useSource(section.submenuId);
+  const { data, loading, error, retry } = useList();
+  const matches = useMatches(data, fields, query);
+  const failed = !loading && Boolean(error);
+  const count = matches.length;
+
+  useEffect(() => {
+    report(section.id, { loading, error: failed, count });
+  }, [report, section.id, loading, failed, count]);
+
+  if (failed) {
+    return <ErrorState title={`${section.label} tidak dapat dimuat`} retry={retry} />;
+  }
+  if (loading || count === 0) return null;
+  return (
+    <div>
+      <h3 className="content-group-heading">
+        <i className={section.icon} aria-hidden="true"></i>
+        {section.label} ({count})
+      </h3>
+      {render(matches, actions)}
+    </div>
+  );
+}
+
+/**
+ * Searches every Publikasi tab at once and shows the matches grouped by tab,
  * with the same cards and actions as the tabs. Mounted only while a search is
  * active, so the lists a visitor has not opened yet are fetched on first search.
  */
 export default function PublikasiSearchResults({ query, onClear }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [zoomed, setZoomed] = useState(null);
-  const buku = useBukuPanduanList();
-  const infografis = useInfografisList();
-  const video = useVideoList();
-  const regulasi = useProdukHukumList();
+  const [statuses, setStatuses] = useState({});
+  // One group per Publikasi tab; a template with no search source here is left out.
+  const sections = useNavConfig().publikasi.sections.filter((section) => SOURCES[section.template]);
+  const actions = { onRead: setSelectedBook, onZoom: setZoomed };
 
-  const bukuMatches = useMatches(buku.data, BUKU_SEARCH_FIELDS, query);
-  const infografisMatches = useMatches(infografis.data, INFOGRAFIS_SEARCH_FIELDS, query);
-  const videoMatches = useMatches(video.data, VIDEO_SEARCH_FIELDS, query);
-  const regulasiMatches = useMatches(regulasi.data, REGULASI_SEARCH_FIELDS, query);
-
-  const groups = [
-    { section: sectionById('sec-pub-books'), source: buku, matches: bukuMatches, render: (items) => <BookGrid books={items} onRead={setSelectedBook} /> },
-    { section: sectionById('sec-pub-infografis'), source: infografis, matches: infografisMatches, render: (items) => <InfografisGrid items={items} onZoom={setZoomed} /> },
-    { section: sectionById('sec-pub-video'), source: video, matches: videoMatches, render: (items) => <VideoGrid videos={items} /> },
-    { section: sectionById('sec-pub-regulasi'), source: regulasi, matches: regulasiMatches, render: (items) => <RegulasiList regulations={items} /> }
-  ];
+  const report = useCallback((id, status) => {
+    setStatuses((prev) => {
+      const old = prev[id];
+      const same = old && old.loading === status.loading && old.error === status.error && old.count === status.count;
+      return same ? prev : { ...prev, [id]: status };
+    });
+  }, []);
 
   const trimmed = query.trim();
-  const anyLoading = groups.some(({ source }) => source.loading);
-  const anyError = groups.some(({ source }) => !source.loading && source.error);
-  const total = groups.reduce(
-    (sum, { source, matches }) => (!source.loading && !source.error ? sum + matches.length : sum),
-    0
-  );
+  const states = sections.map((section) => statuses[section.id] ?? PENDING);
+  const anyLoading = states.some((status) => status.loading);
+  const anyError = states.some((status) => !status.loading && status.error);
+  const total = states.reduce((sum, status) => (!status.loading && !status.error ? sum + status.count : sum), 0);
 
   return (
         // Every group heading is its wrapper's first child, so the groups are spaced here.
@@ -76,23 +122,9 @@ export default function PublikasiSearchResults({ query, onClear }) {
         </button>
       </p>
 
-      {groups.map(({ section, source, matches, render }) => {
-        if (!source.loading && source.error) {
-          return (
-            <ErrorState key={section.id} title={`${section.label} tidak dapat dimuat`} retry={source.retry} />
-          );
-        }
-        if (source.loading || matches.length === 0) return null;
-        return (
-          <div key={section.id}>
-            <h3 className="content-group-heading">
-              <i className={section.icon} aria-hidden="true"></i>
-              {section.label} ({matches.length})
-            </h3>
-            {render(matches)}
-          </div>
-        );
-      })}
+      {sections.map((section) => (
+        <SectionResults key={section.id} section={section} query={query} actions={actions} report={report} />
+      ))}
 
       {anyLoading && <LoadingState label="Mencari di semua publikasi..." />}
 

@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { pathForProgram, pathForView } from '../routes';
+import { pathForProgram, pathForView, sectionIdForTab } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList } from '../hooks/usePublicLists';
 import {
@@ -100,7 +100,7 @@ export default function SearchView() {
         typeColor: '#D97706',
         icon: 'fa-solid fa-book-bookmark',
         viewKey: 'publikasi',
-        sectionId: 'sec-pub-books'
+        sectionId: sectionIdForTab('publikasi', 'buku')
       });
     });
 
@@ -114,7 +114,7 @@ export default function SearchView() {
         typeColor: '#2563EB',
         icon: 'fa-solid fa-newspaper',
         viewKey: 'informasi',
-        sectionId: 'sec-info-berita'
+        sectionId: sectionIdForTab('informasi', 'berita')
       });
     });
 
@@ -128,7 +128,7 @@ export default function SearchView() {
         typeColor: '#059669',
         icon: 'fa-solid fa-award',
         viewKey: 'informasi',
-        sectionId: 'sec-info-praktik'
+        sectionId: sectionIdForTab('informasi', 'praktik')
       });
     });
 
@@ -147,7 +147,7 @@ export default function SearchView() {
         typeColor: '#7C3AED',
         icon: 'fa-solid fa-calendar-days',
         viewKey: 'informasi',
-        sectionId: 'sec-info-agenda'
+        sectionId: sectionIdForTab('informasi', 'agenda')
       });
     });
 
@@ -162,7 +162,7 @@ export default function SearchView() {
         typeColor: '#DC2626',
         icon: 'fa-solid fa-film',
         viewKey: 'publikasi',
-        sectionId: 'sec-pub-video'
+        sectionId: sectionIdForTab('publikasi', 'video')
       });
     });
 
@@ -176,7 +176,7 @@ export default function SearchView() {
         typeColor: '#1E293B',
         icon: 'fa-solid fa-scale-balanced',
         viewKey: 'publikasi',
-        sectionId: 'sec-pub-regulasi'
+        sectionId: sectionIdForTab('publikasi', 'regulasi')
       });
     });
 
@@ -190,7 +190,7 @@ export default function SearchView() {
         typeColor: '#0284C7',
         icon: 'fa-solid fa-mobile-screen',
         viewKey: 'informasi',
-        sectionId: 'sec-info-aplikasi'
+        sectionId: sectionIdForTab('informasi', 'aplikasi')
       });
     });
 
@@ -204,7 +204,7 @@ export default function SearchView() {
         typeColor: '#059669',
         icon: 'fa-solid fa-book-open-reader',
         viewKey: 'informasi',
-        sectionId: 'sec-info-upt'
+        sectionId: sectionIdForTab('informasi', 'upt')
       });
     });
 

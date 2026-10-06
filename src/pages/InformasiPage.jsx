@@ -1,27 +1,19 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { pageNavigationConfigs } from '@/data/portalData';
-import { defaultTabSlug, pathForView, sectionIdFromSlug } from '@/routes';
+import { useNavConfig } from '@/hooks/useNavConfig';
+import { TEMPLATE_PANELS } from '@/pages/templatePanels';
+import { defaultTabPath, pathForView } from '@/routes';
 import LobbyTabs from '@/components/shared/LobbyTabs';
-import { BeritaPanel, PraktikPanel, UptBerceritaPanel, AgendaPanel, AplikasiPanel } from '@/features/informasi';
-
-const informasiTabs = pageNavigationConfigs.informasi.sections;
-
-const infoPanels = {
-  'sec-info-berita': BeritaPanel,
-  'sec-info-praktik': PraktikPanel,
-  'sec-info-upt': UptBerceritaPanel,
-  'sec-info-agenda': AgendaPanel,
-  'sec-info-aplikasi': AplikasiPanel
-};
 
 export default function InformasiPage() {
   const { tabSlug } = useParams();
   const navigate = useNavigate();
-  const activeId = sectionIdFromSlug('informasi', tabSlug);
+  const informasiTabs = useNavConfig().informasi.sections;
+  const section = informasiTabs.find((tab) => tab.slug === tabSlug);
 
-  if (!activeId) return <Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />;
+  if (!section) return <Navigate to={defaultTabPath('informasi')} replace />;
 
-  const Panel = infoPanels[activeId];
+  const activeId = section.id;
+  const Panel = TEMPLATE_PANELS.informasi[section.template];
 
   // No horizontal padding: the tab and filter strips cancel exactly the container's own inset to reach
   // the screen edges, and extra padding here would knock that alignment out.
@@ -48,7 +40,7 @@ export default function InformasiPage() {
       />
 
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
-        <Panel />
+        <Panel title={section.label} />
       </div>
     </div>
   );

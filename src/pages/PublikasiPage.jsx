@@ -1,18 +1,10 @@
 import { useId, useRef } from 'react';
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { pageNavigationConfigs } from '@/data/portalData';
-import { defaultTabSlug, pathForView, sectionIdFromSlug } from '@/routes';
+import { useNavConfig } from '@/hooks/useNavConfig';
+import { TEMPLATE_PANELS } from '@/pages/templatePanels';
+import { defaultTabPath, pathForView } from '@/routes';
 import LobbyTabs from '@/components/shared/LobbyTabs';
-import { BooksPanel, InfografisPanel, VideoPanel, RegulasiPanel, PublikasiSearchResults } from '@/features/publikasi';
-
-const publikasiTabs = pageNavigationConfigs.publikasi.sections;
-
-const publikasiPanels = {
-  'sec-pub-books': BooksPanel,
-  'sec-pub-infografis': InfografisPanel,
-  'sec-pub-video': VideoPanel,
-  'sec-pub-regulasi': RegulasiPanel
-};
+import { PublikasiSearchResults } from '@/features/publikasi';
 
 export default function PublikasiPage() {
   const { tabSlug } = useParams();
@@ -20,7 +12,8 @@ export default function PublikasiPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchId = useId();
   const searchInputRef = useRef(null);
-  const activeId = sectionIdFromSlug('publikasi', tabSlug);
+  const publikasiTabs = useNavConfig().publikasi.sections;
+  const section = publikasiTabs.find((tab) => tab.slug === tabSlug);
 
   const q = searchParams.get('q') || '';
   const searching = q.trim() !== '';
@@ -36,9 +29,10 @@ export default function PublikasiPage() {
     searchInputRef.current?.focus();
   };
 
-  if (!activeId) return <Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />;
+  if (!section) return <Navigate to={defaultTabPath('publikasi')} replace />;
 
-  const Panel = publikasiPanels[activeId];
+  const activeId = section.id;
+  const Panel = TEMPLATE_PANELS.publikasi[section.template];
 
   return (
     <div className="container pb-20">
@@ -100,7 +94,7 @@ export default function PublikasiPage() {
 
       {/* GIANT DISPLAY PANEL */}
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
-        {searching ? <PublikasiSearchResults query={q} onClear={clearSearch} /> : <Panel />}
+        {searching ? <PublikasiSearchResults query={q} onClear={clearSearch} /> : <Panel title={section.label} />}
       </div>
 
     </div>

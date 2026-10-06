@@ -14,7 +14,7 @@ import { INFOGRAFIS_SEARCH_FIELDS } from '../searchFields';
  * read on the page. Enlarging and downloading are for the small print, not the
  * only way to see what a poster says.
  */
-export default function InfografisPanel() {
+export default function InfografisPanel({ title }) {
   const [zoomed, setZoomed] = useState(null);
   const { data: infografisList, loading, error, retry } = useInfografisList();
 
@@ -34,7 +34,7 @@ export default function InfografisPanel() {
       <div className="mb-6">
         <span className="section-kicker">Media Cetak Satuan Pendidikan</span>
         <h2 className="mt-1.5 mb-2.5 text-[clamp(22px,2.6vw,28px)] font-extrabold text-ink">
-          Infografis Mading &amp; Kampanye Siap Cetak
+          {title}
         </h2>
         <p className="max-w-[850px] text-[15px] leading-[1.7] text-ink-muted">
           Poster siap cetak untuk dinding dan mading sekolah. Klik poster untuk melihatnya lebih besar.

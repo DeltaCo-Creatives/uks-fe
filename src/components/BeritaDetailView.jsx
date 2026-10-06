@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { pathForArticle, pathForView } from '../routes';
+import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
 import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
@@ -15,7 +15,7 @@ const BERITA_CONFIG = {
   useDetail: useBerita,
   useRelated: useBeritaList,
   pathForItem: pathForArticle,
-  backTo: pathForView('informasi', 'sec-info-berita'),
+  backTo: pathForTab('informasi', 'berita'),
   backLabel: 'Kembali ke Daftar Warta',
   loadingLabel: 'Memuat warta...',
   errorTitle: 'Warta tidak dapat dimuat',

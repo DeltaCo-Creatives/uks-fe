@@ -4,7 +4,7 @@ import { usePagedGroups } from '@/hooks/usePagedGroups';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { PANEL_HEAD_STACKED, PANEL_TITLE, PANEL_DESC } from '../styles';
 
-export default function AgendaPanel() {
+export default function AgendaPanel({ title }) {
   const { data, loading, error, retry } = useAgendaList();
   const { pagedGroups, page, totalPages, setPage } = usePagedGroups([{ items: data || [] }], '');
   const agendas = data ? pagedGroups[0]?.items ?? [] : [];
@@ -14,7 +14,7 @@ export default function AgendaPanel() {
     <div className="about-bento-frame">
       <div className={PANEL_HEAD_STACKED}>
         <span className="section-kicker">Kalender Kegiatan</span>
-        <h2 className={PANEL_TITLE}>Agenda Transformasi UKS/M 2026</h2>
+        <h2 className={PANEL_TITLE}>{title}</h2>
         <p className={PANEL_DESC}>
           Jambore dokter kecil, peringatan hari besar kesehatan, bimbingan teknis TP UKS provinsi, dan festival karya inovasi nasional.
         </p>
