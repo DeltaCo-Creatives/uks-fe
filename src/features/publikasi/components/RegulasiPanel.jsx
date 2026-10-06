@@ -5,7 +5,7 @@ import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncS
 import { RegulasiList } from './PublikasiItems';
 import { REGULASI_SEARCH_FIELDS } from '../searchFields';
 
-export default function RegulasiPanel() {
+export default function RegulasiPanel({ title }) {
   const { data: regulations, loading, error, retry } = useProdukHukumList();
 
   const {
@@ -22,7 +22,7 @@ export default function RegulasiPanel() {
       <div className="mb-6">
         <span className="section-kicker">Produk Hukum Resmi</span>
         <h2 className="mt-1.5 mb-2.5 text-[clamp(22px,2.6vw,28px)] font-extrabold text-ink">
-          Regulasi &amp; Landasan Hukum SKB 4 Menteri
+          {title}
         </h2>
       </div>
 

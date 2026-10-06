@@ -23,13 +23,14 @@ import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 import DownloadToast from './components/shared/DownloadToast';
 
-import { pageNavigationConfigs } from './data/portalData';
+import NavConfigProvider from '@/components/NavConfigProvider';
+import { useNavConfig } from '@/hooks/useNavConfig';
 import UptBerceritaDetailView from './components/UptBerceritaDetailView';
 import { useBeritaList } from './hooks/useBerita';
 import { useUptStoriesList } from './hooks/usePublicLists';
 import {
-  defaultTabSlug,
-  pathForView,
+  defaultTabPath,
+  pathForTab,
   tabSectionFromPathname,
   viewKeyFromPathname
 } from './routes';
@@ -38,11 +39,11 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail'];
 
-// Article-style detail pages: the Informasi tab they belong to and the list
-// their title is looked up in.
+// Article-style detail pages: the slug of the Informasi tab they belong to and the list their
+// title is looked up in.
 const DETAIL_CRUMBS = {
-  'berita-detail': { sectionId: 'sec-info-berita', label: 'Warta Terkini', useList: useBeritaList },
-  'upt-detail': { sectionId: 'sec-info-upt', label: 'UPT Bercerita', useList: useUptStoriesList }
+  'berita-detail': { tabSlug: 'berita', label: 'Warta Terkini', useList: useBeritaList },
+  'upt-detail': { tabSlug: 'upt', label: 'UPT Bercerita', useList: useUptStoriesList }
 };
 
 /** Trailing crumb: the article title, once the list resolves; nothing broken shows while it loads. */
@@ -62,6 +63,7 @@ function DetailTitleCrumb({ useList, slug }) {
 }
 
 function Breadcrumbs({ viewKey, pathname }) {
+  const configs = useNavConfig();
   if (!viewKey || viewKey === 'beranda') return null;
 
   const linkStyle = { color: 'var(--brand-primary)', fontWeight: 700 };
@@ -83,16 +85,16 @@ function Breadcrumbs({ viewKey, pathname }) {
         {detailCrumb ? (
           <>
             <span>/</span>
-            <Link to={pathForView('informasi', detailCrumb.sectionId)} style={linkStyle}>Informasi</Link>
+            <Link to={pathForTab('informasi', detailCrumb.tabSlug)} style={linkStyle}>Informasi</Link>
             <span>/</span>
-            <Link to={pathForView('informasi', detailCrumb.sectionId)} style={linkStyle}>{detailCrumb.label}</Link>
+            <Link to={pathForTab('informasi', detailCrumb.tabSlug)} style={linkStyle}>{detailCrumb.label}</Link>
             <DetailTitleCrumb key={viewKey} useList={detailCrumb.useList} slug={slug} />
           </>
         ) : (
           <>
             <span>/</span>
             <span style={{ fontWeight: 800, color: 'var(--text-primary)' }}>
-              {pageNavigationConfigs[viewKey].title}
+              {configs[viewKey].title}
             </span>
           </>
         )}
@@ -103,6 +105,7 @@ function Breadcrumbs({ viewKey, pathname }) {
 
 function Layout() {
   const { pathname } = useLocation();
+  const configs = useNavConfig();
   const viewKey = viewKeyFromPathname(pathname);
   const [scrolledSection, setScrolledSection] = useState(null);
   // Tracks which elements have already played their reveal, across the whole
@@ -141,7 +144,7 @@ function Layout() {
       );
     });
 
-    const config = pageNavigationConfigs[viewKey];
+    const config = configs[viewKey];
     if (!config || config.sections.length === 0) return undefined;
 
     const handleScroll = () => {
@@ -189,7 +192,7 @@ function Layout() {
   );
 }
 
-function App() {
+function AppRoutes() {
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -202,17 +205,17 @@ function App() {
           <Route path="stratifikasi" element={<StratifikasiPage />} />
         </Route>
 
-        <Route path="program" element={<Navigate to={`/program/${defaultTabSlug('program')}`} replace />} />
+        <Route path="program" element={<Navigate to={defaultTabPath('program')} replace />} />
         <Route path="program/:programSlug" element={<ProgramPage />} />
 
         <Route path="mitra" element={<MitraPage />} />
 
-        <Route path="informasi" element={<Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />} />
+        <Route path="informasi" element={<Navigate to={defaultTabPath('informasi')} replace />} />
         <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
         <Route path="informasi/upt-bercerita/:idOrSlug" element={<UptBerceritaDetailView />} />
         <Route path="informasi/:tabSlug" element={<InformasiPage />} />
 
-        <Route path="publikasi" element={<Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />} />
+        <Route path="publikasi" element={<Navigate to={defaultTabPath('publikasi')} replace />} />
         <Route path="publikasi/:tabSlug" element={<PublikasiPage />} />
 
         <Route path="kontak" element={<KontakPage />} />
@@ -221,6 +224,15 @@ function App() {
         <Route path="*" element={<NotFoundView />} />
       </Route>
     </Routes>
+  );
+}
+
+// Routes mount only once the nav config settles, so tab slugs resolve against the real tabs.
+function App() {
+  return (
+    <NavConfigProvider>
+      <AppRoutes />
+    </NavConfigProvider>
   );
 }
 

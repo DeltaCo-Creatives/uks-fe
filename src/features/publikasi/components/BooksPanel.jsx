@@ -12,7 +12,7 @@ import { BUKU_SEARCH_FIELDS } from '../searchFields';
 // The shared subnav pill, a size smaller; "!" beats its unlayered padding.
 const TAG_PILL = 'subnav-pill px-4! py-2! text-[13px]!';
 
-export default function BooksPanel() {
+export default function BooksPanel({ title }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [bookCategory, setBookCategory] = useState('all');
   const { data: bukuList, loading, error, retry } = useBukuPanduanList();
@@ -56,7 +56,7 @@ export default function BooksPanel() {
         <div>
           <span className="section-kicker">Perpustakaan Digital</span>
           <h2 className="mt-1.5 mb-0 text-[clamp(22px,2.6vw,28px)] font-extrabold text-ink">
-            Buku &amp; Pedoman Teknis Satuan Pendidikan
+            {title}
           </h2>
         </div>
         {!loading && !error && (

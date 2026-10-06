@@ -8,6 +8,18 @@
 
 import { pageNavigationConfigs } from './data/navigation';
 
+// ponytail: mutable module state so the ~30 pathForView call sites stay plain
+// functions. NavConfigProvider overwrites it with the API-built tabs before any
+// route renders; upgrade path = make every caller read the NavConfigContext.
+let activeConfigs = pageNavigationConfigs;
+
+export const setActiveConfigs = (configs) => {
+  activeConfigs = configs;
+};
+
+/** Derived scroll-anchor/section id of a tab: the same string the drawer and scroll-spy use. */
+export const sectionIdForTab = (viewKey, slug) => `sec-${viewKey}-${slug}`;
+
 export const VIEW_PATHS = {
   beranda: '/',
   'uksm-profil': '/uksm/profil',
@@ -27,22 +39,32 @@ const TAB_VIEWS = ['program', 'informasi', 'publikasi'];
 
 export const isTabView = (viewKey) => TAB_VIEWS.includes(viewKey);
 
-export const defaultTabSlug = (viewKey) => pageNavigationConfigs[viewKey].sections[0].slug;
+// Undefined when the admin hid every tab of the view.
+const defaultTabSlug = (viewKey) => activeConfigs[viewKey].sections[0]?.slug;
+
+/** The default tab's path, or home when the view has no visible tab. */
+export const defaultTabPath = (viewKey) => {
+  const slug = defaultTabSlug(viewKey);
+  return slug ? `/${viewKey}/${slug}` : '/';
+};
 
 /** The section a tab slug names, or undefined when the slug is not one of ours. */
 export const sectionIdFromSlug = (viewKey, slug) =>
-  isTabView(viewKey) ? pageNavigationConfigs[viewKey].sections.find((s) => s.slug === slug)?.id : undefined;
+  isTabView(viewKey) ? activeConfigs[viewKey].sections.find((s) => s.slug === slug)?.id : undefined;
 
 export function pathForView(viewKey, sectionId = null) {
   const base = VIEW_PATHS[viewKey];
   if (!base) return '/';
   if (!sectionId) return base;
   if (isTabView(viewKey)) {
-    const slug = pageNavigationConfigs[viewKey].sections.find((s) => s.id === sectionId)?.slug;
+    const slug = activeConfigs[viewKey].sections.find((s) => s.id === sectionId)?.slug;
     return slug ? `${base}/${slug}` : base;
   }
   return `${base}#${sectionId}`;
 }
+
+/** URL of a tab by its slug, without needing the section id. Preferred tab URL builder: `pathForTab(view, slug)`. */
+export const pathForTab = (viewKey, slug) => `${VIEW_PATHS[viewKey]}/${slug}`;
 
 export const pathForArticle = (idOrSlug) => `/informasi/berita/${idOrSlug}`;
 
@@ -68,6 +90,7 @@ export function tabSectionFromPathname(pathname) {
   if (!isTabView(viewKey)) return null;
   return (
     sectionIdFromSlug(viewKey, pathname.split('/')[2]) ??
-    pageNavigationConfigs[viewKey].sections[0].id
+    activeConfigs[viewKey].sections[0]?.id ??
+    null
   );
 }

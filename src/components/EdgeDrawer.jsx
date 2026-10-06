@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { pageNavigationConfigs } from '../data/portalData';
+import { useNavConfig } from '@/hooks/useNavConfig';
 import { isTabView, pathForView } from '../routes';
 import { useHoverCapable } from '../hooks/useHoverCapable';
 import { usePageNavVisible } from '../hooks/usePageNavVisible';
@@ -22,7 +22,8 @@ export default function EdgeDrawer({ viewKey, activeSection }) {
   const panelRef = useRef(null);
   const openedByKeyboard = useRef(false);
 
-  const config = pageNavigationConfigs[viewKey] || pageNavigationConfigs['beranda'];
+  const configs = useNavConfig();
+  const config = configs[viewKey] || configs['beranda'];
   const tabbed = isTabView(viewKey);
   const open = isOpen && !navVisible;
 

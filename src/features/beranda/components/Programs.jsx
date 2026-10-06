@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { pathForArticle, pathForProgram, pathForView } from '@/routes';
+import { pathForArticle, pathForProgram, pathForTab } from '@/routes';
 import { useBeritaList } from '@/hooks/useBerita';
 import { useProgramList } from '@/hooks/usePublicLists';
 import SafeImage from '@/components/SafeImage';
@@ -91,7 +91,7 @@ export default function Programs() {
                         <span className="section-kicker">Update</span>
                         <h2 className="section-title">Kabar Terbaru</h2>
                     </div>
-                    <Link to={pathForView('informasi', 'sec-info-berita')} className={`btn-pill primary ${SECTION_MORE_BUTTON}`}>
+                    <Link to={pathForTab('informasi', 'berita')} className={`btn-pill primary ${SECTION_MORE_BUTTON}`}>
                         Lihat Semua Warta <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </Link>
                 </div>

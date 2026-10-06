@@ -3,14 +3,14 @@ import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncS
 import SafeImage from '@/components/SafeImage';
 import { PANEL_HEAD_STACKED, PANEL_TITLE, PANEL_DESC, GRID } from '../styles';
 
-export default function AplikasiPanel() {
+export default function AplikasiPanel({ title }) {
   const { data: apps, loading, error, retry } = useAplikasiList();
 
   return (
     <div className="about-bento-frame">
       <div className={PANEL_HEAD_STACKED}>
         <span className="section-kicker">Direktori Aplikasi</span>
-        <h2 className={PANEL_TITLE}>Aplikasi Digital Pendukung UKS/M</h2>
+        <h2 className={PANEL_TITLE}>{title}</h2>
         <p className={PANEL_DESC}>
           Aplikasi resmi untuk pencatatan kesehatan, skrining gizi, edukasi pubertas, dan konseling siswa.
         </p>

@@ -29,7 +29,7 @@ const CATEGORIES = [
   { key: 'uks', label: 'UKS' }
 ];
 
-export default function BeritaPanel() {
+export default function BeritaPanel({ title }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const { data: newsList, loading, error, retry } = useBeritaList();
 
@@ -58,7 +58,7 @@ export default function BeritaPanel() {
       <div className={PANEL_HEAD}>
         <div>
           <span className="section-kicker">Rilis Resmi Kementerian</span>
-          <h2 className={PANEL_TITLE}>Warta Terkini Usaha Kesehatan Sekolah</h2>
+          <h2 className={PANEL_TITLE}>{title}</h2>
         </div>
 
         <div className={FILTER}>

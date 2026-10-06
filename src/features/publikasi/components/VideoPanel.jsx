@@ -7,7 +7,7 @@ import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncS
 import { VideoGrid } from './PublikasiItems';
 import { VIDEO_SEARCH_FIELDS } from '../searchFields';
 
-export default function VideoPanel() {
+export default function VideoPanel({ title }) {
   const { data: videos, loading, error, retry } = useVideoList();
 
   const {
@@ -26,7 +26,7 @@ export default function VideoPanel() {
       <div className="mb-6">
         <span className="section-kicker">Media Audio Visual</span>
         <h2 className="mt-1.5 mb-2.5 text-[clamp(22px,2.6vw,28px)] font-extrabold text-ink">
-          Video Animasi Edukasi Peserta Didik
+          {title}
         </h2>
       </div>
 

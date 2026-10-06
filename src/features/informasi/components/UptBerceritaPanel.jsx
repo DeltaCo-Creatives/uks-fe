@@ -23,7 +23,7 @@ const GROUP_OPTIONS = [
   { key: 'region', label: 'Wilayah', getGroup: (item) => item.region }
 ];
 
-export default function UptBerceritaPanel() {
+export default function UptBerceritaPanel({ title }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const { data: stories, loading, error, retry } = useUptStoriesList();
 
@@ -64,7 +64,7 @@ export default function UptBerceritaPanel() {
       <div className={PANEL_HEAD}>
         <div>
           <span className="section-kicker">Kabar Unit Pelaksana Teknis</span>
-          <h2 className={PANEL_TITLE}>UPT Bercerita: Gerak Sehat di Daerah</h2>
+          <h2 className={PANEL_TITLE}>{title}</h2>
           <p className={PANEL_DESC}>
             Catatan lapangan dari Balai Penjaminan Mutu Pendidikan (BPMP) dan Balai Guru Penggerak (BGP) se-Indonesia.
           </p>

@@ -15,7 +15,7 @@ const GROUP_OPTIONS = [
   { key: 'level', label: 'Jenjang', getGroup: (item) => item.level }
 ];
 
-export default function PraktikPanel() {
+export default function PraktikPanel({ title }) {
   const { data: practices, loading, error, retry } = usePraktikBaikList();
 
   const {
@@ -36,7 +36,7 @@ export default function PraktikPanel() {
     <div className="about-bento-frame">
       <div className={PANEL_HEAD_STACKED}>
         <span className="section-kicker">Inspirasi Dari Sekolah</span>
-        <h2 className={PANEL_TITLE}>Praktik Baik Pembiasaan Trias &amp; 5 Sehat</h2>
+        <h2 className={PANEL_TITLE}>{title}</h2>
         <p className={PANEL_DESC}>
           Cara yang sudah berjalan di sekolah dasar dan menengah, untuk ditiru sekolah lain.
         </p>
