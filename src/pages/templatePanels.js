@@ -1,5 +1,5 @@
 import { BeritaPanel, PraktikPanel, UptBerceritaPanel, AgendaPanel, AplikasiPanel } from '@/features/informasi';
-import { BooksPanel, InfografisPanel, VideoPanel, RegulasiPanel } from '@/features/publikasi';
+import { BooksPanel, InfografisPanel, VideoPanel, RegulasiPanel, GaleriPanel } from '@/features/publikasi';
 
 /**
  * Which panel renders each submenu `template`, per menu. A template missing
@@ -18,6 +18,7 @@ export const TEMPLATE_PANELS = {
     buku: BooksPanel,
     infografis: InfografisPanel,
     video: VideoPanel,
+    galeri: GaleriPanel,
     dokumen: RegulasiPanel
   }
 };
