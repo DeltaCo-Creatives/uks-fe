@@ -1,6 +1,6 @@
-import { pathForUptStory, pathForView } from '../routes';
-import { useUptBercerita, useUptStoriesList } from '../hooks/usePublicLists';
-import BeritaDetailView from './BeritaDetailView';
+import { pathForUptStory, pathForView } from '@/routes';
+import { useUptBercerita, useUptStoriesList } from '@/hooks/usePublicLists';
+import { ArticleDetail } from '@/features/informasi';
 
 const UPT_CONFIG = {
   useDetail: useUptBercerita,
@@ -15,6 +15,6 @@ const UPT_CONFIG = {
   relatedTitle: 'Cerita Terkait Lainnya'
 };
 
-export default function UptBerceritaDetailView() {
-  return <BeritaDetailView config={UPT_CONFIG} />;
+export default function UptBerceritaDetailPage() {
+  return <ArticleDetail config={UPT_CONFIG} />;
 }

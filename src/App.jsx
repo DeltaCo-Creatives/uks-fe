@@ -18,13 +18,13 @@ import InformasiPage from './pages/InformasiPage';
 import PublikasiPage from './pages/PublikasiPage';
 import KontakPage from './pages/KontakPage';
 import SearchView from './components/SearchView';
-import BeritaDetailView from './components/BeritaDetailView';
+import BeritaDetailPage from './pages/BeritaDetailPage';
 import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 import DownloadToast from './components/shared/DownloadToast';
 
 import { pageNavigationConfigs } from './data/portalData';
-import UptBerceritaDetailView from './components/UptBerceritaDetailView';
+import UptBerceritaDetailPage from './pages/UptBerceritaDetailPage';
 import { useBeritaList } from './hooks/useBerita';
 import { useUptStoriesList } from './hooks/usePublicLists';
 import {
@@ -208,8 +208,8 @@ function App() {
         <Route path="mitra" element={<MitraPage />} />
 
         <Route path="informasi" element={<Navigate to={`/informasi/${defaultTabSlug('informasi')}`} replace />} />
-        <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
-        <Route path="informasi/upt-bercerita/:idOrSlug" element={<UptBerceritaDetailView />} />
+        <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailPage />} />
+        <Route path="informasi/upt-bercerita/:idOrSlug" element={<UptBerceritaDetailPage />} />
         <Route path="informasi/:tabSlug" element={<InformasiPage />} />
 
         <Route path="publikasi" element={<Navigate to={`/publikasi/${defaultTabSlug('publikasi')}`} replace />} />
