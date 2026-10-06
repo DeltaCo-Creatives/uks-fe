@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { countPublikasiView } from '@/utils/counters';
 import SafeImage from '@/components/SafeImage';
+import ImageLightbox from '@/components/shared/ImageLightbox';
 import { downloadFile } from '@/utils/downloadFile';
 
 /*
@@ -95,6 +97,62 @@ export function InfografisGrid({ items, onZoom }) {
         </figure>
       ))}
     </div>
+  );
+}
+
+/*
+ * Album cards share the infografis card frame; the cover is cropped to a landscape tile since the photos
+ * inside differ in ratio, and the full photos open in AlbumLightbox.
+ */
+export function GaleriGrid({ items, onOpen }) {
+  return (
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-5">
+      {items.map((item) => {
+        const count = item.foto?.length ?? 0;
+        return (
+          <figure key={item.id} className="m-0 flex flex-col overflow-hidden rounded-card bg-card shadow-raised">
+            <button
+              type="button"
+              className="group relative block w-full cursor-zoom-in border-none bg-app p-0 focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-ink [&_img]:block [&_img]:aspect-[4/3] [&_img]:w-full [&_img]:object-cover"
+              onClick={() => { countPublikasiView(item.slug); onOpen(item); }}
+              disabled={count === 0}
+              aria-label={`Buka album ${item.title}`}
+            >
+              <SafeImage src={item.cover} alt="" loading="lazy" />
+              <span
+                className="absolute right-2.5 bottom-2.5 inline-flex items-center gap-1.5 rounded-full bg-[rgba(17,28,22,0.78)] px-3 py-1.5 text-[12px] font-bold text-white group-hover:bg-ink"
+                aria-hidden="true"
+              >
+                <i className="fa-regular fa-images"></i>{count}
+              </span>
+            </button>
+            <figcaption className="px-4 py-3">
+              <span className="block text-[14px] leading-[1.35] font-extrabold text-ink">{item.title}</span>
+              {item.desc && <span className="mt-1 line-clamp-2 block text-[12px] leading-[1.5] text-ink-muted">{item.desc}</span>}
+            </figcaption>
+          </figure>
+        );
+      })}
+    </div>
+  );
+}
+
+/** The photos of one album in the shared lightbox, with prev/next and each photo's keterangan as caption. */
+export function AlbumLightbox({ album, onClose }) {
+  const [index, setIndex] = useState(0);
+  const fotos = album.foto ?? [];
+  const foto = fotos[index];
+  if (!foto) return null;
+
+  const step = (delta) => setIndex((i) => (i + delta + fotos.length) % fotos.length);
+  const position = `${index + 1} / ${fotos.length}`;
+  return (
+    <ImageLightbox
+      image={{ src: foto.url, title: album.title, alt: foto.keterangan ?? album.title, caption: foto.keterangan ? `${foto.keterangan} (${position})` : position }}
+      onClose={onClose}
+      onPrev={fotos.length > 1 ? () => step(-1) : undefined}
+      onNext={fotos.length > 1 ? () => step(1) : undefined}
+    />
   );
 }
 

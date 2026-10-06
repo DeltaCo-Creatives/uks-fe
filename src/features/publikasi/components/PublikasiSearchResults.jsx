@@ -5,10 +5,11 @@ import { matchesQuery } from '@/hooks/useContentToolbar';
 import DocViewerModal from '@/components/shared/DocViewerModal';
 import ImageLightbox from '@/components/shared/ImageLightbox';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
-import { BookGrid, InfografisGrid, VideoGrid, RegulasiList } from './PublikasiItems';
+import { BookGrid, InfografisGrid, GaleriGrid, AlbumLightbox, VideoGrid, RegulasiList } from './PublikasiItems';
 import {
   BUKU_SEARCH_FIELDS,
   INFOGRAFIS_SEARCH_FIELDS,
+  GALERI_SEARCH_FIELDS,
   VIDEO_SEARCH_FIELDS,
   REGULASI_SEARCH_FIELDS
 } from '../searchFields';
@@ -37,6 +38,11 @@ const SOURCES = {
     useSource: (id) => publikasiHookFor('infografis', id),
     fields: INFOGRAFIS_SEARCH_FIELDS,
     render: (items, { onZoom }) => <InfografisGrid items={items} onZoom={onZoom} />
+  },
+  galeri: {
+    useSource: (id) => publikasiHookFor(undefined, id),
+    fields: GALERI_SEARCH_FIELDS,
+    render: (items, { onAlbum }) => <GaleriGrid items={items} onOpen={onAlbum} />
   },
   video: {
     useSource: (id) => publikasiHookFor('video', id),
@@ -91,10 +97,11 @@ function SectionResults({ section, query, actions, report }) {
 export default function PublikasiSearchResults({ query, onClear }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [zoomed, setZoomed] = useState(null);
+  const [album, setAlbum] = useState(null);
   const [statuses, setStatuses] = useState({});
   // One group per Publikasi tab; a template with no search source here is left out.
   const sections = useNavConfig().publikasi.sections.filter((section) => SOURCES[section.template]);
-  const actions = { onRead: setSelectedBook, onZoom: setZoomed };
+  const actions = { onRead: setSelectedBook, onZoom: setZoomed, onAlbum: setAlbum };
 
   const report = useCallback((id, status) => {
     setStatuses((prev) => {
@@ -150,6 +157,7 @@ export default function PublikasiSearchResults({ query, onClear }) {
       )}
 
       {zoomed && <ImageLightbox image={zoomed} onClose={() => setZoomed(null)} />}
+      {album && <AlbumLightbox album={album} onClose={() => setAlbum(null)} />}
     </div>
   );
 }

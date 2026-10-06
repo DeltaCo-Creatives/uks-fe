@@ -9,6 +9,8 @@ export const BUKU_SEARCH_FIELDS = [
 
 export const INFOGRAFIS_SEARCH_FIELDS = ['title', 'desc'];
 
+export const GALERI_SEARCH_FIELDS = ['title', 'desc'];
+
 export const VIDEO_SEARCH_FIELDS = ['title', 'channel'];
 
 export const REGULASI_SEARCH_FIELDS = ['title', 'number', 'badge', 'year'];
