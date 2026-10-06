@@ -1,4 +1,4 @@
-import { useVideoList } from '@/hooks/usePublicLists';
+import { publikasiHookFor } from '@/hooks/usePublicLists';
 import { useContentToolbar } from '@/hooks/useContentToolbar';
 import { usePagedGroups } from '@/hooks/usePagedGroups';
 import ContentToolbar from '@/components/shared/ContentToolbar';
@@ -7,8 +7,9 @@ import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncS
 import { VideoGrid } from './PublikasiItems';
 import { VIDEO_SEARCH_FIELDS } from '../searchFields';
 
-export default function VideoPanel({ title }) {
-  const { data: videos, loading, error, retry } = useVideoList();
+export default function VideoPanel({ title, submenuId }) {
+  const useList = publikasiHookFor('video', submenuId);
+  const { data: videos, loading, error, retry } = useList();
 
   const {
     query, setQuery,

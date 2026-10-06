@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
+import { useNavConfig } from '@/hooks/useNavConfig';
 import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
@@ -25,9 +26,15 @@ const BERITA_CONFIG = {
 };
 
 export default function BeritaDetailView({ config = BERITA_CONFIG }) {
-  const { idOrSlug } = useParams();
-  const { data: article, loading, error } = config.useDetail(idOrSlug);
+  // `itemSlug` is the generic /informasi/:submenuSlug/:itemSlug route; the static ones use `idOrSlug`.
+  const { idOrSlug, itemSlug, submenuSlug } = useParams();
+  const { data: article, loading, error } = config.useDetail(idOrSlug ?? itemSlug);
   const { data: relatedList } = config.useRelated();
+  // Back goes to the item's own submenu tab; the config default covers views without submenus (UPT).
+  const tabSlug = article?.submenuSlug ?? submenuSlug;
+  const backTo = tabSlug ? pathForTab('informasi', tabSlug) : config.backTo;
+  const tabLabel = useNavConfig().informasi.sections.find((s) => s.slug === tabSlug)?.label;
+  const backLabel = tabLabel ? `Kembali ke ${tabLabel}` : config.backLabel;
 
   if (loading) {
     return (
@@ -51,8 +58,8 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
           <i className="fa-solid fa-triangle-exclamation" aria-hidden="true" style={{ fontSize: '28px', color: '#DC2626', marginBottom: '12px' }}></i>
           <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>{config.errorTitle}</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>{config.errorText}</p>
-          <Link to={config.backTo} className="btn-pill secondary" style={{ padding: '10px 20px', fontSize: '13px' }}>
-            {config.backLabel}
+          <Link to={backTo} className="btn-pill secondary" style={{ padding: '10px 20px', fontSize: '13px' }}>
+            {backLabel}
           </Link>
         </div>
       </div>
@@ -63,7 +70,9 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
     return <NotFoundView />;
   }
 
-  const otherArticles = (relatedList || []).filter((n) => n.slug !== article.slug).slice(0, 3);
+  const otherArticles = (relatedList || [])
+    .filter((n) => n.slug !== article.slug && n.submenuSlug === article.submenuSlug)
+    .slice(0, 3);
 
   return (
     <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
@@ -202,12 +211,12 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
           }}
         >
           <Link
-            to={config.backTo}
+            to={backTo}
             className="btn-pill secondary"
             style={{ padding: '10px 20px', fontSize: '13px' }}
           >
             <i className="fa-solid fa-arrow-left" style={{ marginRight: '8px' }}></i>
-            {config.backLabel}
+            {backLabel}
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -243,7 +252,7 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
           {otherArticles.map((other) => (
             <Link
               key={other.id}
-              to={config.pathForItem(other.slug)}
+              to={config.pathForItem(other.slug, other.submenuSlug)}
               className="news-card-playful"
               style={{ display: 'flex', flexDirection: 'column' }}
             >

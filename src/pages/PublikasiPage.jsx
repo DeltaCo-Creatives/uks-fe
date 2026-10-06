@@ -94,7 +94,7 @@ export default function PublikasiPage() {
 
       {/* GIANT DISPLAY PANEL */}
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
-        {searching ? <PublikasiSearchResults query={q} onClear={clearSearch} /> : <Panel title={section.label} />}
+        {searching ? <PublikasiSearchResults query={q} onClear={clearSearch} /> : <Panel title={section.label} submenuId={section.submenuId} />}
       </div>
 
     </div>

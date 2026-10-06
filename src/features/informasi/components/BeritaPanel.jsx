@@ -7,7 +7,7 @@ import ContentToolbar from '@/components/shared/ContentToolbar';
 import Pagination from '@/components/shared/Pagination';
 import { usePagedGroups } from '@/hooks/usePagedGroups';
 import { useContentToolbar } from '@/hooks/useContentToolbar';
-import { useBeritaList } from '@/hooks/useBerita';
+import { beritaHookFor } from '@/hooks/useBerita';
 import { formatMonthYearID, parseIndonesianDate } from '@/utils/dateID';
 import {
   PANEL_HEAD, PANEL_TITLE, FILTER, FILTER_TRACK, filterButton, GRID,
@@ -29,9 +29,10 @@ const CATEGORIES = [
   { key: 'uks', label: 'UKS' }
 ];
 
-export default function BeritaPanel({ title }) {
+export default function BeritaPanel({ title, submenuId }) {
   const [activeCategory, setActiveCategory] = useState('all');
-  const { data: newsList, loading, error, retry } = useBeritaList();
+  const useList = beritaHookFor(submenuId);
+  const { data: newsList, loading, error, retry } = useList();
 
   const categoryFiltered = !newsList
     ? []
@@ -124,7 +125,7 @@ export default function BeritaPanel({ title }) {
                   {group.items.map(item => (
                     <Link
                       key={item.id}
-                      to={pathForArticle(item.slug)}
+                      to={pathForArticle(item.slug, item.submenuSlug)}
                       className={NEWS_CARD_LINK}
                     >
                       <div className="news-img-wrap">

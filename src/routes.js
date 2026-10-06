@@ -66,7 +66,11 @@ export function pathForView(viewKey, sectionId = null) {
 /** URL of a tab by its slug, without needing the section id. Preferred tab URL builder: `pathForTab(view, slug)`. */
 export const pathForTab = (viewKey, slug) => `${VIEW_PATHS[viewKey]}/${slug}`;
 
-export const pathForArticle = (idOrSlug) => `/informasi/berita/${idOrSlug}`;
+/** Article detail URL. The seeded berita tab keeps its short path; any other artikel submenu uses its own slug. */
+export const pathForArticle = (idOrSlug, submenuSlug) =>
+  submenuSlug && submenuSlug !== 'berita'
+    ? `/informasi/${submenuSlug}/${idOrSlug}`
+    : `/informasi/berita/${idOrSlug}`;
 
 export const pathForUptStory = (slug) => `/informasi/upt-bercerita/${slug}`;
 
@@ -78,6 +82,11 @@ export function viewKeyFromPathname(pathname) {
   if (pathname === '/') return 'beranda';
   if (pathname.startsWith('/informasi/berita/')) return 'berita-detail';
   if (pathname.startsWith('/informasi/upt-bercerita/')) return 'upt-detail';
+  // /informasi/<submenuSlug>/<itemSlug> is an article detail only inside an artikel submenu.
+  const itemTab = pathname.match(/^\/informasi\/([^/]+)\/[^/]+/)?.[1];
+  if (itemTab && activeConfigs.informasi.sections.find((s) => s.slug === itemTab)?.template === 'artikel') {
+    return 'berita-detail';
+  }
   const match = SUBPAGE_PATHS.find(
     ([, path]) => pathname === path || pathname.startsWith(`${path}/`)
   );

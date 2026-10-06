@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavConfig } from '@/hooks/useNavConfig';
-import { useBukuPanduanList, useInfografisList, useVideoList, useProdukHukumList } from '@/hooks/usePublicLists';
+import { publikasiHookFor, produkHukumHookFor } from '@/hooks/usePublicLists';
 import { matchesQuery } from '@/hooks/useContentToolbar';
 import DocViewerModal from '@/components/shared/DocViewerModal';
 import ImageLightbox from '@/components/shared/ImageLightbox';
@@ -29,22 +29,22 @@ function useMatches(list, fields, query) {
 // A static fallback tab has no submenuId, so each hook falls back to the unfiltered seeded list.
 const SOURCES = {
   buku: {
-    useSource: () => useBukuPanduanList,
+    useSource: (id) => publikasiHookFor('buku-panduan', id),
     fields: BUKU_SEARCH_FIELDS,
     render: (items, { onRead }) => <BookGrid books={items} onRead={onRead} />
   },
   infografis: {
-    useSource: () => useInfografisList,
+    useSource: (id) => publikasiHookFor('infografis', id),
     fields: INFOGRAFIS_SEARCH_FIELDS,
     render: (items, { onZoom }) => <InfografisGrid items={items} onZoom={onZoom} />
   },
   video: {
-    useSource: () => useVideoList,
+    useSource: (id) => publikasiHookFor('video', id),
     fields: VIDEO_SEARCH_FIELDS,
     render: (items) => <VideoGrid videos={items} />
   },
   dokumen: {
-    useSource: () => useProdukHukumList,
+    useSource: (id) => produkHukumHookFor(id),
     fields: REGULASI_SEARCH_FIELDS,
     render: (items) => <RegulasiList regulations={items} />
   }

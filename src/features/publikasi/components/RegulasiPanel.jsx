@@ -1,12 +1,13 @@
-import { useProdukHukumList } from '@/hooks/usePublicLists';
+import { produkHukumHookFor } from '@/hooks/usePublicLists';
 import { useContentToolbar } from '@/hooks/useContentToolbar';
 import ContentToolbar from '@/components/shared/ContentToolbar';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { RegulasiList } from './PublikasiItems';
 import { REGULASI_SEARCH_FIELDS } from '../searchFields';
 
-export default function RegulasiPanel({ title }) {
-  const { data: regulations, loading, error, retry } = useProdukHukumList();
+export default function RegulasiPanel({ title, submenuId }) {
+  const useList = produkHukumHookFor(submenuId);
+  const { data: regulations, loading, error, retry } = useList();
 
   const {
     query, setQuery,

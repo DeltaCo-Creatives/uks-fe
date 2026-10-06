@@ -1,14 +1,36 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { pathForProgram, pathForView, sectionIdForTab } from '../routes';
+import { pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
+import { useNavConfig } from '@/hooks/useNavConfig';
 import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
   strataLevels
 } from '../data/portalData';
 
+/** Where a hit links: its own submenu's tab, matched by id when both have one (slugs repeat across menus), else by slug. */
+function tabLink(configs, item, viewKey, fallbackSlug) {
+  const slug = item.submenuSlug ?? fallbackSlug;
+  const views = [viewKey, ...['informasi', 'publikasi'].filter((key) => key !== viewKey)];
+  for (const key of views) {
+    const section = configs[key].sections.find((s) =>
+      item.submenuId && s.submenuId ? s.submenuId === item.submenuId : s.slug === slug
+    );
+    if (section) return { viewKey: key, sectionId: section.id };
+  }
+  return { viewKey, sectionId: sectionIdForTab(viewKey, fallbackSlug) };
+}
+
+/** Link to the Informasi tab rendering `template`, or the seeded slug when that tab is hidden. */
+function templateLink(configs, template, fallbackSlug) {
+  const section = configs.informasi.sections.find((s) => s.template === template);
+  const slug = section?.slug ?? fallbackSlug;
+  return { viewKey: 'informasi', path: pathForTab('informasi', slug), sectionId: sectionIdForTab('informasi', slug) };
+}
+
 export default function SearchView() {
+  const configs = useNavConfig();
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const inputRef = useRef(null);
@@ -99,8 +121,7 @@ export default function SearchView() {
         typeLabel: 'Buku & Juknis',
         typeColor: '#D97706',
         icon: 'fa-solid fa-book-bookmark',
-        viewKey: 'publikasi',
-        sectionId: sectionIdForTab('publikasi', 'buku')
+        ...tabLink(configs, book, 'publikasi', 'buku')
       });
     });
 
@@ -113,8 +134,7 @@ export default function SearchView() {
         typeLabel: 'Warta Terkini',
         typeColor: '#2563EB',
         icon: 'fa-solid fa-newspaper',
-        viewKey: 'informasi',
-        sectionId: sectionIdForTab('informasi', 'berita')
+        ...tabLink(configs, news, 'informasi', 'berita')
       });
     });
 
@@ -127,8 +147,7 @@ export default function SearchView() {
         typeLabel: 'Praktik Baik',
         typeColor: '#059669',
         icon: 'fa-solid fa-award',
-        viewKey: 'informasi',
-        sectionId: sectionIdForTab('informasi', 'praktik')
+        ...templateLink(configs, 'praktik-baik', 'praktik')
       });
     });
 
@@ -146,8 +165,7 @@ export default function SearchView() {
         typeLabel: 'Agenda Nasional',
         typeColor: '#7C3AED',
         icon: 'fa-solid fa-calendar-days',
-        viewKey: 'informasi',
-        sectionId: sectionIdForTab('informasi', 'agenda')
+        ...tabLink(configs, ag, 'informasi', 'agenda')
       });
     });
 
@@ -161,8 +179,7 @@ export default function SearchView() {
         typeLabel: 'Video Edukasi',
         typeColor: '#DC2626',
         icon: 'fa-solid fa-film',
-        viewKey: 'publikasi',
-        sectionId: sectionIdForTab('publikasi', 'video')
+        ...tabLink(configs, vid, 'publikasi', 'video')
       });
     });
 
@@ -175,8 +192,7 @@ export default function SearchView() {
         typeLabel: 'Produk Hukum SKB',
         typeColor: '#1E293B',
         icon: 'fa-solid fa-scale-balanced',
-        viewKey: 'publikasi',
-        sectionId: sectionIdForTab('publikasi', 'regulasi')
+        ...tabLink(configs, reg, 'publikasi', 'regulasi')
       });
     });
 
@@ -189,8 +205,7 @@ export default function SearchView() {
         typeLabel: 'Aplikasi Terkait',
         typeColor: '#0284C7',
         icon: 'fa-solid fa-mobile-screen',
-        viewKey: 'informasi',
-        sectionId: sectionIdForTab('informasi', 'aplikasi')
+        ...tabLink(configs, app, 'informasi', 'aplikasi')
       });
     });
 
@@ -203,13 +218,12 @@ export default function SearchView() {
         typeLabel: 'UPT Bercerita',
         typeColor: '#059669',
         icon: 'fa-solid fa-book-open-reader',
-        viewKey: 'informasi',
-        sectionId: sectionIdForTab('informasi', 'upt')
+        ...templateLink(configs, 'upt-bercerita', 'upt')
       });
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, configs]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>

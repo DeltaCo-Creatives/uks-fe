@@ -71,3 +71,15 @@ export function createCachedList(path, { paginated = false } = {}) {
     return { ...state, retry };
   };
 }
+
+const listHooks = new Map();
+
+/** One cached list hook per path (never create one inside a render). A path always uses the same options. */
+export function listHookFor(path, options) {
+  if (!listHooks.has(path)) listHooks.set(path, createCachedList(path, options));
+  return listHooks.get(path);
+}
+
+/** `path` filtered to one submenu; unchanged without an id. */
+export const submenuPath = (path, submenuId) =>
+  submenuId ? `${path}${path.includes('?') ? '&' : '?'}submenuId=${submenuId}` : path;

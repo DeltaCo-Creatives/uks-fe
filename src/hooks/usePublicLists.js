@@ -1,5 +1,25 @@
-import { createCachedList } from './createCachedList';
+import { createCachedList, listHookFor, submenuPath } from './createCachedList';
 import { useSlugDetail } from './useSlugDetail';
+
+const PAGED = { paginated: true };
+
+/**
+ * Publikasi of one submenu. Without an id (static fallback tabs) the legacy
+ * `jenisHalaman` alias is used, since `/public/publikasi` rejects an unfiltered call.
+ */
+export function publikasiHookFor(jenisHalaman, submenuId) {
+  // Neither filter would request `jenisHalaman=undefined`; fail loudly instead.
+  if (!submenuId && !jenisHalaman) throw new Error('publikasiHookFor needs a submenuId or a jenisHalaman');
+  const path = submenuId
+    ? submenuPath('/public/publikasi', submenuId)
+    : `/public/publikasi?jenisHalaman=${jenisHalaman}`;
+  return listHookFor(path, PAGED);
+}
+
+/** Agenda, Aplikasi and Produk hukum of one submenu (everything when `submenuId` is absent). */
+export const agendaHookFor = (submenuId) => listHookFor(submenuPath('/public/agenda', submenuId), PAGED);
+export const aplikasiHookFor = (submenuId) => listHookFor(submenuPath('/public/aplikasi', submenuId));
+export const produkHukumHookFor = (submenuId) => listHookFor(submenuPath('/public/produk-hukum', submenuId));
 
 /** Hero slides for the home page, already ordered and filtered by the API. */
 export const useHeroSlideList = createCachedList('/public/hero-slide');
@@ -18,19 +38,19 @@ export const useUptBercerita = (slug) => useSlugDetail('/public/upt-bercerita', 
  * The API already orders entries (upcoming/ongoing first, then past), so
  * consumers render the list as-is instead of re-sorting it.
  */
-export const useAgendaList = createCachedList('/public/agenda', { paginated: true });
+export const useAgendaList = agendaHookFor();
 
 /** Buku & pedoman list for the Publikasi page, fetched once and shared by every consumer. */
-export const useBukuPanduanList = createCachedList('/public/publikasi?jenisHalaman=buku-panduan', { paginated: true });
+export const useBukuPanduanList = publikasiHookFor('buku-panduan');
 
 /** Infografis list for the Publikasi page, fetched once and shared by every consumer. */
-export const useInfografisList = createCachedList('/public/publikasi?jenisHalaman=infografis', { paginated: true });
+export const useInfografisList = publikasiHookFor('infografis');
 
 /** Video list for the Publikasi page, fetched once and shared by every consumer. */
-export const useVideoList = createCachedList('/public/publikasi?jenisHalaman=video', { paginated: true });
+export const useVideoList = publikasiHookFor('video');
 
 /** Regulasi / produk hukum list, ordered by document date, newest first. */
-export const useProdukHukumList = createCachedList('/public/produk-hukum');
+export const useProdukHukumList = produkHukumHookFor();
 
 /**
  * Kementerian terkait list, fetched once and shared by every consumer: the
@@ -39,7 +59,7 @@ export const useProdukHukumList = createCachedList('/public/produk-hukum');
 export const useKementerianList = createCachedList('/public/kementerian');
 
 /** Aplikasi terkait for the Informasi page and search, fetched once and shared by every consumer. */
-export const useAplikasiList = createCachedList('/public/aplikasi');
+export const useAplikasiList = aplikasiHookFor();
 
 /**
  * Mitra Kemitraan UKS/M: yearly cohorts (`kelompokTahun`) and partners with no

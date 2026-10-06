@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Routes, Route, Navigate, Outlet, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet, Link, useLocation, useParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -39,25 +39,38 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail'];
 
-// Article-style detail pages: the slug of the Informasi tab they belong to and the list their
-// title is looked up in.
+// Article-style detail pages: the slug and label of the Informasi tab they fall back to and the
+// list their title is looked up in. A berita detail overrides the tab with its own submenu.
 const DETAIL_CRUMBS = {
   'berita-detail': { tabSlug: 'berita', label: 'Warta Terkini', useList: useBeritaList },
   'upt-detail': { tabSlug: 'upt', label: 'UPT Bercerita', useList: useUptStoriesList }
 };
 
-/** Trailing crumb: the article title, once the list resolves; nothing broken shows while it loads. */
-function DetailTitleCrumb({ useList, slug }) {
-  const { data: list } = useList();
+/**
+ * Informasi / tab / title crumbs of an article detail. The tab is the article's own submenu (the URL's
+ * while the list loads); the title shows once the list resolves, so nothing broken shows while it loads.
+ */
+function DetailCrumbs({ detailCrumb, tabSlug, slug, linkStyle }) {
+  const sections = useNavConfig().informasi.sections;
+  const { data: list } = detailCrumb.useList();
   const article = slug ? (list || []).find((n) => n.slug === slug) : null;
-  if (!article) return null;
+  const tab = article?.submenuSlug ?? tabSlug;
+  const label = sections.find((s) => s.slug === tab)?.label ?? detailCrumb.label;
 
   return (
     <>
       <span>/</span>
-      <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {article.title}
-      </span>
+      <Link to={pathForTab('informasi', tab)} style={linkStyle}>Informasi</Link>
+      <span>/</span>
+      <Link to={pathForTab('informasi', tab)} style={linkStyle}>{label}</Link>
+      {article && (
+        <>
+          <span>/</span>
+          <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {article.title}
+          </span>
+        </>
+      )}
     </>
   );
 }
@@ -68,7 +81,7 @@ function Breadcrumbs({ viewKey, pathname }) {
 
   const linkStyle = { color: 'var(--brand-primary)', fontWeight: 700 };
   const detailCrumb = DETAIL_CRUMBS[viewKey];
-  const slug = detailCrumb ? decodeURIComponent(pathname.split('/')[3] || '') : null;
+  const [, , tabSlug, itemSlug] = pathname.split('/');
 
   return (
     <div className="container" style={{ paddingTop: '20px', paddingBottom: '12px' }}>
@@ -83,13 +96,13 @@ function Breadcrumbs({ viewKey, pathname }) {
         <Link to="/" style={linkStyle}>Beranda</Link>
 
         {detailCrumb ? (
-          <>
-            <span>/</span>
-            <Link to={pathForTab('informasi', detailCrumb.tabSlug)} style={linkStyle}>Informasi</Link>
-            <span>/</span>
-            <Link to={pathForTab('informasi', detailCrumb.tabSlug)} style={linkStyle}>{detailCrumb.label}</Link>
-            <DetailTitleCrumb key={viewKey} useList={detailCrumb.useList} slug={slug} />
-          </>
+          <DetailCrumbs
+            key={viewKey}
+            detailCrumb={detailCrumb}
+            tabSlug={viewKey === 'berita-detail' ? tabSlug : detailCrumb.tabSlug}
+            slug={decodeURIComponent(itemSlug || '')}
+            linkStyle={linkStyle}
+          />
         ) : (
           <>
             <span>/</span>
@@ -101,6 +114,14 @@ function Breadcrumbs({ viewKey, pathname }) {
       </div>
     </div>
   );
+}
+
+// /informasi/:submenuSlug/:itemSlug: an article detail inside an artikel submenu, else back to the tab.
+function SubmenuDetailRoute() {
+  const { submenuSlug } = useParams();
+  const sections = useNavConfig().informasi.sections;
+  const isArtikel = sections.find((s) => s.slug === submenuSlug)?.template === 'artikel';
+  return isArtikel ? <BeritaDetailView /> : <Navigate to={pathForTab('informasi', submenuSlug)} replace />;
 }
 
 function Layout() {
@@ -213,6 +234,7 @@ function AppRoutes() {
         <Route path="informasi" element={<Navigate to={defaultTabPath('informasi')} replace />} />
         <Route path="informasi/berita/:idOrSlug" element={<BeritaDetailView />} />
         <Route path="informasi/upt-bercerita/:idOrSlug" element={<UptBerceritaDetailView />} />
+        <Route path="informasi/:submenuSlug/:itemSlug" element={<SubmenuDetailRoute />} />
         <Route path="informasi/:tabSlug" element={<InformasiPage />} />
 
         <Route path="publikasi" element={<Navigate to={defaultTabPath('publikasi')} replace />} />

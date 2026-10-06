@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useBukuPanduanList } from '@/hooks/usePublicLists';
+import { publikasiHookFor } from '@/hooks/usePublicLists';
 import { useContentToolbar } from '@/hooks/useContentToolbar';
 import { usePagedGroups } from '@/hooks/usePagedGroups';
 import DocViewerModal from '@/components/shared/DocViewerModal';
@@ -12,10 +12,11 @@ import { BUKU_SEARCH_FIELDS } from '../searchFields';
 // The shared subnav pill, a size smaller; "!" beats its unlayered padding.
 const TAG_PILL = 'subnav-pill px-4! py-2! text-[13px]!';
 
-export default function BooksPanel({ title }) {
+export default function BooksPanel({ title, submenuId }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [bookCategory, setBookCategory] = useState('all');
-  const { data: bukuList, loading, error, retry } = useBukuPanduanList();
+  const useList = publikasiHookFor('buku-panduan', submenuId);
+  const { data: bukuList, loading, error, retry } = useList();
 
   // Pills mirror whatever tags the CMS actually put on the fetched books,
   // sorted alphabetically so the order stays stable as new books are added.
