@@ -1,10 +1,11 @@
-import { useAplikasiList } from '@/hooks/usePublicLists';
+import { aplikasiHookFor } from '@/hooks/usePublicLists';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import SafeImage from '@/components/SafeImage';
 import { PANEL_HEAD_STACKED, PANEL_TITLE, PANEL_DESC, GRID } from '../styles';
 
-export default function AplikasiPanel({ title }) {
-  const { data: apps, loading, error, retry } = useAplikasiList();
+export default function AplikasiPanel({ title, submenuId }) {
+  const useList = aplikasiHookFor(submenuId);
+  const { data: apps, loading, error, retry } = useList();
 
   return (
     <div className="about-bento-frame">

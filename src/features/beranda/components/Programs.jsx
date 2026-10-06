@@ -2,7 +2,8 @@ import { useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { pathForArticle, pathForProgram, pathForTab } from '@/routes';
-import { useBeritaList } from '@/hooks/useBerita';
+import { beritaHookFor } from '@/hooks/useBerita';
+import { useNavConfig } from '@/hooks/useNavConfig';
 import { useProgramList } from '@/hooks/usePublicLists';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
@@ -12,10 +13,18 @@ import { useMarqueeHold } from '../useMarqueeHold';
 const MARQUEE_PX_PER_SECOND = 40;
 
 export default function Programs() {
+    // "Warta Terkini" is the seeded berita submenu only; the static fallback has no id, so it lists all berita.
+    const beritaId = useNavConfig().informasi.sections.find((s) => s.slug === 'berita')?.submenuId;
+    // Keyed so a submenu list that arrives late (after the nav wait) remounts and fetches the filtered list.
+    return <ProgramsSection key={beritaId ?? 'all'} beritaId={beritaId} />;
+}
+
+function ProgramsSection({ beritaId }) {
     const trackRef = useRef(null);
     const marqueeTween = useRef(null);
     const { trackProps } = useMarqueeHold(marqueeTween);
-    const { data: newsList, loading, error, retry } = useBeritaList();
+    const useList = beritaHookFor(beritaId);
+    const { data: newsList, loading, error, retry } = useList();
     const latestNews = (newsList || []).slice(0, 4);
     // Decorative row: it stays out until the programs load and is skipped if they fail.
     const { data: programs } = useProgramList();
@@ -119,7 +128,7 @@ export default function Programs() {
                         {latestNews.map((item) => (
                             <Link
                                 key={item.id}
-                                to={pathForArticle(item.slug)}
+                                to={pathForArticle(item.slug, item.submenuSlug)}
                                 className="news-card-playful"
                                 data-gsap="reveal"
                             >

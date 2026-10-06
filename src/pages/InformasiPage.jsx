@@ -40,7 +40,7 @@ export default function InformasiPage() {
       />
 
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
-        <Panel title={section.label} />
+        <Panel title={section.label} submenuId={section.submenuId} />
       </div>
     </div>
   );

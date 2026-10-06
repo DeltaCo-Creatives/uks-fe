@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useInfografisList } from '@/hooks/usePublicLists';
+import { publikasiHookFor } from '@/hooks/usePublicLists';
 import { useContentToolbar } from '@/hooks/useContentToolbar';
 import { usePagedGroups } from '@/hooks/usePagedGroups';
 import ImageLightbox from '@/components/shared/ImageLightbox';
@@ -14,9 +14,10 @@ import { INFOGRAFIS_SEARCH_FIELDS } from '../searchFields';
  * read on the page. Enlarging and downloading are for the small print, not the
  * only way to see what a poster says.
  */
-export default function InfografisPanel({ title }) {
+export default function InfografisPanel({ title, submenuId }) {
   const [zoomed, setZoomed] = useState(null);
-  const { data: infografisList, loading, error, retry } = useInfografisList();
+  const useList = publikasiHookFor('infografis', submenuId);
+  const { data: infografisList, loading, error, retry } = useList();
 
   const {
     query, setQuery,

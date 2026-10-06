@@ -1,11 +1,12 @@
-import { useAgendaList } from '@/hooks/usePublicLists';
+import { agendaHookFor } from '@/hooks/usePublicLists';
 import Pagination from '@/components/shared/Pagination';
 import { usePagedGroups } from '@/hooks/usePagedGroups';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { PANEL_HEAD_STACKED, PANEL_TITLE, PANEL_DESC } from '../styles';
 
-export default function AgendaPanel({ title }) {
-  const { data, loading, error, retry } = useAgendaList();
+export default function AgendaPanel({ title, submenuId }) {
+  const useList = agendaHookFor(submenuId);
+  const { data, loading, error, retry } = useList();
   const { pagedGroups, page, totalPages, setPage } = usePagedGroups([{ items: data || [] }], '');
   const agendas = data ? pagedGroups[0]?.items ?? [] : [];
   const hasAgendas = !!data?.length;
