@@ -6,6 +6,13 @@
  * `sec-<view>-<slug>`, the same shape the provider derives.
  */
 
+// Seeded publikasi submenu ids: the static tabs below need them to query /public/publikasi offline.
+export const SEEDED_SUBMENU_IDS = {
+  buku: '3f6b2d10-7a41-4c8e-9b05-1e2a4d6c8f06',
+  infografis: '3f6b2d10-7a41-4c8e-9b05-1e2a4d6c8f07',
+  video: '3f6b2d10-7a41-4c8e-9b05-1e2a4d6c8f08'
+};
+
 export const pageNavigationConfigs = {
   beranda: {
     id: 'beranda',
@@ -130,9 +137,9 @@ export const pageNavigationConfigs = {
     drawerTitle: 'PUSTAKA DIGITAL',
     footerText: 'Buku, Media Visual & Produk Hukum SKB',
     sections: [
-      { id: 'sec-publikasi-buku', slug: 'buku', template: 'buku', label: 'Buku Panduan & Juknis', icon: 'fa-solid fa-book' },
-      { id: 'sec-publikasi-infografis', slug: 'infografis', template: 'infografis', label: 'Infografis Edukasi', icon: 'fa-solid fa-chart-pie' },
-      { id: 'sec-publikasi-video', slug: 'video', template: 'video', label: 'Video Pembiasaan & Senam', icon: 'fa-solid fa-film' },
+      { id: 'sec-publikasi-buku', submenuId: SEEDED_SUBMENU_IDS.buku, slug: 'buku', template: 'buku', label: 'Buku Panduan & Juknis', icon: 'fa-solid fa-book' },
+      { id: 'sec-publikasi-infografis', submenuId: SEEDED_SUBMENU_IDS.infografis, slug: 'infografis', template: 'infografis', label: 'Infografis Edukasi', icon: 'fa-solid fa-chart-pie' },
+      { id: 'sec-publikasi-video', submenuId: SEEDED_SUBMENU_IDS.video, slug: 'video', template: 'video', label: 'Video Pembiasaan & Senam', icon: 'fa-solid fa-film' },
       { id: 'sec-publikasi-regulasi', slug: 'regulasi', template: 'dokumen', label: 'Produk Hukum (SKB 4 Menteri)', icon: 'fa-solid fa-scale-balanced' }
     ]
   },

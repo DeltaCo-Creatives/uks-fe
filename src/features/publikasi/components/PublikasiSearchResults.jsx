@@ -27,25 +27,24 @@ function useMatches(list, fields, query) {
 }
 
 // Per template: which list a tab searches, the fields it matches on, and how its hits render.
-// A static fallback tab has no submenuId, so each hook falls back to the unfiltered seeded list.
 const SOURCES = {
   buku: {
-    useSource: (id) => publikasiHookFor('buku-panduan', id),
+    useSource: (id) => publikasiHookFor(id),
     fields: BUKU_SEARCH_FIELDS,
     render: (items, { onRead }) => <BookGrid books={items} onRead={onRead} />
   },
   infografis: {
-    useSource: (id) => publikasiHookFor('infografis', id),
+    useSource: (id) => publikasiHookFor(id),
     fields: INFOGRAFIS_SEARCH_FIELDS,
     render: (items, { onZoom }) => <InfografisGrid items={items} onZoom={onZoom} />
   },
   galeri: {
-    useSource: (id) => publikasiHookFor(undefined, id),
+    useSource: (id) => publikasiHookFor(id),
     fields: GALERI_SEARCH_FIELDS,
     render: (items, { onAlbum }) => <GaleriGrid items={items} onOpen={onAlbum} />
   },
   video: {
-    useSource: (id) => publikasiHookFor('video', id),
+    useSource: (id) => publikasiHookFor(id),
     fields: VIDEO_SEARCH_FIELDS,
     render: (items) => <VideoGrid videos={items} />
   },

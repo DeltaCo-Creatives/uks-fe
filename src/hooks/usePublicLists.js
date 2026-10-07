@@ -1,19 +1,13 @@
 import { createCachedList, listHookFor, submenuPath } from './createCachedList';
 import { useSlugDetail } from './useSlugDetail';
+import { SEEDED_SUBMENU_IDS } from '../data/navigation';
 
 const PAGED = { paginated: true };
 
-/**
- * Publikasi of one submenu. Without an id (static fallback tabs) the legacy
- * `jenisHalaman` alias is used, since `/public/publikasi` rejects an unfiltered call.
- */
-export function publikasiHookFor(jenisHalaman, submenuId) {
-  // Neither filter would request `jenisHalaman=undefined`; fail loudly instead.
-  if (!submenuId && !jenisHalaman) throw new Error('publikasiHookFor needs a submenuId or a jenisHalaman');
-  const path = submenuId
-    ? submenuPath('/public/publikasi', submenuId)
-    : `/public/publikasi?jenisHalaman=${jenisHalaman}`;
-  return listHookFor(path, PAGED);
+/** Publikasi of one submenu; `/public/publikasi` rejects an unfiltered call, so the id is required. */
+export function publikasiHookFor(submenuId) {
+  if (!submenuId) throw new Error('publikasiHookFor needs a submenuId');
+  return listHookFor(submenuPath('/public/publikasi', submenuId), PAGED);
 }
 
 /** Agenda, Aplikasi and Produk hukum of one submenu (everything when `submenuId` is absent). */
@@ -50,13 +44,13 @@ export const useUptBercerita = (slug) => useSlugDetail('/public/upt-bercerita', 
 export const useAgendaList = agendaHookFor();
 
 /** Buku & pedoman list for the Publikasi page, fetched once and shared by every consumer. */
-export const useBukuPanduanList = publikasiHookFor('buku-panduan');
+export const useBukuPanduanList = publikasiHookFor(SEEDED_SUBMENU_IDS.buku);
 
 /** Infografis list for the Publikasi page, fetched once and shared by every consumer. */
-export const useInfografisList = publikasiHookFor('infografis');
+export const useInfografisList = publikasiHookFor(SEEDED_SUBMENU_IDS.infografis);
 
 /** Video list for the Publikasi page, fetched once and shared by every consumer. */
-export const useVideoList = publikasiHookFor('video');
+export const useVideoList = publikasiHookFor(SEEDED_SUBMENU_IDS.video);
 
 /** Regulasi / produk hukum list, ordered by document date, newest first. */
 export const useProdukHukumList = produkHukumHookFor();

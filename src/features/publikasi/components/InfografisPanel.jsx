@@ -16,7 +16,7 @@ import { INFOGRAFIS_SEARCH_FIELDS } from '../searchFields';
  */
 export default function InfografisPanel({ title, submenuId }) {
   const [zoomed, setZoomed] = useState(null);
-  const useList = publikasiHookFor('infografis', submenuId);
+  const useList = publikasiHookFor(submenuId);
   const { data: infografisList, loading, error, retry } = useList();
 
   const {
