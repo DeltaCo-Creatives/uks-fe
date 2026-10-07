@@ -71,7 +71,7 @@ export default function Navbar() {
           onClick={closeMenus}
           title="UKS Indonesia"
         >
-          <img src={scrolled ? "/Aset UKS/UKS-03.webp" : "/Aset UKS/UKS-02.webp"} alt="UKS Logo" />
+          <img src={scrolled ? "/Aset UKS/UKS-logo.svg" : "/Aset UKS/UKS-02.webp"} alt="UKS Logo" />
         </Link>
 
         {/* Desktop Navigation Links */}
@@ -115,11 +115,8 @@ export default function Navbar() {
                 <div className="nav-cluster-header">
                   <div className="nav-cluster-title">
                     <i className="fa-solid fa-table-cells-large" style={{ color: 'var(--brand-primary)' }}></i>
-                    <span>Peta 3 Kluster UKS/M (Masing-Masing Memiliki Halaman &amp; Navigasi Mandiri)</span>
+                    <span>Peta 3 Kluster UKS/M</span>
                   </div>
-                  <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
-                    3 DEDICATED PAGES
-                  </span>
                 </div>
 
                 <div className="nav-cluster-grid">
