@@ -11,7 +11,7 @@ import { GALERI_SEARCH_FIELDS } from '../searchFields';
 /** Albums as cards, each opening its photos in the lightbox. Has no static tab, so `submenuId` is always set. */
 export default function GaleriPanel({ title, submenuId }) {
   const [album, setAlbum] = useState(null);
-  const useList = publikasiHookFor(undefined, submenuId);
+  const useList = publikasiHookFor(submenuId);
   const { data: albums, loading, error, retry } = useList();
 
   const {

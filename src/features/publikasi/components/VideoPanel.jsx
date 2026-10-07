@@ -8,7 +8,7 @@ import { VideoGrid } from './PublikasiItems';
 import { VIDEO_SEARCH_FIELDS } from '../searchFields';
 
 export default function VideoPanel({ title, submenuId }) {
-  const useList = publikasiHookFor('video', submenuId);
+  const useList = publikasiHookFor(submenuId);
   const { data: videos, loading, error, retry } = useList();
 
   const {

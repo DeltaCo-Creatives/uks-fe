@@ -15,7 +15,7 @@ const TAG_PILL = 'subnav-pill px-4! py-2! text-[13px]!';
 export default function BooksPanel({ title, submenuId }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [bookCategory, setBookCategory] = useState('all');
-  const useList = publikasiHookFor('buku-panduan', submenuId);
+  const useList = publikasiHookFor(submenuId);
   const { data: bukuList, loading, error, retry } = useList();
 
   // Pills mirror whatever tags the CMS actually put on the fetched books,
