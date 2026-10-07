@@ -1430,17 +1430,19 @@ footer {
     padding: 4px 8px;
   }
 
-  /* The logo is a 4:1 wordmark, so a 36px circle would shrink it to a sliver. */
-  .is-top .brand-icon-nav,
-  .is-scrolled .brand-icon-nav {
+  /* The top logo is a 4:1 wordmark, so a 36px circle would shrink it to a sliver. */
+  .is-top .brand-icon-nav {
     width: 112px;
     height: 36px;
     padding: 4px;
   }
 
+  /* The scrolled logo is the standalone mark, which fits the same circle as on desktop. */
   .is-scrolled .brand-icon-nav {
+    width: 36px;
+    height: 36px;
+    padding: 4px;
     margin-right: 0;
-    border-radius: 12px;
   }
 
   .nav-search-btn,
