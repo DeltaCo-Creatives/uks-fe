@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const TAB = 'flex min-h-16 cursor-pointer items-center gap-3 rounded-card px-3 py-2.5 text-left [transition:background-color_0.2s_ease] max-[600px]:gap-2 max-[600px]:p-2';
+const TAB = 'flex min-h-16 flex-none cursor-pointer items-center gap-3 rounded-card px-3 py-2.5 text-left [transition:background-color_0.2s_ease] max-[768px]:max-w-[13rem] max-[600px]:gap-2 max-[600px]:p-2';
 const TAB_ICON = 'grid size-10 flex-none place-items-center rounded-soft text-[16px] max-[600px]:size-[34px] max-[600px]:text-[14px]';
 
 const NEXT_KEYS = ['ArrowRight', 'ArrowDown'];
@@ -20,6 +20,15 @@ export default function ProgramPicker({ programs, activeId, onSelect, pickerRef 
   const tabRefs = useRef({});
   const activeIndex = programs.findIndex((p) => p.id === activeId);
 
+  // On a phone the tabs scroll in one row; bring the current one into frame without moving the page.
+  useEffect(() => {
+    const picker = pickerRef.current;
+    const tab = tabRefs.current[activeId];
+    if (!picker || !tab) return;
+    const offset = tab.getBoundingClientRect().left - picker.getBoundingClientRect().left;
+    picker.scrollLeft += offset - (picker.clientWidth - tab.offsetWidth) / 2;
+  }, [activeId, pickerRef]);
+
   const selectIndex = (index) => {
     const next = programs[(index + programs.length) % programs.length];
     onSelect(next.id);
@@ -36,7 +45,7 @@ export default function ProgramPicker({ programs, activeId, onSelect, pickerRef 
   };
 
   return (
-    <div ref={pickerRef} className="mb-7 grid scroll-mt-24 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-2 rounded-panel bg-card p-2 max-[1100px]:grid-cols-3 max-[600px]:grid-cols-2 max-[600px]:p-1.5" data-page-nav role="tablist" aria-label="Pilih program">
+    <div ref={pickerRef} className="mb-7 grid scroll-mt-24 grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-2 rounded-panel bg-card p-2 max-[1100px]:grid-cols-3 max-[768px]:flex max-[768px]:overflow-x-auto max-[768px]:p-1.5 max-[768px]:[scrollbar-width:none] max-[768px]:[&::-webkit-scrollbar]:hidden" data-page-nav role="tablist" aria-label="Pilih program">
       {programs.map((program, idx) => {
         const selected = program.id === activeId;
         return (
