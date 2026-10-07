@@ -209,7 +209,7 @@ const RICH_TEXT =
   'max-w-[72ch] text-[15px] leading-[1.7] [&_p]:mt-0 [&_p]:mb-3 [&_p:last-child]:mb-0 ' +
   '[&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_li]:marker:text-brand ' +
   '[&_:is(h2,h3,h4)]:mt-5 [&_:is(h2,h3,h4)]:mb-2 [&_:is(h2,h3,h4)]:text-[16px] [&_:is(h2,h3,h4)]:font-extrabold [&_strong]:font-extrabold ' +
-  '[&_table]:mt-1 [&_table]:mb-3 [&_table]:w-full [&_table]:border-collapse [&_:is(th,td)]:border [&_:is(th,td)]:border-rule [&_:is(th,td)]:px-3 [&_:is(th,td)]:py-2 [&_:is(th,td)]:text-left [&_:is(th,td)]:align-top [&_:is(th,td)]:[overflow-wrap:anywhere] [&_th]:bg-card-alt [&_th]:font-bold [&_:is(th,td)_p]:mb-0 ' +
+  '[&_table]:mt-1 [&_table]:mb-3 [&_table]:w-full [&_table]:border-collapse max-sm:[&_table]:block max-sm:[&_table]:overflow-x-auto [&_:is(th,td)]:border [&_:is(th,td)]:border-rule [&_:is(th,td)]:px-2 sm:[&_:is(th,td)]:px-3 [&_:is(th,td)]:py-2 max-sm:[&_:is(th,td)]:text-[14px] [&_:is(th,td)]:text-left [&_:is(th,td)]:align-top [&_th]:bg-card-alt [&_th]:font-bold [&_:is(th,td)_p]:mb-0 ' +
   '[&_a]:font-bold [&_a]:text-brand [&_a]:underline [&_a]:[word-break:break-word]';
 
 /** Free-form content written in the CMS editor. */
