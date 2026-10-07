@@ -3,3 +3,6 @@ export { default as PraktikPanel } from './components/PraktikPanel';
 export { default as UptBerceritaPanel } from './components/UptBerceritaPanel';
 export { default as AgendaPanel } from './components/AgendaPanel';
 export { default as AplikasiPanel } from './components/AplikasiPanel';
+export { default as PengumumanPanel } from './components/PengumumanPanel';
+export { default as KesempatanPanel } from './components/KesempatanPanel';
+export { StatusBadge, PentingBadge } from './components/PengumumanBadges';

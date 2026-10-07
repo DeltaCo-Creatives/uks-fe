@@ -19,6 +19,7 @@ import PublikasiPage from './pages/PublikasiPage';
 import KontakPage from './pages/KontakPage';
 import SearchView from './components/SearchView';
 import BeritaDetailView from './components/BeritaDetailView';
+import PengumumanDetailView from './components/PengumumanDetailView';
 import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 import DownloadToast from './components/shared/DownloadToast';
@@ -27,8 +28,9 @@ import NavConfigProvider from '@/components/NavConfigProvider';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import UptBerceritaDetailView from './components/UptBerceritaDetailView';
 import { useBeritaList } from './hooks/useBerita';
-import { useUptStoriesList } from './hooks/usePublicLists';
+import { usePengumumanList, useUptStoriesList } from './hooks/usePublicLists';
 import {
+  DETAIL_VIEWS,
   defaultTabPath,
   pathForTab,
   tabSectionFromPathname,
@@ -37,12 +39,13 @@ import {
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail'];
+const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail', 'pengumuman-detail'];
 
 // Article-style detail pages: the slug and label of the Informasi tab they fall back to and the
-// list their title is looked up in. A berita detail overrides the tab with its own submenu.
+// list their title is looked up in. Berita and pengumuman details override the tab with their own submenu.
 const DETAIL_CRUMBS = {
   'berita-detail': { tabSlug: 'berita', label: 'Warta Terkini', useList: useBeritaList },
+  'pengumuman-detail': { tabSlug: 'pengumuman', label: 'Pengumuman', useList: usePengumumanList },
   'upt-detail': { tabSlug: 'upt', label: 'UPT Bercerita', useList: useUptStoriesList }
 };
 
@@ -67,7 +70,7 @@ function DetailCrumbs({ detailCrumb, tabSlug, slug, linkStyle }) {
         <>
           <span>/</span>
           <span style={{ fontWeight: 800, color: 'var(--text-primary)', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {article.title}
+            {article.title ?? article.judul}
           </span>
         </>
       )}
@@ -99,7 +102,7 @@ function Breadcrumbs({ viewKey, pathname }) {
           <DetailCrumbs
             key={viewKey}
             detailCrumb={detailCrumb}
-            tabSlug={viewKey === 'berita-detail' ? tabSlug : detailCrumb.tabSlug}
+            tabSlug={viewKey === 'upt-detail' ? detailCrumb.tabSlug : tabSlug}
             slug={decodeURIComponent(itemSlug || '')}
             linkStyle={linkStyle}
           />
@@ -116,12 +119,14 @@ function Breadcrumbs({ viewKey, pathname }) {
   );
 }
 
-// /informasi/:submenuSlug/:itemSlug: an article detail inside an artikel submenu, else back to the tab.
+// /informasi/:submenuSlug/:itemSlug: the detail of an artikel / pengumuman / kesempatan submenu, else back to the tab.
 function SubmenuDetailRoute() {
   const { submenuSlug } = useParams();
   const sections = useNavConfig().informasi.sections;
-  const isArtikel = sections.find((s) => s.slug === submenuSlug)?.template === 'artikel';
-  return isArtikel ? <BeritaDetailView /> : <Navigate to={pathForTab('informasi', submenuSlug)} replace />;
+  const detailView = DETAIL_VIEWS[sections.find((s) => s.slug === submenuSlug)?.template];
+  if (detailView === 'berita-detail') return <BeritaDetailView />;
+  if (detailView === 'pengumuman-detail') return <PengumumanDetailView />;
+  return <Navigate to={pathForTab('informasi', submenuSlug)} replace />;
 }
 
 function Layout() {

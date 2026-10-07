@@ -1,4 +1,4 @@
-import { BeritaPanel, PraktikPanel, UptBerceritaPanel, AgendaPanel, AplikasiPanel } from '@/features/informasi';
+import { BeritaPanel, PraktikPanel, UptBerceritaPanel, AgendaPanel, AplikasiPanel, PengumumanPanel, KesempatanPanel } from '@/features/informasi';
 import { BooksPanel, InfografisPanel, VideoPanel, RegulasiPanel, GaleriPanel } from '@/features/publikasi';
 
 /**
@@ -12,7 +12,9 @@ export const TEMPLATE_PANELS = {
     'upt-bercerita': UptBerceritaPanel,
     agenda: AgendaPanel,
     tautan: AplikasiPanel,
-    dokumen: RegulasiPanel
+    dokumen: RegulasiPanel,
+    pengumuman: PengumumanPanel,
+    kesempatan: KesempatanPanel
   },
   publikasi: {
     buku: BooksPanel,
