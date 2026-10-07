@@ -45,7 +45,7 @@
 | G-04 | Footer description and tagline | Copy | — | Footer | 🔴 | rewrite | "Portal Resmi… lintas 4 Kementerian", "Sinergi 4 Kementerian untuk Indonesia Emas 2045" (C1) |
 | G-05 | Footer contact: email | Contact | prod footer mailto | Footer | ✅ | keep | uks.dikdasmen@kemdikbud.go.id |
 | G-06 | Footer contact: address and phone | Contact | — | Footer | 🔴 | rewrite | No source (K1) |
-| G-07 | Footer visitor counter | Widget | prod footer | — | ⬜ | decide | Prod shows Hari Ini / Minggu Ini / Bulan Ini / Total (C2) |
+| G-07 | Footer visitor counter | Widget | prod footer | Footer, 4th column "Statistik Pengunjung" | ✅ | keep | Implemented: Hari Ini / Minggu Ini / Bulan Ini / Total plus the visitor's own number for the day, counted per browser per WIB day. Contract: [pengunjung-api-contract.md](./pengunjung-api-contract.md). Hidden when the setting `pengunjung.tampilkanStatistik` is `"false"` (C2) |
 | G-08 | Footer link pauddikdasmen.kemdikbud.go.id | Link | prod footer | — | ⬜ | decide | Old domain (C2) |
 
 ## Beranda (`/`)

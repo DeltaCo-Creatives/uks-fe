@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { usePengaturanSettings } from '../hooks/usePublicLists';
 import { pathForView } from '../routes';
+import { StatistikPengunjung, useKunjungan } from '@/features/pengunjung';
 
 export default function Footer() {
   const footerLinks = [
@@ -21,11 +22,15 @@ export default function Footer() {
   const phone = settings?.['kontak.phone'];
   const websiteUrl = settings?.['kontak.websiteUrl'];
 
+  // Counting runs whether or not the block shows; only an explicit "false" hides it.
+  const kunjungan = useKunjungan();
+  const showStatistik = settings?.['pengunjung.tampilkanStatistik'] !== 'false';
+
   return (
     <footer id="kontak" style={{ marginTop: 'auto' }}>
       <div className="container">
         <div className="footer-content">
-          <div style={{ flex: '1 1 300px', maxWidth: '420px' }}>
+          <div style={{ flex: '1 1 220px', maxWidth: '420px' }}>
             <div className="footer-huge-text">UKS.</div>
             <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '14px', marginTop: '14px', lineHeight: 1.6 }}>
               Portal Resmi Usaha Kesehatan Sekolah / Madrasah (UKS/M) lintas 4 Kementerian: Kementerian Pendidikan Dasar dan Menengah, Kementerian Kesehatan, Kementerian Agama, dan Kementerian Dalam Negeri Republik Indonesia.
@@ -74,7 +79,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="footer-links" style={{ flex: '1 1 200px' }}>
+          <div className="footer-links" style={{ flex: '1 1 300px' }}>
             <h5>Peta Navigasi</h5>
             <ul>
               {footerLinks.map((link) => (
@@ -84,6 +89,14 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+
+          {showStatistik && (
+            <StatistikPengunjung
+              ringkasan={kunjungan.ringkasan}
+              urutan={kunjungan.urutan}
+              error={kunjungan.error}
+            />
+          )}
         </div>
 
         <div className="footer-bottom">
