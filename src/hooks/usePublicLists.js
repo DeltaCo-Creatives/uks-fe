@@ -21,6 +21,15 @@ export const agendaHookFor = (submenuId) => listHookFor(submenuPath('/public/age
 export const aplikasiHookFor = (submenuId) => listHookFor(submenuPath('/public/aplikasi', submenuId));
 export const produkHukumHookFor = (submenuId) => listHookFor(submenuPath('/public/produk-hukum', submenuId));
 
+/** Pengumuman and Kesempatan of one submenu, already ordered by the API (pinned first); all of them without an id. */
+export const pengumumanHookFor = (submenuId) => listHookFor(submenuPath('/public/pengumuman', submenuId), PAGED);
+
+/** All pengumuman/kesempatan, shared by search and the detail breadcrumbs. */
+export const usePengumumanList = pengumumanHookFor();
+
+/** A single pengumuman/kesempatan by slug, including the full HTML `isi`. */
+export const usePengumuman = (slug) => useSlugDetail('/public/pengumuman', slug);
+
 /** Hero slides for the home page, already ordered and filtered by the API. */
 export const useHeroSlideList = createCachedList('/public/hero-slide');
 

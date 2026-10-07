@@ -72,6 +72,16 @@ export const pathForArticle = (idOrSlug, submenuSlug) =>
     ? `/informasi/${submenuSlug}/${idOrSlug}`
     : `/informasi/berita/${idOrSlug}`;
 
+/** Pengumuman / kesempatan detail URL, inside its own submenu tab. */
+export const pathForPengumuman = (slug, submenuSlug) => `/informasi/${submenuSlug}/${slug}`;
+
+/** Informasi submenu templates that have an item detail page, and the view key each one renders. */
+export const DETAIL_VIEWS = {
+  artikel: 'berita-detail',
+  pengumuman: 'pengumuman-detail',
+  kesempatan: 'pengumuman-detail'
+};
+
 export const pathForUptStory = (slug) => `/informasi/upt-bercerita/${slug}`;
 
 export const pathForProgram = (slug) => `${VIEW_PATHS.program}/${slug}`;
@@ -82,11 +92,10 @@ export function viewKeyFromPathname(pathname) {
   if (pathname === '/') return 'beranda';
   if (pathname.startsWith('/informasi/berita/')) return 'berita-detail';
   if (pathname.startsWith('/informasi/upt-bercerita/')) return 'upt-detail';
-  // /informasi/<submenuSlug>/<itemSlug> is an article detail only inside an artikel submenu.
+  // /informasi/<submenuSlug>/<itemSlug> is a detail page only inside a submenu whose template has one.
   const itemTab = pathname.match(/^\/informasi\/([^/]+)\/[^/]+/)?.[1];
-  if (itemTab && activeConfigs.informasi.sections.find((s) => s.slug === itemTab)?.template === 'artikel') {
-    return 'berita-detail';
-  }
+  const detailView = DETAIL_VIEWS[activeConfigs.informasi.sections.find((s) => s.slug === itemTab)?.template];
+  if (detailView) return detailView;
   const match = SUBPAGE_PATHS.find(
     ([, path]) => pathname === path || pathname.startsWith(`${path}/`)
   );

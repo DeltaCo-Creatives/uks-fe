@@ -31,6 +31,10 @@ export const GRID =
 export const NEWS_CARD =
   'news-card-playful flex flex-col [transform:none]! hover:[transform:translateY(-4px)]! max-[768px]:hover:[transform:none]! max-[768px]:hover:shadow-raised!';
 export const NEWS_CARD_LINK = `${NEWS_CARD} w-full cursor-pointer border-none text-left focus-visible:outline-3 focus-visible:outline-offset-[3px] focus-visible:outline-ink`;
+// Card without an image or whole-card link (Pengumuman, Kesempatan): it holds its own links and button.
+export const CARD_PLAIN = 'flex flex-col rounded-card border-[1.5px] border-rule-soft bg-card p-5 shadow-raised max-[768px]:p-4';
+// Small status pill (Penting, Dibuka...); the caller adds the colours.
+export const BADGE = 'inline-flex items-center gap-1.5 rounded-[999px] px-2.5 py-1 text-[11px] font-extrabold whitespace-nowrap';
 export const CARD_META = 'mb-2 flex items-center justify-between gap-2.5';
 export const CARD_KICKER = 'section-kicker m-0! px-2.5! py-1! text-[10px]!';
 export const CARD_DATE = 'text-[11px] font-semibold whitespace-nowrap text-ink-muted';

@@ -1,9 +1,9 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
+import { pathForPengumuman, pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
-import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList } from '../hooks/usePublicLists';
+import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList, usePengumumanList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
   strataLevels
@@ -45,6 +45,7 @@ export default function SearchView() {
   const { data: regulationsList } = useProdukHukumList();
   const { data: apps } = useAplikasiList();
   const { data: programs } = useProgramList();
+  const { data: pengumumanList } = usePengumumanList();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -222,8 +223,23 @@ export default function SearchView() {
       });
     });
 
+    // 12. Pengumuman & Kesempatan (detail page of their own submenu)
+    (pengumumanList || []).forEach((pg) => {
+      const isKesempatan = pg.template === 'kesempatan';
+      items.push({
+        id: `pengumuman-${pg.id}`,
+        title: pg.judul,
+        excerpt: [pg.tanggalTerbitLabel, pg.ringkasan].filter(Boolean).join(' - '),
+        typeLabel: isKesempatan ? 'Kesempatan' : 'Pengumuman',
+        typeColor: isKesempatan ? '#0D9488' : '#B45309',
+        icon: isKesempatan ? 'fa-solid fa-calendar-check' : 'fa-solid fa-bullhorn',
+        ...tabLink(configs, pg, 'informasi', pg.template),
+        path: pathForPengumuman(pg.slug, pg.submenuSlug)
+      });
+    });
+
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, configs]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, pengumumanList, configs]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
