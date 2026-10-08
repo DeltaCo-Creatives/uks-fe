@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useInfografisList, useMitraList } from '@/hooks/usePublicLists';
 import { HOVER_CAPABLE_QUERY } from '@/hooks/useHoverCapable';
@@ -7,6 +7,7 @@ import { NEW_TAB_HINT } from '@/utils/linkKind';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FADE } from '../styles';
+import { loadCardCrops } from '../logoCard';
 
 // Each strip scrolls by half its width, so a half must be wider than the container or a gap shows at the loop point.
 const MIN_LOGOS_PER_HALF = 8;
@@ -22,12 +23,15 @@ const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290p
 // A keyboard-focused logo and its ring must not sit under a fade.
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
 
-// The image is the tile: every logo is the same height (see the <img> in PartnerLogo) at its own natural width, with
-// rounded corners, so the tile is exactly as wide as its picture and the gaps are even. The wrapper only clips the
-// corners and carries the shadow; it adds no padding, background or crop.
-// The shadow stays inside the strip's 16px vertical padding, or it is clipped.
-const LOGO_BASE = 'block overflow-hidden rounded-[14px] shadow-[0_3px_12px_rgba(17,28,22,0.10)] transition-[scale,box-shadow] duration-300 ease-[ease]';
-const LOGO_LINK = 'cursor-pointer [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:shadow-[0_4px_14px_rgba(17,28,22,0.16)] focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
+// The image is the tile: every logo is the same height at its own width, with rounded corners, so the tile is exactly
+// as wide as its picture and the gaps are even. The wrapper only clips the corners; it adds no padding, background,
+// outline or shadow of its own.
+// The partner files carry a pale frame around the white card, and the card sits differently in each, so each logo is
+// cropped to its card (see logoCard.js). A logo that cannot be analysed is shown whole at the same height.
+const LOGO_HEIGHT = 85;
+const LOGO_MAX_WIDTH = 220;
+const LOGO_BASE = 'block overflow-hidden rounded-[12px] transition-[scale] duration-300 ease-[ease]';
+const LOGO_LINK = 'cursor-pointer [@media(hover:hover)]:hover:scale-105 focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
 // gap-44 (176px) keeps the airy rhythm of the old fixed 220px slots (about 170-200px between neighbouring logos).
 const STRIP_BASE = 'flex w-max items-center gap-44 px-6 has-[:focus-visible]:animate-none';
@@ -58,18 +62,41 @@ const resumeStrip = (event) => setStripSpeed(event.currentTarget, 1);
 const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 
 /** One marquee logo: a new-tab link when the partner has a website, a plain tile otherwise. */
-function PartnerLogo({ partner, hidden }) {
+function PartnerLogo({ partner, crop, hidden }) {
+    // With a crop, the tile is the card's size and the whole picture is placed inside it so only the card shows.
     // Not lazy: a tile sizes itself from its image, so images that load late (the strip is far wider than the
     // screen) would resize tiles while the row is already moving.
-    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" className="block h-[85px] w-auto max-w-[220px] object-cover" />;
+    let tileStyle;
+    let imageStyle;
+    if (crop) {
+        const scale = Math.min(LOGO_HEIGHT / crop.h, LOGO_MAX_WIDTH / crop.w);
+        tileStyle = { width: crop.w * scale, height: crop.h * scale };
+        imageStyle = {
+            width: crop.naturalWidth * scale,
+            height: crop.naturalHeight * scale,
+            maxWidth: 'none',
+            marginLeft: -crop.x * scale,
+            marginTop: -crop.y * scale
+        };
+    }
+    const logo = (
+        <SafeImage
+            src={partner.logoUrl}
+            alt={partner.nama}
+            fallbackType="logo"
+            className={crop ? 'block' : `block h-[85px] w-auto max-w-[220px] object-cover`}
+            style={imageStyle}
+        />
+    );
 
     if (!isHttpUrl(partner.website)) {
-        return <div className={LOGO_BASE} aria-hidden={hidden || undefined}>{logo}</div>;
+        return <div className={LOGO_BASE} style={tileStyle} aria-hidden={hidden || undefined}>{logo}</div>;
     }
 
     return (
         <a
             className={`${LOGO_BASE} ${LOGO_LINK}`}
+            style={tileStyle}
             href={partner.website}
             target="_blank"
             rel="noopener noreferrer"
@@ -93,6 +120,22 @@ export default function Infografis() {
         () => (mitraData?.kelompokTahun ?? []).flatMap((year) => year.mitra ?? []).filter((partner) => partner?.logoUrl),
         [mitraData]
     );
+
+    // Where the card sits in each logo file. The strip stays invisible until this is known (or has given up), so the
+    // tiles don't visibly resize while the row is already moving.
+    const [cardCrops, setCardCrops] = useState({});
+    const [cropsReady, setCropsReady] = useState(false);
+    useEffect(() => {
+        if (partners.length === 0) return undefined;
+        let cancelled = false;
+        loadCardCrops(partners.map((partner) => partner.logoUrl)).then((crops) => {
+            if (cancelled) return;
+            setCardCrops(crops);
+            setCropsReady(true);
+        });
+        return () => { cancelled = true; };
+    }, [partners]);
+
     const half = useMemo(() => {
         if (partners.length === 0) return [];
         const copies = Math.ceil(MIN_LOGOS_PER_HALF / partners.length);
@@ -150,18 +193,18 @@ export default function Infografis() {
 
                 {track.length > 0 && (
                     <div
-                        className={`relative mt-8 flex w-full scroll-px-[clamp(40px,8vw,96px)] flex-col gap-4 overflow-hidden py-4 ${MARQUEE_FADE} ${FADE_OFF_ON_FOCUS}`}
+                        className={`relative mt-8 flex w-full scroll-px-[clamp(40px,8vw,96px)] flex-col gap-4 overflow-hidden py-4 transition-opacity duration-500 ${cropsReady ? 'opacity-100' : 'opacity-0'} ${MARQUEE_FADE} ${FADE_OFF_ON_FOCUS}`}
                         ref={marqueeRef}
                     >
                         {/* Only the first pass of the first row is exposed to keyboard and screen readers; the rest are loop copies. */}
                         <div className={`${STRIP_BASE} animate-logo-scroll`} style={stripStyle} onMouseEnter={stopStrip} onMouseLeave={resumeStrip} onFocus={revealFocusedLogo} onBlur={resetMarqueeScroll}>
                             {track.map((partner, i) => (
-                                <PartnerLogo key={`a-${partner.id}-${i}`} partner={partner} hidden={i >= partners.length} />
+                                <PartnerLogo key={`a-${partner.id}-${i}`} partner={partner} crop={cardCrops[partner.logoUrl]} hidden={i >= partners.length} />
                             ))}
                         </div>
                         <div className={`${STRIP_BASE} animate-logo-scroll-reverse`} style={stripStyle} onMouseEnter={stopStrip} onMouseLeave={resumeStrip} aria-hidden="true">
                             {track.map((partner, i) => (
-                                <PartnerLogo key={`b-${partner.id}-${i}`} partner={partner} hidden />
+                                <PartnerLogo key={`b-${partner.id}-${i}`} partner={partner} crop={cardCrops[partner.logoUrl]} hidden />
                             ))}
                         </div>
                     </div>
