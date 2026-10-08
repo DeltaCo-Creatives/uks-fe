@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import { parseIndonesianDate } from '@/utils/dateID';
 import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
@@ -22,8 +23,13 @@ const BERITA_CONFIG = {
   errorTitle: 'Warta tidak dapat dimuat',
   errorText: 'Terjadi gangguan saat mengambil data warta. Silakan coba lagi.',
   copiedMessage: 'Tautan warta berhasil disalin!',
-  relatedTitle: 'Warta Terkait Lainnya'
+  relatedTitle: 'Warta Terkait Lainnya',
+  relatedNewestFirst: true
 };
+
+// Unparseable dates sort as the oldest, so they sink to the end rather than reorder the rest.
+const dateValue = (item) => parseIndonesianDate(item.date)?.getTime() ?? 0;
+const byNewest = (a, b) => dateValue(b) - dateValue(a);
 
 export default function BeritaDetailView({ config = BERITA_CONFIG }) {
   // `itemSlug` is the generic /informasi/:submenuSlug/:itemSlug route; the static ones use `idOrSlug`.
@@ -70,9 +76,10 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
     return <NotFoundView />;
   }
 
-  const otherArticles = (relatedList || [])
-    .filter((n) => n.slug !== article.slug && n.submenuSlug === article.submenuSlug)
-    .slice(0, 3);
+  // Newest first must be applied before the cut to 3, or the 3 shown would be the first 3 returned, not the latest.
+  const sameSection = (relatedList || [])
+    .filter((n) => n.slug !== article.slug && n.submenuSlug === article.submenuSlug);
+  const otherArticles = (config.relatedNewestFirst ? [...sameSection].sort(byNewest) : sameSection).slice(0, 3);
 
   return (
     <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>
