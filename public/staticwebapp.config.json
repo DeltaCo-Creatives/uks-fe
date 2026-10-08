@@ -7,5 +7,5 @@
     { "route": "/assets/*", "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
     { "route": "/index.html", "headers": { "Cache-Control": "no-cache" } }
   ],
-  "globalHeaders": { "Cache-Control": "no-cache" }
+  "globalHeaders": { "Cache-Control": "no-cache", "Referrer-Policy": "strict-origin-when-cross-origin" }
 }
