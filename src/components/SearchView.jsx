@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { pathForPengumuman, pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import useSearchFeedback from '@/hooks/useSearchFeedback';
 import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList, usePengumumanList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
@@ -34,6 +35,7 @@ export default function SearchView() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const inputRef = useRef(null);
+  const pageRef = useRef(null);
   // Search never blocks on these fetches: each list is empty until it
   // resolves, and the index recomputes once it does.
   const { data: newsList } = useBeritaList();
@@ -260,8 +262,19 @@ export default function SearchView() {
     });
   }, [query, searchIndex]);
 
+  let status = 'idle';
+  if (query.trim()) status = results.length > 0 ? 'results' : 'empty';
+  const { settleNow, pulse } = useSearchFeedback(pageRef, query, status);
+
+  // A chip fills the box and settles at once, so its results do not wait out the typing pause.
+  const pickChip = (event, chip) => {
+    pulse(event.currentTarget.parentElement);
+    settleNow(chip);
+    setQuery(chip);
+  };
+
   return (
-    <div className="container" style={{ padding: '32px 20px 80px', minHeight: '75vh' }}>
+    <div ref={pageRef} className="container" style={{ padding: '32px 20px 80px', minHeight: '75vh' }}>
       {/* Search Header Banner */}
       <div
         className="subpage-hero-banner"
@@ -286,6 +299,7 @@ export default function SearchView() {
         <div style={{ maxWidth: '680px', margin: '0 auto', position: 'relative' }}>
           <div
             style={{
+              position: 'relative',
               display: 'flex',
               alignItems: 'center',
               background: '#FFFFFF',
@@ -335,6 +349,7 @@ export default function SearchView() {
                 <i className="fa-solid fa-xmark"></i>
               </button>
             )}
+            <span className="search-glow" data-search-glow aria-hidden="true"></span>
           </div>
         </div>
 
@@ -342,23 +357,25 @@ export default function SearchView() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginTop: '20px' }}>
           <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>Saran pencarian:</span>
           {suggestionChips.map((chip) => (
-            <button
-              key={chip}
-              onClick={() => setQuery(chip)}
-              style={{
-                background: query === chip ? '#FFFFFF' : 'rgba(255, 255, 255, 0.16)',
-                color: query === chip ? 'var(--brand-primary)' : '#FFFFFF',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: 'var(--radius-pill)',
-                padding: '6px 14px',
-                fontSize: '12px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'var(--spring)'
-              }}
-            >
-              {chip}
-            </button>
+            // The wrapper takes the pulse, since the chip's own CSS transition would lag a GSAP scale.
+            <span key={chip} style={{ display: 'inline-flex' }}>
+              <button
+                onClick={(event) => pickChip(event, chip)}
+                style={{
+                  background: query === chip ? '#FFFFFF' : 'rgba(255, 255, 255, 0.16)',
+                  color: query === chip ? 'var(--brand-primary)' : '#FFFFFF',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderRadius: 'var(--radius-pill)',
+                  padding: '6px 14px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'var(--spring)'
+                }}
+              >
+                {chip}
+              </button>
+            </span>
           ))}
         </div>
       </div>
@@ -402,6 +419,7 @@ export default function SearchView() {
       {query.trim() && results.length === 0 && (
         <div
           className="about-bento-frame"
+          data-search-empty
           style={{ textAlign: 'center', padding: '60px 24px', background: '#FFFFFF' }}
         >
           <div
@@ -440,7 +458,7 @@ export default function SearchView() {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-secondary)' }}>
-              Menampilkan <strong style={{ color: 'var(--brand-primary)' }}>{results.length}</strong> hasil untuk "{query}"
+              Menampilkan <strong className="search-count" data-search-count>{results.length}</strong> hasil untuk "{query}"
             </span>
             <button
               onClick={() => setQuery('')}
@@ -459,72 +477,74 @@ export default function SearchView() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))', gap: '16px' }}>
             {results.map((item) => (
-              <Link
-                key={item.id}
-                to={item.path ?? pathForView(item.viewKey, item.sectionId)}
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: '20px',
-                  border: '1.5px solid rgba(0,0,0,0.06)',
-                  boxShadow: 'var(--shadow-card)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  transition: 'var(--spring)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = 'var(--brand-primary)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-hover)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-card)';
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <span
-                      style={{
-                        fontSize: '11px',
-                        fontWeight: 800,
-                        color: item.typeColor || 'var(--brand-primary)',
-                        background: 'var(--bg-app)',
-                        padding: '4px 10px',
-                        borderRadius: 'var(--radius-pill)',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px'
-                      }}
-                    >
-                      <i className={item.icon || 'fa-solid fa-circle-dot'} style={{ fontSize: '10px' }}></i>
-                      {item.typeLabel}
-                    </span>
-                    <i className="fa-solid fa-chevron-right" style={{ fontSize: '11px', color: 'var(--text-secondary)', opacity: 0.5 }}></i>
+              // The wrapper takes the cascade, since the card's own CSS transition would lag a GSAP move; grid keeps the card filling it.
+              <div key={item.id} data-search-item style={{ display: 'grid' }}>
+                <Link
+                  to={item.path ?? pathForView(item.viewKey, item.sectionId)}
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '20px',
+                    border: '1.5px solid rgba(0,0,0,0.06)',
+                    boxShadow: 'var(--shadow-card)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    transition: 'var(--spring)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.borderColor = 'var(--brand-primary)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-hover)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'none';
+                    e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-card)';
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                      <span
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 800,
+                          color: item.typeColor || 'var(--brand-primary)',
+                          background: 'var(--bg-app)',
+                          padding: '4px 10px',
+                          borderRadius: 'var(--radius-pill)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <i className={item.icon || 'fa-solid fa-circle-dot'} style={{ fontSize: '10px' }}></i>
+                        {item.typeLabel}
+                      </span>
+                      <i className="fa-solid fa-chevron-right" style={{ fontSize: '11px', color: 'var(--text-secondary)', opacity: 0.5 }}></i>
+                    </div>
+  
+                    <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 8px', lineHeight: 1.35 }}>
+                      {item.title}
+                    </h3>
+  
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
+                      {item.excerpt}
+                    </p>
                   </div>
-
-                  <h3 style={{ fontSize: '16px', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 8px', lineHeight: 1.35 }}>
-                    {item.title}
-                  </h3>
-
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
-                    {item.excerpt}
-                  </p>
-                </div>
-
-                <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--brand-primary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                    <span>Buka Halaman</span>
-                    <i className="fa-solid fa-arrow-right" style={{ fontSize: '10px' }}></i>
-                  </span>
-                  <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                    Bagian #{item.sectionId || item.viewKey}
-                  </span>
-                </div>
-              </Link>
+  
+                  <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--brand-primary)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <span>Buka Halaman</span>
+                      <i className="fa-solid fa-arrow-right" style={{ fontSize: '10px' }}></i>
+                    </span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                      Bagian #{item.sectionId || item.viewKey}
+                    </span>
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
         </div>

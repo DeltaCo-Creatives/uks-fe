@@ -1,6 +1,7 @@
-import { useId, useRef } from 'react';
+import { useId, useRef, useState } from 'react';
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import useSearchFeedback from '@/hooks/useSearchFeedback';
 import { TEMPLATE_PANELS } from '@/pages/templatePanels';
 import { defaultTabPath, pathForView } from '@/routes';
 import LobbyTabs from '@/components/shared/LobbyTabs';
@@ -12,11 +13,15 @@ export default function PublikasiPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchId = useId();
   const searchInputRef = useRef(null);
+  const pageRef = useRef(null);
   const publikasiTabs = useNavConfig().publikasi.sections;
   const section = publikasiTabs.find((tab) => tab.slug === tabSlug);
 
   const q = searchParams.get('q') || '';
   const searching = q.trim() !== '';
+  // What the search results area shows; it only reports while a search is mounted.
+  const [resultStatus, setResultStatus] = useState('idle');
+  useSearchFeedback(pageRef, q, searching ? resultStatus : 'idle');
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQ = (value) => {
@@ -35,7 +40,7 @@ export default function PublikasiPage() {
   const Panel = TEMPLATE_PANELS.publikasi[section.template];
 
   return (
-    <div className="container pb-20">
+    <div ref={pageRef} className="container pb-20">
 
       {/* Subpage Hero Banner */}
       <div className="subpage-hero-banner" data-gsap="reveal">
@@ -54,7 +59,7 @@ export default function PublikasiPage() {
           <label className="mb-2 block text-[13px] font-bold text-white" htmlFor={searchId}>Cari di semua publikasi</label>
           {/* The dark hero hides the toolbar's soft focus glow, so the field uses the accent ring. */}
           {/* [&_i] also sizes the clear button's icon, as the old field rule did. */}
-          <div className="flex min-h-12 items-center gap-2.5 rounded-[999px] border-[1.5px] border-transparent bg-card px-[18px] focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-brand-accent [&_i]:text-[14px]!">
+          <div className="relative flex min-h-12 items-center gap-2.5 rounded-[999px] border-[1.5px] border-transparent bg-card px-[18px] focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-brand-accent [&_i]:text-[14px]!">
             <i className="fa-solid fa-magnifying-glass text-ink-muted" aria-hidden="true"></i>
             {/* 16px keeps iOS Safari from zooming the page when the field is focused. */}
             <input
@@ -79,6 +84,7 @@ export default function PublikasiPage() {
                 <i className="fa-solid fa-xmark"></i>
               </button>
             )}
+            <span className="search-glow" data-search-glow aria-hidden="true"></span>
           </div>
         </div>
       </div>
@@ -94,7 +100,9 @@ export default function PublikasiPage() {
 
       {/* GIANT DISPLAY PANEL */}
       <div className="lobby-panel" data-gsap="reveal" key={activeId}>
-        {searching ? <PublikasiSearchResults query={q} onClear={clearSearch} /> : <Panel title={section.label} submenuId={section.submenuId} />}
+        {searching
+          ? <PublikasiSearchResults query={q} onClear={clearSearch} onStatusChange={setResultStatus} />
+          : <Panel title={section.label} submenuId={section.submenuId} />}
       </div>
 
     </div>

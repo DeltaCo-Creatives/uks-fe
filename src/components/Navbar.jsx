@@ -1,15 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import NavBrand from './NavBrand';
 import NavKementerianDropdown from './NavKementerianDropdown';
+import NavSearchButton from './NavSearchButton';
 import { useKementerianList } from '../hooks/usePublicLists';
 import { pathForView, viewKeyFromPathname } from '../routes';
+
+// Past this scroll distance the bar collapses into its pill; Beranda waits until its hero is mostly gone.
+const scrollThreshold = (view) => (view === 'beranda' ? window.innerHeight * 0.55 : 40);
 
 export default function Navbar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const currentView = viewKeyFromPathname(pathname);
 
-  const [scrolled, setScrolled] = useState(false);
+  // Starts from the real scroll position, so a page that opens already scrolled never plays the shrink.
+  const [scrolled, setScrolled] = useState(() => window.scrollY > scrollThreshold(currentView));
+  const searchButtonRef = useRef(null);
   // Which single dropdown is open: null | 'uksm' | 'kementerian'
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,8 +28,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const threshold = currentView === 'beranda' ? window.innerHeight * 0.55 : 40;
-      setScrolled(window.scrollY > threshold);
+      setScrolled(window.scrollY > scrollThreshold(currentView));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -65,14 +71,7 @@ export default function Navbar() {
     <div className={`nav-dynamic-wrapper ${scrolled ? 'is-scrolled' : 'is-top'}`}>
       <nav className="nav-dynamic-bar">
         {/* Brand Icon */}
-        <Link
-          to="/"
-          className="brand-icon-nav"
-          onClick={closeMenus}
-          title="UKS Indonesia"
-        >
-          <img src={scrolled ? "/Aset UKS/UKS-logo.svg" : "/Aset UKS/UKS-02.webp"} alt="UKS Logo" />
-        </Link>
+        <NavBrand scrolled={scrolled} onClick={closeMenus} />
 
         {/* Desktop Navigation Links */}
         <div className="nav-links-nav">
@@ -233,14 +232,11 @@ export default function Navbar() {
         {/* Right Controls: Search & Mobile Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {/* Search Button (A2) */}
-          <button
+          <NavSearchButton
+            ref={searchButtonRef}
+            active={currentView === 'search'}
             onClick={() => goTo('search')}
-            className={`nav-search-btn ${currentView === 'search' ? 'active' : ''}`}
-            aria-label="Pencarian Direktori UKS"
-            title="Pencarian Direktori UKS/M"
-          >
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
+          />
 
           {/* Mobile Hamburger Toggle Button */}
           <button
@@ -256,11 +252,14 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="nav-mobile-menu">
             <div className="nav-mobile-list">
-              {/* Mobile Search Item (A2) */}
+              {/* Mobile Search Item (A2); the drawer closes on tap, so the bar's search button plays the confirmation. */}
               <Link
                 to={pathForView('search')}
                 className={`nav-mobile-item ${currentView === 'search' ? 'active' : ''}`}
-                onClick={closeMenus}
+                onClick={() => {
+                  closeMenus();
+                  searchButtonRef.current?.confirm();
+                }}
                 style={{
                   background: currentView === 'search' ? 'var(--brand-primary)' : 'var(--brand-light)',
                   color: currentView === 'search' ? '#FFFFFF' : 'var(--brand-primary)',

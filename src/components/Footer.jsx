@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { usePengaturanSettings } from '../hooks/usePublicLists';
 import { pathForView } from '../routes';
+import FooterWordmark from './FooterWordmark';
 import { StatistikPengunjung, useKunjungan } from '@/features/pengunjung';
 
 export default function Footer() {
@@ -31,7 +32,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-content">
           <div style={{ flex: '1 1 220px', maxWidth: '420px' }}>
-            <div className="footer-huge-text">UKS.</div>
+            <FooterWordmark />
             <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '14px', marginTop: '14px', lineHeight: 1.6 }}>
               Portal Resmi Usaha Kesehatan Sekolah / Madrasah (UKS/M) lintas 4 Kementerian: Kementerian Pendidikan Dasar dan Menengah, Kementerian Kesehatan, Kementerian Agama, dan Kementerian Dalam Negeri Republik Indonesia.
             </p>
