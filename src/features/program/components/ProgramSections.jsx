@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import ProgramLink from './ProgramLink';
+import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { NUM, NOTE, INLINE_LINK, TEXT_BUTTON } from '../styles';
 
 /* Timeline: ordered in time, so a line runs through the markers (a dot per step). Stacked on
@@ -204,7 +205,7 @@ export function ExampleSection({ section }) {
   );
 }
 
-// html is sanitized by the API. Preflight strips list, heading and table styles, so they are restored here.
+// html is sanitized by the API and again here. Preflight strips list, heading and table styles, so they are restored here.
 const RICH_TEXT =
   'max-w-[72ch] text-[15px] leading-[1.7] [&_p]:mt-0 [&_p]:mb-3 [&_p:last-child]:mb-0 ' +
   '[&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_li]:marker:text-brand ' +
@@ -215,5 +216,5 @@ const RICH_TEXT =
 
 /** Free-form content written in the CMS editor. */
 export function RichTextSection({ section }) {
-  return <div className={RICH_TEXT} dangerouslySetInnerHTML={{ __html: section.html }} />;
+  return <div className={RICH_TEXT} dangerouslySetInnerHTML={{ __html: sanitizeHtml(section.html) }} />;
 }
