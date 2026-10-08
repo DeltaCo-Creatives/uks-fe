@@ -4,7 +4,7 @@ import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncS
 import { SECTION, SECTION_HEAD, SECTION_TITLE } from '../styles';
 
 // jawaban is sanitized HTML from the API, so its paragraphs and links are styled from the wrapper.
-const ANSWER_HTML = '[&_a]:font-bold [&_a]:text-brand [&_a]:underline [&_a]:[word-break:break-word] [&_p]:mt-0 [&_p]:mb-2.5 [&_p:last-child]:mb-0';
+const ANSWER_HTML = '[&_a]:font-bold [&_a]:text-brand [&_a]:underline [&_a]:[word-break:break-word] [&_p]:mt-0 [&_p]:mb-2.5 [&_p:last-child]:mb-0 [&_iframe]:aspect-video [&_iframe]:h-auto [&_iframe]:w-full [&_iframe]:max-w-[560px] [&_iframe]:border-0';
 
 /** Tanya jawab umum as an accordion, the first one open. */
 export default function KontakFaq() {
@@ -59,7 +59,7 @@ export default function KontakFaq() {
                       <i className={`fa-solid fa-chevron-down ml-3 shrink-0 text-brand [transition:transform_0.3s_ease] ${isOpen ? '[transform:rotate(180deg)]' : ''}`}></i>
                     </button>
                     <div
-                      className={`overflow-hidden px-[22px] text-[13px] leading-[1.65] text-ink-muted [transition:max-height_0.4s_cubic-bezier(0.22,1,0.36,1),padding_0.3s] ${isOpen ? 'max-h-[400px] pb-5' : 'max-h-0'}`}
+                      className={`overflow-hidden px-[22px] text-[13px] leading-[1.65] text-ink-muted [transition:max-height_0.4s_cubic-bezier(0.22,1,0.36,1),padding_0.3s] ${isOpen ? 'max-h-[900px] pb-5' : 'max-h-0'}`}
                     >
                       <div className={ANSWER_HTML} dangerouslySetInnerHTML={{ __html: faq.jawaban }} />
                     </div>
