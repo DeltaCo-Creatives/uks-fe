@@ -78,7 +78,7 @@ function SectionResults({ section, query, actions, report }) {
   }
   if (loading || count === 0) return null;
   return (
-    <div>
+    <div data-search-item>
       <h3 className="content-group-heading">
         <i className={section.icon} aria-hidden="true"></i>
         {section.label} ({count})
@@ -91,9 +91,10 @@ function SectionResults({ section, query, actions, report }) {
 /**
  * Searches every Publikasi tab at once and shows the matches grouped by tab,
  * with the same cards and actions as the tabs. Mounted only while a search is
- * active, so the lists a visitor has not opened yet are fetched on first search.
+ * active, so the lists a visitor has not opened yet are fetched on first search. `onStatusChange` receives what
+ * the results area shows ('loading' | 'results' | 'empty' | 'idle'), which the page's search feedback waits on.
  */
-export default function PublikasiSearchResults({ query, onClear }) {
+export default function PublikasiSearchResults({ query, onClear, onStatusChange }) {
   const [selectedBook, setSelectedBook] = useState(null);
   const [zoomed, setZoomed] = useState(null);
   const [album, setAlbum] = useState(null);
@@ -116,13 +117,23 @@ export default function PublikasiSearchResults({ query, onClear }) {
   const anyError = states.some((status) => !status.loading && status.error);
   const total = states.reduce((sum, status) => (!status.loading && !status.error ? sum + status.count : sum), 0);
 
+  let resultStatus = 'idle';
+  if (total > 0) resultStatus = 'results';
+  else if (anyLoading) resultStatus = 'loading';
+  else if (!anyError) resultStatus = 'empty';
+
+  useEffect(() => {
+    onStatusChange?.(resultStatus);
+  }, [onStatusChange, resultStatus]);
+  useEffect(() => () => onStatusChange?.('idle'), [onStatusChange]);
+
   return (
         // Every group heading is its wrapper's first child, so the groups are spaced here.
     <div className={RESULTS}>
       <p className="content-toolbar-summary" aria-live="polite">
         {anyLoading && total === 0
           ? <span>Mencari "{trimmed}"...</span>
-          : <span>Menampilkan <strong>{total}</strong> hasil untuk "{trimmed}"</span>}
+          : <span>Menampilkan <strong className="search-count" data-search-count>{total}</strong> hasil untuk "{trimmed}"</span>}
         <button type="button" className="content-toolbar-reset" onClick={onClear}>
           Hapus pencarian
         </button>
@@ -135,11 +146,13 @@ export default function PublikasiSearchResults({ query, onClear }) {
       {anyLoading && <LoadingState label="Mencari di semua publikasi..." />}
 
       {!anyLoading && !anyError && total === 0 && (
-        <EmptyState
-          icon="fa-solid fa-magnifying-glass"
-          title="Tidak ada publikasi yang cocok"
-          text={`Tidak ada judul yang cocok dengan "${trimmed}". Coba kata kunci lain.`}
-        />
+        <div data-search-empty>
+          <EmptyState
+            icon="fa-solid fa-magnifying-glass"
+            title="Tidak ada publikasi yang cocok"
+            text={`Tidak ada judul yang cocok dengan "${trimmed}". Coba kata kunci lain.`}
+          />
+        </div>
       )}
 
       {selectedBook && (

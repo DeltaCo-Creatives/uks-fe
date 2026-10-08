@@ -259,7 +259,9 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 8px;
   transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  overflow: hidden;
+  /* The click ring sits outside the box, so it no longer clips; min-width keeps the shrink behaviour overflow gave. */
+  position: relative;
+  min-width: 0;
 }
 
 /* When at the top, remove the circle constraint so the full logo can breathe */
@@ -281,6 +283,69 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* Wordmark and round mark are stacked in the content box and crossfaded by NavBrand; the mark waits hidden. */
+.brand-logo-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.brand-logo-stack > img {
+  position: absolute;
+  inset: 0;
+}
+
+.brand-logo-mark {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Hover and focus shine: the band only shows where the current artwork has pixels, because the layer is masked by it. */
+.brand-logo-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.is-top .brand-logo-sheen {
+  -webkit-mask-image: url("/Aset UKS/UKS-02.webp");
+  mask-image: url("/Aset UKS/UKS-02.webp");
+}
+
+.is-scrolled .brand-logo-sheen {
+  -webkit-mask-image: url("/Aset UKS/UKS-logo.svg");
+  mask-image: url("/Aset UKS/UKS-logo.svg");
+}
+
+.brand-logo-sheen-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 45%;
+  background-image: linear-gradient(105deg, transparent 0%, rgb(255 255 255 / 0.85) 50%, transparent 100%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Ring that ripples out of a clicked control (useConfirmRipple); it lives outside any clipped box and never takes the pointer. */
+.confirm-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--brand-primary);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .nav-links-nav {
@@ -351,6 +416,14 @@
   color: white;
   border-color: var(--brand-primary);
   transform: scale(1.08);
+}
+
+/* Carries the click press and ring (NavSearchButton), so GSAP never touches the button's own CSS transitions. */
+.nav-search-wrap {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  border-radius: 50%;
 }
 
 /* Mobile Nav Toggle & Drawer */
@@ -953,6 +1026,39 @@
   color: var(--text-secondary);
 }
 
+/* Green halo on a search box, on its own layer so only its opacity animates (useSearchFeedback). */
+.search-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  box-shadow:
+    0 0 0 2px var(--brand-primary),
+    0 0 26px 6px color-mix(in srgb, var(--brand-primary) 55%, transparent);
+}
+
+/* Accent flash on the result count: useSearchFeedback tweens --flash from 1 to 0, and the ink keeps the digits readable on the accent. */
+.search-count {
+  --flash: 0;
+  color: var(--count-ink, var(--brand-primary));
+}
+
+.content-toolbar-summary .search-count {
+  --count-ink: var(--text-secondary);
+}
+
+/* Without color-mix the count simply skips the flash, rather than keeping a fallback highlight on. */
+@supports (color: color-mix(in srgb, red, blue)) {
+  .search-count {
+    border-radius: var(--radius-sm);
+    background-color: color-mix(in srgb, var(--brand-accent) calc(var(--flash) * 100%), transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent) calc(var(--flash) * 100%), transparent);
+    color: color-mix(in srgb, var(--text-primary) calc(var(--flash) * 100%), var(--count-ink, var(--brand-primary)));
+  }
+}
+
 .content-toolbar-reset {
   background: none;
   border: none;
@@ -1237,6 +1343,84 @@ footer {
   line-height: 1;
   letter-spacing: -0.05em;
   color: var(--brand-primary);
+}
+
+/* FooterWordmark: face, depth and sheen copies of the text in a perspective box, kept apart because text-shadow on background-clip: text renders muddy. */
+.footer-wordmark {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  perspective: 800px;
+}
+
+.footer-wordmark-stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.footer-wordmark-stage > span {
+  display: block;
+  /* The negative tracking pulls the box in past the last glyph, which background-clip: text would otherwise cut. */
+  padding-inline-end: 0.06em;
+}
+
+.footer-wordmark-face {
+  position: relative;
+  z-index: 1;
+  color: transparent;
+  /* The bottom stop stays light enough to keep 3:1 against the footer; the extrusion carries the deep greens. */
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand-primary) 58%, white) 0%,
+    var(--brand-primary) 52%,
+    color-mix(in srgb, var(--brand-primary) 60%, var(--brand-deep)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.footer-wordmark-depth,
+.footer-wordmark-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Six darker greens stepping down and to the right, then one soft ambient shadow. */
+.footer-wordmark-depth {
+  --step: 0.017em;
+  z-index: 0;
+  color: color-mix(in srgb, var(--brand-deep) 80%, black);
+  text-shadow:
+    calc(var(--step) * 1) calc(var(--step) * 1) 0 color-mix(in srgb, var(--brand-deep) 90%, black),
+    calc(var(--step) * 2) calc(var(--step) * 2) 0 color-mix(in srgb, var(--brand-deep) 78%, black),
+    calc(var(--step) * 3) calc(var(--step) * 3) 0 color-mix(in srgb, var(--brand-deep) 66%, black),
+    calc(var(--step) * 4) calc(var(--step) * 4) 0 color-mix(in srgb, var(--brand-deep) 54%, black),
+    calc(var(--step) * 5) calc(var(--step) * 5) 0 color-mix(in srgb, var(--brand-deep) 43%, black),
+    calc(var(--step) * 6) calc(var(--step) * 6) 0 color-mix(in srgb, var(--brand-deep) 33%, black),
+    calc(var(--step) * 8) calc(var(--step) * 14) 0.45em rgb(0 0 0 / 0.5);
+}
+
+/* --sheen is the highlight's centre as a fraction of the width; FooterWordmark moves it, and at rest it sits off the letters. */
+.footer-wordmark-sheen {
+  --sheen: -0.4;
+  z-index: 2;
+  color: transparent;
+  background-image: linear-gradient(
+    105deg,
+    transparent calc(var(--sheen) * 100% - 16%),
+    rgb(255 255 255 / 0.85) calc(var(--sheen) * 100%),
+    transparent calc(var(--sheen) * 100% + 16%)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .footer-wordmark-stage {
+    will-change: transform;
+  }
 }
 
 .footer-links {
