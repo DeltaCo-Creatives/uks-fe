@@ -22,17 +22,15 @@ const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290p
 // A keyboard-focused logo and its ring must not sit under a fade.
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
 
-// Each logo is a white rounded card as wide as its image (no fixed slot), so the gaps are even.
-// The partner files are not clean logos: each is a white card on a light-grey frame (with a shadow) baked into the
-// picture, and the frame differs from file to file. The card trims that frame off (a little more from the top, where
-// it is thickest) and draws one shadow of its own, so every logo looks the same. The trim is the `[&>img]:-mt-2`
-// (8px top) and `[&>img]:-mx-[3px]` (3px sides) below, and the 77px tile is the 85px image minus the top trim: remove
-// all three once clean transparent logos are uploaded. Only <img> children are trimmed, not the missing-logo fallback.
+// The image is the tile: every logo is the same height (see the <img> in PartnerLogo) at its own natural width, with
+// rounded corners, so the tile is exactly as wide as its picture and the gaps are even. The wrapper only clips the
+// corners and carries the shadow; it adds no padding, background or crop.
 // The shadow stays inside the strip's 16px vertical padding, or it is clipped.
-const LOGO_BASE = 'flex h-[77px] items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-[0_3px_12px_rgba(17,28,22,0.10)] transition-[scale,box-shadow] duration-300 ease-[ease] [&>img]:-mt-2 [&>img]:-mx-[3px]';
+const LOGO_BASE = 'block overflow-hidden rounded-[14px] shadow-[0_3px_12px_rgba(17,28,22,0.10)] transition-[scale,box-shadow] duration-300 ease-[ease]';
 const LOGO_LINK = 'cursor-pointer [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:shadow-[0_4px_14px_rgba(17,28,22,0.16)] focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
-const STRIP_BASE = 'flex w-max items-center gap-16 px-6 has-[:focus-visible]:animate-none';
+// gap-44 (176px) keeps the airy rhythm of the old fixed 220px slots (about 170-200px between neighbouring logos).
+const STRIP_BASE = 'flex w-max items-center gap-44 px-6 has-[:focus-visible]:animate-none';
 
 // Hovering a row brings it to a stop gradually (and lets it pick up speed again on leave) instead of freezing it
 // abruptly. A CSS animation can't change speed smoothly (changing its duration jumps, and animation-play-state
@@ -63,7 +61,7 @@ const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 function PartnerLogo({ partner, hidden }) {
     // Not lazy: a tile sizes itself from its image, so images that load late (the strip is far wider than the
     // screen) would resize tiles while the row is already moving.
-    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" className="h-[85px] w-auto max-w-[220px] flex-none object-contain" />;
+    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" className="block h-[85px] w-auto max-w-[220px] object-cover" />;
 
     if (!isHttpUrl(partner.website)) {
         return <div className={LOGO_BASE} aria-hidden={hidden || undefined}>{logo}</div>;
