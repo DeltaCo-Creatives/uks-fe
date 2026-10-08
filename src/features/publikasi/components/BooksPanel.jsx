@@ -123,7 +123,8 @@ export default function BooksPanel({ title, submenuId }) {
             url: selectedBook.pdf,
             kind: 'pdf',
             meta: [selectedBook.pages, selectedBook.size].filter(Boolean).join(' · '),
-            download: selectedBook.pdf
+            download: selectedBook.pdf,
+            slug: selectedBook.slug
           }}
           onClose={() => setSelectedBook(null)}
         />
