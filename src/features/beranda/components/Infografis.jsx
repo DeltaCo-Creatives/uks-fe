@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
 import { useInfografisList, useMitraList } from '@/hooks/usePublicLists';
+import { HOVER_CAPABLE_QUERY } from '@/hooks/useHoverCapable';
 import { countPublikasiView } from '@/utils/counters';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
 import SafeImage from '@/components/SafeImage';
@@ -30,9 +32,30 @@ const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-vis
 const LOGO_BASE = 'flex h-[77px] items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-[0_3px_12px_rgba(17,28,22,0.10)] transition-[scale,box-shadow] duration-300 ease-[ease] [&>img]:-mt-2 [&>img]:-mx-[3px]';
 const LOGO_LINK = 'cursor-pointer [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:shadow-[0_4px_14px_rgba(17,28,22,0.16)] focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
-// Hover effects apply only under a real pointer: on touch, :hover sticks after a tap, so a tapped logo
-// would leave the row paused (and the logo enlarged) until the next tap elsewhere.
-const STRIP_BASE = 'flex w-max items-center gap-16 px-6 [@media(hover:hover)]:hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
+const STRIP_BASE = 'flex w-max items-center gap-16 px-6 has-[:focus-visible]:animate-none';
+
+// Hovering a row brings it to a stop gradually (and lets it pick up speed again on leave) instead of freezing it
+// abruptly. A CSS animation can't change speed smoothly (changing its duration jumps, and animation-play-state
+// pauses instantly), so the rate of the running animation is tweened to 0 and back to 1.
+// Only under a real pointer: on touch, hover sticks after a tap, which would leave the row stopped.
+const STOP_SECONDS = 0.8;
+const RESUME_SECONDS = 0.8;
+
+function setStripSpeed(strip, rate) {
+    if (!window.matchMedia(HOVER_CAPABLE_QUERY).matches) return;
+    const stopping = rate === 0;
+    strip.getAnimations().forEach((animation) => {
+        gsap.to(animation, {
+            playbackRate: rate,
+            duration: stopping ? STOP_SECONDS : RESUME_SECONDS,
+            ease: stopping ? 'power2.out' : 'power2.inOut',
+            overwrite: 'auto'
+        });
+    });
+}
+
+const stopStrip = (event) => setStripSpeed(event.currentTarget, 0);
+const resumeStrip = (event) => setStripSpeed(event.currentTarget, 1);
 
 const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 
@@ -133,12 +156,12 @@ export default function Infografis() {
                         ref={marqueeRef}
                     >
                         {/* Only the first pass of the first row is exposed to keyboard and screen readers; the rest are loop copies. */}
-                        <div className={`${STRIP_BASE} animate-logo-scroll`} style={stripStyle} onFocus={revealFocusedLogo} onBlur={resetMarqueeScroll}>
+                        <div className={`${STRIP_BASE} animate-logo-scroll`} style={stripStyle} onMouseEnter={stopStrip} onMouseLeave={resumeStrip} onFocus={revealFocusedLogo} onBlur={resetMarqueeScroll}>
                             {track.map((partner, i) => (
                                 <PartnerLogo key={`a-${partner.id}-${i}`} partner={partner} hidden={i >= partners.length} />
                             ))}
                         </div>
-                        <div className={`${STRIP_BASE} animate-logo-scroll-reverse`} style={stripStyle} aria-hidden="true">
+                        <div className={`${STRIP_BASE} animate-logo-scroll-reverse`} style={stripStyle} onMouseEnter={stopStrip} onMouseLeave={resumeStrip} aria-hidden="true">
                             {track.map((partner, i) => (
                                 <PartnerLogo key={`b-${partner.id}-${i}`} partner={partner} hidden />
                             ))}
