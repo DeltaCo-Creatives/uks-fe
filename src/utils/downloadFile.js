@@ -95,6 +95,8 @@ export async function downloadFile(event, url, title) {
     // no-cache: a copy cached earlier from a plain navigation lacks the CORS headers.
     const response = await fetch(url, { cache: 'no-cache', signal: current.signal });
     if (!response.ok) throw new Error(`Download responded with ${response.status}`);
+    // A redirecting link (produk hukum /unduh) has no extension in the request URL, only in the final one.
+    const finalName = fileNameFor(response.url || url, title);
 
     const chunks = await readWithProgress(response, ({ loaded, total }) => {
       setState({ status: 'loading', name, url, loaded, total });
@@ -103,7 +105,7 @@ export async function downloadFile(event, url, title) {
     const objectUrl = URL.createObjectURL(new Blob(chunks, { type: response.headers.get('content-type') || '' }));
     const link = document.createElement('a');
     link.href = objectUrl;
-    link.download = name;
+    link.download = finalName;
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
@@ -111,7 +113,7 @@ export async function downloadFile(event, url, title) {
     // Safari needs the URL to outlive the click for a moment.
     setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
 
-    setState({ status: 'done', name, url });
+    setState({ status: 'done', name: finalName, url });
     hideTimer = setTimeout(() => {
       if (state?.status === 'done') setState(null);
     }, DONE_VISIBLE_MS);
