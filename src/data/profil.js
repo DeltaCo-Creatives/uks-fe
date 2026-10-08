@@ -153,6 +153,13 @@ export const profilPelaksana = {
   ],
   chart: {
     title: 'Bagan Struktur Organisasi Tim Pelaksana UKS/M di Sekolah/Madrasah',
+    src: '/profil/struktur-tim-pelaksana.png',
+    // Read out by screen readers in place of the picture, so it must say what the chart shows.
+    description:
+      'Bagan dari atas ke bawah. Pembina: Lurah atau Kepala Desa, dan Ketua Yayasan. Di bawahnya Ketua: Kepala Sekolah. ' +
+      'Dari Ketua terhubung Sekretaris I: Guru Pembina UKS/M; Sekretaris II: Ketua Komite Sekolah; dan Anggota. ' +
+      'Anggota terdiri dari: unsur Komite Sekolah atau orang tua; unsur petugas UKS/M dan Puskesmas; unsur guru; ' +
+      'unsur peserta didik; OSIS, kader UKS, dan PKK Desa; serta unsur lain yang dianggap perlu sesuai kebutuhan.',
     source: 'PROD /tentang-uks/struktur-organisasi-timpelaksana (UW9rT7uQ…png)',
     width: 555,
     height: 578
