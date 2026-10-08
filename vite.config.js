@@ -3,6 +3,16 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
 
+// Crawlers get the sitemap from the API host, so robots.txt is written at build from the same env var.
+const robotsTxt = (apiBaseUrl) => ({
+  name: 'emit-robots-txt',
+  generateBundle() {
+    const lines = ['User-agent: *', 'Allow: /']
+    if (/^https?:\/\//.test(apiBaseUrl || '')) lines.push(`Sitemap: ${apiBaseUrl.replace(/\/+$/, '')}/public/sitemap.xml`)
+    this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `${lines.join('\n')}\n` })
+  }
+})
+
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   if (command === 'build' && !/^https?:\/\//.test(env.VITE_API_BASE_URL || '')) {
@@ -10,7 +20,7 @@ export default defineConfig(({ command, mode }) => {
   }
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), robotsTxt(env.VITE_API_BASE_URL)],
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) }
     },
