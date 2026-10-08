@@ -20,18 +20,22 @@ const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290p
 // A keyboard-focused logo and its ring must not sit under a fade.
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
 
-const LOGO_BASE = 'flex h-[85px] w-[220px] items-center justify-center opacity-80 transition-[opacity,scale] duration-300 ease-[ease]';
+// The tile is as wide as its logo (no fixed slot), so gaps are even. "multiply" melts a logo's own white background
+// into the strip's, so no lighter rectangle shows around it; it works because STRIP_BASE paints that background.
+const LOGO_BASE = 'flex h-[85px] items-center justify-center mix-blend-multiply opacity-80 transition-[opacity,scale] duration-300 ease-[ease]';
 const LOGO_LINK = 'cursor-pointer rounded-soft [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:opacity-100 focus-visible:scale-105 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
 // Hover effects apply only under a real pointer: on touch, :hover sticks after a tap, so a tapped logo
 // would leave the row paused (and the logo enlarged) until the next tap elsewhere.
-const STRIP_BASE = 'flex w-max items-center gap-12 px-6 [@media(hover:hover)]:hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
+const STRIP_BASE = 'flex w-max items-center gap-12 bg-app px-6 [@media(hover:hover)]:hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
 
 const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 
 /** One marquee logo: a new-tab link when the partner has a website, a plain tile otherwise. */
 function PartnerLogo({ partner, hidden }) {
-    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" loading="lazy" className="max-h-full max-w-full object-contain" />;
+    // Not lazy: a tile sizes itself from its image, so images that load late (the strip is far wider than the
+    // screen) would resize tiles while the row is already moving.
+    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" className="h-full w-auto max-w-[220px] object-contain" />;
 
     if (!isHttpUrl(partner.website)) {
         return <div className={LOGO_BASE} aria-hidden={hidden || undefined}>{logo}</div>;
