@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { countPublikasiView } from '@/utils/counters';
+import { countPublikasiDownload, countPublikasiView } from '@/utils/counters';
 import SafeImage from '@/components/SafeImage';
 import ImageLightbox from '@/components/shared/ImageLightbox';
 import { downloadFile } from '@/utils/downloadFile';
@@ -37,7 +37,7 @@ export function BookGrid({ books, onRead }) {
                     <button className="btn-pill primary" onClick={() => { countPublikasiView(buku.slug); onRead(buku); }}>
                       <i className="fa-solid fa-book-open mr-1.5"></i>Baca Online
                     </button>
-                    <a href={buku.pdf} download className="btn-pill secondary no-underline" onClick={(e) => downloadFile(e, buku.pdf, buku.title)}>
+                    <a href={buku.pdf} download className="btn-pill secondary no-underline" onClick={(e) => { countPublikasiDownload(buku.slug); downloadFile(e, buku.pdf, buku.title); }}>
                       <i className="fa-solid fa-download"></i>
                     </a>
                   </>
@@ -87,7 +87,7 @@ export function InfografisGrid({ items, onZoom }) {
                 className="inline-flex min-h-[44px] flex-none items-center gap-1.5 px-2.5 text-[13px] font-bold text-ink underline decoration-brand underline-offset-4 hover:text-brand-deep focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
                 href={item.image}
                 download
-                onClick={(e) => downloadFile(e, item.image, item.title)}
+                onClick={(e) => { countPublikasiDownload(item.slug); downloadFile(e, item.image, item.title); }}
               >
                 <i className="fa-solid fa-download" aria-hidden="true"></i>
                 <span>Unduh</span>
@@ -166,6 +166,7 @@ export function VideoGrid({ videos }) {
           href={vid.youtubeUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => countPublikasiView(vid.slug)}
         >
           <div className="relative aspect-video w-full overflow-hidden bg-black">
             <img

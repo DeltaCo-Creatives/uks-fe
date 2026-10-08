@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { useInfografisList, useMitraList } from '@/hooks/usePublicLists';
+import { countPublikasiView } from '@/utils/counters';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
@@ -110,7 +111,7 @@ export default function Infografis() {
                 {!loading && !error && items.length > 0 && (
                     <div className="group/bento flex min-h-[280px] w-full flex-wrap items-center justify-center gap-4">
                         {items.map((info, i) => (
-                            <div key={info.id} className={`${TILE_BASE} ${TILE_HOVER} ${i === 0 ? TILE_SIZE_LARGE : TILE_SIZE}`} data-gsap="reveal" onClick={() => info.image && setSelectedImage(info.image)}>
+                            <div key={info.id} className={`${TILE_BASE} ${TILE_HOVER} ${i === 0 ? TILE_SIZE_LARGE : TILE_SIZE}`} data-gsap="reveal" onClick={() => { if (!info.image) return; countPublikasiView(info.slug); setSelectedImage(info.image); }}>
                                 <SafeImage src={info.image} alt={info.title} className="h-full w-full object-cover" />
                             </div>
                         ))}
