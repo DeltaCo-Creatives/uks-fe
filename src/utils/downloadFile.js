@@ -47,8 +47,20 @@ function fileNameFor(url, title) {
   const lastSegment = decodeURIComponent(path.split('/').pop() || 'unduhan');
   const extension = (lastSegment.match(/\.[a-z0-9]{2,5}$/i) || [''])[0];
   const base = (title || '').replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim();
+  // A title that already ends in the extension (produk hukum names often include ".pdf") must not get it twice.
+  const named = base.toLowerCase().endsWith(extension.toLowerCase()) ? base : `${base}${extension}`;
 
-  return base ? `${base}${extension}` : lastSegment;
+  return base ? named : lastSegment;
+}
+
+/**
+ * Registers a download with the backend without following its redirect: the endpoint counts the hit
+ * and then redirects to the file, which we already fetched from its direct link. Fire-and-forget.
+ *
+ * @param {string} countUrl
+ */
+function pingDownloadCount(countUrl) {
+  fetch(countUrl, { mode: 'no-cors', redirect: 'manual', credentials: 'omit', keepalive: true }).catch(() => {});
 }
 
 /**
@@ -67,10 +79,12 @@ function fileNameFor(url, title) {
  * new tab; opening it automatically would be blocked as a popup by then.
  *
  * @param {import('react').MouseEvent<HTMLAnchorElement>} event
- * @param {string} url
+ * @param {string} url - where the file is fetched from (must be CORS-readable, so not a redirecting link)
  * @param {string} [title] - file name without extension
+ * @param {string} [countUrl] - a counting endpoint to ping once the file is saved, when `url` is the
+ *   direct link and the anchor's own href is the counting one (produk hukum)
  */
-export async function downloadFile(event, url, title) {
+export async function downloadFile(event, url, title, countUrl) {
   // Desktops already handle these links well (the browser opens the PDF in its own viewer), so they
   // keep the plain link. Only touch devices, where that ends in a blank page, get the forced download.
   if (window.matchMedia(HOVER_CAPABLE_QUERY).matches) return;
@@ -112,6 +126,8 @@ export async function downloadFile(event, url, title) {
     link.remove();
     // Safari needs the URL to outlive the click for a moment.
     setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+
+    if (countUrl) pingDownloadCount(countUrl);
 
     setState({ status: 'done', name: finalName, url });
     hideTimer = setTimeout(() => {

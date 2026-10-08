@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { countPublikasiDownload, countPublikasiView } from '@/utils/counters';
+import { countProdukHukumView, countPublikasiDownload, countPublikasiView } from '@/utils/counters';
 import SafeImage from '@/components/SafeImage';
 import ImageLightbox from '@/components/shared/ImageLightbox';
+import DocViewerModal from '@/components/shared/DocViewerModal';
 import { downloadFile } from '@/utils/downloadFile';
+import { isDirectPdf } from '@/utils/linkKind';
 
 /*
  * Book cards build on the shared book-swipe-card / book-cover-large / book-swipe-actions classes, which
@@ -195,7 +197,14 @@ export function VideoGrid({ videos }) {
   );
 }
 
+/*
+ * "Baca Online" reads `fileUrl`, the direct file link: the `file` link counts a download and redirects to
+ * another origin, which would inflate the download count and fail CORS on phones. It is offered only for
+ * PDFs (a record may also hold .doc/.docx, which can't be shown). Unduh keeps using `file` so it counts.
+ */
 export function RegulasiList({ regulations }) {
+  const [reading, setReading] = useState(null);
+
   return (
     <div className="flex flex-col gap-3.5">
       {regulations.map((reg) => (
@@ -217,16 +226,41 @@ export function RegulasiList({ regulations }) {
               {reg.number && <p className="text-[12px] text-ink-muted">{reg.number}</p>}
             </div>
           </div>
-          <a
-            href={reg.file}
-            download
-            onClick={(e) => downloadFile(e, reg.file, reg.title)}
-            className="btn-massive px-[18px]! py-2! text-[13px]! whitespace-nowrap max-[768px]:w-full max-[768px]:justify-center"
-          >
-            <i className="fa-solid fa-download"></i><span>Unduh{reg.size ? ` (${reg.size})` : ''}</span>
-          </a>
+          <div className="flex items-center gap-2.5 max-[768px]:w-full max-[768px]:flex-col">
+            {isDirectPdf(reg.fileUrl) && (
+              <button
+                type="button"
+                className="btn-pill primary px-[18px]! py-2! whitespace-nowrap max-[768px]:w-full"
+                onClick={() => { countProdukHukumView(reg.slug); setReading(reg); }}
+              >
+                <i className="fa-solid fa-book-open"></i><span>Baca Online</span>
+              </button>
+            )}
+            <a
+              href={reg.file}
+              download
+              onClick={(e) => downloadFile(e, reg.fileUrl || reg.file, reg.title, reg.fileUrl ? reg.file : undefined)}
+              className="btn-massive px-[18px]! py-2! text-[13px]! whitespace-nowrap max-[768px]:w-full max-[768px]:justify-center"
+            >
+              <i className="fa-solid fa-download"></i><span>Unduh{reg.size ? ` (${reg.size})` : ''}</span>
+            </a>
+          </div>
         </div>
       ))}
+
+      {reading && (
+        <DocViewerModal
+          doc={{
+            title: reading.title,
+            url: reading.fileUrl,
+            kind: 'pdf',
+            meta: reading.size,
+            download: reading.file,
+            downloadSource: reading.fileUrl
+          }}
+          onClose={() => setReading(null)}
+        />
+      )}
     </div>
   );
 }
