@@ -18,7 +18,11 @@ const PdfReader = lazy(() => import('./PdfReader'));
  * section wrappers, and a transformed ancestor becomes the containing block for
  * position: fixed, which would pin the backdrop inside that panel.
  *
- * @param {{ doc: { title: string, url: string, kind?: string, meta?: string, download?: string, slug?: string }, onClose: () => void }} props
+ * `slug` is a publikasi's, used to count its download. A produk hukum has no `slug` here: its `download` link is
+ * itself the counting endpoint (counted by the plain link on desktop), and `downloadSource` is the direct file
+ * link phones fetch to save the file, with `download` pinged afterwards instead.
+ *
+ * @param {{ doc: { title: string, url: string, kind?: string, meta?: string, download?: string, downloadSource?: string, slug?: string }, onClose: () => void }} props
  */
 export default function DocViewerModal({ doc, onClose }) {
   const closeRef = useRef(null);
@@ -94,7 +98,10 @@ export default function DocViewerModal({ doc, onClose }) {
               <span className="doc-viewer-sr">{NEW_TAB_HINT}</span>
             </a>
             {doc.download && (
-              <a className="btn-pill secondary" href={doc.download} download onClick={(e) => { countPublikasiDownload(doc.slug); downloadFile(e, doc.download, doc.title); }}>
+              <a className="btn-pill secondary" href={doc.download} download onClick={(e) => {
+                countPublikasiDownload(doc.slug);
+                downloadFile(e, doc.downloadSource || doc.download, doc.title, doc.downloadSource ? doc.download : undefined);
+              }}>
                 <i className="fa-solid fa-download" aria-hidden="true"></i>
                 <span>Unduh</span>
               </a>
