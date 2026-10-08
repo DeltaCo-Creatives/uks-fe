@@ -210,7 +210,8 @@ const RICH_TEXT =
   '[&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_li]:marker:text-brand ' +
   '[&_:is(h2,h3,h4)]:mt-5 [&_:is(h2,h3,h4)]:mb-2 [&_:is(h2,h3,h4)]:text-[16px] [&_:is(h2,h3,h4)]:font-extrabold [&_strong]:font-extrabold ' +
   '[&_table]:mt-1 [&_table]:mb-3 [&_table]:w-full [&_table]:border-collapse max-sm:[&_table]:block max-sm:[&_table]:overflow-x-auto [&_:is(th,td)]:border [&_:is(th,td)]:border-rule [&_:is(th,td)]:px-2 sm:[&_:is(th,td)]:px-3 [&_:is(th,td)]:py-2 max-sm:[&_:is(th,td)]:text-[14px] [&_:is(th,td)]:text-left [&_:is(th,td)]:align-top [&_th]:bg-card-alt [&_th]:font-bold [&_:is(th,td)_p]:mb-0 ' +
-  '[&_a]:font-bold [&_a]:text-brand [&_a]:underline [&_a]:[word-break:break-word]';
+  '[&_a]:font-bold [&_a]:text-brand [&_a]:underline [&_a]:[word-break:break-word] ' +
+  '[&_iframe]:aspect-video [&_iframe]:h-auto [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:rounded-card [&_iframe]:border-0';
 
 /** Free-form content written in the CMS editor. */
 export function RichTextSection({ section }) {
