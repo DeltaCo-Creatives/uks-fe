@@ -1,5 +1,5 @@
 import { profilPelaksana } from '@/data/portalData';
-import ProfilChartPlaceholder from './ProfilChartPlaceholder';
+import ProfilChart from './ProfilChart';
 import { BODY, MINI_LABEL, TEXT_LINK, SPLIT, ORG_LEAD, ORDERED_LIST, ORDERED_ITEM } from './styles';
 
 /**
@@ -27,7 +27,7 @@ export default function ProfilPelaksana({ onShowPembina }) {
         </button>
       </div>
 
-      <ProfilChartPlaceholder chart={profilPelaksana.chart} />
+      <ProfilChart chart={profilPelaksana.chart} />
     </div>
   );
 }
