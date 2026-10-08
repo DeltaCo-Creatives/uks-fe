@@ -10,6 +10,8 @@ const KIND = {
 
 const DRIVE_FILE = /drive\.google\.com\/file\/d\/([\w-]+)/;
 const YOUTUBE_ID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/;
+// Only web and site-relative URLs may become an iframe src; a javascript: URL would run on this origin.
+const FRAMEABLE = /^(?:https?:|\/)/i;
 
 /**
  * Labels a link by where it goes, so a resource row says whether it opens a
@@ -39,7 +41,7 @@ export function linkKind(url, kind) {
  * @returns {string | null}
  */
 export function embedUrl(url, kind) {
-  if (!url) return null;
+  if (!url || !FRAMEABLE.test(url)) return null;
 
   const drive = url.match(DRIVE_FILE);
   if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`;
