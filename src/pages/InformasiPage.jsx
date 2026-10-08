@@ -1,5 +1,6 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import { usePageMeta } from '@/hooks/usePageMeta';
 import { TEMPLATE_PANELS } from '@/pages/templatePanels';
 import { defaultTabPath, pathForView } from '@/routes';
 import LobbyTabs from '@/components/shared/LobbyTabs';
@@ -9,6 +10,10 @@ export default function InformasiPage() {
   const navigate = useNavigate();
   const informasiTabs = useNavConfig().informasi.sections;
   const section = informasiTabs.find((tab) => tab.slug === tabSlug);
+  usePageMeta({
+    title: section && `${section.label} - Informasi`,
+    description: section && `${section.label} di portal UKS/M: rilis resmi kementerian, praktik baik satuan pendidikan, kabar UPT BPMP/BGP, kalender kegiatan, dan direktori aplikasi kesehatan.`
+  });
 
   if (!section) return <Navigate to={defaultTabPath('informasi')} replace />;
 

@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
-import { pathForTab } from '@/routes';
+import { pathForPengumuman, pathForTab } from '@/routes';
 import { usePengumuman } from '@/hooks/usePublicLists';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import { usePageMeta, NOT_FOUND_META } from '@/hooks/usePageMeta';
 import { StatusBadge, PentingBadge, PinnedMarker } from '@/features/informasi/components/PengumumanBadges';
 import { downloadFile } from '@/utils/downloadFile';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
@@ -22,6 +23,14 @@ export default function PengumumanDetailView() {
   const { data: item, loading, error, retry } = usePengumuman(itemSlug);
   const tabSlug = item?.submenuSlug ?? submenuSlug;
   const tabLabel = useNavConfig().informasi.sections.find((s) => s.slug === tabSlug)?.label;
+  // The NotFoundView below sets this too, but a parent's effect runs last, so the parent has to agree.
+  const notFound = !loading && (error?.status === 404 || (!error && !item));
+  usePageMeta(notFound ? NOT_FOUND_META : {
+    title: item?.judul ?? tabLabel,
+    description: item?.ringkasan || item?.isi,
+    // The item resolves under any submenu slug; the canonical is the one in its own submenu.
+    path: item && pathForPengumuman(item.slug, item.submenuSlug)
+  });
   const back = (
     <Link to={pathForTab('informasi', tabSlug)} className="btn-pill secondary px-5 py-2.5">
       <i className="fa-solid fa-arrow-left" aria-hidden="true"></i> Kembali ke {tabLabel ?? 'Daftar'}

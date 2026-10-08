@@ -10,6 +10,7 @@ import {
 import { usePengaturanSettings } from '@/hooks/usePublicLists';
 import ContentPlaceholder from '@/components/ContentPlaceholder';
 import { StrataExplorer } from '@/features/uksm';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 const OVERVIEW_CARD = 'flex scroll-mt-24 flex-col gap-3.5 rounded-card bg-card p-[clamp(20px,3vw,28px)] shadow-raised';
 const OVERVIEW_TITLE = 'flex items-center gap-2.5 text-[18px] font-extrabold';
@@ -72,6 +73,7 @@ function ScoringCard() {
 export default function StratifikasiPage() {
   const { data: settings } = usePengaturanSettings();
   const dashboardUrl = settings?.['tautan.stratifikasiDashboardUrl'];
+  usePageMeta({ title: 'Stratifikasi UKS/M', description: stratifikasiIntro.body });
 
   return (
     <div>

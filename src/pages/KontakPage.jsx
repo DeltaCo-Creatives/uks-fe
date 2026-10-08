@@ -1,8 +1,13 @@
 import { usePengaturanSettings } from '@/hooks/usePublicLists';
 import { KontakAlamat, KontakTiket, KontakFaq, KontakLokasi } from '@/features/kontak';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 export default function KontakPage() {
   const { data: settings } = usePengaturanSettings();
+  usePageMeta({
+    title: 'Kontak & Layanan Bantuan',
+    description: 'Sekretariat bersama UKS/M: alamat, jalur konsultasi implementasi Trias UKS, permohonan bimbingan teknis stratifikasi, dan pengaduan layanan.'
+  });
 
   return (
     <div className="container pb-20">

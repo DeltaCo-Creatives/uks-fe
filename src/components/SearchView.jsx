@@ -4,6 +4,7 @@ import { pathForPengumuman, pathForProgram, pathForTab, pathForView, sectionIdFo
 import { useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import useSearchFeedback from '@/hooks/useSearchFeedback';
+import { usePageMeta } from '@/hooks/usePageMeta';
 import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList, usePengumumanList } from '../hooks/usePublicLists';
 import {
   triasPillarsDetail,
@@ -32,6 +33,7 @@ function templateLink(configs, template, fallbackSlug) {
 
 export default function SearchView() {
   const configs = useNavConfig();
+  usePageMeta({ title: 'Pencarian', description: 'Cari berita, program, publikasi, dan informasi lain di portal UKS/M.', noindex: true });
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const inputRef = useRef(null);

@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { programIntro } from '@/data/portalData';
+import { usePageMeta } from '@/hooks/usePageMeta';
 import { prefersReducedMotion } from '@/hooks/useCollapse';
 import { useProgramList, usePengaturanSettings } from '@/hooks/usePublicLists';
 import { pathForProgram } from '@/routes';
@@ -25,6 +26,7 @@ export default function ProgramPage() {
   const activeIndex = programs.findIndex((p) => p.id === programSlug);
   const active = programs[activeIndex];
   const activeId = active?.id;
+  usePageMeta({ title: active?.title ?? 'Program Prioritas', description: active?.lead ?? programIntro.text });
   const pickerRef = useRef(null);
   const panelRef = useRef(null);
   const shownId = useRef(activeId);

@@ -3,6 +3,7 @@ import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import { parseIndonesianDate } from '@/utils/dateID';
+import { usePageMeta, NOT_FOUND_META } from '@/hooks/usePageMeta';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
@@ -42,6 +43,14 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
   const backTo = tabSlug ? pathForTab('informasi', tabSlug) : config.backTo;
   const tabLabel = useNavConfig().informasi.sections.find((s) => s.slug === tabSlug)?.label;
   const backLabel = tabLabel ? `Kembali ke ${tabLabel}` : config.backLabel;
+  // The NotFoundView below sets this too, but a parent's effect runs last, so the parent has to agree.
+  const notFound = !loading && (error?.status === 404 || (!error && !article));
+  usePageMeta(notFound ? NOT_FOUND_META : {
+    title: article?.title ?? tabLabel,
+    description: article?.excerpt,
+    // The sitemap lists the item at its own submenu's URL; /informasi/berita/<slug> also resolves, so canonicalise to the former.
+    path: article && config.pathForItem(article.slug, article.submenuSlug)
+  });
 
   if (loading) {
     return (
