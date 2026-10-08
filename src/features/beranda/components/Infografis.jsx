@@ -20,14 +20,19 @@ const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290p
 // A keyboard-focused logo and its ring must not sit under a fade.
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
 
-// The tile is as wide as its logo (no fixed slot), so gaps are even. "multiply" melts a logo's own white background
-// into the strip's, so no lighter rectangle shows around it; it works because STRIP_BASE paints that background.
-const LOGO_BASE = 'flex h-[85px] items-center justify-center mix-blend-multiply opacity-80 transition-[opacity,scale] duration-300 ease-[ease]';
-const LOGO_LINK = 'cursor-pointer rounded-soft [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:opacity-100 focus-visible:scale-105 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
+// Each logo is a white rounded card as wide as its image (no fixed slot), so the gaps are even.
+// The partner files are not clean logos: each is a white card on a light-grey frame (with a shadow) baked into the
+// picture, and the frame differs from file to file. The card trims that frame off (a little more from the top, where
+// it is thickest) and draws one shadow of its own, so every logo looks the same. The trim is the `[&>img]:-mt-2`
+// (8px top) and `[&>img]:-mx-[3px]` (3px sides) below, and the 77px tile is the 85px image minus the top trim: remove
+// all three once clean transparent logos are uploaded. Only <img> children are trimmed, not the missing-logo fallback.
+// The shadow stays inside the strip's 16px vertical padding, or it is clipped.
+const LOGO_BASE = 'flex h-[77px] items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-[0_3px_12px_rgba(17,28,22,0.10)] transition-[scale,box-shadow] duration-300 ease-[ease] [&>img]:-mt-2 [&>img]:-mx-[3px]';
+const LOGO_LINK = 'cursor-pointer [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:shadow-[0_4px_14px_rgba(17,28,22,0.16)] focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
 // Hover effects apply only under a real pointer: on touch, :hover sticks after a tap, so a tapped logo
 // would leave the row paused (and the logo enlarged) until the next tap elsewhere.
-const STRIP_BASE = 'flex w-max items-center gap-12 bg-app px-6 [@media(hover:hover)]:hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
+const STRIP_BASE = 'flex w-max items-center gap-16 px-6 [@media(hover:hover)]:hover:[animation-play-state:paused] has-[:focus-visible]:animate-none';
 
 const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 
@@ -35,7 +40,7 @@ const isHttpUrl = (url) => /^https?:\/\//i.test(url ?? '');
 function PartnerLogo({ partner, hidden }) {
     // Not lazy: a tile sizes itself from its image, so images that load late (the strip is far wider than the
     // screen) would resize tiles while the row is already moving.
-    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" className="h-full w-auto max-w-[220px] object-contain" />;
+    const logo = <SafeImage src={partner.logoUrl} alt={partner.nama} fallbackType="logo" className="h-[85px] w-auto max-w-[220px] flex-none object-contain" />;
 
     if (!isHttpUrl(partner.website)) {
         return <div className={LOGO_BASE} aria-hidden={hidden || undefined}>{logo}</div>;
