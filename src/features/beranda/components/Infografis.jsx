@@ -32,7 +32,8 @@ const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-vis
 const LOGO_BASE = 'flex h-[77px] items-center justify-center overflow-hidden rounded-[14px] bg-white shadow-[0_3px_12px_rgba(17,28,22,0.10)] transition-[scale,box-shadow] duration-300 ease-[ease] [&>img]:-mt-2 [&>img]:-mx-[3px]';
 const LOGO_LINK = 'cursor-pointer [@media(hover:hover)]:hover:scale-105 [@media(hover:hover)]:hover:shadow-[0_4px_14px_rgba(17,28,22,0.16)] focus-visible:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand';
 
-const STRIP_BASE = 'flex w-max items-center gap-16 px-6 has-[:focus-visible]:animate-none';
+// gap-44 (176px) keeps the airy rhythm of the old fixed 220px slots (about 170-200px between neighbouring logos).
+const STRIP_BASE = 'flex w-max items-center gap-44 px-6 has-[:focus-visible]:animate-none';
 
 // Hovering a row brings it to a stop gradually (and lets it pick up speed again on leave) instead of freezing it
 // abruptly. A CSS animation can't change speed smoothly (changing its duration jumps, and animation-play-state
