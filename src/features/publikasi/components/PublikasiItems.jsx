@@ -21,9 +21,16 @@ export function BookGrid({ books, onRead }) {
             {buku.category && (
               <span className="section-kicker m-0! mb-2! px-2.5! py-1! text-[10px]!">{buku.category}</span>
             )}
-            <h3 className="mb-2! text-[16px] font-extrabold text-ink">{buku.title}</h3>
+            {/* Same clamp as the Warta cards: 3 title lines (height reserved, so cards line up) and a 4-line excerpt.
+                "!" beats the shared book-swipe-card h3 rules, which fade the third line out and cap the height. */}
+            <h3
+              className="mb-2! line-clamp-3 max-h-none! min-h-[4.05em] text-[16px] leading-[1.35]! font-extrabold break-words text-ink [-webkit-mask-image:none]! [mask-image:none]!"
+              title={buku.title}
+            >
+              {buku.title}
+            </h3>
             {buku.desc && (
-              <p className="mb-3.5 text-[12px]! leading-[1.5] text-ink-muted">{buku.desc}</p>
+              <p className="mb-3.5 line-clamp-4 text-[12px]! leading-[1.5] break-words text-ink-muted">{buku.desc}</p>
             )}
             {metaParts.length > 0 && (
               <div className="mb-4 flex items-center gap-3 text-[11px] font-bold text-brand">
@@ -83,7 +90,7 @@ export function InfografisGrid({ items, onZoom }) {
             )}
           </button>
           <figcaption className="flex items-center justify-between gap-3 px-4 py-3">
-            <span className="text-[14px] leading-[1.35] font-extrabold text-ink">{item.title}</span>
+            <span className="line-clamp-3 min-w-0 text-[14px] leading-[1.35] font-extrabold break-words text-ink" title={item.title}>{item.title}</span>
             {item.image && (
               <a
                 className="inline-flex min-h-[44px] flex-none items-center gap-1.5 px-2.5 text-[13px] font-bold text-ink underline decoration-brand underline-offset-4 hover:text-brand-deep focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink"
@@ -129,8 +136,8 @@ export function GaleriGrid({ items, onOpen }) {
               </span>
             </button>
             <figcaption className="px-4 py-3">
-              <span className="block text-[14px] leading-[1.35] font-extrabold text-ink">{item.title}</span>
-              {item.desc && <span className="mt-1 line-clamp-2 block text-[12px] leading-[1.5] text-ink-muted">{item.desc}</span>}
+              <span className="line-clamp-3 text-[14px] leading-[1.35] font-extrabold break-words text-ink" title={item.title}>{item.title}</span>
+              {item.desc && <span className="mt-1 line-clamp-4 text-[12px] leading-[1.5] break-words text-ink-muted">{item.desc}</span>}
             </figcaption>
           </figure>
         );
@@ -189,7 +196,7 @@ export function VideoGrid({ videos }) {
           </div>
           <div className="p-5">
             {vid.channel && <span className="text-[11px] font-bold text-brand uppercase">{vid.channel}</span>}
-            <h4 className="mt-1.5 mb-0 text-[15px] leading-[1.4] font-extrabold text-ink">{vid.title}</h4>
+            <h4 className="mt-1.5 mb-0 line-clamp-3 text-[15px] leading-[1.4] font-extrabold break-words text-ink" title={vid.title}>{vid.title}</h4>
           </div>
         </a>
       ))}
@@ -214,19 +221,20 @@ export function RegulasiList({ regulations }) {
           key={reg.id}
           className="mb-3 flex items-center justify-between gap-4 rounded-soft border-[1.5px] border-line bg-white px-5 py-4 [transition:var(--spring)] hover:border-brand hover:shadow-raised hover:[transform:translateY(-2px)] max-[768px]:flex-col"
         >
-          <div className="flex items-center gap-4">
+          {/* min-w-0 lets the text shrink and wrap beside the buttons; titles clamp to 3 lines like the Warta cards. */}
+          <div className="flex min-w-0 items-center gap-4">
             <div className="flex size-[50px] shrink-0 items-center justify-center rounded-soft bg-brand-light text-[20px] text-brand">
               <i className="fa-solid fa-scale-balanced"></i>
             </div>
-            <div>
+            <div className="min-w-0">
               {reg.badge && (
                 <span className="mb-1 inline-block self-start rounded-[999px] bg-brand-light px-2.5 py-1 text-[9px] font-extrabold text-brand">{reg.badge}</span>
               )}
-              <h4 className="mt-0.5 mb-1 text-[15px] font-extrabold text-ink">{reg.title}</h4>
-              {reg.number && <p className="text-[12px] text-ink-muted">{reg.number}</p>}
+              <h4 className="mt-0.5 mb-1 line-clamp-3 text-[15px] font-extrabold break-words text-ink" title={reg.title}>{reg.title}</h4>
+              {reg.number && <p className="line-clamp-2 text-[12px] break-words text-ink-muted" title={reg.number}>{reg.number}</p>}
             </div>
           </div>
-          <div className="flex items-center gap-2.5 max-[768px]:w-full max-[768px]:flex-col">
+          <div className="flex shrink-0 items-center gap-2.5 max-[768px]:w-full max-[768px]:flex-col">
             {isDirectPdf(reg.fileUrl) && (
               <button
                 type="button"
