@@ -6,6 +6,7 @@ import { StatusBadge, PentingBadge, PinnedMarker } from '@/features/informasi/co
 import { downloadFile } from '@/utils/downloadFile';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
 import { countdownLabel, periodeLabel, canDaftar } from '@/utils/kesempatan';
+import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { LoadingState, ErrorState } from './shared/AsyncState';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
@@ -66,8 +67,8 @@ export default function PengumumanDetailView() {
           </p>
         )}
 
-        {/* Sanitized server-side, rendered as HTML like the berita body */}
-        <div className="article-html-content text-[16px] leading-[1.85] text-ink" dangerouslySetInnerHTML={{ __html: item.isi }} />
+        {/* Sanitized server-side and again here, rendered as HTML like the berita body */}
+        <div className="article-html-content text-[16px] leading-[1.85] text-ink" dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.isi) }} />
 
         {(item.lampiranUrl || item.tautan || canDaftar(item)) && (
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-rule-soft pt-6">

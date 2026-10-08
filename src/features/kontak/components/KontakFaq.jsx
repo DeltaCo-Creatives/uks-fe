@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFaqList } from '@/hooks/usePublicLists';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { SECTION, SECTION_HEAD, SECTION_TITLE } from '../styles';
 
 // jawaban is sanitized HTML from the API, so its paragraphs and links are styled from the wrapper.
@@ -61,7 +62,7 @@ export default function KontakFaq() {
                     <div
                       className={`overflow-hidden px-[22px] text-[13px] leading-[1.65] text-ink-muted [transition:max-height_0.4s_cubic-bezier(0.22,1,0.36,1),padding_0.3s] ${isOpen ? 'max-h-[900px] pb-5' : 'max-h-0'}`}
                     >
-                      <div className={ANSWER_HTML} dangerouslySetInnerHTML={{ __html: faq.jawaban }} />
+                      <div className={ANSWER_HTML} dangerouslySetInnerHTML={{ __html: sanitizeHtml(faq.jawaban) }} />
                     </div>
                   </div>
                 );

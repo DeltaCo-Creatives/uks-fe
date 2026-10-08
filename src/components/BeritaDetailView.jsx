@@ -3,6 +3,7 @@ import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import { parseIndonesianDate } from '@/utils/dateID';
+import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
@@ -180,12 +181,12 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
           {article.excerpt}
         </p>
 
-        {/* Article body: sanitized server-side, rendered as HTML */}
+        {/* Article body: sanitized server-side and again here, rendered as HTML */}
         {article.content ? (
           <div
             className="article-html-content"
             style={{ fontSize: '16px', lineHeight: 1.85, color: '#1E293B' }}
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
           />
         ) : (
           <p style={{ fontSize: '16px', lineHeight: 1.85, color: '#1E293B', margin: 0 }}>{article.excerpt}</p>
