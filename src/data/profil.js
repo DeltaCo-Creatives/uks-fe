@@ -134,6 +134,19 @@ export const profilPembina = {
   levels: ['Tim Pembina UKS Tingkat Pusat', 'Tim Pembina UKS Tingkat Provinsi', 'Tim Pembina UKS Tingkat Kabupaten/Kota', 'Tim Pembina UKS Tingkat Kecamatan'],
   chart: {
     title: 'Bagan Struktur Organisasi Tim Pembina UKS/M',
+    src: '/profil/struktur-tim-pembina.png',
+    // Read out by screen readers in place of the picture, so it must say what the chart shows.
+    description:
+      'Bagan Tim Pembina UKS/M dari pusat sampai kecamatan. Tingkat Pusat: Kementerian Pendidikan, Kebudayaan, Riset dan ' +
+      'Teknologi; Kementerian Agama; Kementerian Dalam Negeri; dan Kementerian Kesehatan bersama-sama membentuk TP UKS/M ' +
+      'Pusat. TP UKS/M Pusat membawahi TP UKS/M Provinsi, lalu TP UKS/M Kabupaten/Kota, lalu TP UKS/M Kecamatan. ' +
+      'Provinsi: keanggotaan terdiri dari SETDA, DISDIK, DINKES, KANWIL KEMENAG, BAPPEDA, dan OPD lainnya; ditetapkan oleh ' +
+      'Gubernur. Kabupaten/Kota: keanggotaan terdiri dari SETDA, DISDIK, DINKES, KANWIL KEMENAG, BAPPEDA, dan OPD lainnya; ' +
+      'ditetapkan oleh Walikota atau Bupati. Kecamatan: keanggotaan terdiri dari SEKCAM, unsur DISDIK, Ka Puskesmas, ' +
+      'Pendais atau PPA KUA, Ketua TP PKK, dan instansi lainnya; ditetapkan oleh Camat. Tim pada tingkat provinsi, ' +
+      'kabupaten/kota, dan kecamatan membina satuan pendidikan: Pendidikan Non Formal dan Informal, TK/RA, SD/MI, SMP/MTs, ' +
+      'SMA/MTs, SMK/MAK, dan Satuan Pendidikan Khusus. Garis putus-putus dari TP UKS/M Provinsi menuju SMA/MTs, SMK/MAK, ' +
+      'dan Satuan Pendidikan Khusus.',
     source: 'PROD /tentang-uks/struktur-organisasi-tim-pembina (wj8RI73K…png)',
     width: 1010,
     height: 814
