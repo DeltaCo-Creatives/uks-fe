@@ -26,6 +26,12 @@
   word-break: break-word;
 }
 
+/* A linked image is clickable only over the image, not across the whole column. */
+.article-html-content a:has(> img) {
+  align-self: flex-start;
+  max-width: 100%;
+}
+
 .article-html-content ul,
 .article-html-content ol {
   margin: 0;
