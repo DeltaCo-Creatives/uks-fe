@@ -5,6 +5,8 @@ import ImageLightbox from '@/components/shared/ImageLightbox';
 import DocViewerModal from '@/components/shared/DocViewerModal';
 import { downloadFile } from '@/utils/downloadFile';
 import { isDirectPdf } from '@/utils/linkKind';
+// The same card grid as the Warta lists (3 across on a desktop, 2 on a tablet, 1 on a phone), so the pages match.
+import { GRID } from '@/features/informasi/styles';
 
 /*
  * Book cards build on the shared book-swipe-card / book-cover-large / book-swipe-actions classes, which
@@ -12,7 +14,7 @@ import { isDirectPdf } from '@/utils/linkKind';
  */
 export function BookGrid({ books, onRead }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,250px),1fr))] gap-5">
+    <div className={GRID}>
       {books.map((buku) => {
         const metaParts = [buku.pages, buku.size].filter(Boolean);
         return (
@@ -70,7 +72,7 @@ export function BookGrid({ books, onRead }) {
  */
 export function InfografisGrid({ items, onZoom }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-5">
+    <div className={GRID}>
       {items.map((item) => (
         <figure key={item.id} className="m-0 flex flex-col overflow-hidden rounded-card bg-card shadow-raised">
           <button
@@ -115,7 +117,7 @@ export function InfografisGrid({ items, onZoom }) {
  */
 export function GaleriGrid({ items, onOpen }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-5">
+    <div className={GRID}>
       {items.map((item) => {
         const count = item.foto?.length ?? 0;
         return (
@@ -167,7 +169,7 @@ export function AlbumLightbox({ album, onClose }) {
 
 export function VideoGrid({ videos }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5">
+    <div className={GRID}>
       {videos.map(vid => (
         <a
           key={vid.id}
