@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { profilDefinition } from '@/data/portalData';
 import { ProfilDeskripsi, ProfilTujuanSasaran, ProfilStruktur, ProfilManajemen } from '@/features/uksm';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 const scrollToSection = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -13,6 +14,7 @@ const scrollToSection = (id) => {
  */
 export default function ProfilPage() {
   const [orgTab, setOrgTab] = useState('pembina');
+  usePageMeta({ title: 'Profil & Tata Kelola UKS/M', description: profilDefinition });
 
   const openOrgTab = (tabId) => {
     setOrgTab(tabId);

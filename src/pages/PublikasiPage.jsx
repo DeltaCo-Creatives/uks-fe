@@ -2,6 +2,7 @@ import { useId, useRef, useState } from 'react';
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import useSearchFeedback from '@/hooks/useSearchFeedback';
+import { usePageMeta } from '@/hooks/usePageMeta';
 import { TEMPLATE_PANELS } from '@/pages/templatePanels';
 import { defaultTabPath, pathForView } from '@/routes';
 import LobbyTabs from '@/components/shared/LobbyTabs';
@@ -16,6 +17,10 @@ export default function PublikasiPage() {
   const pageRef = useRef(null);
   const publikasiTabs = useNavConfig().publikasi.sections;
   const section = publikasiTabs.find((tab) => tab.slug === tabSlug);
+  usePageMeta({
+    title: section && `${section.label} - Publikasi`,
+    description: section && `${section.label} di perpustakaan digital UKS/M: buku pedoman, infografis, video edukasi, dan regulasi resmi Kemendikdasmen.`
+  });
 
   const q = searchParams.get('q') || '';
   const searching = q.trim() !== '';

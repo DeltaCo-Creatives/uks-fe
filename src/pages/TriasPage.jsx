@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { triasPillarsDetail, triasPillarTaglines } from '@/data/portalData';
 import { TriasAccordionItem } from '@/features/uksm';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 const BADGE = 'inline-flex size-8 shrink-0 items-center justify-center rounded-[50%] font-display text-[15px] font-extrabold text-white';
 // The kicker already says "Pilar N", so phones drop the big badge and the title keeps full width.
@@ -69,6 +70,10 @@ function PillarSection({ pillar, openItemId, onToggleItem }) {
 export default function TriasPage() {
   const pillars = Object.values(triasPillarsDetail);
   const [openItemId, setOpenItemId] = useState(pillars[0].items[0].id);
+  usePageMeta({
+    title: 'Trias UKS/M',
+    description: 'Tiga program pokok Usaha Kesehatan Sekolah/Madrasah: pendidikan kesehatan, pelayanan kesehatan, dan pembinaan lingkungan sekolah sehat.'
+  });
 
   const handleToggleItem = (itemId) => {
     setOpenItemId((current) => (current === itemId ? null : itemId));

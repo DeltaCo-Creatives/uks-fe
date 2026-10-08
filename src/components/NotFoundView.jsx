@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { pathForView } from '../routes';
+import { usePageMeta, NOT_FOUND_META } from '@/hooks/usePageMeta';
 
 const SUGGESTIONS = [
   { view: 'beranda', icon: 'fa-solid fa-house', label: 'Beranda Nasional' },
@@ -12,6 +13,7 @@ const SUGGESTIONS = [
 
 export default function NotFoundView() {
   const { pathname } = useLocation();
+  usePageMeta(NOT_FOUND_META);
 
   return (
     <div className="container" style={{ padding: '32px 20px 80px', minHeight: '70vh' }}>

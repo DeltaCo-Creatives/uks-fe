@@ -1,5 +1,6 @@
 import { mitraIntro } from '@/data/portalData';
 import { MitraPanduan, MitraKriteria, MitraKami, MitraDukungan } from '@/features/mitra';
+import { usePageMeta } from '@/hooks/usePageMeta';
 
 /**
  * Mitra ▸ Kemitraan UKS/M. Content curated from PROD /mitra/* (see
@@ -7,6 +8,8 @@ import { MitraPanduan, MitraKriteria, MitraKami, MitraDukungan } from '@/feature
  * the four sections.
  */
 export default function MitraPage() {
+  usePageMeta({ title: mitraIntro.title, description: mitraIntro.lead });
+
   return (
     <div className="container px-5 pt-6 pb-20">
       <div className="subpage-hero-banner" data-gsap="reveal">
