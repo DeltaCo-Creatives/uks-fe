@@ -26,7 +26,7 @@ export default function Navbar() {
   const [mobileKementerianOpen, setMobileKementerianOpen] = useState(false);
   // undefined: the first instansi (so it is open even when the list loads late); null: closed by the visitor.
   const [openInstansi, setOpenInstansi] = useState(undefined);
-  // Same cached fetch as NavKementerianDropdown, with its own load and retry state for the drawer.
+  // One load and retry state for the desktop panel and the drawer, so a retry in either updates both.
   const { data: kementerianData, loading: kementerianLoading, error: kementerianError, retry: retryKementerian } = useKementerianList();
   const kementerianGroups = (kementerianData ?? []).filter((ministry) => ministry.tautan.length > 0);
   const activeInstansi = openInstansi === undefined ? kementerianGroups[0]?.id : openInstansi;
@@ -53,6 +53,19 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Escape closes an open panel wherever focus is (WCAG 1.4.13); focus returns to the trigger only if it was inside the item.
+  useEffect(() => {
+    if (openMenu === null) return undefined;
+    const handleEscape = (e) => {
+      if (e.key !== 'Escape') return;
+      const trigger = triggerRefs.current[openMenu];
+      if (trigger?.parentElement.contains(document.activeElement)) trigger.focus();
+      setOpenMenu(null);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [openMenu]);
+
   const closeMenus = () => {
     setOpenMenu(null);
     setMobileMenuOpen(false);
@@ -69,20 +82,25 @@ export default function Navbar() {
     kementerianHeaderRef.current?.focus();
   };
 
+  const handlePanelRetry = () => {
+    retryKementerian();
+    triggerRefs.current.kementerian?.focus();
+  };
+
   const goTo = (viewKey) => {
     closeMenus();
     navigate(pathForView(viewKey));
   };
 
-  // Pointer opens on hover, the keyboard closes with Escape (focus returns to the trigger) or by tabbing out.
+  // Hover has already opened the panel, so only a keyboard click (detail 0) toggles it shut.
+  const handleTriggerClick = (name) => (e) => {
+    setOpenMenu(e.detail === 0 && openMenu === name ? null : name);
+  };
+
+  // Pointer opens on hover; tabbing out closes. Escape is the window listener above.
   const dropdownItemProps = (name) => ({
     onMouseEnter: () => setOpenMenu(name),
     onMouseLeave: () => setOpenMenu(null),
-    onKeyDown: (e) => {
-      if (e.key !== 'Escape' || openMenu !== name) return;
-      setOpenMenu(null);
-      triggerRefs.current[name]?.focus();
-    },
     // A null relatedTarget is a click on non-focusable padding or a window blur; mouseleave covers the pointer.
     onBlur: (e) => {
       if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) {
@@ -132,7 +150,7 @@ export default function Navbar() {
               className={isUksmActive ? 'active' : ''}
               aria-expanded={openMenu === 'uksm'}
               aria-controls="nav-uksm-panel"
-              onClick={() => setOpenMenu(openMenu === 'uksm' ? null : 'uksm')}
+              onClick={handleTriggerClick('uksm')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -235,7 +253,7 @@ export default function Navbar() {
               ref={(el) => { triggerRefs.current.kementerian = el; }}
               aria-expanded={openMenu === 'kementerian'}
               aria-controls="nav-kementerian-panel"
-              onClick={() => setOpenMenu(openMenu === 'kementerian' ? null : 'kementerian')}
+              onClick={handleTriggerClick('kementerian')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -251,7 +269,10 @@ export default function Navbar() {
             <NavKementerianDropdown
               isOpen={openMenu === 'kementerian'}
               onClose={() => setOpenMenu(null)}
-              onRetry={() => triggerRefs.current.kementerian?.focus()}
+              groups={kementerianGroups}
+              loading={kementerianLoading}
+              error={kementerianError}
+              onRetry={handlePanelRetry}
             />
           </div>
 
