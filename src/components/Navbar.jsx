@@ -226,7 +226,11 @@ export default function Navbar() {
               <i className="fa-solid fa-chevron-down" aria-hidden="true" style={{ fontSize: '9px', opacity: 0.7 }}></i>
             </button>
 
-            <NavKementerianDropdown isOpen={openMenu === 'kementerian'} onClose={() => setOpenMenu(null)} />
+            <NavKementerianDropdown
+              isOpen={openMenu === 'kementerian'}
+              onClose={() => setOpenMenu(null)}
+              onRetry={() => triggerRefs.current.kementerian?.focus()}
+            />
           </div>
 
           <Link
