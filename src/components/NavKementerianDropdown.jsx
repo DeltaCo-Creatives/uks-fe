@@ -1,4 +1,3 @@
-import { useKementerianList } from '../hooks/usePublicLists';
 import { NEW_TAB_HINT } from '../utils/linkKind';
 import { packSpans, wideIndex } from './navKementerianLayout';
 
@@ -82,18 +81,10 @@ function KementerianCard({ group, span, solid, onClose }) {
   );
 }
 
-export default function NavKementerianDropdown({ isOpen, onClose, onRetry }) {
-  const { data, loading, error, retry } = useKementerianList();
-  const groups = (data ?? []).filter((ministry) => ministry.tautan.length > 0);
-
+// groups, loading, error and onRetry come from Navbar, so the panel and the mobile menu share one list state.
+export default function NavKementerianDropdown({ isOpen, onClose, groups, loading, error, onRetry }) {
   const wide = wideIndex(groups.map((group) => group.tautan.length));
   const spans = packSpans(groups.map((_, index) => (index === wide ? 2 : 1)));
-
-  // The Coba Lagi button is replaced by the loading block, so focus would drop to <body> without this.
-  const handleRetry = () => {
-    retry();
-    onRetry?.();
-  };
 
   return (
     <div
@@ -115,7 +106,7 @@ export default function NavKementerianDropdown({ isOpen, onClose, onRetry }) {
         </div>
 
         {groups.length === 0 ? (
-          <PanelState loading={loading} error={error} onRetry={handleRetry} />
+          <PanelState loading={loading} error={error} onRetry={onRetry} />
         ) : (
           <div className="nav-kem-grid">
             {groups.map((group, index) => (
