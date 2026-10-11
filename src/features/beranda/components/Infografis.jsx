@@ -5,6 +5,7 @@ import { HOVER_CAPABLE_QUERY } from '@/hooks/useHoverCapable';
 import { countPublikasiView } from '@/utils/counters';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
 import SafeImage from '@/components/SafeImage';
+import ImageLightbox from '@/components/shared/ImageLightbox';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FADE } from '../styles';
 import { loadCardCrops } from '../logoCard';
@@ -14,11 +15,14 @@ const MIN_LOGOS_PER_HALF = 8;
 // Keeps the pace of the original 14-logo, 70s strip whatever the partner count.
 const SECONDS_PER_LOGO = 5;
 
-// Cluster hover: the hovered tile grows, its siblings shrink and fade. "!" beats GSAP's inline transform/opacity.
-const TILE_BASE = 'relative flex-none cursor-pointer overflow-hidden rounded-card shadow-raised transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-[height,opacity]';
-const TILE_HOVER = 'hover:z-10 hover:transform-none! hover:shadow-[0_24px_48px_rgba(0,0,0,0.12)]! group-has-[:hover]/bento:not-hover:transform-none! group-has-[:hover]/bento:not-hover:opacity-50!';
-const TILE_SIZE = 'h-[230px] hover:h-[290px]! group-has-[:hover]/bento:not-hover:h-[200px]! max-md:h-[180px] max-md:hover:h-[220px]! max-md:group-has-[:hover]/bento:not-hover:h-[160px]!';
-const TILE_SIZE_LARGE = 'h-[260px] basis-[clamp(200px,35vw,400px)] hover:h-[290px]! group-has-[:hover]/bento:not-hover:h-[200px]! max-md:hover:h-[220px]! max-md:group-has-[:hover]/bento:not-hover:h-[160px]!';
+// Cluster hover: the hovered tile grows, its siblings shrink and fade. Hover is caught by a slot that never moves or
+// resizes, and only the card inside it scales: resizing the tile itself reflowed the wrapped rows, slid the hovered
+// tile out from under the pointer and flickered hover on and off. The slots' padding fills the gaps between tiles,
+// so moving across hands hover straight to the next one. "!" lets the hovered card beat the sibling rule.
+const TILE_SLOT = 'group/tile relative flex-none cursor-pointer p-2 outline-none hover:z-10 focus-visible:z-10 disabled:cursor-default';
+const TILE_CARD = 'block overflow-hidden rounded-card shadow-raised transition-[scale,opacity,box-shadow] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/tile:shadow-[0_24px_48px_rgba(0,0,0,0.12)] group-has-[:hover]/bento:opacity-50 group-hover/tile:opacity-100! group-focus-visible/tile:outline-2 group-focus-visible/tile:outline-offset-4 group-focus-visible/tile:outline-brand';
+const TILE_SIZE = 'h-[230px] max-md:h-[180px] group-has-[:hover]/bento:scale-[0.87] group-hover/tile:scale-[1.26]!';
+const TILE_SIZE_LARGE = 'h-[260px] w-[clamp(200px,35vw,400px)] group-has-[:hover]/bento:scale-[0.77] group-hover/tile:scale-[1.12]!';
 
 // A keyboard-focused logo and its ring must not sit under a fade.
 const FADE_OFF_ON_FOCUS = 'has-[:focus-visible]:before:opacity-0 has-[:focus-visible]:after:opacity-0';
@@ -182,11 +186,13 @@ export default function Infografis() {
                 )}
 
                 {!loading && !error && items.length > 0 && (
-                    <div className="group/bento flex min-h-[280px] w-full flex-wrap items-center justify-center gap-4">
+                    <div className="group/bento flex min-h-[280px] w-full flex-wrap items-center justify-center">
                         {items.map((info, i) => (
-                            <div key={info.id} className={`${TILE_BASE} ${TILE_HOVER} ${i === 0 ? TILE_SIZE_LARGE : TILE_SIZE}`} data-gsap="reveal" onClick={() => { if (!info.image) return; countPublikasiView(info.slug); setSelectedImage(info.image); }}>
-                                <SafeImage src={info.image} alt={info.title} className="h-full w-full object-cover" />
-                            </div>
+                            <button key={info.id} type="button" className={TILE_SLOT} data-gsap="reveal" disabled={!info.image} onClick={() => { countPublikasiView(info.slug); setSelectedImage({ src: info.image, title: info.title }); }}>
+                                <span className={`${TILE_CARD} ${i === 0 ? TILE_SIZE_LARGE : TILE_SIZE}`}>
+                                    <SafeImage src={info.image} alt={info.title} className="h-full w-full object-cover" />
+                                </span>
+                            </button>
                         ))}
                     </div>
                 )}
@@ -211,17 +217,7 @@ export default function Infografis() {
                 )}
             </div>
 
-            {/* Full Screen Image Lightbox */}
-            {selectedImage && (
-                <div className="lightbox-overlay" onClick={() => setSelectedImage(null)}>
-                    <div className="relative max-h-[90vh] max-w-[90vw] animate-[bubblyPop_0.5s_cubic-bezier(0.34,1.56,0.64,1)_forwards] cursor-default overflow-hidden rounded-card shadow-[0_40px_80px_rgba(0,0,0,0.3)]" onClick={e => e.stopPropagation()}>
-                        <button className="lightbox-close" onClick={() => setSelectedImage(null)}>
-                            <i className="fa-solid fa-xmark"></i>
-                        </button>
-                        <img className="block h-full max-h-[90vh] w-full object-contain" src={selectedImage} alt="Expanded view" />
-                    </div>
-                </div>
-            )}
+            {selectedImage && <ImageLightbox image={selectedImage} onClose={() => setSelectedImage(null)} />}
         </section>
     );
 }
