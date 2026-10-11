@@ -17,6 +17,7 @@ export default function Navbar() {
   // Starts from the real scroll position, so a page that opens already scrolled never plays the shrink.
   const [scrolled, setScrolled] = useState(() => window.scrollY > scrollThreshold(currentView));
   const searchButtonRef = useRef(null);
+  const hamburgerRef = useRef(null);
   const triggerRefs = useRef({});
   // Which single dropdown is open: null | 'uksm' | 'kementerian'
   const [openMenu, setOpenMenu] = useState(null);
@@ -76,6 +77,13 @@ export default function Navbar() {
     }
   });
 
+  // On the nav so one handler covers both the hamburger and the drawer.
+  const handleNavKeyDown = (e) => {
+    if (e.key !== 'Escape' || !mobileMenuOpen) return;
+    setMobileMenuOpen(false);
+    hamburgerRef.current?.focus();
+  };
+
   const isUksmActive = pathname.startsWith('/uksm');
 
   const plainTabs = [
@@ -87,7 +95,7 @@ export default function Navbar() {
 
   return (
     <div className={`nav-dynamic-wrapper ${scrolled ? 'is-scrolled' : 'is-top'}`}>
-      <nav className="nav-dynamic-bar">
+      <nav className="nav-dynamic-bar" onKeyDown={handleNavKeyDown}>
         {/* Brand Icon */}
         <NavBrand scrolled={scrolled} onClick={closeMenus} />
 
@@ -254,17 +262,21 @@ export default function Navbar() {
 
           {/* Mobile Hamburger Toggle Button */}
           <button
+            type="button"
+            ref={hamburgerRef}
             className="nav-mobile-toggle"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle Navigation Menu"
+            aria-label="Menu navigasi"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="nav-mobile-drawer"
           >
-            <i className={mobileMenuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars"}></i>
+            <i className={mobileMenuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars"} aria-hidden="true"></i>
           </button>
         </div>
 
         {/* Mobile Dropdown Menu Drawer */}
         {mobileMenuOpen && (
-          <div className="nav-mobile-menu">
+          <div id="nav-mobile-drawer" className="nav-mobile-menu">
             <div className="nav-mobile-list">
               {/* Mobile Search Item (A2); the drawer closes on tap, so the bar's search button plays the confirmation. */}
               <Link
@@ -275,8 +287,8 @@ export default function Navbar() {
                   searchButtonRef.current?.confirm();
                 }}
                 style={{
-                  background: currentView === 'search' ? 'var(--brand-primary)' : 'var(--brand-light)',
-                  color: currentView === 'search' ? '#FFFFFF' : 'var(--brand-primary)',
+                  background: currentView === 'search' ? 'var(--brand-deep)' : 'var(--brand-light)',
+                  color: currentView === 'search' ? '#FFFFFF' : 'var(--brand-deep)',
                   fontWeight: 800
                 }}
               >
