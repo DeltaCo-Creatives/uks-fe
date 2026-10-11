@@ -1,89 +1,128 @@
 import { useKementerianList } from '../hooks/usePublicLists';
+import { NEW_TAB_HINT } from '../utils/linkKind';
+import { packSpans, wideIndex } from './navKementerianLayout';
 
-export default function NavKementerianDropdown({ isOpen, onClose }) {
-  // Every page mounts the navbar, so a loading/failed fetch must stay silent
-  // here: the dropdown just renders with nothing in it, never an error state.
-  const { data } = useKementerianList();
+const STATES = {
+  loading: { icon: 'fa-solid fa-circle-notch fa-spin', title: 'Memuat daftar kementerian...' },
+  empty: {
+    icon: 'fa-solid fa-building-columns',
+    title: 'Belum ada kementerian terkait',
+    text: 'Daftar tautan akan tampil di sini begitu tersedia.'
+  },
+  error: {
+    icon: 'fa-solid fa-triangle-exclamation',
+    title: 'Daftar kementerian tidak dapat dimuat',
+    text: 'Terjadi gangguan saat mengambil data. Silakan coba lagi.'
+  }
+};
+
+const normalize = (text) => String(text ?? '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+// Kemenkes and BGN list a link named after themselves, so the caption would only repeat it.
+const showNama = (group) =>
+  Boolean(group.nama) && !group.tautan.some((link) => normalize(link.label) === normalize(group.nama));
+
+function statusOf(groups, loading, error) {
+  if (groups.length > 0) return null;
+  if (loading) return 'loading';
+  return error ? 'error' : 'empty';
+}
+
+function PanelState({ status, onRetry }) {
+  const { icon, title, text } = STATES[status];
+  return (
+    <div className="nav-kem-state" role="status">
+      <i className={icon} aria-hidden="true"></i>
+      <h4>{title}</h4>
+      {text && <p>{text}</p>}
+      {status === 'error' && (
+        <button type="button" className="nav-kem-retry" onClick={onRetry}>
+          Coba Lagi
+        </button>
+      )}
+    </div>
+  );
+}
+
+function KementerianCard({ group, span, solid, onClose }) {
+  const headingId = `nav-kem-heading-${group.id}`;
+  const columns = Math.min(span, group.tautan.length);
+
+  return (
+    <div className={`nav-kem-card${span > 1 ? ` span-${span}` : ''}`}>
+      <div className="nav-kem-head">
+        <span className={`nav-cluster-icon${solid ? ' is-solid' : ''}`} aria-hidden="true">
+          <i className={group.ikon}></i>
+        </span>
+        <div className="nav-kem-id">
+          <h4 id={headingId}>{group.singkatan}</h4>
+          {showNama(group) && <p>{group.nama}</p>}
+        </div>
+      </div>
+
+      <ul className={`nav-kem-links${columns > 1 ? ` cols-${columns}` : ''}`} aria-labelledby={headingId}>
+        {group.tautan.map((link, index) => (
+          <li key={`${index}-${link.label}`}>
+            <a className="nav-kem-link" href={link.url} target="_blank" rel="noopener noreferrer" onClick={onClose}>
+              <span className="nav-kem-label">{link.label}</span>
+              <span className="sr-only"> {NEW_TAB_HINT}</span>
+              <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default function NavKementerianDropdown({ isOpen, onClose, onRetry }) {
+  const { data, loading, error, retry } = useKementerianList();
   const groups = (data ?? []).filter((ministry) => ministry.tautan.length > 0);
-  const totalLinks = groups.reduce((sum, group) => sum + group.tautan.length, 0);
+  const status = statusOf(groups, loading, error);
+
+  const wide = wideIndex(groups.map((group) => group.tautan.length));
+  const spans = packSpans(groups.map((_, index) => (index === wide ? 2 : 1)));
+
+  // The Coba Lagi button is replaced by the loading block, so focus would drop to <body> without this.
+  const handleRetry = () => {
+    retry();
+    onRetry?.();
+  };
 
   return (
     <div
       id="nav-kementerian-panel"
-      className={`nav-cluster-dropdown ${isOpen ? 'is-open' : ''}`}
-      style={{ width: '840px' }}
+      className={`nav-cluster-dropdown nav-kem-dropdown ${isOpen ? 'is-open' : ''}`}
     >
       <div className="nav-cluster-panel">
         <div className="nav-cluster-header">
-          <div className="nav-cluster-title">
-            <i className="fa-solid fa-link" style={{ color: 'var(--brand-primary)' }}></i>
+          <h3 className="nav-cluster-title">
+            <i className="fa-solid fa-link" aria-hidden="true"></i>
             <span>Kementerian Terkait &amp; Direktorat Pembina UKS/M</span>
-          </div>
+          </h3>
           {groups.length > 0 && (
-            <span style={{ fontSize: '10px', background: 'var(--brand-light)', color: 'var(--brand-primary)', padding: '3px 8px', borderRadius: '999px', fontWeight: 800 }}>
-              {groups.length} KEMENTERIAN · {totalLinks} TAUTAN
-            </span>
+            <p className="nav-kem-note">
+              <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              <span>Dibuka di tab baru</span>
+            </p>
           )}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
-          {groups.map((group) => (
-            <div
-              key={group.id}
-              style={{
-                background: 'var(--bg-card-alt)',
-                borderRadius: 'var(--radius-md)',
-                padding: '14px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-                border: '1px solid rgba(0, 0, 0, 0.04)'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingBottom: '8px', borderBottom: '1px solid rgba(0, 0, 0, 0.06)' }}>
-                <i className={group.ikon} style={{ color: 'var(--brand-primary)', fontSize: '14px' }}></i>
-                <h4 style={{ fontSize: '13px', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                  {group.singkatan}
-                </h4>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {group.tautan.map((lnk, idx) => (
-                  <a
-                    key={`${idx}-${lnk.label}`}
-                    href={lnk.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => onClose?.()}
-                    style={{
-                      fontSize: '12px',
-                      color: 'var(--text-secondary)',
-                      textDecoration: 'none',
-                      padding: '4px 6px',
-                      borderRadius: 'var(--radius-xs)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '6px',
-                      transition: 'var(--ease)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = 'var(--brand-primary)';
-                      e.currentTarget.style.background = '#FFFFFF';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = 'var(--text-secondary)';
-                      e.currentTarget.style.background = 'transparent';
-                    }}
-                  >
-                    <span style={{ lineHeight: 1.35 }}>{lnk.label}</span>
-                    <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: '9px', opacity: 0.6, flexShrink: 0 }}></i>
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        {status ? (
+          <PanelState status={status} onRetry={handleRetry} />
+        ) : (
+          <div className="nav-kem-grid">
+            {groups.map((group, index) => (
+              <KementerianCard
+                key={group.id}
+                group={group}
+                span={spans[index]}
+                solid={index === wide}
+                onClose={onClose}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2313,6 +2313,221 @@ footer {
   border-top: 1px solid rgba(0, 0, 0, 0.04);
 }
 
+/* Kementerian Terkait panel (NavKementerianDropdown) */
+.nav-kem-dropdown {
+  width: 840px;
+}
+
+.nav-kem-dropdown .nav-cluster-title > i {
+  font-size: 13px;
+  color: var(--brand-deep);
+}
+
+/* Plain-text legend for the external-link glyph, not a control, so no capsule. */
+.nav-kem-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.nav-kem-note i {
+  font-size: 10px;
+}
+
+/* Three columns; packSpans (navKementerianLayout.js) sets each card's span so no row has a hole. */
+.nav-kem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.nav-kem-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--bg-card-alt);
+  border: 1.5px solid rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s;
+}
+
+/* The card is not a link, so it never lifts; it only shows which instansi the keyboard is in. */
+.nav-kem-card:focus-within {
+  border-color: var(--brand-primary);
+}
+
+.nav-kem-card.span-2 {
+  grid-column: span 2;
+}
+
+.nav-kem-card.span-3 {
+  grid-column: span 3;
+}
+
+.nav-kem-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nav-kem-card .nav-cluster-icon {
+  flex: none;
+  margin-bottom: 0;
+  background: var(--brand-light);
+  color: var(--brand-deep);
+}
+
+.nav-kem-card .nav-cluster-icon.is-solid {
+  background: var(--brand-deep);
+  color: var(--brand-accent);
+}
+
+.nav-kem-id {
+  min-width: 0;
+}
+
+.nav-kem-id h4 {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.nav-kem-id p {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.nav-kem-links {
+  display: grid;
+  gap: 2px;
+}
+
+.nav-kem-links.cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 8px;
+}
+
+.nav-kem-links.cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 8px;
+}
+
+/* Not var(--spring): that is `all`, which would also animate the focus ring in over half a second. */
+.nav-kem-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text-primary);
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.nav-kem-link:hover,
+.nav-kem-link:focus-visible {
+  background: var(--bg-card);
+  border-color: var(--brand-primary);
+  color: var(--brand-deep);
+}
+
+.nav-kem-link:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+.nav-kem-link:active {
+  background: var(--brand-light);
+}
+
+.nav-kem-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.nav-kem-link i {
+  flex: none;
+  font-size: 10px;
+  color: var(--text-secondary);
+  transition: color 0.15s;
+}
+
+.nav-kem-link:hover i,
+.nav-kem-link:focus-visible i {
+  color: var(--brand-deep);
+}
+
+/* The panel also opens on a touch laptop or a landscape tablet wider than 1024px, where 36px is under the tap size. */
+@media (pointer: coarse) {
+  .nav-kem-link {
+    min-height: 44px;
+  }
+}
+
+.nav-kem-state {
+  padding: 36px 20px;
+  text-align: center;
+  background: var(--bg-app);
+  border-radius: var(--radius-lg);
+}
+
+/* fit-content, not a full-width block: a spinning full-width box would widen the panel's scroll area while it turns. */
+.nav-kem-state > i {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 10px;
+  font-size: 26px;
+  color: var(--text-secondary);
+}
+
+.nav-kem-state h4 {
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.nav-kem-state p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.nav-kem-retry {
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--text-primary);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.nav-kem-retry:hover {
+  background: var(--brand-deep);
+}
+
+.nav-kem-retry:focus-visible {
+  outline: 3px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
 /* ============================================================
    LOBBY PATTERN (Program / Kemitraan / Informasi / Publikasi)
    A row of tab buttons + one big display panel that swaps content —
