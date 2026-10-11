@@ -22,13 +22,14 @@ const normalize = (text) => String(text ?? '').toLowerCase().replace(/\s+/g, ' '
 const showNama = (group) =>
   Boolean(group.nama) && !group.tautan.some((link) => normalize(link.label) === normalize(group.nama));
 
-function statusOf(groups, loading, error) {
-  if (groups.length > 0) return null;
+function statusOf(loading, error) {
   if (loading) return 'loading';
   return error ? 'error' : 'empty';
 }
 
-function PanelState({ status, onRetry }) {
+// Shown wherever the list has nothing to show: the desktop panel and the mobile menu.
+export function PanelState({ loading, error, onRetry }) {
+  const status = statusOf(loading, error);
   const { icon, title, text } = STATES[status];
   return (
     <div className="nav-kem-state" role="status">
@@ -41,6 +42,16 @@ function PanelState({ status, onRetry }) {
         </button>
       )}
     </div>
+  );
+}
+
+export function KementerianLink({ link, onClick }) {
+  return (
+    <a className="nav-kem-link" href={link.url} target="_blank" rel="noopener noreferrer" onClick={onClick}>
+      <span className="nav-kem-label">{link.label}</span>
+      <span className="sr-only"> {NEW_TAB_HINT}</span>
+      <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+    </a>
   );
 }
 
@@ -63,11 +74,7 @@ function KementerianCard({ group, span, solid, onClose }) {
       <ul className={`nav-kem-links${columns > 1 ? ` cols-${columns}` : ''}`} aria-labelledby={headingId}>
         {group.tautan.map((link, index) => (
           <li key={`${index}-${link.label}`}>
-            <a className="nav-kem-link" href={link.url} target="_blank" rel="noopener noreferrer" onClick={onClose}>
-              <span className="nav-kem-label">{link.label}</span>
-              <span className="sr-only"> {NEW_TAB_HINT}</span>
-              <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
-            </a>
+            <KementerianLink link={link} onClick={onClose} />
           </li>
         ))}
       </ul>
@@ -78,7 +85,6 @@ function KementerianCard({ group, span, solid, onClose }) {
 export default function NavKementerianDropdown({ isOpen, onClose, onRetry }) {
   const { data, loading, error, retry } = useKementerianList();
   const groups = (data ?? []).filter((ministry) => ministry.tautan.length > 0);
-  const status = statusOf(groups, loading, error);
 
   const wide = wideIndex(groups.map((group) => group.tautan.length));
   const spans = packSpans(groups.map((_, index) => (index === wide ? 2 : 1)));
@@ -108,8 +114,8 @@ export default function NavKementerianDropdown({ isOpen, onClose, onRetry }) {
           )}
         </div>
 
-        {status ? (
-          <PanelState status={status} onRetry={handleRetry} />
+        {groups.length === 0 ? (
+          <PanelState loading={loading} error={error} onRetry={handleRetry} />
         ) : (
           <div className="nav-kem-grid">
             {groups.map((group, index) => (

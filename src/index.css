@@ -464,7 +464,9 @@
 
 /* The base layer strips every button's outline, so the nav buttons carry their own ring. */
 .nav-mobile-toggle:focus-visible,
-.nav-links-nav > .nav-item-has-dropdown > button:focus-visible {
+.nav-links-nav > .nav-item-has-dropdown > button:focus-visible,
+button.nav-mobile-group-header:focus-visible,
+.nav-mobile-kem-btn:focus-visible {
   outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
@@ -545,6 +547,114 @@
   font-weight: 800;
   color: var(--brand-deep);
   text-align: left;
+}
+
+button.nav-mobile-group-header {
+  transition: background-color 0.15s;
+}
+
+button.nav-mobile-group-header:hover {
+  background: var(--brand-light);
+}
+
+.nav-mobile-chevron {
+  margin-left: auto;
+  font-size: 11px;
+}
+
+/* Kementerian Terkait in the mobile menu: one row per instansi, one open at a time.
+   Keep this above the .nav-kem-link states so their hover and focus win over the resting overrides. */
+.nav-mobile-kem {
+  padding: 2px 0 6px;
+}
+
+.nav-mobile-kem .nav-kem-state {
+  padding: 24px 16px;
+}
+
+/* minmax(0, 1fr): an auto track sized itself to the longest word and ran past the drawer at 320px. */
+.nav-mobile-kem-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.nav-mobile-kem-item {
+  background: var(--bg-card-alt);
+  border: 1.5px solid rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md);
+}
+
+.nav-mobile-kem-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  text-align: left;
+  transition: background-color 0.15s;
+}
+
+.nav-mobile-kem-btn:hover {
+  background: var(--bg-card);
+}
+
+.nav-mobile-kem-btn .nav-cluster-icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 0;
+  font-size: 15px;
+  background: var(--brand-light);
+  color: var(--brand-deep);
+}
+
+/* The yellow glyph marks the open instansi, the same accent the wide card carries on desktop. */
+.nav-mobile-kem-btn[aria-expanded="true"] .nav-cluster-icon {
+  background: var(--brand-deep);
+  color: var(--brand-accent);
+}
+
+.nav-mobile-kem-name {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-mobile-kem-title {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+
+.nav-mobile-kem-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.nav-mobile-kem-btn .nav-mobile-chevron {
+  color: var(--text-secondary);
+}
+
+.nav-mobile-kem-links {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding: 4px 8px 10px;
+}
+
+.nav-mobile-kem-links .nav-kem-link {
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border-color: rgba(0, 0, 0, 0.06);
+  font-size: 14px;
 }
 
 .nav-mobile-divider {
