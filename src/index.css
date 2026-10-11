@@ -1716,6 +1716,8 @@ footer {
 
 .img-lightbox-close {
   position: absolute;
+  /* Comes before the positioned photo wrapper in the markup, so without this the photo paints over it. */
+  z-index: 1;
   top: -8px;
   right: -8px;
   display: grid;
