@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavBrand from './NavBrand';
-import NavKementerianDropdown from './NavKementerianDropdown';
+import NavKementerianDropdown, { KementerianLink, PanelState } from './NavKementerianDropdown';
 import NavSearchButton from './NavSearchButton';
 import { useKementerianList } from '../hooks/usePublicLists';
 import { pathForView, viewKeyFromPathname } from '../routes';
@@ -18,15 +18,18 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(() => window.scrollY > scrollThreshold(currentView));
   const searchButtonRef = useRef(null);
   const hamburgerRef = useRef(null);
+  const kementerianHeaderRef = useRef(null);
   const triggerRefs = useRef({});
   // Which single dropdown is open: null | 'uksm' | 'kementerian'
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileKementerianOpen, setMobileKementerianOpen] = useState(false);
-  // Shares the same cached fetch as NavKementerianDropdown; a loading/failed
-  // fetch just means the collapsible section has nothing under it.
-  const { data: kementerianData } = useKementerianList();
+  // undefined: the first instansi (so it is open even when the list loads late); null: closed by the visitor.
+  const [openInstansi, setOpenInstansi] = useState(undefined);
+  // Same cached fetch as NavKementerianDropdown, with its own load and retry state for the drawer.
+  const { data: kementerianData, loading: kementerianLoading, error: kementerianError, retry: retryKementerian } = useKementerianList();
   const kementerianGroups = (kementerianData ?? []).filter((ministry) => ministry.tautan.length > 0);
+  const activeInstansi = openInstansi === undefined ? kementerianGroups[0]?.id : openInstansi;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,6 +56,17 @@ export default function Navbar() {
   const closeMenus = () => {
     setOpenMenu(null);
     setMobileMenuOpen(false);
+  };
+
+  const toggleMobileKementerian = () => {
+    setOpenInstansi(undefined);
+    setMobileKementerianOpen((open) => !open);
+  };
+
+  // The Coba Lagi button is replaced by the loading block, so focus would drop to <body> without this.
+  const handleKementerianRetry = () => {
+    retryKementerian();
+    kementerianHeaderRef.current?.focus();
   };
 
   const goTo = (viewKey) => {
@@ -375,41 +389,64 @@ export default function Navbar() {
                 <span>Pustaka Digital &amp; Modul</span>
               </Link>
 
-              {/* Collapsible Mobile Kementerian Terkait (A1) */}
-              <div
+              {/* Collapsible Mobile Kementerian Terkait (A1): one instansi open at a time */}
+              <button
+                type="button"
+                ref={kementerianHeaderRef}
                 className="nav-mobile-group-header"
-                onClick={() => setMobileKementerianOpen(!mobileKementerianOpen)}
-                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                aria-expanded={mobileKementerianOpen}
+                aria-controls="nav-mobile-kementerian"
+                onClick={toggleMobileKementerian}
               >
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <i className="fa-solid fa-link"></i>
-                  <span>{kementerianGroups.length} Kementerian Terkait:</span>
-                </span>
-                <i className={`fa-solid fa-chevron-${mobileKementerianOpen ? 'up' : 'down'}`} style={{ fontSize: '10px' }}></i>
-              </div>
+                <i className="fa-solid fa-link" aria-hidden="true"></i>
+                <span>Kementerian Terkait</span>
+                <i className={`fa-solid fa-chevron-${mobileKementerianOpen ? 'up' : 'down'} nav-mobile-chevron`} aria-hidden="true"></i>
+              </button>
 
               {mobileKementerianOpen && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '8px' }}>
-                  {kementerianGroups.map((grp) => (
-                    <div key={grp.id} style={{ marginBottom: '4px' }}>
-                      <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)', padding: '4px 16px 2px' }}>
-                        {grp.singkatan}
-                      </div>
-                      {grp.tautan.map((lnk, idx) => (
-                        <a
-                          key={`${idx}-${lnk.label}`}
-                          href={lnk.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="nav-mobile-item indent"
-                          style={{ fontSize: '12px', padding: '6px 16px 6px 28px', justifyContent: 'space-between' }}
-                        >
-                          <span>{lnk.label}</span>
-                          <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: '10px', opacity: 0.5 }}></i>
-                        </a>
-                      ))}
+                <div id="nav-mobile-kementerian" className="nav-mobile-kem">
+                  {kementerianGroups.length === 0 ? (
+                    <PanelState loading={kementerianLoading} error={kementerianError} onRetry={handleKementerianRetry} />
+                  ) : (
+                    <div className="nav-mobile-kem-list">
+                      {kementerianGroups.map((group) => {
+                        const isOpen = group.id === activeInstansi;
+                        const linksId = `nav-mobile-kem-${group.id}`;
+                        return (
+                          <div key={group.id} className="nav-mobile-kem-item">
+                            <h4>
+                              <button
+                                type="button"
+                                className="nav-mobile-kem-btn"
+                                aria-expanded={isOpen}
+                                aria-controls={linksId}
+                                onClick={() => setOpenInstansi(isOpen ? null : group.id)}
+                              >
+                                <span className="nav-cluster-icon" aria-hidden="true">
+                                  <i className={group.ikon}></i>
+                                </span>
+                                <span className="nav-mobile-kem-name">
+                                  <span className="nav-mobile-kem-title">{group.singkatan}</span>
+                                  <span className="nav-mobile-kem-count">{group.tautan.length} tautan</span>
+                                </span>
+                                <i className={`fa-solid fa-chevron-${isOpen ? 'up' : 'down'} nav-mobile-chevron`} aria-hidden="true"></i>
+                              </button>
+                            </h4>
+
+                            {isOpen && (
+                              <ul id={linksId} className="nav-mobile-kem-links">
+                                {group.tautan.map((link, index) => (
+                                  <li key={`${index}-${link.label}`}>
+                                    <KementerianLink link={link} onClick={closeMenus} />
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
 
