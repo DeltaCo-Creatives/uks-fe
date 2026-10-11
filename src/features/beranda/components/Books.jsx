@@ -1,21 +1,17 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
+import { pathForTab } from '@/routes';
 import { useBukuPanduanList } from '@/hooks/usePublicLists';
 import { countPublikasiDownload, countPublikasiView } from '@/utils/counters';
 import { downloadFile } from '@/utils/downloadFile';
 import SafeImage from '@/components/SafeImage';
+import DocViewerModal from '@/components/shared/DocViewerModal';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
 import { useMarqueeHold } from '../useMarqueeHold';
 
 const MARQUEE_PX_PER_SECOND = 40;
-
-// GSAP drives the overlay through inline `transform`, so the parked position must be a `transform` too:
-// translate-x-full would set the separate `translate` property and stay applied under GSAP.
-// Spring transitions and fadeIn/bubblyPop keyframes come from index.css.
-const ALL_BOOKS_VIEW = 'fixed inset-0 z-[99998] overflow-hidden bg-app [transform:translateX(100%)]';
-const BACK_BUTTON = 'flex size-14 items-center justify-center rounded-[50%] bg-white text-[20px] text-ink shadow-raised [transition:var(--spring)] hover:bg-ink hover:text-white hover:[transform:scale(1.1)_translateX(-8px)]';
-const PDF_CLOSE = 'flex size-10 shrink-0 items-center justify-center rounded-[50%] bg-app [transition:var(--spring)] hover:bg-[#ff4757] hover:text-white hover:[transform:scale(1.1)_rotate(90deg)]';
 
 /** `[category, year]` joined without printing a stray separator when either is missing. */
 function bookMeta(buku) {
@@ -28,7 +24,6 @@ export default function Books() {
 
     const [selectedBook, setSelectedBook] = useState(null);
     const marqueeTween = useRef(null);
-    const overlayRef = useRef(null);
     const trackRef = useRef(null);
     const { hold: holdMarquee, trackProps } = useMarqueeHold(marqueeTween);
 
@@ -57,59 +52,10 @@ export default function Books() {
         };
     }, [hasBooks]);
 
-    // Lock scroll when PDF modal is open
+    // Pause the marquee behind the reader; DocViewerModal locks scroll itself.
     useEffect(() => {
         holdMarquee('modal', Boolean(selectedBook));
-        if (selectedBook) {
-            document.body.style.overflow = 'hidden';
-            gsap.to('.nav-dynamic-wrapper', { y: -100, opacity: 0, duration: 0.5, ease: 'back.in(1.2)' });
-        } else {
-            document.body.style.overflow = '';
-            gsap.to('.nav-dynamic-wrapper', { y: 0, opacity: 1, duration: 0.6, ease: 'back.out(1.2)', clearProps: 'all' });
-        }
     }, [selectedBook, holdMarquee]);
-
-    const handleLihatSemua = () => {
-        // Ramp up warp speed
-        marqueeTween.current.play();
-        gsap.to(marqueeTween.current, { timeScale: 80, duration: 1.2, ease: 'power4.in' });
-        gsap.to(trackRef.current, { filter: 'blur(24px) contrast(1.3)', duration: 1.2, ease: 'power4.in' });
-
-        // At max velocity, slide the overlay in from the right
-        setTimeout(() => {
-            document.body.style.overflow = 'hidden';
-            const overlay = overlayRef.current;
-            const cards = overlay.querySelectorAll('.grid-card');
-
-            // The overlay is always in the DOM but positioned off-screen.
-            // Animate it sliding in from the right.
-            gsap.timeline()
-                .fromTo(overlay,
-                    { x: '100%' },
-                    { x: '0%', duration: 0.5, ease: 'power3.inOut' }
-                )
-                .fromTo(cards,
-                    { opacity: 0, y: 40 },
-                    { opacity: 1, y: 0, duration: 0.4, stagger: 0.04, ease: 'back.out(1.4)' },
-                    '-=0.1'
-                );
-        }, 1200);
-    };
-
-    const handleKembali = () => {
-        const overlay = overlayRef.current;
-        gsap.to(overlay, {
-            x: '-100%',
-            duration: 0.5,
-            ease: 'power3.inOut',
-            onComplete: () => {
-                document.body.style.overflow = '';
-                // Decelerate marquee
-                gsap.to(marqueeTween.current, { timeScale: 1, duration: 1.5, ease: 'power2.out' });
-                gsap.to(trackRef.current, { filter: 'blur(0px) contrast(1)', duration: 1.5 });
-            }
-        });
-    };
 
     // No PDF on the record: fall back to the source link when there is one,
     // otherwise there is nothing to open.
@@ -161,9 +107,9 @@ export default function Books() {
                         <span className="section-kicker">Perpustakaan</span>
                         <h2 className="section-title">Buku &amp; Panduan</h2>
                     </div>
-                    <button className={`btn-pill primary ${SECTION_MORE_BUTTON}`} onClick={handleLihatSemua}>
+                    <Link to={pathForTab('publikasi', 'buku')} className={`btn-pill primary ${SECTION_MORE_BUTTON}`}>
                         Lihat Semua Buku <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -200,51 +146,18 @@ export default function Books() {
                 </div>
             </div>
 
-            {/* ALL BOOKS OVERLAY — always in DOM, GSAP slides it in/out */}
-            <div className={ALL_BOOKS_VIEW} ref={overlayRef}>
-                <div className="container relative flex h-full flex-col">
-                    <div className="flex items-center gap-6 pt-10 pb-5">
-                        <button className={BACK_BUTTON} onClick={handleKembali}>
-                            <i className="fa-solid fa-arrow-left"></i>
-                        </button>
-                        <h2 className="text-[32px] tracking-[-0.02em]">Semua Koleksi Perpustakaan</h2>
-                    </div>
-                    <div className="flex-1 overflow-y-auto pb-20 [scrollbar-color:var(--brand-primary)_transparent] [scrollbar-width:thin]">
-                        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5 py-4">
-                            {(booksList || []).map((buku) => (
-                                <div key={`grid-${buku.id}`} className="swipe-card book-swipe-card grid-card w-full! flex-none!">
-                                    <div className="book-cover-large">
-                                        <SafeImage src={buku.cover} alt={buku.title} icon="fa-regular fa-file-pdf" />
-                                    </div>
-                                    <h3>{buku.title}</h3>
-                                    {bookMeta(buku) && <p>{bookMeta(buku)}</p>}
-                                    {renderActions(buku)}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Bubbly PDF Modal */}
             {selectedBook && (
-                <div
-                    className="fixed inset-0 z-[100000] flex animate-[fadeIn_0.3s_ease_forwards] items-center justify-center bg-[rgba(17,28,22,0.4)] p-6 backdrop-blur-[12px]"
-                    onClick={() => setSelectedBook(null)}
-                >
-                    <div
-                        className="flex h-[85vh] w-full max-w-[1000px] animate-[bubblyPop_0.6s_cubic-bezier(0.34,1.56,0.64,1)_forwards] flex-col overflow-hidden rounded-panel bg-white shadow-[0_40px_100px_rgba(0,0,0,0.3)]"
-                        onClick={e => e.stopPropagation()}
-                    >
-                        <div className="flex items-center justify-between border-b border-black/[0.04] bg-white px-6 py-4">
-                            <h3 className="overflow-hidden pr-6 text-[18px] text-ellipsis whitespace-nowrap">{selectedBook.title}</h3>
-                            <button className={PDF_CLOSE} onClick={() => setSelectedBook(null)} aria-label="Tutup">
-                                <i className="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                        <iframe className="w-full flex-1 bg-[#f0f0f0]" src={`${selectedBook.pdf}#view=Fit`} title={selectedBook.title} />
-                    </div>
-                </div>
+                <DocViewerModal
+                    doc={{
+                        title: selectedBook.title,
+                        url: selectedBook.pdf,
+                        kind: 'pdf',
+                        meta: [selectedBook.pages, selectedBook.size].filter(Boolean).join(' · '),
+                        download: selectedBook.pdf,
+                        slug: selectedBook.slug
+                    }}
+                    onClose={() => setSelectedBook(null)}
+                />
             )}
         </section>
     );

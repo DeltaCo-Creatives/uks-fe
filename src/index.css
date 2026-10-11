@@ -1761,16 +1761,16 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 16px;
   background: rgba(10, 16, 13, 0.72);
 }
 
+/* Near-fullscreen: a document reads best with every pixel; the 16px rim keeps the backdrop clickable to close. */
 .doc-viewer {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1000px;
-  height: min(88vh, 900px);
+  height: 100%;
   overflow: hidden;
   background: var(--bg-card);
   border-radius: var(--radius-xl);
