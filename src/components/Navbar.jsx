@@ -17,6 +17,7 @@ export default function Navbar() {
   // Starts from the real scroll position, so a page that opens already scrolled never plays the shrink.
   const [scrolled, setScrolled] = useState(() => window.scrollY > scrollThreshold(currentView));
   const searchButtonRef = useRef(null);
+  const triggerRefs = useRef({});
   // Which single dropdown is open: null | 'uksm' | 'kementerian'
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -58,6 +59,23 @@ export default function Navbar() {
     navigate(pathForView(viewKey));
   };
 
+  // Pointer opens on hover, the keyboard closes with Escape (focus returns to the trigger) or by tabbing out.
+  const dropdownItemProps = (name) => ({
+    onMouseEnter: () => setOpenMenu(name),
+    onMouseLeave: () => setOpenMenu(null),
+    onKeyDown: (e) => {
+      if (e.key !== 'Escape' || openMenu !== name) return;
+      setOpenMenu(null);
+      triggerRefs.current[name]?.focus();
+    },
+    // A null relatedTarget is a click on non-focusable padding or a window blur; mouseleave covers the pointer.
+    onBlur: (e) => {
+      if (e.relatedTarget && !e.currentTarget.contains(e.relatedTarget)) {
+        setOpenMenu((current) => (current === name ? null : current));
+      }
+    }
+  });
+
   const isUksmActive = pathname.startsWith('/uksm');
 
   const plainTabs = [
@@ -85,18 +103,14 @@ export default function Navbar() {
           </Link>
 
           {/* UKS/M Tab with 4-Cluster Dropdown */}
-          <div
-            className="nav-item-has-dropdown"
-            onMouseEnter={() => setOpenMenu('uksm')}
-            onMouseLeave={() => setOpenMenu(null)}
-          >
-            <a
-              href="#uksm"
+          <div className="nav-item-has-dropdown" {...dropdownItemProps('uksm')}>
+            <button
+              type="button"
+              ref={(el) => { triggerRefs.current.uksm = el; }}
               className={isUksmActive ? 'active' : ''}
-              onClick={(e) => {
-                e.preventDefault();
-                setOpenMenu(openMenu === 'uksm' ? null : 'uksm');
-              }}
+              aria-expanded={openMenu === 'uksm'}
+              aria-controls="nav-uksm-panel"
+              onClick={() => setOpenMenu(openMenu === 'uksm' ? null : 'uksm')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -104,12 +118,12 @@ export default function Navbar() {
                 fontWeight: isUksmActive ? 800 : 600
               }}
             >
-              <i className="fa-solid fa-layer-group" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
+              <i className="fa-solid fa-layer-group" aria-hidden="true" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
               <span>UKS/M</span>
-              <i className="fa-solid fa-chevron-down" style={{ fontSize: '9px', opacity: 0.7 }}></i>
-            </a>
+              <i className="fa-solid fa-chevron-down" aria-hidden="true" style={{ fontSize: '9px', opacity: 0.7 }}></i>
+            </button>
 
-            <div className={`nav-cluster-dropdown ${openMenu === 'uksm' ? 'is-open' : ''}`}>
+            <div id="nav-uksm-panel" className={`nav-cluster-dropdown ${openMenu === 'uksm' ? 'is-open' : ''}`}>
               <div className="nav-cluster-panel">
                 <div className="nav-cluster-header">
                   <div className="nav-cluster-title">
@@ -193,17 +207,13 @@ export default function Navbar() {
           ))}
 
           {/* Kementerian Terkait Outbound Dropdown (A1) */}
-          <div
-            className="nav-item-has-dropdown"
-            onMouseEnter={() => setOpenMenu('kementerian')}
-            onMouseLeave={() => setOpenMenu(null)}
-          >
-            <a
-              href="#kementerian-terkait"
-              onClick={(e) => {
-                e.preventDefault();
-                setOpenMenu(openMenu === 'kementerian' ? null : 'kementerian');
-              }}
+          <div className="nav-item-has-dropdown" {...dropdownItemProps('kementerian')}>
+            <button
+              type="button"
+              ref={(el) => { triggerRefs.current.kementerian = el; }}
+              aria-expanded={openMenu === 'kementerian'}
+              aria-controls="nav-kementerian-panel"
+              onClick={() => setOpenMenu(openMenu === 'kementerian' ? null : 'kementerian')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -211,10 +221,10 @@ export default function Navbar() {
                 fontWeight: openMenu === 'kementerian' ? 800 : 600
               }}
             >
-              <i className="fa-solid fa-link" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
+              <i className="fa-solid fa-link" aria-hidden="true" style={{ fontSize: '11px', color: 'var(--brand-primary)' }}></i>
               <span>Kementerian Terkait</span>
-              <i className="fa-solid fa-chevron-down" style={{ fontSize: '9px', opacity: 0.7 }}></i>
-            </a>
+              <i className="fa-solid fa-chevron-down" aria-hidden="true" style={{ fontSize: '9px', opacity: 0.7 }}></i>
+            </button>
 
             <NavKementerianDropdown isOpen={openMenu === 'kementerian'} onClose={() => setOpenMenu(null)} />
           </div>

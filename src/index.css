@@ -356,11 +356,20 @@
   justify-content: center;
 }
 
+/* The dropdown triggers are buttons: strip the button chrome so they read as the same pills as the links. */
+.nav-links-nav > .nav-item-has-dropdown > button {
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
 /* Bar items only. The dropdown panels hanging off these items are full of
    links of their own, and a pill radius on a cluster card turns it into a
    lozenge. */
 .nav-links-nav > a,
-.nav-links-nav > .nav-item-has-dropdown > a {
+.nav-links-nav > .nav-item-has-dropdown > a,
+.nav-links-nav > .nav-item-has-dropdown > button {
   padding: 12px 20px;
   border-radius: var(--radius-pill);
   font-size: 15px;
@@ -379,7 +388,8 @@
   }
 
   .nav-links-nav > a,
-  .nav-links-nav > .nav-item-has-dropdown > a {
+  .nav-links-nav > .nav-item-has-dropdown > a,
+  .nav-links-nav > .nav-item-has-dropdown > button {
     padding: 12px 12px;
   }
 }
@@ -387,7 +397,9 @@
 .nav-links-nav > a:hover,
 .nav-links-nav > a.active,
 .nav-links-nav > .nav-item-has-dropdown > a:hover,
-.nav-links-nav > .nav-item-has-dropdown > a.active {
+.nav-links-nav > .nav-item-has-dropdown > a.active,
+.nav-links-nav > .nav-item-has-dropdown > button:hover,
+.nav-links-nav > .nav-item-has-dropdown > button.active {
   background: var(--text-primary);
   color: white;
   transform: scale(1.05);
@@ -2169,11 +2181,13 @@ footer {
 /* The bar's bottom padding now sits between the tab and the panel. This
    invisible strip is part of the tab, so the cursor crossing it keeps the tab
    hovered — without it the menu closes on the way down to the panel. */
-.nav-item-has-dropdown:has(.nav-cluster-dropdown) > a {
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) > a,
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) > button {
   position: relative;
 }
 
-.nav-item-has-dropdown:has(.nav-cluster-dropdown) > a:hover::after {
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) > a:hover::after,
+.nav-item-has-dropdown:has(.nav-cluster-dropdown) > button:hover::after {
   content: '';
   position: absolute;
   top: 100%;
@@ -2207,8 +2221,7 @@ footer {
   z-index: 10005;
 }
 
-.nav-cluster-dropdown.is-open,
-.nav-item-has-dropdown:hover .nav-cluster-dropdown {
+.nav-cluster-dropdown.is-open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -2227,20 +2240,20 @@ footer {
    small translateY fade doesn't have that problem — it settles fast and
    never shrinks the hit area below its final size. */
 .nav-cluster-panel {
-  background: rgba(255, 255, 255, 0.97);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  background: var(--bg-card);
   border: 1.5px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-lg);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
   padding: 22px;
+  max-height: calc(100dvh - 130px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   opacity: 0;
   transform: translateY(-8px);
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
-.nav-cluster-dropdown.is-open .nav-cluster-panel,
-.nav-item-has-dropdown:hover .nav-cluster-dropdown .nav-cluster-panel {
+.nav-cluster-dropdown.is-open .nav-cluster-panel {
   opacity: 1;
   transform: translateY(0);
 }
@@ -2295,6 +2308,13 @@ footer {
   border-color: var(--brand-primary);
   transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(9, 140, 76, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-cluster-panel,
+  .nav-cluster-card:hover {
+    transform: none;
+  }
 }
 
 .nav-cluster-icon {

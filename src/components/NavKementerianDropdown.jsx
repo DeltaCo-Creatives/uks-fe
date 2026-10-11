@@ -9,11 +9,9 @@ export default function NavKementerianDropdown({ isOpen, onClose }) {
 
   return (
     <div
+      id="nav-kementerian-panel"
       className={`nav-cluster-dropdown ${isOpen ? 'is-open' : ''}`}
       style={{ width: '840px' }}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') onClose?.();
-      }}
     >
       <div className="nav-cluster-panel">
         <div className="nav-cluster-header">
