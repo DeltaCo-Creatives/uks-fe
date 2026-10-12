@@ -22,7 +22,7 @@ export default function KontakPage() {
 
       <div className="flex flex-col gap-9">
         <KontakAlamat settings={settings} />
-        <KontakTiket />
+        <KontakTiket email={settings?.['kontak.email']} />
         <KontakFaq />
         <KontakLokasi mapsUrl={settings?.['kontak.mapsUrl']} />
       </div>
