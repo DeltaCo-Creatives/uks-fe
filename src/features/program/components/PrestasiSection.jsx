@@ -165,7 +165,7 @@ function CompetitionCard({ item }) {
   const face = item.faces[activeTab];
 
   return (
-    <article className="rounded-panel bg-card px-7 pt-6 pb-7 max-[600px]:p-5">
+    <article className="rounded-panel bg-card-alt px-7 pt-6 pb-7 max-[600px]:p-5">
       <header className="mb-1 flex items-baseline gap-5 border-b border-rule pb-4 max-[600px]:flex-col max-[600px]:gap-1">
         <span className="flex-none font-display text-[30px] leading-none font-extrabold text-ink max-[600px]:text-[22px]">{item.year}</span>
         <div>

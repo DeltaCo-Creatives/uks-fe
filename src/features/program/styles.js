@@ -3,10 +3,10 @@
 // Zero-padded "01" numerals shared with Trias and Profil. Size is set where it is used.
 export const NUM = 'font-display font-extrabold text-brand-deep tabular-nums';
 
-// The container behind each numbered content section: a pale, slightly darker green than the page and the white header
-// card, so the text has a defined area. Slightly deeper than bg-card-alt on purpose, because blocks inside a section
-// (the contrast column, empty states) use bg-card-alt and would otherwise disappear into it. Text on it still passes AA.
-export const SECTION_PANEL = 'rounded-panel bg-[#E4EDE7] p-8 max-[600px]:p-5';
+// The container behind each numbered content section: white with the same shadow as the header card above it, so the
+// text has a defined area and the page reads as a stack of matching cards. Blocks inside a section that used to be white
+// (the pillars, the Prestasi panel, the contrast "answer" column) are tinted or outlined instead, or they would vanish.
+export const SECTION_PANEL = 'rounded-panel bg-card p-8 shadow-raised max-[600px]:p-5';
 
 export const LEAD = 'max-w-[68ch] text-[16px] leading-[1.7] text-ink';
 export const NOTE = 'mt-3.5 max-w-[80ch] text-[14px] leading-[1.65] text-ink-muted';

@@ -149,7 +149,7 @@ export function ContrastSection({ section }) {
             {section.problem.items.map((text) => <li key={text} className={item}>{text}</li>)}
           </ul>
         </div>
-        <div className={`${column} bg-card`}>
+        <div className={`${column} border-[1.5px] border-rule bg-card`}>
           <h4 className="mb-3 text-[15px] font-extrabold">{section.answer.title}</h4>
           <ul className={list}>
             {section.answer.items.map((text) => <li key={text} className={item}>{text}</li>)}
@@ -168,7 +168,7 @@ export function PillarsSection({ section }) {
         {section.items.map((item) => (
           <li
             key={item.letter}
-            className="grid grid-cols-[64px_minmax(0,1fr)] gap-4 rounded-card bg-card p-[22px] max-[600px]:grid-cols-[48px_minmax(0,1fr)] max-[600px]:p-[18px]"
+            className="grid grid-cols-[64px_minmax(0,1fr)] gap-4 rounded-card bg-card-alt p-[22px] max-[600px]:grid-cols-[48px_minmax(0,1fr)] max-[600px]:p-[18px]"
           >
             <span className="font-display text-[56px] leading-[0.9] font-extrabold text-brand max-[600px]:text-[44px]" aria-hidden="true">{item.letter}</span>
             <div>
