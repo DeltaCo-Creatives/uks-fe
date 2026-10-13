@@ -25,12 +25,14 @@ done
 [ -z "$missing" ] || fail "missing$missing (set all Infisical bootstrap vars, or none to start without Infisical)"
 
 # The CLI reads the client ID and secret from the env, so they never appear in the process list.
-token=$(infisical login --method=universal-auth --silent --plain) ||
+# --log-level warn: at debug level the CLI logs every value it injects, so a LOG_LEVEL=debug in the pod must not reach it.
+token=$(infisical login --method=universal-auth --silent --plain --log-level warn) ||
   fail "login to $INFISICAL_DOMAIN failed (error above); check the client ID/secret and the identity's Universal Auth settings"
 [ -n "$token" ] || fail "login to $INFISICAL_DOMAIN returned no access token"
 unset INFISICAL_UNIVERSAL_AUTH_CLIENT_ID INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET
 export INFISICAL_TOKEN="$token"
 
+echo "infisical-entrypoint: loading secrets from $INFISICAL_DOMAIN (env $INFISICAL_ENVIRONMENT, path ${INFISICAL_SECRET_PATH:-/})"
 # env -u: CMD gets the secrets, not the token that could fetch them again.
-exec infisical run --silent --projectId "$INFISICAL_PROJECT_ID" --env "$INFISICAL_ENVIRONMENT" \
+exec infisical run --silent --log-level warn --projectId "$INFISICAL_PROJECT_ID" --env "$INFISICAL_ENVIRONMENT" \
   --path "${INFISICAL_SECRET_PATH:-/}" -- env -u INFISICAL_TOKEN "$@"
