@@ -1,3 +1,5 @@
+import { env } from './env';
+
 /**
  * Minimal fetch wrapper for the public UKS API. Throws on network errors and
  * non-2xx responses, tagging the error with the HTTP status so callers can
@@ -11,7 +13,7 @@
  * @param {RequestInit} [options]
  */
 export async function apiFetch(path, options = {}) {
-  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  const baseUrl = env('VITE_API_BASE_URL');
   const response = await fetch(`${baseUrl}${path}`, { cache: 'no-cache', ...options });
 
   if (!response.ok) {
@@ -31,7 +33,7 @@ export async function apiFetch(path, options = {}) {
  */
 export function apiPing(path) {
   try {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+    const baseUrl = env('VITE_API_BASE_URL');
     fetch(`${baseUrl}${path}`, { method: 'POST', keepalive: true }).catch(() => {});
   } catch {
     // Counting must never affect the popup.

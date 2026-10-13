@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
 
 // Crawlers get the sitemap from the API host, so robots.txt is written at build from the same env var.
+// The container image rewrites it at start from its own env (runtime-env.sh): keep both in sync.
 const robotsTxt = (apiBaseUrl) => ({
   name: 'emit-robots-txt',
   generateBundle() {
