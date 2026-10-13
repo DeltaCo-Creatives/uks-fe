@@ -18,7 +18,7 @@ check_url() {
     *) fail "$1 must be an http(s) URL" ;;
   esac
   case "$2" in
-    *[![:alnum:].:/_~%?#@=+,\;\&-]*) fail "$1 contains characters that are not allowed in a URL" ;;
+    *[!a-zA-Z0-9.:/_~%?#@=+,\;\&-]*) fail "$1 contains characters that are not allowed in a URL" ;;
   esac
 }
 
