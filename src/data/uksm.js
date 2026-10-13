@@ -1,3 +1,3 @@
 /**
- * UKS/M PROFILE DATA (Trias lives in ./trias.js, strata in ./stratifikasi.js)
+ * UKS/M PROFILE DATA (Trias, Profil and Struktur come from the API via features/uksm/useUksm.js, strata in ./stratifikasi.js)
  */
