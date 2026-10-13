@@ -8,10 +8,10 @@ const PREVIEW_COUNT = 4;
 function ChecklistItems({ items, color, className = '' }) {
   return (
     <ul className={`m-0 flex list-none flex-col gap-2.5 p-0 ${className}`}>
-      {items.map((req) => (
-        <li key={req} className="flex items-start gap-2.5 text-[15px] leading-[1.6] text-ink">
+      {items.map(({ code, text }) => (
+        <li key={code} className="flex items-start gap-2.5 text-[15px] leading-[1.6] text-ink">
           <i className="fa-solid fa-circle-check mt-[5px] shrink-0 text-[13px]" style={{ color }} aria-hidden="true"></i>
-          <span>{req}</span>
+          <span><span className="mr-0.5 text-[12px] font-bold text-ink-muted tabular-nums">{code}</span>{' '}{text}</span>
         </li>
       ))}
     </ul>
@@ -19,10 +19,10 @@ function ChecklistItems({ items, color, className = '' }) {
 }
 
 /**
- * One indicator area (e.g. Pelayanan kesehatan) for the selected strata:
+ * One indicator area (e.g. Pelayanan Kesehatan) for the selected strata:
  * a checklist that shows the first few items and expands on request.
  *
- * @param {{ category: object, index: number, requirements: string[], strata: object }} props
+ * @param {{ category: object, index: number, requirements: Array<{ code: string, text: string }>, strata: object }} props
  */
 export default function StrataCategoryCard({ category, index, requirements, strata }) {
   const [expanded, setExpanded] = useState(false);
@@ -45,7 +45,9 @@ export default function StrataCategoryCard({ category, index, requirements, stra
       </div>
 
       <div id={listId}>
-        <ChecklistItems items={preview} color={strata.color} />
+        {preview.length > 0
+          ? <ChecklistItems items={preview} color={strata.color} />
+          : <p className="m-0 text-[14px] leading-[1.6] text-ink-muted">Tidak ada indikator tambahan.</p>}
         {extraMounted && (
           <div ref={extraRef}>
             <ChecklistItems items={extra} color={strata.color} className="pt-2.5" />

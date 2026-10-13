@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { pageNavigationConfigs } from '@/data/portalData';
-import { useProgramList, useSubmenuList } from '@/hooks/usePublicLists';
+import { useProgramList, useSubmenuList, useUksmList } from '@/hooks/usePublicLists';
 import { NavConfigContext } from '@/hooks/useNavConfig';
 import { TEMPLATE_PANELS } from '@/pages/templatePanels';
 import { sectionIdForTab, setActiveConfigs } from '@/routes';
@@ -48,16 +48,21 @@ function buildConfigs(submenus, programs) {
   };
 }
 
-/** Holds its children until the submenu and program lists settle, so no route resolves against stale tabs. */
+/**
+ * Holds its children until the submenu, program and UKS/M lists settle, so no route resolves against stale tabs.
+ * UKS/M is only prefetched into the shared cache: the Trias and Profil anchors need their content in the first
+ * route commit, because ScrollManager and the GSAP reveal scan look once.
+ */
 export default function NavConfigProvider({ children }) {
   const submenus = useSubmenuList();
   const programs = useProgramList();
+  const uksm = useUksmList();
   const [timedOut, setTimedOut] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setTimedOut(true), NAV_WAIT_MS);
     return () => clearTimeout(timer);
   }, []);
-  const settled = timedOut || (!submenus.loading && !programs.loading);
+  const settled = timedOut || (!submenus.loading && !programs.loading && !uksm.loading);
 
   const configs = useMemo(() => {
     const built = buildConfigs(submenus.data, programs.data);

@@ -1,25 +1,31 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { prefersReducedMotion } from '@/hooks/useCollapse';
 import { strataCategories, strataLevels } from '@/data/portalData';
+import { strataIndicators } from '../../mapUksm';
+import JenjangTabs from './JenjangTabs';
 import StrataCategoryCard from './StrataCategoryCard';
 import { FOCUS_RING } from '../../styles';
+
+const DEFAULT_JENJANG = 'sd';
 
 // --strata-color / --strata-bg / --step-rise are set inline per step, so the colors and height follow the data.
 const STEP = 'flex min-h-[calc(104px_+_var(--step-rise,0px))] cursor-pointer flex-col items-start justify-end gap-1 rounded-card border-2 border-t-[6px] border-t-[var(--strata-color)] px-5 py-[18px] text-left text-ink [transition:var(--spring)] hover:shadow-raised hover:[transform:translateY(-3px)] max-[768px]:min-h-0 max-[768px]:px-4 max-[768px]:py-3.5';
 const STEP_IDLE = 'border-line bg-card';
 const STEP_ACTIVE = 'border-[var(--strata-color)] bg-[var(--strata-bg)] shadow-raised';
 
-const countIndicators = (strata) => Object.values(strata.requirementsSD).reduce((sum, list) => sum + list.length, 0);
+const countIndicators = (requirements, strataKey) =>
+  strataCategories.reduce((sum, category) => sum + strataIndicators(requirements, category.id, strataKey).length, 0);
 
 /** The 4 strata as a rising ladder of buttons; the selected one drives the panel below. */
-function StrataLadder({ selectedKey, onSelect }) {
+function StrataLadder({ requirements, selectedKey, onSelect }) {
   return (
     <div className="mb-4 grid grid-cols-4 items-end gap-3 max-[768px]:grid-cols-2 max-[768px]:items-stretch" role="group" aria-label="Pilih strata">
       {strataLevels.map((strata, idx) => {
         const isActive = strata.key === selectedKey;
-        const count = countIndicators(strata);
+        const count = countIndicators(requirements, strata.key);
         return (
           <button
             key={strata.key}
@@ -40,24 +46,42 @@ function StrataLadder({ selectedKey, onSelect }) {
 }
 
 /**
- * UKS/M ▸ Stratifikasi ▸ Indikator: pick a strata, see only what it adds,
- * grouped by the 4 indicator areas.
+ * UKS/M ▸ Stratifikasi ▸ Indikator: pick a jenjang and a strata, see only what that strata adds,
+ * grouped by the 4 indicator areas. The choice lives in ?jenjang= and ?strata= (replace, no history entry);
+ * an unknown or missing value falls back to SD (else the first jenjang) and Dasar.
+ *
+ * @param {{ jenjang: Array<{ slug: string, label: string, requirements: object }> }} props at least one row
  */
-export default function StrataExplorer() {
-  const [selectedKey, setSelectedKey] = useState(strataLevels[0].key);
-  const index = strataLevels.findIndex((s) => s.key === selectedKey);
+export default function StrataExplorer({ jenjang }) {
+  const [searchParams] = useSearchParams();
+  const { hash } = useLocation();
+  const navigate = useNavigate();
+  const current =
+    jenjang.find((row) => row.slug === searchParams.get('jenjang')) ??
+    jenjang.find((row) => row.slug === DEFAULT_JENJANG) ??
+    jenjang[0];
+  const index = Math.max(0, strataLevels.findIndex((level) => level.key === searchParams.get('strata')));
   const strata = strataLevels[index];
   const previous = strataLevels[index - 1];
   const next = strataLevels[index + 1];
-  const count = countIndicators(strata);
+  const { requirements } = current;
+  const count = countIndicators(requirements, strata.key);
   const panelRef = useRef(null);
-  const shownKey = useRef(selectedKey);
+  const viewKey = `${current.slug}-${strata.key}`;
+  const shownKey = useRef(viewKey);
+
+  // navigate rather than setSearchParams, which would drop the #sec-strat-indikator anchor of a shared link.
+  const select = (param, value) => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set(param, value);
+    navigate({ search: `?${nextParams}`, hash }, { replace: true });
+  };
 
   // strat-panel-head and strat-category-card are class hooks for this tween; they carry no CSS.
-  // Soft fade-up of the new strata's content; the first render and reduced-motion users get none.
+  // Soft fade-up of the new jenjang or strata's content; the first render and reduced-motion users get none.
   useGSAP(() => {
-    if (shownKey.current === selectedKey) return;
-    shownKey.current = selectedKey;
+    if (shownKey.current === viewKey) return;
+    shownKey.current = viewKey;
     if (prefersReducedMotion()) return;
     gsap.from('.strat-panel-head, .strat-category-card', {
       opacity: 0,
@@ -67,11 +91,11 @@ export default function StrataExplorer() {
       stagger: 0.05,
       clearProps: 'opacity,transform'
     });
-  }, { dependencies: [selectedKey], scope: panelRef });
+  }, { dependencies: [viewKey], scope: panelRef });
 
   return (
-    <div>
-      <StrataLadder selectedKey={selectedKey} onSelect={setSelectedKey} />
+    <JenjangTabs jenjang={jenjang} activeSlug={current.slug} onSelect={(slug) => select('jenjang', slug)}>
+      <StrataLadder requirements={requirements} selectedKey={strata.key} onSelect={(key) => select('strata', key)} />
 
       <div ref={panelRef} className="rounded-card border-t-[6px] bg-card p-[clamp(20px,3vw,32px)] shadow-raised" style={{ borderTopColor: strata.color }} aria-live="polite">
         <div className="strat-panel-head mb-5">
@@ -88,24 +112,24 @@ export default function StrataExplorer() {
           </div>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-start gap-3.5" key={strata.key}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-start gap-3.5" key={viewKey}>
           {strataCategories.map((category, idx) => (
             <StrataCategoryCard
               key={category.id}
               category={category}
               index={idx}
-              requirements={strata.requirementsSD[category.id]}
+              requirements={strataIndicators(requirements, category.id, strata.key)}
               strata={strata}
             />
           ))}
         </div>
 
         {next && (
-          <button type="button" className={`btn-pill secondary mt-5 min-h-[44px] cursor-pointer px-5! py-2.5! text-[14px]! ${FOCUS_RING}`} onClick={() => setSelectedKey(next.key)}>
+          <button type="button" className={`btn-pill secondary mt-5 min-h-[44px] cursor-pointer px-5! py-2.5! text-[14px]! ${FOCUS_RING}`} onClick={() => select('strata', next.key)}>
             Lanjut ke strata {next.name} <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
           </button>
         )}
       </div>
-    </div>
+    </JenjangTabs>
   );
 }

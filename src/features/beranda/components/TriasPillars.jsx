@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { triasPillarsDetail } from '@/data/portalData';
+import { useUksm } from '@/features/uksm';
 import { pathForView } from '@/routes';
 
 // Full class strings, so Tailwind can see them. Hexes are the original blue/emerald values.
@@ -36,6 +36,9 @@ const PILLARS = [
 // The trailing "!" on .btn-pill overrides: that class is unlayered CSS and beats plain utilities.
 // Drop the "!" once .btn-pill itself moves to Tailwind.
 export default function TriasPillars() {
+  // No loading or error state on Beranda: a description is blank until the data arrives, and stays blank if it never does.
+  const { triasPillarsDetail } = useUksm();
+
   return (
     <section id="sec-home-trias" className="section pb-[30px]!">
       <div className="container">
@@ -62,7 +65,7 @@ export default function TriasPillars() {
                 <span className={`text-[11px] font-extrabold ${p.accent}`}>{p.label}</span>
                 <h3 className="mt-1.5 mb-2.5 text-[18px] font-extrabold">{p.title}</h3>
                 <p className="mb-4 text-[13px] leading-[1.6] text-ink-muted">
-                  {triasPillarsDetail[p.key].description}
+                  {triasPillarsDetail[p.key]?.description}
                 </p>
               </div>
               <Link

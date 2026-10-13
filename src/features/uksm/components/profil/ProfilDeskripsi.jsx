@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { profilTriasPillars, profilContinuity } from '@/data/portalData';
+import { useUksm } from '../../useUksm';
 import { pathForView } from '@/routes';
 import { SECTION, NUM, BLOCK_TITLE, MINI_LABEL, TEXT_LINK } from './styles';
 
@@ -14,13 +14,13 @@ function PillarCard({ pillar }) {
       <h3 className="mb-2 text-[20px] leading-[1.25] font-extrabold">{pillar.title}</h3>
       <p className="mb-4 text-[14px] leading-[1.65] text-ink-muted">{pillar.definition}</p>
 
-      {pillar.groups.map((group) => (
-        <div key={group.label} className="[&+&]:mt-4">
+      {pillar.groups.map((group, groupIdx) => (
+        <div key={groupIdx} className="[&+&]:mt-4">
           <h4 className={MINI_LABEL}>{group.label}</h4>
           <ul className="m-0 grid list-none gap-2 p-0">
-            {group.items.map((item) => (
+            {group.items.map((item, itemIdx) => (
               <li
-                key={item.name}
+                key={itemIdx}
                 className="relative pl-4 text-[14px] leading-[1.45] before:absolute before:top-[0.5em] before:left-0 before:size-1.5 before:rounded-[2px] before:bg-brand before:content-['']"
               >
                 <strong className="block font-bold text-ink">{item.name}</strong>
@@ -47,6 +47,7 @@ function PillarCard({ pillar }) {
  * the page's own "keep it running" advice as a numbered list, not more cards.
  */
 export default function ProfilDeskripsi({ onOpenOrgTab, onScrollTo }) {
+  const { profilTriasPillars, profilContinuity } = useUksm();
 
   return (
     <section id="sec-profil-deskripsi" className={`${SECTION} pt-2.5!`}>

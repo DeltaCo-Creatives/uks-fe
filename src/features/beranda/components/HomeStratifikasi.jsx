@@ -4,7 +4,7 @@ import { pathForView } from '@/routes';
 
 /**
  * Beranda ▸ Stratifikasi UKS/M teaser — dev homepage's 4 strata boxes +
- * "Lihat Detail", both leading to UKS/M ▸ Stratifikasi UKS/M.
+ * "Lihat Detail", both leading to UKS/M ▸ Stratifikasi UKS/M (each box opens its own strata, SD by default).
  */
 // Strata colors come from data shared with the Stratifikasi page, so they stay inline.
 // The trailing "!" beats the unlayered .btn-pill/.section rules; drop it once those move to Tailwind.
@@ -27,7 +27,7 @@ export default function HomeStratifikasi() {
             <Link
               key={lvl.key}
               data-gsap="reveal"
-              to={pathForView('uksm-stratifikasi', 'sec-strat-indikator')}
+              to={`${pathForView('uksm-stratifikasi')}?strata=${lvl.key}#sec-strat-indikator`}
               className="flex flex-col gap-2 rounded-card border-[1.5px] border-t-6 border-black/[0.06] bg-card p-6 text-left shadow-raised"
               style={{ borderTopColor: lvl.color }}
             >

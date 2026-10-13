@@ -1,20 +1,17 @@
 import { useId, useState } from 'react';
 import ImageLightbox from '@/components/shared/ImageLightbox';
-import ProfilChartPlaceholder from './ProfilChartPlaceholder';
 
 /**
- * The official org chart, or the placeholder until the image is supplied (a chart with no `src`).
+ * The official org chart image.
  *
  * The chart's text is small once it is shrunk to a phone, so tapping it opens the full-size view. It is a picture
  * of a hierarchy, so `description` is what screen readers get in its place.
  *
- * @param {{ chart: { title: string, src?: string, description?: string, source: string, width: number, height: number } }} props
+ * @param {{ chart: { title: string, src: string, description?: string, width: number, height: number } }} props
  */
 export default function ProfilChart({ chart }) {
   const [zoomed, setZoomed] = useState(false);
   const descriptionId = useId();
-
-  if (!chart.src) return <ProfilChartPlaceholder chart={chart} />;
 
   return (
     // profil-org-block is the hook ProfilStruktur's tab-change tween looks for; it carries no CSS.

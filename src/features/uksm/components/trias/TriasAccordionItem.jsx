@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import ContentPlaceholder from '@/components/ContentPlaceholder';
 import useCollapse from '@/hooks/useCollapse';
-import TriasOfficialText from './TriasOfficialText';
-import { TRIAS_SOURCE, triasItemSummaries } from '@/data/portalData';
+import TriasOfficialText, { TRIAS_SOURCE } from './TriasOfficialText';
 import { FOCUS_RING } from '../../styles';
-
-const FALLBACK_SUMMARY = { icon: 'fa-solid fa-circle-info', short: '', summary: null, facts: [] };
 
 function FactTiles({ facts, pillar }) {
   return (
@@ -27,11 +24,11 @@ function FactTiles({ facts, pillar }) {
  * One sub-program row: icon, number, title and a one-line summary. Opening it
  * shows a plain summary, key facts, and the full official text on request.
  *
- * @param {{ item: object, index: number, pillar: object, isOpen: boolean, onToggle: () => void }} props
+ * @param {{ item: object, info: { icon: string, short: string, summary: string | null, facts: object[] }, index: number, pillar: object, isOpen: boolean, onToggle: () => void }} props
+ *   info: the item's entry of triasItemSummaries (icon, one-line summary, plain-language summary, fact tiles)
  */
-export default function TriasAccordionItem({ item, index, pillar, isOpen, onToggle }) {
+export default function TriasAccordionItem({ item, info, index, pillar, isOpen, onToggle }) {
   const [showFull, setShowFull] = useState(false);
-  const info = triasItemSummaries[item.id] ?? FALLBACK_SUMMARY;
   const panelId = `trias-panel-${item.id}`;
   const hasFullText = Boolean(item.description) || item.sections.length > 0;
   const { ref: panelRef, mounted: panelMounted } = useCollapse(isOpen, { keepInView: true });
