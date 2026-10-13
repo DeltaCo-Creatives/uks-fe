@@ -92,6 +92,9 @@ export const useProgramList = createCachedList('/public/program');
  */
 export const useSubmenuList = createCachedList('/public/submenu');
 
+/** Peta Navigasi links of the footer (`label`, `jenis`, `halaman`, `url`), active only, ordered by urutan then label. */
+export const useFooterTautanList = createCachedList('/public/footer-tautan');
+
 /**
  * Site settings (Pengaturan Situs): a flat `{ "module.key": value }` object,
  * not a list, but `createCachedList` only ever passes the JSON through, so it

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { prefersReducedMotion } from '@/hooks/useCollapse';
-import { ROW, LABEL, VALUE, SKELETON, URUTAN, URUTAN_NUMBER, MUTED } from '../styles';
+import { ROW, LABEL, VALUE, SKELETON, SKELETON_JUDUL, URUTAN, URUTAN_NUMBER, MUTED } from '../styles';
 
 const ROWS = [
   { key: 'hariIni', label: 'Hari Ini' },
@@ -51,10 +51,11 @@ function LoadingRows() {
  * @param {{
  *   ringkasan: { hariIni: number, mingguIni: number, bulanIni: number, total: number } | null,
  *   urutan: number | null,
- *   error: Error | null
- * }} props - fields of useKunjungan()
+ *   error: Error | null,
+ *   judul?: string | null
+ * }} props - fields of useKunjungan(), plus the column heading: "Statistik Pengunjung" unless given, and a skeleton bar for null (heading still loading)
  */
-export default function StatistikPengunjung({ ringkasan, urutan, error }) {
+export default function StatistikPengunjung({ ringkasan, urutan, error, judul = 'Statistik Pengunjung' }) {
   const blockRef = useRef(null);
   const hasData = Boolean(ringkasan);
   const hasUrutan = Number.isInteger(urutan) && urutan > 0;
@@ -131,7 +132,11 @@ export default function StatistikPengunjung({ ringkasan, urutan, error }) {
 
   return (
     <div ref={blockRef} className="footer-links" style={{ flex: '1 1 220px', maxWidth: '300px' }}>
-      <h5>Statistik Pengunjung</h5>
+      {judul === null ? (
+        <h5 aria-hidden="true"><span className={SKELETON_JUDUL} /></h5>
+      ) : (
+        <h5>{judul}</h5>
+      )}
       {content}
     </div>
   );

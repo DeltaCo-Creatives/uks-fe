@@ -1461,6 +1461,12 @@ footer {
   flex-wrap: wrap;
 }
 
+/* CMS text can hold a long unbroken word; it wraps instead of pushing the footer wider than the screen. */
+.footer-content,
+.footer-bottom {
+  overflow-wrap: anywhere;
+}
+
 .footer-huge-text {
   font-size: clamp(36px, 6vw, 64px);
   font-family: "Plus Jakarta Sans", sans-serif;
@@ -1476,6 +1482,8 @@ footer {
   width: fit-content;
   max-width: 100%;
   perspective: 800px;
+  /* The wordmark is three letters and never wraps. */
+  overflow-wrap: normal;
 }
 
 .footer-wordmark-stage {
@@ -1578,6 +1586,12 @@ footer {
 .footer-links a:hover {
   color: white;
   padding-left: 4px;
+}
+
+/* Accent yellow ring: 12:1 against the dark footer, and it follows the round social icons. */
+.footer-links a:focus-visible {
+  outline: 3px solid var(--brand-accent);
+  outline-offset: 3px;
 }
 
 .footer-bottom {
