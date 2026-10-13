@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { toMetaDescription } from '@/utils/metaDescription';
+import { env } from '@/utils/env';
 
 const SITE_NAME = 'UKS Indonesia';
 
@@ -8,9 +9,9 @@ const SITE_NAME = 'UKS Indonesia';
 const DEFAULT_TITLE = document.title;
 const DEFAULT_DESCRIPTION = document.querySelector('meta[name="description"]')?.getAttribute('content') ?? '';
 
-// Build-time public origin, the same value as the API's Portal:BaseUrl (the sitemap host), so previews and the
+// Public origin, the same value as the API's Portal:BaseUrl (the sitemap host), so previews and the
 // default hostname canonicalise to it too. Unset or not absolute: whichever origin is serving the page.
-const SITE_URL = import.meta.env.VITE_SITE_URL ?? '';
+const SITE_URL = env('VITE_SITE_URL') ?? '';
 const CANONICAL_ORIGIN = /^https?:\/\//.test(SITE_URL) ? SITE_URL.replace(/\/+$/, '') : null;
 
 /** Meta for a page that exists as a route but has nothing to show; shared so a parent page can defer to NotFoundView. */
