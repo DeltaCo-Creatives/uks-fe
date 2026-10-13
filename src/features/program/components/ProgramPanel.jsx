@@ -14,7 +14,7 @@ import {
 import { ResourcesSection } from './ProgramLinkSections';
 import PrestasiSection from './PrestasiSection';
 import FactList from './FactList';
-import { LEAD, CREDIT_LINK, SOURCE_LINK } from '../styles';
+import { LEAD, CREDIT_LINK, SOURCE_LINK, SECTION_PANEL } from '../styles';
 
 const SECTION_COMPONENTS = {
   audience: AudienceSection,
@@ -82,7 +82,7 @@ const ProgramPanel = forwardRef(function ProgramPanel({ program, number }, ref) 
       {program.sections.map((section, idx) => {
         const Section = SECTION_COMPONENTS[section.type];
         return (
-          <section key={section.id} className="prog-block mt-4 border-t-2 border-ink pt-7 pb-2" aria-labelledby={`prog-sec-${program.id}-${section.id}`}>
+          <section key={section.id} className={`prog-block ${SECTION_PANEL}`} aria-labelledby={`prog-sec-${program.id}-${section.id}`}>
             <h3 id={`prog-sec-${program.id}-${section.id}`} className="mb-[18px] flex items-baseline gap-3 text-[clamp(20px,2.2vw,24px)] font-extrabold">
               <span className="text-[14px] font-extrabold text-brand-deep tabular-nums" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
               {section.title}
