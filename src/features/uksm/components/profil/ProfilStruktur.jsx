@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { prefersReducedMotion } from '@/hooks/useCollapse';
+import { useUksm } from '../../useUksm';
 import ProfilPembina from './ProfilPembina';
 import ProfilPelaksana from './ProfilPelaksana';
 import { SECTION, FOCUS_DARK } from './styles';
@@ -18,8 +19,13 @@ const TABS = [
 /**
  * Two org charts behind ARIA tabs (arrow keys, Home/End). Both charts are
  * rebuilt as HTML from the PROD chart images, so they read and reflow as text.
+ * A chart whose row is missing (its image upload failed at seed time) loses its tab;
+ * with neither row the section is not shown.
  */
-export default function ProfilStruktur({ activeTab, onTabChange }) {
+export default function ProfilStruktur({ activeTab: requestedTab, onTabChange }) {
+  const { profilPembina, profilPelaksana } = useUksm();
+  const tabs = TABS.filter((tab) => (tab.id === 'pembina' ? profilPembina : profilPelaksana));
+  const activeTab = tabs.some((tab) => tab.id === requestedTab) ? requestedTab : tabs[0]?.id;
   const tabRefs = useRef({});
   const panelRef = useRef(null);
   const shownTab = useRef(activeTab);
@@ -39,18 +45,20 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
     });
   }, { dependencies: [activeTab], scope: panelRef });
 
+  if (!tabs.length) return null;
+
   const selectByIndex = (index) => {
-    const next = TABS[(index + TABS.length) % TABS.length];
+    const next = tabs[(index + tabs.length) % tabs.length];
     onTabChange(next.id);
     tabRefs.current[next.id]?.focus();
   };
 
   const handleKeyDown = (event) => {
-    const current = TABS.findIndex((tab) => tab.id === activeTab);
+    const current = tabs.findIndex((tab) => tab.id === activeTab);
     if (event.key === 'ArrowRight' || event.key === 'ArrowDown') selectByIndex(current + 1);
     else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') selectByIndex(current - 1);
     else if (event.key === 'Home') selectByIndex(0);
-    else if (event.key === 'End') selectByIndex(TABS.length - 1);
+    else if (event.key === 'End') selectByIndex(tabs.length - 1);
     else return;
     event.preventDefault();
   };
@@ -70,8 +78,8 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
       </div>
 
       <div className="rounded-panel bg-card px-2 pt-2 pb-7 max-[600px]:px-1.5 max-[600px]:pt-1.5 max-[600px]:pb-5" data-gsap="reveal">
-        <div className="grid grid-cols-2 gap-1.5 rounded-card bg-card-alt p-1.5" role="tablist" aria-label="Struktur organisasi">
-          {TABS.map((tab) => {
+        <div className="grid auto-cols-fr grid-flow-col gap-1.5 rounded-card bg-card-alt p-1.5" role="tablist" aria-label="Struktur organisasi">
+          {tabs.map((tab) => {
             const selected = tab.id === activeTab;
             return (
               <button
@@ -102,9 +110,10 @@ export default function ProfilStruktur({ activeTab, onTabChange }) {
           tabIndex={0}
           className={`px-5 pt-6 max-[600px]:px-2.5 max-[600px]:pt-5 ${FOCUS_DARK}`}
         >
+          {/* The link to the other team is left out when that team has no tab. */}
           {activeTab === 'pembina'
-            ? <ProfilPembina onShowPelaksana={() => switchTo('pelaksana')} />
-            : <ProfilPelaksana onShowPembina={() => switchTo('pembina')} />}
+            ? <ProfilPembina onShowPelaksana={profilPelaksana ? () => switchTo('pelaksana') : undefined} />
+            : <ProfilPelaksana onShowPembina={profilPembina ? () => switchTo('pembina') : undefined} />}
         </div>
       </div>
     </section>

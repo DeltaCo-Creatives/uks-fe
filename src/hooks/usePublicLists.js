@@ -101,3 +101,9 @@ export const useFooterTautanList = createCachedList('/public/footer-tautan');
  * fits without a second cache helper.
  */
 export const usePengaturanSettings = createCachedList('/public/pengaturan');
+
+/**
+ * UKS/M pages (Trias, Profil, Struktur Organisasi) as one row per unit, sorted by
+ * kelompok then urutan. A plain array; `useUksm()` maps it to the shapes the pages read.
+ */
+export const useUksmList = createCachedList('/public/uksm');

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { profilManagementIntro, profilManagementComponents } from '@/data/portalData';
+import { useUksm } from '../../useUksm';
 import { pathForView } from '@/routes';
 import ProfilMonev from './ProfilMonev';
 import { SECTION, COMPONENT_NUM, BODY, TEXT_LINK } from './styles';
@@ -14,9 +14,9 @@ function ComponentItem({ component }) {
 
         {component.facts.length > 0 && (
           <dl className="mt-3.5 mb-0 border-b border-rule">
-            {component.facts.map((fact) => (
+            {component.facts.map((fact, idx) => (
               <div
-                key={fact.label}
+                key={idx}
                 className="grid grid-cols-[150px_minmax(0,1fr)] gap-3 border-t border-rule py-2.5 text-[14px] leading-[1.5] max-[600px]:grid-cols-[minmax(0,1fr)] max-[600px]:gap-0.5"
               >
                 <dt className="font-bold text-brand-deep">{fact.label}</dt>
@@ -45,6 +45,8 @@ function ComponentItem({ component }) {
  * page's text and gets its own wide panel.
  */
 export default function ProfilManajemen() {
+  const { profilManagementIntro, profilManagementComponents } = useUksm();
+
   return (
     <section id="sec-profil-manajemen" className={SECTION}>
       <div className="section-header" data-gsap="reveal">

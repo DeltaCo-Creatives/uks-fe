@@ -1,4 +1,4 @@
-import { profilGoal, profilTargets } from '@/data/portalData';
+import { useUksm } from '../../useUksm';
 import { SECTION, BLOCK_TITLE, MINI_LABEL } from './styles';
 
 // The chevrons between steps mark the order ("dengan … sehingga …"): a right arrow beside each step,
@@ -12,6 +12,8 @@ const STEP_ARROW = String.raw`not-first:before:absolute not-first:before:top-1/2
  * logic reads at a glance. Sasaran is reference material on the tinted ground.
  */
 export default function ProfilTujuanSasaran() {
+  const { profilGoal, profilTargets } = useUksm();
+
   return (
     <section id="sec-profil-tujuan" className={SECTION}>
       <div className="section-header" data-gsap="reveal">
@@ -56,8 +58,8 @@ export default function ProfilTujuanSasaran() {
           <h4 className={MINI_LABEL}>Pemangku kepentingan</h4>
           {/* Static names separated by a dot, no pill shapes. */}
           <ul className="m-0 flex list-none flex-wrap gap-y-1 p-0 text-[14px] leading-[1.6] font-semibold text-ink">
-            {profilTargets.stakeholders.map((name) => (
-              <li key={name} className="not-last:after:mx-2.5 not-last:after:font-bold not-last:after:text-ink-muted not-last:after:content-['·']">{name}</li>
+            {profilTargets.stakeholders.map((name, idx) => (
+              <li key={idx} className="not-last:after:mx-2.5 not-last:after:font-bold not-last:after:text-ink-muted not-last:after:content-['·']">{name}</li>
             ))}
           </ul>
         </div>

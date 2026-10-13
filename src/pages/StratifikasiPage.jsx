@@ -1,5 +1,4 @@
 import {
-  STRATIFIKASI_SOURCE,
   stratifikasiIntro,
   stratifikasiGoals,
   stratifikasiScoring,
@@ -8,8 +7,8 @@ import {
   strataLevels
 } from '@/data/portalData';
 import { usePengaturanSettings } from '@/hooks/usePublicLists';
-import ContentPlaceholder from '@/components/ContentPlaceholder';
-import { StrataExplorer } from '@/features/uksm';
+import { LoadingState, ErrorState } from '@/components/shared/AsyncState';
+import { StrataExplorer, useUksm } from '@/features/uksm';
 import { usePageMeta } from '@/hooks/usePageMeta';
 
 const OVERVIEW_CARD = 'flex scroll-mt-24 flex-col gap-3.5 rounded-card bg-card p-[clamp(20px,3vw,28px)] shadow-raised';
@@ -67,13 +66,15 @@ function ScoringCard() {
 
 /**
  * UKS/M ▸ Stratifikasi UKS/M — dev's /stratifikasi-uks content: a short
- * overview (pengertian, tujuan, penilaian), the strata explorer (SD rubric),
- * then the external dashboard.
+ * overview (pengertian, tujuan, penilaian), the strata explorer (one rubric per jenjang,
+ * from /public/uksm), then the external dashboard.
  */
 export default function StratifikasiPage() {
   const { data: settings } = usePengaturanSettings();
   const dashboardUrl = settings?.['tautan.stratifikasiDashboardUrl'];
+  const { stratifikasiJenjang, stratifikasiReady, loading, retry } = useUksm();
   usePageMeta({ title: 'Stratifikasi UKS/M', description: stratifikasiIntro.body });
+  const jenjangLabels = stratifikasiJenjang.map((row) => row.label).join(', ');
 
   return (
     <div>
@@ -106,21 +107,18 @@ export default function StratifikasiPage() {
       <section id="sec-strat-indikator" className="section scroll-mt-24">
         <div className="section-header" data-gsap="reveal">
           <div>
-            <span className="section-kicker">Indikator · Jenjang SD</span>
+            <span className="section-kicker">{jenjangLabels ? `Indikator · Jenjang ${jenjangLabels}` : 'Indikator'}</span>
             <h2 className="section-title">Indikator per Strata</h2>
-            <p className="mt-2.5 text-[15px] leading-[1.65] text-ink-muted">{stratifikasiIndicatorIntro} Pilih strata untuk melihat indikatornya.</p>
+            <p className="mt-2.5 text-[15px] leading-[1.65] text-ink-muted">{stratifikasiIndicatorIntro} Pilih jenjang dan strata untuk melihat indikatornya.</p>
           </div>
         </div>
 
-        <StrataExplorer />
+        {loading && <LoadingState label="Memuat indikator stratifikasi..." />}
 
-        <div className="mt-5">
-          <ContentPlaceholder
-            source={`${STRATIFIKASI_SOURCE} (CMS hanya punya rubrik SD)`}
-            title="Indikator jenjang PAUD, SMP, dan SMA/SMK"
-            note="Indikator di atas berlaku untuk jenjang SD. Indikator untuk jenjang lainnya akan ditambahkan."
-          />
-        </div>
+        {/* A 200 without any jenjang row is treated like a failed request. */}
+        {!loading && !stratifikasiReady && <ErrorState title="Indikator stratifikasi tidak dapat dimuat" retry={retry} />}
+
+        {stratifikasiReady && <StrataExplorer jenjang={stratifikasiJenjang} />}
       </section>
 
       <section className="section">

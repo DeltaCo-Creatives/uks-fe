@@ -5,11 +5,11 @@ import { useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import useSearchFeedback from '@/hooks/useSearchFeedback';
 import { usePageMeta } from '@/hooks/usePageMeta';
+import { useUksm, strataIndicators } from '@/features/uksm';
 import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList, usePengumumanList } from '../hooks/usePublicLists';
-import {
-  triasPillarsDetail,
-  strataLevels
-} from '../data/portalData';
+import { strataCategories, strataLevels } from '../data/portalData';
+
+const PREVIEW_INDICATORS = 2; // indicators shown on a strata result card
 
 /** Where a hit links: its own submenu's tab, matched by id when both have one (slugs repeat across menus), else by slug. */
 function tabLink(configs, item, viewKey, fallbackSlug) {
@@ -50,6 +50,7 @@ export default function SearchView() {
   const { data: apps } = useAplikasiList();
   const { data: programs } = useProgramList();
   const { data: pengumumanList } = usePengumumanList();
+  const { triasPillarsDetail, stratifikasiJenjang } = useUksm();
 
   // Replace rather than push: one history entry for the search, not one per keystroke.
   const setQuery = (value) => {
@@ -87,17 +88,25 @@ export default function SearchView() {
       });
     });
 
-    // 2. Strata Levels
-    strataLevels.forEach((strata) => {
-      items.push({
-        id: `strata-${strata.key}`,
-        title: `Strata ${strata.name}`,
-        excerpt: `Indikator jenjang SD: ${Object.values(strata.requirementsSD).flat().join('; ')}`,
-        typeLabel: 'Stratifikasi UKS/M',
-        typeColor: strata.color,
-        icon: 'fa-solid fa-layer-group',
-        viewKey: 'uksm-stratifikasi',
-        sectionId: 'sec-strat-indikator'
+    // 2. Strata of every jenjang
+    stratifikasiJenjang.forEach((jenjang) => {
+      strataLevels.forEach((strata) => {
+        const texts = strataCategories.flatMap((category) =>
+          strataIndicators(jenjang.requirements, category.id, strata.key).map((indicator) => indicator.text)
+        );
+        items.push({
+          id: `strata-${jenjang.slug}-${strata.key}`,
+          title: `Strata ${strata.name} · ${jenjang.label}`,
+          // The full text is what a query matches; the card shows only a few of the indicators (see `results`).
+          excerpt: `Indikator jenjang ${jenjang.label}: ${texts.join('; ')}`,
+          indicators: texts,
+          typeLabel: 'Stratifikasi UKS/M',
+          typeColor: strata.color,
+          icon: 'fa-solid fa-layer-group',
+          viewKey: 'uksm-stratifikasi',
+          sectionId: 'sec-strat-indikator',
+          path: `${pathForView('uksm-stratifikasi')}?jenjang=${jenjang.slug}&strata=${strata.key}#sec-strat-indikator`
+        });
       });
     });
 
@@ -243,7 +252,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, pengumumanList, configs]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, pengumumanList, triasPillarsDetail, stratifikasiJenjang, configs]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
@@ -252,16 +261,24 @@ export default function SearchView() {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
 
+  // A strata card stays short: the first indicators that contain a search term, else the first ones.
+  const indicatorPreview = (indicators, terms) => {
+    const hits = indicators.filter((text) => terms.some((term) => normalize(text).includes(term)));
+    return (hits.length > 0 ? hits : indicators).slice(0, PREVIEW_INDICATORS).join('; ');
+  };
+
   const results = useMemo(() => {
     const trimmed = query.trim();
     if (!trimmed) return [];
 
     const terms = normalize(trimmed).split(/\s+/).filter(Boolean);
 
-    return searchIndex.filter((item) => {
-      const target = `${normalize(item.title)} ${normalize(item.excerpt)} ${normalize(item.typeLabel)}`;
-      return terms.every((term) => target.includes(term));
-    });
+    return searchIndex
+      .filter((item) => {
+        const target = `${normalize(item.title)} ${normalize(item.excerpt)} ${normalize(item.typeLabel)}`;
+        return terms.every((term) => target.includes(term));
+      })
+      .map((item) => (item.indicators ? { ...item, excerpt: indicatorPreview(item.indicators, terms) } : item));
   }, [query, searchIndex]);
 
   let status = 'idle';
@@ -531,7 +548,7 @@ export default function SearchView() {
                       {item.title}
                     </h3>
   
-                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
+                    <p className={item.indicators ? 'line-clamp-3' : undefined} style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
                       {item.excerpt}
                     </p>
                   </div>

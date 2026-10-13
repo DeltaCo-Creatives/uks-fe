@@ -1,4 +1,4 @@
-import { profilPelaksana } from '@/data/portalData';
+import { useUksm } from '../../useUksm';
 import ProfilChart from './ProfilChart';
 import { BODY, MINI_LABEL, TEXT_LINK, SPLIT, ORG_LEAD, ORDERED_LIST, ORDERED_ITEM } from './styles';
 
@@ -7,6 +7,8 @@ import { BODY, MINI_LABEL, TEXT_LINK, SPLIT, ORG_LEAD, ORDERED_LIST, ORDERED_ITE
  * official chart image.
  */
 export default function ProfilPelaksana({ onShowPembina }) {
+  const { profilPelaksana } = useUksm();
+
   return (
     <div className={SPLIT}>
       <div className="profil-org-block">
@@ -17,14 +19,16 @@ export default function ProfilPelaksana({ onShowPembina }) {
 
         <h3 className={`${MINI_LABEL} mt-[18px]`}>Tugas</h3>
         <ol className={ORDERED_LIST}>
-          {profilPelaksana.duties.map((duty) => (
-            <li key={duty} className={ORDERED_ITEM}>{duty}</li>
+          {profilPelaksana.duties.map((duty, idx) => (
+            <li key={idx} className={ORDERED_ITEM}>{duty}</li>
           ))}
         </ol>
 
-        <button type="button" className={TEXT_LINK} onClick={onShowPembina}>
-          Lihat Tim Pembina dari pusat sampai kecamatan
-        </button>
+        {onShowPembina && (
+          <button type="button" className={TEXT_LINK} onClick={onShowPembina}>
+            Lihat Tim Pembina dari pusat sampai kecamatan
+          </button>
+        )}
       </div>
 
       <ProfilChart chart={profilPelaksana.chart} />

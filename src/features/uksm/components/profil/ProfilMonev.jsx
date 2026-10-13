@@ -1,4 +1,4 @@
-import { profilMonev } from '@/data/portalData';
+import { useUksm } from '../../useUksm';
 import { NUM, COMPONENT_NUM, BLOCK_TITLE, MINI_LABEL, BODY } from './styles';
 
 const PART_TITLE = 'mb-2 text-[22px] font-extrabold';
@@ -8,19 +8,15 @@ const HORIZON_REST = 'border-l border-rule-strong pt-3.5 pr-4 pl-4 max-[600px]:b
 // Checklist columns: Lingkungan and the single Manajemen item share the third column
 const MONITOR_COLUMNS = [['pendidikan'], ['pelayanan'], ['lingkungan', 'manajemen']];
 
-const { groups: MONITOR_GROUPS } = profilMonev.monitoring;
-
-// The source numbers the items 1 to 20 straight through; keep that numbering.
-const START_OF = Object.fromEntries(
-  MONITOR_GROUPS.map((group, idx) => [
-    group.id,
-    1 + MONITOR_GROUPS.slice(0, idx).reduce((sum, prev) => sum + prev.items.length, 0)
-  ])
-);
-
-function MonitoringChecklist() {
-  const startOf = START_OF;
-  const byId = Object.fromEntries(MONITOR_GROUPS.map((group) => [group.id, group]));
+function MonitoringChecklist({ groups }) {
+  // The source numbers the items straight through; keep that numbering.
+  const startOf = Object.fromEntries(
+    groups.map((group, idx) => [
+      group.id,
+      1 + groups.slice(0, idx).reduce((sum, prev) => sum + prev.items.length, 0)
+    ])
+  );
+  const byId = Object.fromEntries(groups.map((group) => [group.id, group]));
 
   return (
     <div className="grid grid-cols-3 gap-6 max-[960px]:grid-cols-2 max-[600px]:grid-cols-1">
@@ -33,7 +29,7 @@ function MonitoringChecklist() {
                 <h5 className={MINI_LABEL}>{group.title}</h5>
                 <ol className="m-0 grid list-none gap-0.5 p-0" start={startOf[group.id]}>
                   {group.items.map((item, idx) => (
-                    <li key={item} className="grid grid-cols-[28px_minmax(0,1fr)] gap-1.5 border-b border-rule-soft py-[7px] text-[14px] leading-[1.45]">
+                    <li key={idx} className="grid grid-cols-[28px_minmax(0,1fr)] gap-1.5 border-b border-rule-soft py-[7px] text-[14px] leading-[1.45]">
                       <span className="text-[13px] font-extrabold text-brand-deep tabular-nums" aria-hidden="true">{startOf[group.id] + idx}</span>
                       {item}
                     </li>
@@ -48,8 +44,9 @@ function MonitoringChecklist() {
   );
 }
 
-function Monitoring() {
-  const { monitoring } = profilMonev;
+function Monitoring({ monitoring }) {
+  const { groups } = monitoring;
+  const total = groups.reduce((sum, group) => sum + group.items.length, 0);
   return (
     <div className="pt-7">
       <h4 className={PART_TITLE}>Monitoring</h4>
@@ -64,14 +61,13 @@ function Monitoring() {
         ))}
       </dl>
 
-      <h4 className={BLOCK_TITLE}>20 hal yang dipantau</h4>
-      <MonitoringChecklist />
+      <h4 className={BLOCK_TITLE}>{total} hal yang dipantau</h4>
+      <MonitoringChecklist groups={groups} />
     </div>
   );
 }
 
-function Evaluation() {
-  const { evaluation } = profilMonev;
+function Evaluation({ evaluation }) {
   return (
     <div className="mt-8 border-t border-rule pt-7">
       <h4 className={PART_TITLE}>Evaluasi</h4>
@@ -107,9 +103,9 @@ function Evaluation() {
         <div>
           <h5 className={BLOCK_TITLE}>Indikator bersumber dari</h5>
           <ul className="m-0 grid list-none gap-2.5 p-0">
-            {evaluation.sources.map((source) => (
+            {evaluation.sources.map((source, idx) => (
               <li
-                key={source}
+                key={idx}
                 className="relative border-b border-rule-soft pb-2.5 pl-[22px] text-[14px] leading-[1.6] before:absolute before:top-px before:left-0 before:text-[13px] before:text-brand before:font-black before:[font-family:'Font_Awesome_6_Free'] before:content-['\f058']"
               >
                 {source}
@@ -128,8 +124,8 @@ function Evaluation() {
             <p className="text-[14px] leading-[1.6] text-ink">{stage.text}</p>
             {stage.points && (
               <ul className="mt-2 mb-0 grid list-disc gap-1.5 pl-[18px]">
-                {stage.points.map((point) => (
-                  <li key={point} className="text-[14px] leading-[1.6] text-ink marker:text-brand">{point}</li>
+                {stage.points.map((point, idx) => (
+                  <li key={idx} className="text-[14px] leading-[1.6] text-ink marker:text-brand">{point}</li>
                 ))}
               </ul>
             )}
@@ -146,6 +142,8 @@ function Evaluation() {
  * sources, stages).
  */
 export default function ProfilMonev() {
+  const { profilMonev } = useUksm();
+
   return (
     <article className="rounded-panel bg-card p-8 shadow-raised max-[600px]:p-5" data-gsap="reveal" aria-labelledby="profil-monev-title">
       <header className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 border-b-2 border-ink pb-6">
@@ -156,8 +154,8 @@ export default function ProfilMonev() {
         </div>
       </header>
 
-      <Monitoring />
-      <Evaluation />
+      <Monitoring monitoring={profilMonev.monitoring} />
+      <Evaluation evaluation={profilMonev.evaluation} />
     </article>
   );
 }

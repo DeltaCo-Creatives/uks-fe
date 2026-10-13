@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { triasPillarsDetail, triasPillarTaglines } from '@/data/portalData';
-import { TriasAccordionItem } from '@/features/uksm';
+import { TriasAccordionItem, useUksm } from '@/features/uksm';
 import { usePageMeta } from '@/hooks/usePageMeta';
+import { LoadingState, ErrorState } from '@/components/shared/AsyncState';
 
 const BADGE = 'inline-flex size-8 shrink-0 items-center justify-center rounded-[50%] font-display text-[15px] font-extrabold text-white';
 // The kicker already says "Pilar N", so phones drop the big badge and the title keeps full width.
@@ -14,7 +14,7 @@ function scrollToSection(id) {
 }
 
 /** Hero shortcut card: jumps to a pillar section. */
-function PillarJumpCard({ pillar }) {
+function PillarJumpCard({ pillar, tagline }) {
   return (
     <button
       type="button"
@@ -27,7 +27,7 @@ function PillarJumpCard({ pillar }) {
         <span className={BADGE} style={{ background: pillar.color }}>{pillar.number}</span>
       </span>
       <span className="font-display text-[18px] leading-[1.3] font-extrabold">{pillar.title}</span>
-      <span className="text-[14px] leading-[1.6] text-ink-muted max-[600px]:hidden">{triasPillarTaglines[pillar.id]}</span>
+      <span className="text-[14px] leading-[1.6] text-ink-muted max-[600px]:hidden">{tagline}</span>
       <span className="mt-auto inline-flex items-center gap-1.5 text-[14px] font-bold" style={{ color: pillar.color }}>
         Lihat {pillar.items.length} sub-program <i className="fa-solid fa-arrow-down" aria-hidden="true"></i>
       </span>
@@ -36,7 +36,7 @@ function PillarJumpCard({ pillar }) {
 }
 
 /** One pillar: numbered heading, official description, and its sub-program rows. */
-function PillarSection({ pillar, openItemId, onToggleItem }) {
+function PillarSection({ pillar, summaries, openItemId, onToggleItem }) {
   return (
     <section id={sectionIdOf(pillar)} className="section scroll-mt-24">
       <div className="mb-6 flex items-start gap-[18px]" data-gsap="reveal">
@@ -55,6 +55,7 @@ function PillarSection({ pillar, openItemId, onToggleItem }) {
           <TriasAccordionItem
             key={item.id}
             item={item}
+            info={summaries[item.id]}
             index={idx}
             pillar={pillar}
             isOpen={item.id === openItemId}
@@ -66,18 +67,36 @@ function PillarSection({ pillar, openItemId, onToggleItem }) {
   );
 }
 
-/** UKS/M ▸ TRIAS UKS/M — dev's /trias-uks content, summarised first, full text on request. */
-export default function TriasPage() {
-  const pillars = Object.values(triasPillarsDetail);
+/** Jump cards and pillar sections. Mounted only once the pillars exist: the first sub-program starts open. */
+function TriasContent({ pillars, taglines, summaries }) {
   const [openItemId, setOpenItemId] = useState(pillars[0].items[0].id);
-  usePageMeta({
-    title: 'Trias UKS/M',
-    description: 'Tiga program pokok Usaha Kesehatan Sekolah/Madrasah: pendidikan kesehatan, pelayanan kesehatan, dan pembinaan lingkungan sekolah sehat.'
-  });
 
   const handleToggleItem = (itemId) => {
     setOpenItemId((current) => (current === itemId ? null : itemId));
   };
+
+  return (
+    <>
+      <div className="mb-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-4 max-[600px]:gap-2.5">
+        {pillars.map((pillar) => (
+          <PillarJumpCard key={pillar.id} pillar={pillar} tagline={taglines[pillar.id]} />
+        ))}
+      </div>
+
+      {pillars.map((pillar) => (
+        <PillarSection key={pillar.id} pillar={pillar} summaries={summaries} openItemId={openItemId} onToggleItem={handleToggleItem} />
+      ))}
+    </>
+  );
+}
+
+/** UKS/M ▸ TRIAS UKS/M — pillars and sub-programs from /public/uksm, summarised first, full text on request. */
+export default function TriasPage() {
+  const { triasPillarsDetail, triasPillarTaglines, triasItemSummaries, triasReady, loading, retry } = useUksm();
+  usePageMeta({
+    title: 'Trias UKS/M',
+    description: 'Tiga program pokok Usaha Kesehatan Sekolah/Madrasah: pendidikan kesehatan, pelayanan kesehatan, dan pembinaan lingkungan sekolah sehat.'
+  });
 
   return (
     <div>
@@ -92,15 +111,14 @@ export default function TriasPage() {
         </p>
       </div>
 
-      <div className="mb-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-4 max-[600px]:gap-2.5">
-        {pillars.map((pillar) => (
-          <PillarJumpCard key={pillar.id} pillar={pillar} />
-        ))}
-      </div>
+      {loading && <LoadingState label="Memuat Trias UKS/M..." />}
 
-      {pillars.map((pillar) => (
-        <PillarSection key={pillar.id} pillar={pillar} openItemId={openItemId} onToggleItem={handleToggleItem} />
-      ))}
+      {/* A 200 with missing rows is treated like a failed request. */}
+      {!loading && !triasReady && <ErrorState title="Trias UKS/M tidak dapat dimuat" retry={retry} />}
+
+      {triasReady && (
+        <TriasContent pillars={Object.values(triasPillarsDetail)} taglines={triasPillarTaglines} summaries={triasItemSummaries} />
+      )}
     </div>
   );
 }
