@@ -10,6 +10,9 @@ export const VALUE = 'text-[15px] leading-[1.5] font-extrabold text-white tabula
 
 export const SKELETON = 'block h-3.5 w-14 rounded-sm bg-[rgba(255,255,255,0.18)]';
 
+// Stands in for the 13px, 1.5 line-height column heading, so the heading keeps its height when the text arrives.
+export const SKELETON_JUDUL = 'block h-[0.9em] my-[0.3em] w-32 rounded-sm bg-[rgba(255,255,255,0.18)]';
+
 export const URUTAN = 'text-[13px] leading-[1.6] text-[rgba(255,255,255,0.85)]';
 export const URUTAN_NUMBER = 'font-extrabold text-white tabular-nums';
 
