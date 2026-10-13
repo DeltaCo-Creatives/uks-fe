@@ -1,7 +1,7 @@
 /**
  * URL vocabulary for the portal.
  *
- * Data files (profil.js, program.js) point at destinations by view key and
+ * Data files (program.js) point at destinations by view key and
  * section id rather than by URL, so path construction lives here instead of as
  * string literals spread across components.
  */

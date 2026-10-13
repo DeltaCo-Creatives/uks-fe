@@ -1,6 +1,6 @@
 # Profil & Tata Kelola: Curation Log
 
-Source of truth: the 6 PROD pages scraped on 2026-09-17. The verbatim text is in [`profil-tata-kelola/`](./profil-tata-kelola/) and the chart transcriptions are in [`profil-tata-kelola-content.MD`](./profil-tata-kelola-content.MD). The curated data is in `src/data/profil.js` and the page is in `src/components/uksm/profil/`.
+Source of truth: the 6 PROD pages scraped on 2026-09-17. The verbatim text is in [`profil-tata-kelola/`](./profil-tata-kelola/) and the chart transcriptions are in [`profil-tata-kelola-content.MD`](./profil-tata-kelola-content.MD). The curated data is now the CMS UKS/M module ([contract](./uksm-api-contract.md); the former `src/data/profil.js` is removed) and the page is in `src/components/uksm/profil/`.
 
 ## Rules applied
 

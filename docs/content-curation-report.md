@@ -33,7 +33,7 @@
 | Beranda | prod sitemap §2 | Partial | 🔴 National stats strip and hero slides have no source; 6 prod sections missing |
 | UKS/M ▸ Profil & Tata Kelola | `profil-tata-kelola/` | ✅ Full | 🟡 Open owner decisions (Tujuan wording, chart images) |
 | UKS/M ▸ Trias | `trias-uks-content.MD` | ✅ Verbatim (218 of 219 content lines) | ⚪ PHBS body is still a placeholder, as the doc asks |
-| UKS/M ▸ Stratifikasi | `stratifikasi-uks-content.MD` | ✅ Rubric verbatim | 🟡 Three different strata-name schemes across the portal |
+| UKS/M ▸ Stratifikasi | `stratifikasi-uks-content.MD` | ✅ Rubric for 5 jenjang from the workbook | 🟡 Three different strata-name schemes across the portal |
 | UKS/M ▸ Sekolah Sehat (GSS) | `sekolah-sehat/` | ✅ Full | ⚪ Null links and removed videos waiting on owners |
 | Program | `program/` | ✅ Mostly | 🟡 Referenced `docs/program-curation.md` does not exist; some source text omitted |
 | Mitra | `kemitraan/` | ✅ Full | ⚪ Tanoto "Modul Choice" line dropped (open item) |
@@ -59,7 +59,7 @@ Source: prod sitemap §2. There is no content file. Code: [BerandaView.jsx](../s
 
 ## 2. UKS/M ▸ Profil & Tata Kelola
 
-Source: `profil-tata-kelola/` (6 pages). Code: [profil.js](../src/data/profil.js).
+Source: `profil-tata-kelola/` (6 pages). Data: the CMS UKS/M module ([contract](uksm-api-contract.md)); the former `profil.js` is removed.
 
 All 6 pages are represented, and the removals listed in `profil-tata-kelola-curation.md` were carried out.
 
@@ -71,7 +71,7 @@ All 6 pages are represented, and the removals listed in `profil-tata-kelola-cura
 
 ## 3. UKS/M ▸ Trias
 
-Source: `trias-uks-content.MD`, scraped from dev. Code: [trias.js](../src/data/trias.js).
+Source: `trias-uks-content.MD`, scraped from dev. Data: the CMS UKS/M module ([contract](uksm-api-contract.md)); the former `trias.js` is removed.
 
 **218 of 219 content lines are verbatim.** All 16 sub-programs are present, including Dokter Kecil's Tugas list and Pendidikan Gizi's Tautan Penting. The one miss is PHBS's description, which is left out on purpose (T1). The script's other misses are the doc's own editorial notes.
 
@@ -84,13 +84,12 @@ Source: `trias-uks-content.MD`, scraped from dev. Code: [trias.js](../src/data/t
 
 Source: `stratifikasi-uks-content.MD`, from dev. Code: [stratifikasi.js](../src/data/stratifikasi.js).
 
-The intro, the 4 Tujuan cards, Cara Penilaian and the full SD rubric (4 categories × 4 strata) are verbatim. The page labels the rubric "Jenjang SD".
+The intro and the 4 Tujuan cards are verbatim. Cara Penilaian names the 4th area as in the workbook. The indicators (4 areas × 4 strata) are no longer the SD list from this doc: they come from the CMS UKS/M module, one rubric per jenjang (PAUD, SD, SMP, SMA, SLB) taken from the workbook "Kondisi Pemenuhan Indikator" ([contract](uksm-api-contract.md)), and the page switches jenjang with tabs.
 
 | # | Finding |
 |---|---|
 | S1 🟡 | **The portal uses three different strata-name schemes.** <br>• Stratifikasi page, nav drawer footer and homepage teaser: **Dasar · Madya · Utama · Paripurna** <br>• Profil page: **minimal, optimal, standar, paripurna** (prod Deskripsi Umum's wording and order) <br>• The stratifikasi doc (Flag 3) recommends **Minimal · Standar · Optimal · Paripurna**: it appears in all 4 CMS records, in the rubric's column headers and on dev's homepage, against 1 source for Dasar/Madya <br>**Needs one decision, applied everywhere.** |
 | S2 🟠 | **Source text not shown.** <br>• CMS "Deskripsi": *Definisi* (who assesses: sekolah and Puskesmas, Tim Pembina Kab/Kota), *Maksud*, and *Penilaian*, which says the assessment is absolute: every indicator must be met <br>• CMS "Perhitungan": the per-strata rule <br>All of this is sourced text that fits the page's "Cara Penilaian" section. |
-| S3 ⚪ | **Rubric is SD only.** SMP, SMA and PAUD rubrics don't exist in the source. |
 
 ## 5. UKS/M ▸ Sekolah Sehat (GSS)
 
