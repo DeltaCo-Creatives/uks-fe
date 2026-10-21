@@ -47,7 +47,8 @@ export function embedUrl(url, kind) {
   if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`;
 
   const video = url.match(YOUTUBE_ID);
-  if (video) return `https://www.youtube.com/embed/${video[1]}`;
+  // youtube-nocookie.com: the same player without YouTube's tracking cookies until the visitor presses play.
+  if (video) return `https://www.youtube-nocookie.com/embed/${video[1]}`;
 
   if (kind === 'pdf' || url.toLowerCase().endsWith('.pdf')) return `${url}#view=FitH`;
 
