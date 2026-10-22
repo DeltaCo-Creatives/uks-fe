@@ -43,6 +43,9 @@ export const useUptBercerita = (slug) => useSlugDetail('/public/upt-bercerita', 
  */
 export const useAgendaList = agendaHookFor();
 
+/** A single agenda entry by slug, including the full HTML `description`. */
+export const useAgenda = (slug) => useSlugDetail('/public/agenda', slug);
+
 /** Buku & pedoman list for the Publikasi page, fetched once and shared by every consumer. */
 export const useBukuPanduanList = publikasiHookFor(SEEDED_SUBMENU_IDS.buku);
 
