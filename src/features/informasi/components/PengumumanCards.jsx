@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { pathForPengumuman } from '@/routes';
+import SafeImage from '@/components/SafeImage';
 import { downloadFile } from '@/utils/downloadFile';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
 import { countdownLabel, periodeLabel, canDaftar } from '@/utils/kesempatan';
@@ -7,6 +8,16 @@ import { CARD_PLAIN, CARD_META, CARD_DATE, CARD_TITLE, CARD_EXCERPT, CARD_FOOT, 
 import { PentingBadge, PinnedMarker, StatusBadge } from './PengumumanBadges';
 
 const RINGKASAN = `mb-3 text-[13px] leading-[1.6] text-ink-muted ${CARD_EXCERPT}`;
+
+/** The optional thumbnail; no image, no placeholder, the card stays as it was. */
+function Thumb({ src }) {
+  if (!src) return null;
+  return (
+    <div className="news-img-wrap">
+      <SafeImage src={src} alt="" loading="lazy" />
+    </div>
+  );
+}
 
 function ReadMore({ item }) {
   return (
@@ -19,6 +30,7 @@ function ReadMore({ item }) {
 export function PengumumanCard({ item }) {
   return (
     <article className={CARD_PLAIN}>
+      <Thumb src={item.image} />
       {item.isPinned && <PinnedMarker />}
       <div className={CARD_META}>
         <span className={CARD_DATE}>
@@ -49,6 +61,7 @@ export function KesempatanCard({ item }) {
   const countdown = countdownLabel(item);
   return (
     <article className={CARD_PLAIN}>
+      <Thumb src={item.image} />
       {item.isPinned && <PinnedMarker />}
       <div className={CARD_META}>
         <StatusBadge status={item.status} />
