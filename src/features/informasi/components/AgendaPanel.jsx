@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { pathForAgenda } from '@/routes';
 import { agendaHookFor } from '@/hooks/usePublicLists';
 import Pagination from '@/components/shared/Pagination';
 import { usePagedGroups } from '@/hooks/usePagedGroups';
@@ -43,7 +45,7 @@ export default function AgendaPanel({ title, submenuId }) {
             {agendas.map((ev) => (
               <article
                 key={ev.slug ?? ev.id}
-                className="grid grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-[18px] rounded-soft border-[1.5px] border-rule-soft bg-card px-5 py-[18px] max-[768px]:grid-cols-[56px_minmax(0,1fr)] max-[768px]:gap-3.5 max-[768px]:px-4 max-[768px]:py-3.5"
+                className="relative grid grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-[18px] rounded-soft border-[1.5px] border-rule-soft bg-card px-5 py-[18px] [transition:var(--ease)] hover:border-brand has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-brand max-[768px]:grid-cols-[56px_minmax(0,1fr)] max-[768px]:gap-3.5 max-[768px]:px-4 max-[768px]:py-3.5"
               >
                 <div className="flex flex-col items-center justify-center rounded-soft bg-brand-deep px-2 py-2.5 text-white">
                   <span className="text-[22px] leading-none font-extrabold max-[768px]:text-[19px]">{ev.day}</span>
@@ -51,7 +53,21 @@ export default function AgendaPanel({ title, submenuId }) {
                 </div>
                 <div>
                   {ev.organizer && <span className="text-[11px] font-extrabold text-brand-deep">{ev.organizer}</span>}
-                  <h3 className="mt-1 mb-1.5 text-[16px] leading-[1.35] font-extrabold text-ink">{ev.title}</h3>
+                  {/* Stretched link: the title's ::after covers the whole card, so the card is one click target. */}
+                  <h3 className="mt-1 mb-1.5 text-[16px] leading-[1.35] font-extrabold text-ink">
+                    <Link
+                      to={pathForAgenda(ev.slug, ev.submenuSlug)}
+                      className="after:absolute after:inset-0 focus-visible:outline-none"
+                    >
+                      {ev.title}
+                    </Link>
+                  </h3>
+                  {ev.dateLabel && (
+                    <p className="mb-1 flex items-center gap-1.5 text-[13px] text-ink-muted">
+                      <i className="fa-regular fa-calendar text-brand" aria-hidden="true"></i>
+                      <span>{ev.dateLabel}</span>
+                    </p>
+                  )}
                   {ev.location && (
                     <p className="flex items-center gap-1.5 text-[13px] text-ink-muted">
                       <i className="fa-solid fa-location-dot text-brand" aria-hidden="true"></i>

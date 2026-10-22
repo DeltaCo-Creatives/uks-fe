@@ -20,6 +20,7 @@ import KontakPage from './pages/KontakPage';
 import SearchView from './components/SearchView';
 import BeritaDetailView from './components/BeritaDetailView';
 import PengumumanDetailView from './components/PengumumanDetailView';
+import AgendaDetailView from './components/AgendaDetailView';
 import NotFoundView from './components/NotFoundView';
 import Footer from './components/Footer';
 import DownloadToast from './components/shared/DownloadToast';
@@ -28,7 +29,7 @@ import NavConfigProvider from '@/components/NavConfigProvider';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import UptBerceritaDetailView from './components/UptBerceritaDetailView';
 import { useBeritaList } from './hooks/useBerita';
-import { usePengumumanList, useUptStoriesList } from './hooks/usePublicLists';
+import { useAgendaList, usePengumumanList, useUptStoriesList } from './hooks/usePublicLists';
 import {
   DETAIL_VIEWS,
   defaultTabPath,
@@ -39,13 +40,14 @@ import {
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail', 'pengumuman-detail'];
+const VIEWS_WITHOUT_DRAWER = ['beranda', 'search', 'berita-detail', 'upt-detail', 'pengumuman-detail', 'agenda-detail'];
 
 // Article-style detail pages: the slug and label of the Informasi tab they fall back to and the
-// list their title is looked up in. Berita and pengumuman details override the tab with their own submenu.
+// list their title is looked up in. Berita, pengumuman and agenda details override the tab with their own submenu.
 const DETAIL_CRUMBS = {
   'berita-detail': { tabSlug: 'berita', label: 'Warta Terkini', useList: useBeritaList },
   'pengumuman-detail': { tabSlug: 'pengumuman', label: 'Pengumuman', useList: usePengumumanList },
+  'agenda-detail': { tabSlug: 'agenda', label: 'Agenda', useList: useAgendaList },
   'upt-detail': { tabSlug: 'upt', label: 'UPT Bercerita', useList: useUptStoriesList }
 };
 
@@ -119,13 +121,14 @@ function Breadcrumbs({ viewKey, pathname }) {
   );
 }
 
-// /informasi/:submenuSlug/:itemSlug: the detail of an artikel / pengumuman / kesempatan submenu, else back to the tab.
+// /informasi/:submenuSlug/:itemSlug: the detail of an artikel / pengumuman / kesempatan / agenda submenu, else back to the tab.
 function SubmenuDetailRoute() {
   const { submenuSlug } = useParams();
   const sections = useNavConfig().informasi.sections;
   const detailView = DETAIL_VIEWS[sections.find((s) => s.slug === submenuSlug)?.template];
   if (detailView === 'berita-detail') return <BeritaDetailView />;
   if (detailView === 'pengumuman-detail') return <PengumumanDetailView />;
+  if (detailView === 'agenda-detail') return <AgendaDetailView />;
   return <Navigate to={pathForTab('informasi', submenuSlug)} replace />;
 }
 
