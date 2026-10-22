@@ -75,11 +75,15 @@ export const pathForArticle = (idOrSlug, submenuSlug) =>
 /** Pengumuman / kesempatan detail URL, inside its own submenu tab. */
 export const pathForPengumuman = (slug, submenuSlug) => `/informasi/${submenuSlug}/${slug}`;
 
+/** Agenda detail URL: the same shape as a pengumuman's, inside its own submenu tab. */
+export const pathForAgenda = pathForPengumuman;
+
 /** Informasi submenu templates that have an item detail page, and the view key each one renders. */
 export const DETAIL_VIEWS = {
   artikel: 'berita-detail',
   pengumuman: 'pengumuman-detail',
-  kesempatan: 'pengumuman-detail'
+  kesempatan: 'pengumuman-detail',
+  agenda: 'agenda-detail'
 };
 
 export const pathForUptStory = (slug) => `/informasi/upt-bercerita/${slug}`;

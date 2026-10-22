@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { pathForPengumuman, pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
+import { pathForAgenda, pathForPengumuman, pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
 import { useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import useSearchFeedback from '@/hooks/useSearchFeedback';
@@ -165,7 +165,7 @@ export default function SearchView() {
       });
     });
 
-    // 7. Agenda
+    // 7. Agenda (detail page of its own submenu)
     (agendaList || []).forEach((ag) => {
       const parts = [`${ag.day} ${ag.month}`];
       const who = [ag.organizer, ag.location].filter(Boolean).join(' di ');
@@ -179,7 +179,8 @@ export default function SearchView() {
         typeLabel: 'Agenda Nasional',
         typeColor: '#7C3AED',
         icon: 'fa-solid fa-calendar-days',
-        ...tabLink(configs, ag, 'informasi', 'agenda')
+        ...tabLink(configs, ag, 'informasi', 'agenda'),
+        path: pathForAgenda(ag.slug, ag.submenuSlug)
       });
     });
 
