@@ -9,8 +9,8 @@
   ],
   "globalHeaders": {
     "Cache-Control": "no-cache",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https:; media-src 'self' https:; connect-src 'self' https:; frame-src 'self' https:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
-    "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://obj.pauddasmen.id https://i.ytimg.com; media-src 'self' https://obj.pauddasmen.id; connect-src 'self' https://obj.pauddasmen.id; frame-src 'self' https://obj.pauddasmen.id https://www.youtube-nocookie.com https://www.youtube.com https://drive.google.com https://www.instagram.com https://www.tiktok.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https:; media-src 'self' https:; connect-src 'self' https:; frame-src 'self' https:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
+    "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://obj.pauddasmen.id https://i.ytimg.com; media-src 'self' https://obj.pauddasmen.id; connect-src 'self' https://obj.pauddasmen.id; frame-src 'self' https://obj.pauddasmen.id https://www.youtube-nocookie.com https://www.youtube.com https://drive.google.com https://www.instagram.com https://www.tiktok.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
     "Cross-Origin-Opener-Policy": "same-origin",
     "X-Content-Type-Options": "nosniff",
