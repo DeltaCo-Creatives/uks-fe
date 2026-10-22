@@ -12,6 +12,8 @@ export const CARD = 'rounded-panel bg-card p-7 max-[600px]:p-5';
 export const TINTED = 'rounded-panel bg-card-alt p-7 max-[600px]:p-5';
 export const ICON = 'grid size-10 flex-none place-items-center rounded-card bg-brand-light text-[16px] text-brand';
 export const CARD_HEAD = 'mb-3.5 flex items-center gap-3';
+// Card photo (replaces the icon box), same crop as the Program audience cards.
+export const PHOTO = 'mb-3.5 aspect-[4/3] w-full rounded-card bg-card-alt object-cover';
 export const EMPTY = 'rounded-card bg-card-alt p-5 text-[14px] text-ink-muted';
 
 // Static item lists: a small square dot before each line.

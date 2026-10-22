@@ -9,11 +9,12 @@ Struktur Organisasi charts were hardcoded in the portal (`src/data/trias.js`, `t
 SMP, SMA, SLB), taken from the workbook "Kondisi Pemenuhan Indikator" (Magelang workshop, 21-22 September
 2026).
 
-Design: one row per unit (31 rows). Each row stores a validated JSON document (`dokumen`) whose shape is
+Design: one row per unit (31 rows, plus the 4 `mitra` rows). Each row stores a validated JSON document (`dokumen`) whose shape is
 the portal's own props, so the portal needs no shape mapper beyond joining rows and adding presentation
 (icons, colours, links) that stays in code.
 
-Edit-only: rows are created by the backend seeder; there is no create, delete, restore or reorder.
+Edit-only: rows are created by the backend seeder (the 4 `mitra` rows by the data-only migration `AddMitraKonten`);
+there is no create, delete, restore or reorder.
 
 JSON keys inside `dokumen` are English on purpose (they mirror the portal props), unlike the Indonesian
 keys of the Program contract. Row-level fields (`slug`, `kelompok`, `judul`, ...) stay Indonesian.
@@ -40,6 +41,10 @@ keys of the Program contract. Row-level fields (`slug`, `kelompok`, `judul`, ...
 | `stratifikasi` | `smp` | null | 30 | SMP | no |
 | `stratifikasi` | `sma` | null | 40 | SMA | no |
 | `stratifikasi` | `slb` | null | 50 | SLB | no |
+| `mitra` | `mitra-hero` | null | 10 | Hero Kemitraan | no |
+| `mitra` | `mitra-panduan` | null | 20 | Panduan Kemitraan | no |
+| `mitra` | `mitra-kriteria` | null | 30 | Kriteria Mitra | no |
+| `mitra` | `mitra-kami` | null | 40 | Mitra Kami | no |
 
 Sub-program slugs, in order (they are the old portal item ids; anchors `sec-trias-<pillar>` and
 `trias-item-<sub-program>` depend on them):
@@ -52,7 +57,7 @@ Sub-program slugs, in order (they are the old portal item ids; anchors `sec-tria
 
 `slug`, `kelompok`, `induk` and `urutan` never change after seeding. A row's document shape is chosen by
 `(kelompok, induk == null, slug)`: trias + no induk = pillar; trias + induk = sub-program; profil/struktur =
-by slug; every stratifikasi row = `Stratifikasi`. The portal uses a stratifikasi row's `judul` as its jenjang
+by slug; every stratifikasi row = `Stratifikasi`; mitra = by slug (`mitra-` prefix, because the slug index is global). The portal uses a stratifikasi row's `judul` as its jenjang
 tab label and its `slug` in links (`/uksm/stratifikasi?jenjang=smp#sec-strat-indikator`).
 
 ## Endpoints
@@ -76,7 +81,7 @@ Parameter names and the `PagedResult` envelope are the same as the Program list
 ListItem = {
   id: string,            // uuid
   slug: string,
-  kelompok: 'trias' | 'profil' | 'struktur' | 'stratifikasi',
+  kelompok: 'trias' | 'profil' | 'struktur' | 'stratifikasi' | 'mitra',
   induk: string | null,  // pillar slug for sub-programs
   urutan: number,
   judul: string,
@@ -111,7 +116,7 @@ PUT body:
 
 - `200`, a plain JSON array of every row, sorted by `kelompok` then `urutan`.
 - `Cache-Control: public, max-age=60`. About 62 KB raw for trias/profil/struktur, plus about 22 KB for the
-  5 stratifikasi rows.
+  5 stratifikasi rows and about 6 KB for the 4 mitra rows.
 - Inside `dokumen`, every `src` is replaced by the absolute public URL of the file (no extra `url` key).
 
 ```ts
@@ -221,6 +226,27 @@ Stratifikasi = {
   manajemen:  StrataItems    // Tata Kelola dan Kepemimpinan Sekolah
 }
 StrataItems = { dasar: string[], madya: string[], utama: string[], paripurna: string[] }   // each 0-50 items
+
+// mitra (Kemitraan page, /mitra). Plain text only; the portal keeps the kicker, the h2 of each section, the
+// hero pill, the button labels and the page meta (title and description) in code. A card has an icon OR a photo.
+MitraCard   = { icon: string | null, photo: Image | null, title: string }   // icon and photo both set = 400
+// mitra / mitra-hero
+MitraHero   = { title: string, lead: string }
+// mitra / mitra-panduan
+MitraPanduan = {
+  groups: (MitraCard & { items: string[] })[],        // 1-8 cards, items 1-50
+  note: { title: string, text: string },              // title is shown with its colon, e.g. "Catatan:"
+  rules: { title: string, items: string[] },          // numbered 01.. by position
+  benefits: { title: string, items: string[] }
+}
+// mitra / mitra-kriteria
+MitraKriteria = {
+  sectors: (MitraCard & { members: { label: string, text: string }[], requirements: string[] })[],   // 1-6 cards
+  requirementsTitle: string,
+  registration: { title: string, text: string, url: string | null }   // url: absolute http(s); null = button to the Kontak page
+}
+// mitra / mitra-kami (the yearly partner directory still comes from /public/mitra)
+MitraKami = { fields: { title: string, items: string[] }, supportTypes: { title: string, items: string[] } }
 ```
 
 Indicator codes are not stored; the portal derives them from position, exactly as the workbook numbers
@@ -229,6 +255,10 @@ lingkungan, manajemen), letter `D` / `M` / `U` / `P` (dasar, madya, utama, parip
 1, 2, 3 ... through dasar, then madya, utama, paripurna within the pilar (e.g. SMP pelayanan: PLD-1 ...
 PLD-5, PLM-6, PLU-7, PLU-8, PLP-9). Pilar titles, icons, strata names and colours stay in portal code.
 
+Portal: `useMitraKonten` reads the four rows from the shared list. A card with a `photo` shows the photo above its
+title and no icon box; otherwise its `icon`, or `fa-solid fa-handshake` when it has none. A row that is missing
+or malformed shows the section's error state with a retry; the hero falls back to the heading "Kemitraan UKS/M".
+
 ### Validation rules (backend is the source of truth)
 
 - Every string: not empty or whitespace-only, at most 5,000 characters. Optional strings are `null`.
@@ -236,7 +266,9 @@ PLD-5, PLM-6, PLU-7, PLU-8, PLP-9). Pilar titles, icons, strata names and colour
   stratifikasi strata lists 0-50 (a strata may be empty).
 - Whole document: at most 200,000 characters serialized. `judul` (sub-program only): 1-200 characters.
 - `icon`: matches the existing Font Awesome class pattern used by Program (`IkonPattern`).
-- Link `url`: absolute `http`/`https` URL or `null`.
+- Link `url`: absolute `http`/`https` URL or `null` (also `registration.url` of Mitra).
+- Mitra: `groups` 1-8 and `sectors` 1-6; a card with both `icon` and `photo` is rejected at `<list>[i].icon`
+  ("Pilih ikon atau foto, tidak keduanya."); a card with neither is valid (the portal shows a fallback icon).
 - `section.type`: one of the five; `content` must match the type.
 - `Image.src` / `Chart.src`: a relative path matching `^[a-z0-9][a-z0-9._/-]*$`, no `..`, not a URL.
   `width`/`height`: integers 1-10,000. `description` required.
@@ -289,6 +321,10 @@ referenced as `"src": "@<file name>"`. The seeder runs in every environment, ins
 missing, uploads each referenced image with kind `cover` (stored as WebP) and replaces the token with
 the stored path. A row whose image upload fails is skipped and retried on the next start.
 
+The 4 `mitra` rows are not in `uksm.json` and must never be: they come from the migration `AddMitraKonten`
+(data-only, text taken from the former `src/data/mitra.js`), and a seeder insert with another id would make that
+migration fail on the unique slug index.
+
 ## Permissions
 
 `Uksm.Read`, `Uksm.Update` (in `PermissionNames.All`, not `ItOnly`): Admin CMS and Admin IT get them on
@@ -296,8 +332,8 @@ the next start. Users must log in again to receive them. Audit entity label: `Uk
 
 ## Release order
 
-1. `dotnet ef database update` (migration `AddUksmHalaman`)
-2. Deploy the backend; check `GET /api/v1/public/uksm` returns 31 rows and both chart URLs return 200
+1. `dotnet ef database update` (migrations `AddUksmHalaman`, later `AddMitraKonten`)
+2. Deploy the backend; check `GET /api/v1/public/uksm` returns 31 rows (35 with the `mitra` rows) and both chart URLs return 200
 3. Deploy the CMS
-4. Deploy the portal
+4. Deploy the portal (after `AddMitraKonten`: the Mitra sections have no static fallback and show their error state without the rows)
 5. Admin CMS / Admin IT log in again

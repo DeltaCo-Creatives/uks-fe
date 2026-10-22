@@ -1,7 +1,7 @@
 import { useId, useMemo, useRef, useState } from 'react';
-import { mitraFields, mitraSupportTypes } from '@/data/portalData';
 import { useMitraList } from '@/hooks/usePublicLists';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
+import { useMitraKonten } from '../useMitraKonten';
 import { SECTION, MINI_LABEL, NUM, COMPACT_NUM, EMPTY, FOCUS_INSET } from '../styles';
 
 const YEAR_TAB = `flex min-h-16 cursor-pointer flex-col items-start gap-0.5 border-b-[3px] bg-transparent px-6 py-3.5 text-left hover:bg-card-alt [&+&]:border-l [&+&]:border-l-rule max-[600px]:px-3.5 max-[600px]:py-3 ${FOCUS_INSET}`;
@@ -27,8 +27,10 @@ const searchAllYears = (kelompokTahun, query) => {
 /**
  * Partner directory by cohort year as ARIA tabs (roving tabindex, arrow/Home/End).
  * Names are plain text in columns: they are not links, so nothing looks clickable.
+ * The two lists above the directory come from the `mitra-kami` document.
  */
 export default function MitraKami() {
+  const { kami, loading: kontenLoading, retry: retryKonten } = useMitraKonten();
   const { data, loading, error, retry } = useMitraList();
   const kelompokTahun = useMemo(() => data?.kelompokTahun ?? [], [data]);
   const totalPartners = kelompokTahun.reduce((sum, year) => sum + year.mitra.length, 0);
@@ -68,25 +70,31 @@ export default function MitraKami() {
         </div>
       </div>
 
-      <div className="mb-6 grid grid-cols-2 gap-8 max-[960px]:grid-cols-[minmax(0,1fr)]" data-gsap="reveal">
-        <div>
-          <h3 className={MINI_LABEL}>Bidang usaha mitra</h3>
-          {/* Static names separated by a dot, no pill shapes. */}
-          <ul className="m-0 flex list-none flex-wrap gap-y-1 p-0 text-[15px] leading-[1.6] font-semibold text-ink">
-            {mitraFields.map((field) => (
-              <li key={field} className="not-last:after:mx-2.5 not-last:after:font-bold not-last:after:text-ink-muted not-last:after:content-['·']">{field}</li>
-            ))}
-          </ul>
+      {kontenLoading && <LoadingState label="Memuat bidang dan bentuk dukungan mitra..." />}
+
+      {!kontenLoading && !kami && <ErrorState title="Bidang dan bentuk dukungan mitra tidak dapat dimuat" retry={retryKonten} />}
+
+      {kami && (
+        <div className="mb-6 grid grid-cols-2 gap-8 max-[960px]:grid-cols-[minmax(0,1fr)]" data-gsap="reveal">
+          <div>
+            <h3 className={MINI_LABEL}>{kami.fields.title}</h3>
+            {/* Static names separated by a dot, no pill shapes. */}
+            <ul className="m-0 flex list-none flex-wrap gap-y-1 p-0 text-[15px] leading-[1.6] font-semibold text-ink">
+              {kami.fields.items.map((field, index) => (
+                <li key={index} className="not-last:after:mx-2.5 not-last:after:font-bold not-last:after:text-ink-muted not-last:after:content-['·']">{field}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className={MINI_LABEL}>{kami.supportTypes.title}</h3>
+            <ol className={COMPACT_NUM}>
+              {kami.supportTypes.items.map((type, index) => (
+                <li key={index}>{type}</li>
+              ))}
+            </ol>
+          </div>
         </div>
-        <div>
-          <h3 className={MINI_LABEL}>Bentuk dukungan mitra</h3>
-          <ol className={COMPACT_NUM}>
-            {mitraSupportTypes.map((type) => (
-              <li key={type}>{type}</li>
-            ))}
-          </ol>
-        </div>
-      </div>
+      )}
 
       <div className="overflow-hidden rounded-panel bg-card" data-gsap="reveal">
         {loading && <LoadingState label="Memuat daftar mitra..." />}

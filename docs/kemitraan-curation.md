@@ -1,6 +1,6 @@
 # Kemitraan UKS/M: Curation Log
 
-Source of truth: the PROD Mitra pages, scraped 2026-09-17 from the Inertia page data. The verbatim text is in [`kemitraan/`](./kemitraan/). The curated data is in `src/data/mitra.js` and the page is in `src/components/MitraView.jsx` and `src/components/mitra/`.
+Source of truth: the PROD Mitra pages, scraped 2026-09-17 from the Inertia page data. The verbatim text is in [`kemitraan/`](./kemitraan/). The curated text now lives in the backend (`/public/uksm`, kelompok `mitra`, seeded by migration `AddMitraKonten`, shapes in [`uksm-api-contract.md`](./uksm-api-contract.md)) and the page is in `src/pages/MitraPage.jsx` and `src/features/mitra/`.
 
 | PROD page | What it holds | Used |
 |---|---|---|
@@ -49,7 +49,7 @@ Everything in the old page had no PROD source:
 
 1. **Ministry name.** The Panduan text says Kemendikbudristek and "Direktorat Jenderal PAUD dan Dikdasmen Kemendikbudristek". It is shown verbatim; confirm the current name for the PKS coordinator.
 2. **"KSS" is never expanded** on PROD (probably Kemitraan Sekolah Sehat). It is not shown on this page, but the source uses it in Kriteria.
-3. **Registration.** Supply a working form or an address for partnership requests. Setting `mitraRegistration.url` switches the button to the form.
+3. **Registration.** Supply a working form or an address for partnership requests. Setting `registration.url` in the CMS (page "Halaman Kemitraan", row `mitra-kriteria`) switches the button to the form.
 4. **Tanoto Foundation activities.** Confirm whether "Modul Choice" belongs to Tanoto's record.
 5. **KPM.** Mitra Kami lists "PT KPM Ikhlas Tegas Puas"; Dukungan Mitra lists "Klinik Pendidikan MIPA" in the same slot. Confirm they are the same partner and which name to use.
 6. **KAO location "Kabupaten Sentani, Papua".** Sentani is in Kabupaten Jayapura. Shown verbatim.
