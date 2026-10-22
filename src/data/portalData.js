@@ -15,6 +15,3 @@ export * from './stratifikasi';
 
 // Priority Programs (MBG, CKG, 7KAIH, ASRI, Prestasi, etc.)
 export * from './program';
-
-// Multi-stakeholder Partnership (Mitra, Activities, Support, Logos)
-export * from './mitra';
