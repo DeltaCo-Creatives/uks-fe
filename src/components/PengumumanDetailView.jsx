@@ -9,6 +9,7 @@ import { NEW_TAB_HINT } from '@/utils/linkKind';
 import { countdownLabel, periodeLabel, canDaftar } from '@/utils/kesempatan';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import { LoadingState, ErrorState } from './shared/AsyncState';
+import SafeImage from './SafeImage';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
 
@@ -70,6 +71,9 @@ export default function PengumumanDetailView() {
         <h1 className="mb-4 text-[clamp(24px,3.8vw,38px)] leading-[1.25] font-extrabold text-ink">{item.judul}</h1>
 
         {countdown && <p className="mb-4 text-[15px] font-extrabold text-ink">{countdown}</p>}
+        {item.image && (
+          <SafeImage src={item.image} alt="" className="mb-7 block max-h-[440px] w-full rounded-card object-cover" />
+        )}
         {item.ringkasan && (
           <p className="mb-7 border-l-4 border-brand pl-5 text-[clamp(16px,1.8vw,18px)] leading-[1.7] font-semibold text-brand-deep italic">
             {item.ringkasan}
