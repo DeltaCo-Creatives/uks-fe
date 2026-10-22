@@ -117,7 +117,7 @@ All 5 programs are present. The facts, tables, timeline, pillars and links match
 
 ## 7. Mitra
 
-Source: `kemitraan/` (5 pages). Code: [mitra.js](../src/data/mitra.js).
+Source: `kemitraan/` (5 pages). Code: [features/mitra](../src/features/mitra).
 
 All text found. The 20 / 30 / 7 partner lists and the 6 support records are present, as are the status-only pendaftaran and the removals listed in `kemitraan-curation.md`.
 
