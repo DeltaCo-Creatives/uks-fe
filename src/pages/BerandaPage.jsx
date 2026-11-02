@@ -1,4 +1,4 @@
-import { Hero, TriasPillars, Programs, Books, Infografis, HomeStratifikasi } from '@/features/beranda';
+import { Hero, TriasPillars, Programs, Books, Infografis, HomeStratifikasi, MediaSosialSections } from '@/features/beranda';
 import { usePageMeta } from '@/hooks/usePageMeta';
 
 export default function BerandaPage() {
@@ -25,6 +25,9 @@ export default function BerandaPage() {
       <div id="sec-home-books">
         <Books />
       </div>
+
+      {/* 6b. Media Sosial: Instagram, then YouTube */}
+      <MediaSosialSections />
 
       {/* 7. Galeri Visual Inspirasi & Partner Marquee */}
       <div id="sec-home-gallery">

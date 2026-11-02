@@ -105,6 +105,9 @@ export const useFooterTautanList = createCachedList('/public/footer-tautan');
  */
 export const usePengaturanSettings = createCachedList('/public/pengaturan');
 
+/** Beranda Instagram and YouTube rows: `{ instagram, youtube }`, each `{ visible, items }`, an object passed through like the settings. */
+export const useMediaSosial = createCachedList('/public/media-sosial');
+
 /**
  * UKS/M pages (Trias, Profil, Struktur Organisasi) as one row per unit, sorted by
  * kelompok then urutan. A plain array; `useUksm()` maps it to the shapes the pages read.

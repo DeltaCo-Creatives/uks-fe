@@ -4,3 +4,4 @@ export { default as Programs } from './components/Programs';
 export { default as Books } from './components/Books';
 export { default as Infografis } from './components/Infografis';
 export { default as HomeStratifikasi } from './components/HomeStratifikasi';
+export { default as MediaSosialSections } from './components/MediaSosialSections';
