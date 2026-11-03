@@ -86,6 +86,9 @@
   .ig-tile:hover .ig-cover, .ig-tile:focus-visible .ig-cover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
   .ig-cover i.placeholder-icon { font-size: 26px; color: #7F9286; }
   .tint-a { background: #DDEBE1; } .tint-b { background: var(--bg-card-alt); } .tint-c { background: #E6EEE0; } .tint-d { background: #E9ECEA; }
+  .ig-cover.no-cover { display: block; padding: 16px; background: var(--brand-light); color: var(--text-primary); }
+  .ig-cover.no-cover .caption { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-size: 15px; font-weight: 800; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: break-word; }
+  .ig-cover.no-cover .ig-glyph { position: absolute; right: 14px; bottom: 14px; font-size: 22px; color: var(--brand-deep); }
   .play-disc { position: absolute; left: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; background: var(--brand-accent); color: var(--text-primary); display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.18); }
   .play-disc.center { left: 50%; top: 50%; bottom: auto; transform: translate(-50%, -50%); width: 56px; height: 56px; font-size: 20px; }
 
@@ -263,10 +266,12 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function igItems() {
+    // The third post has no cover, so its tile shows the caption the way the site does.
     return Array.from({ length: state.count }, (_, i) => ({
       kind: i % 3 === 1 ? 'photo' : 'reel',
-      title: 'Keterangan singkat postingan ' + (i + 1),
-      tint: tints[i % tints.length]
+      title: i === 2 ? 'Postingan tanpa cover: keterangan singkatnya tampil di kartu' : 'Keterangan singkat postingan ' + (i + 1),
+      tint: tints[i % tints.length],
+      noCover: i === 2
     }));
   }
   function ytItems() {
@@ -282,7 +287,9 @@
     body.innerHTML = rowWrap('ig-track', 'Postingan', '<div class="track" id="ig-track" role="region" aria-label="Postingan Instagram">' +
       items.map((it, i) =>
         '<button class="ig-tile" data-kind="ig" data-index="' + i + '" aria-label="' + it.title + (it.kind === 'reel' ? ', video' : ', postingan') + ', ' + (i + 1) + ' dari ' + items.length + ', buka pemutar">' +
-          '<div class="ig-cover ' + it.tint + '"><i class="fa-regular fa-image placeholder-icon" aria-hidden="true"></i><span>Cover 1:1</span>' +
+          (it.noCover
+            ? '<div class="ig-cover no-cover"><span class="caption" aria-hidden="true">' + it.title + '</span><i class="fa-brands fa-instagram ig-glyph" aria-hidden="true"></i>'
+            : '<div class="ig-cover ' + it.tint + '"><i class="fa-regular fa-image placeholder-icon" aria-hidden="true"></i><span>Cover 1:1</span>') +
           (it.kind === 'reel' ? '<span class="play-disc" aria-hidden="true"><i class="fa-solid fa-play"></i></span>' : '') +
           '</div></button>').join('') + '</div>');
   }
@@ -436,7 +443,7 @@
       ? '<div class="field"><label for="f-caption">Keterangan singkat</label><input id="f-caption" type="text" maxlength="150" value="Keterangan singkat postingan 1"><span class="help">Dipakai sebagai teks alternatif dan judul pemutar. Maksimal 150 karakter.</span></div>'
       : '<div class="field"><label>Judul</label><div class="help">Diambil otomatis dari YouTube dan ditampilkan apa adanya, sesuai aturan YouTube.</div></div>';
     const side = ig
-      ? '<div><div class="field"><label>Cover (wajib)</label></div><div class="upload"><div class="sq"><i class="fa-regular fa-image" aria-hidden="true"></i></div><button class="cms-btn" type="button">Unggah gambar</button><span>Gambar persegi 1:1. Gambar lain dipotong otomatis di tengah. Pakai gambar milik UKS, atau yang sudah diizinkan pemilik akunnya.</span></div></div>'
+      ? '<div><div class="field"><label>Cover</label></div><div class="upload"><div class="sq"><i class="fa-regular fa-image" aria-hidden="true"></i></div><button class="cms-btn" type="button">Unggah gambar</button><span>Opsional. Tanpa cover, kartu di Beranda menampilkan keterangan singkat. Gambar persegi 1:1, gambar lain dipotong otomatis di tengah. Pakai gambar milik UKS, atau yang sudah diizinkan pemilik akunnya.</span></div></div>'
       : '<div class="preview-card"><strong>Pratinjau kartu</strong><div class="yt-thumb"><span>Thumbnail YouTube</span></div><span>Thumbnail dan judul diambil dari YouTube. Video yang penyematannya dimatikan pemiliknya ditolak saat disimpan.</span></div>';
     document.getElementById('screen-cms').innerHTML =
       '<div class="cms"><nav class="cms-side" aria-label="Menu CMS"><div class="brand">CMS UKS</div>' +

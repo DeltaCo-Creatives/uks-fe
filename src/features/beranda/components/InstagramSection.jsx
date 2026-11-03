@@ -2,7 +2,6 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { usePengaturanSettings } from '@/hooks/usePublicLists';
 import { safeHttpUrl } from '@/features/footer/resolveFooter';
 import { NEW_TAB_HINT } from '@/utils/linkKind';
-import SafeImage from '@/components/SafeImage';
 import { SECTION_MORE_BUTTON } from '../styles';
 import { readMediaSosial } from '../mediaSosial';
 import MediaSosialRow from './MediaSosialRow';
@@ -49,6 +48,30 @@ const MARK = (
   </span>
 );
 
+// The cover is optional: without one, or when it fails to load, the caption fills the tile on the brand's light green.
+// The mark sits bottom right because a reel's play badge takes the bottom left.
+function InstagramCover({ item }) {
+  const [failed, setFailed] = useState(false);
+  if (item.coverUrl && !failed) {
+    return (
+      <img
+        src={item.coverUrl}
+        alt={item.title}
+        className="h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+  return (
+    <span className="block h-full bg-brand-light p-4" aria-hidden="true">
+      <span className="font-heading line-clamp-5 text-[15px] leading-[1.4] font-extrabold break-words text-ink">{item.title}</span>
+      <i className="fa-brands fa-instagram absolute right-3.5 bottom-3.5 text-[22px] text-brand-deep"></i>
+    </span>
+  );
+}
+
 function InstagramTile({ item, position, onOpen }) {
   const reel = item.kind === 'reel';
   return (
@@ -59,7 +82,7 @@ function InstagramTile({ item, position, onOpen }) {
       aria-label={`${item.title}, ${reel ? 'video' : 'postingan'}, ${position}, buka pemutar`}
     >
       <span data-media="" className={`relative block aspect-square overflow-hidden rounded-panel bg-card-alt shadow-soft ${COVER_LIFT}`}>
-        <SafeImage src={item.coverUrl} alt={item.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+        <InstagramCover key={item.coverUrl ?? ''} item={item} />
         {reel && (
           <span
             className="absolute bottom-3 left-3 grid size-10 place-items-center rounded-full bg-brand-accent text-[14px] text-ink shadow-[0_6px_16px_rgba(0,0,0,0.18)]"
