@@ -20,6 +20,10 @@ assert.equal(readMediaSosial({ instagram: { visible: 'true', items: [ig] } }).in
 assert.equal(readMediaSosial({ youtube: { visible: true, items: [] } }).youtube.visible, false);
 assert.deepEqual(readMediaSosial({ youtube: { visible: false, items: [yt] } }).youtube, { visible: false, items: [yt] });
 
+// The cover is optional: a post without one stays in the row, and its tile shows the caption.
+const igNoCover = { ...ig, id: 'c', coverUrl: null };
+assert.deepEqual(readMediaSosial({ instagram: { visible: true, items: [igNoCover] } }).instagram, { visible: true, items: [igNoCover] });
+
 // Items whose link or embed leaves the platform's hosts are dropped; with none left the section hides.
 const badInstagram = [
   { ...ig, embedUrl: 'javascript:alert(1)' },

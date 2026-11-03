@@ -4,7 +4,7 @@
 // Switch the public response to test the site's states: /__mock/mode?media=normal|slow|error|empty|missing
 // The CMS signs in here with any email and password, so it listens on 127.0.0.1 only; its edits, uploads and
 // settings last until the process stops.
-// The seeded Instagram covers are generated placeholders ("Cover contoh N"); on the real site the admin uploads each one.
+// The seeded Instagram covers are generated placeholders ("Cover contoh N"); the last post has none, to show the caption tile.
 import http from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { extname } from 'node:path';
@@ -34,12 +34,15 @@ const youtubeSeed = [
 
 const now = new Date().toISOString();
 const items = [
-  ...instagramSeed.map(([kode, jenis, judul], i) => ({
-    id: `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`,
-    platform: 'instagram', kodeKonten: kode, jenis, judul, namaKanal: null,
-    gambar: `cover/mock/ig-${i + 1}.svg`, gambarUrl: `${SELF}/mock-files/ig-${i + 1}.svg`,
-    urutan: i, isAktif: true, isDeleted: false, deletedAt: null, createdAt: now, updatedAt: null
-  })),
+  ...instagramSeed.map(([kode, jenis, judul], i) => {
+    const covered = i < instagramSeed.length - 1;
+    return {
+      id: `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`,
+      platform: 'instagram', kodeKonten: kode, jenis, judul, namaKanal: null,
+      gambar: covered ? `cover/mock/ig-${i + 1}.svg` : null, gambarUrl: covered ? `${SELF}/mock-files/ig-${i + 1}.svg` : null,
+      urutan: i, isAktif: true, isDeleted: false, deletedAt: null, createdAt: now, updatedAt: null
+    };
+  }),
   ...youtubeSeed.map(([kode, jenis], i) => ({
     id: `00000000-0000-4000-9000-${String(i + 1).padStart(12, '0')}`,
     platform: 'youtube', kodeKonten: kode, jenis, judul: `Video YouTube ${kode}`, namaKanal: null,
@@ -103,7 +106,6 @@ const MSG = {
   duplicate: 'Konten ini sudah ada di daftar.',
   judulRequired: 'Keterangan wajib diisi.',
   judulTooLong: 'Keterangan maksimal 150 karakter.',
-  gambarRequired: 'Cover wajib diunggah.',
   gambarInvalid: 'Gambar tidak valid, unggah ulang gambarnya.',
   platform: 'Platform harus salah satu dari: instagram, youtube.',
   notFound: 'Data tidak ditemukan.'
@@ -442,14 +444,13 @@ async function saveMedia({ body, reply, invalid, fail }, id) {
   const { platform } = input;
   const isInstagram = platform === 'instagram';
   const judul = typeof input.judul === 'string' ? input.judul.trim() : '';
-  const gambar = typeof input.gambar === 'string' ? input.gambar : '';
+  const gambar = typeof input.gambar === 'string' && input.gambar.trim() ? input.gambar : '';
   const urutan = Number(input.urutan ?? 0);
   const errors = {};
   if (!PLATFORMS.includes(platform)) errors.Platform = [MSG.platform];
   if (isInstagram && !judul) errors.Judul = [MSG.judulRequired];
   else if (isInstagram && judul.length > 150) errors.Judul = [MSG.judulTooLong];
-  if (isInstagram && !gambar.trim()) errors.Gambar = [MSG.gambarRequired];
-  else if (isInstagram && (gambar.length > 255 || !gambar.startsWith('cover/'))) errors.Gambar = [MSG.gambarInvalid];
+  if (isInstagram && gambar && (gambar.length > 255 || !gambar.startsWith('cover/'))) errors.Gambar = [MSG.gambarInvalid];
   if (!Number.isInteger(urutan)) errors.Urutan = ['Urutan harus berupa bilangan bulat.'];
   else if (urutan < 0) errors.Urutan = ['Urutan tidak boleh negatif.'];
   let found = null;
@@ -468,7 +469,7 @@ async function saveMedia({ body, reply, invalid, fail }, id) {
   const fields = {
     platform, kodeKonten: found.kodeKonten, jenis: found.jenis,
     judul: isInstagram ? judul : found.judul, namaKanal: found.namaKanal,
-    gambar: isInstagram ? gambar : null, gambarUrl: isInstagram ? fileUrl(gambar) : null,
+    gambar: isInstagram && gambar ? gambar : null, gambarUrl: isInstagram && gambar ? fileUrl(gambar) : null,
     urutan, isAktif: input.isAktif === true
   };
   if (id) {
