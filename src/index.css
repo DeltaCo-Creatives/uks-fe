@@ -121,6 +121,7 @@
     font-family: "Plus Jakarta Sans", system-ui, sans-serif;
     color: var(--text-primary);
     letter-spacing: var(--heading-tracking, -0.01em);
+    word-spacing: var(--heading-word-spacing, normal);
   }
 
   a {

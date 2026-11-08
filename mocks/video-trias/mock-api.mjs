@@ -639,6 +639,8 @@ const SETTINGS_MODULES = ['kontak', 'tautan', 'stratifikasi', 'pengunjung', 'tam
 const JARAK_HURUF_KEY = 'tampilan.jarakHurufJudul';
 const JARAK_HURUF_VALUES = ['rapat', 'sedang', 'lega'];
 const JARAK_HURUF_ERROR = 'Pilihan jarak huruf judul tidak valid.';
+const JARAK_KATA_KEY = 'tampilan.jarakKataJudul';
+const JARAK_KATA_ERROR = 'Pilihan jarak antar kata judul tidak valid.';
 const settings = new Map();
 
 function getSettingsModule({ params: [module], reply, fail }) {
@@ -656,8 +658,14 @@ function putSettingsModule({ params: [module], body, reply, invalid, fail }) {
     return invalid({ Values: ['Kunci pengaturan tidak valid.'] });
   }
   if (name === 'tampilan') {
-    const bad = entries.some(([key, value]) => key !== JARAK_HURUF_KEY || (value.trim() !== '' && !JARAK_HURUF_VALUES.includes(value.trim())));
-    if (bad) return invalid({ Values: [JARAK_HURUF_ERROR] });
+    const errors = [];
+    for (const [key, value] of entries) {
+      const ok = value.trim() === '' || JARAK_HURUF_VALUES.includes(value.trim());
+      if (key === JARAK_HURUF_KEY && !ok) errors.push(JARAK_HURUF_ERROR);
+      else if (key === JARAK_KATA_KEY && !ok) errors.push(JARAK_KATA_ERROR);
+      else if (key !== JARAK_HURUF_KEY && key !== JARAK_KATA_KEY) errors.push(JARAK_HURUF_ERROR);
+    }
+    if (errors.length) return invalid({ Values: [...new Set(errors)] });
   }
   for (const [key, value] of entries) settings.set(key, value.trim());
   reply(204);
