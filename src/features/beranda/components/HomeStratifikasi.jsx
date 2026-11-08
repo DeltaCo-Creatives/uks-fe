@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { strataLevels } from '@/data/portalData';
+import { useStrataLevels } from '@/hooks/useStrataLevels';
 import { pathForView } from '@/routes';
 
 /**
@@ -9,6 +9,7 @@ import { pathForView } from '@/routes';
 // Strata colors come from data shared with the Stratifikasi page, so they stay inline.
 // The trailing "!" beats the unlayered .btn-pill/.section rules; drop it once those move to Tailwind.
 export default function HomeStratifikasi() {
+  const strataLevels = useStrataLevels();
   return (
     <section id="sec-home-stratifikasi" className="section pb-[30px]!">
       <div className="container">

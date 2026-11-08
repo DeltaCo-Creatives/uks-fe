@@ -3,10 +3,10 @@ import {
   stratifikasiGoals,
   stratifikasiScoring,
   stratifikasiIndicatorIntro,
-  strataCategories,
-  strataLevels
+  strataCategories
 } from '@/data/portalData';
 import { usePengaturanSettings } from '@/hooks/usePublicLists';
+import { useStrataLevels } from '@/hooks/useStrataLevels';
 import { LoadingState, ErrorState } from '@/components/shared/AsyncState';
 import { StrataExplorer, useUksm } from '@/features/uksm';
 import { usePageMeta } from '@/hooks/usePageMeta';
@@ -38,6 +38,7 @@ function GoalsCard() {
 
 /** Cara Penilaian: the official rule, with the 4 areas that must all be met shown as chips. */
 function ScoringCard() {
+  const strataLevels = useStrataLevels();
   return (
     <div id="sec-strat-penilaian" className={`${OVERVIEW_CARD} border-2 border-brand-accent`} data-gsap="reveal">
       <h3 className={OVERVIEW_TITLE}>

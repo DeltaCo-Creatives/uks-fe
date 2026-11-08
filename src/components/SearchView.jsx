@@ -7,7 +7,8 @@ import useSearchFeedback from '@/hooks/useSearchFeedback';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useUksm, strataIndicators } from '@/features/uksm';
 import { usePraktikBaikList, useUptStoriesList, useAgendaList, useBukuPanduanList, useVideoList, useProdukHukumList, useAplikasiList, useProgramList, usePengumumanList } from '../hooks/usePublicLists';
-import { strataCategories, strataLevels } from '../data/portalData';
+import { strataCategories } from '../data/portalData';
+import { useStrataLevels } from '@/hooks/useStrataLevels';
 
 const PREVIEW_INDICATORS = 2; // indicators shown on a strata result card
 
@@ -33,6 +34,7 @@ function templateLink(configs, template, fallbackSlug) {
 
 export default function SearchView() {
   const configs = useNavConfig();
+  const strataLevels = useStrataLevels();
   usePageMeta({ title: 'Pencarian', description: 'Cari berita, program, publikasi, dan informasi lain di portal UKS/M.', noindex: true });
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -253,7 +255,7 @@ export default function SearchView() {
     });
 
     return items;
-  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, pengumumanList, triasPillarsDetail, stratifikasiJenjang, configs]);
+  }, [newsList, bestPracticesList, uptStories, agendaList, booksList, videosList, regulationsList, apps, programs, pengumumanList, triasPillarsDetail, stratifikasiJenjang, strataLevels, configs]);
 
   // Normalization helper for accent and case insensitivity
   const normalize = (str) =>
