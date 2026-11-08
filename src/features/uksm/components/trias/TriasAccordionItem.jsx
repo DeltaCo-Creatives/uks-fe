@@ -6,9 +6,9 @@ import { FOCUS_RING } from '../../styles';
 
 function FactTiles({ facts, pillar }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-3">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-4">
       {facts.map((fact) => (
-        <div key={fact.label} className="flex items-center gap-3 rounded-soft px-4 py-3.5" style={{ background: pillar.bgBadge }}>
+        <div key={fact.label} className="flex items-center gap-3 rounded-soft px-5 py-4" style={{ background: pillar.bgBadge }}>
           <i className={`${fact.icon} w-[22px] shrink-0 text-center text-[18px]`} style={{ color: pillar.color }} aria-hidden="true"></i>
           <div>
             <span className="block text-[12px] font-extrabold tracking-[0.05em] uppercase" style={{ color: pillar.color }}>{fact.label}</span>
@@ -47,7 +47,7 @@ export default function TriasAccordionItem({ item, info, index, pillar, isOpen, 
     >
       <button
         type="button"
-        className={`flex min-h-[84px] w-full cursor-pointer items-center gap-[18px] px-6 py-[18px] text-left text-ink max-[600px]:gap-3 max-[600px]:px-4 max-[600px]:py-3.5 ${FOCUS_RING}`}
+        className={`flex min-h-[84px] w-full cursor-pointer items-center gap-[18px] px-8 py-6 text-left text-ink max-[600px]:gap-3 max-[600px]:px-4 max-[600px]:py-3.5 ${FOCUS_RING}`}
         aria-expanded={isOpen} aria-controls={panelId} onClick={handleToggle}>
         <span className="flex size-12 shrink-0 items-center justify-center rounded-soft text-[20px] max-[600px]:size-[42px] max-[600px]:text-[18px]" style={{ background: pillar.bgBadge, color: pillar.color }} aria-hidden="true">
           <i className={info.icon}></i>
@@ -67,7 +67,7 @@ export default function TriasAccordionItem({ item, info, index, pillar, isOpen, 
 
       {panelMounted && (
         <div ref={panelRef}>
-          <div id={panelId} role="region" aria-label={item.title} className="flex flex-col gap-[18px] pr-6 pb-6 pl-[90px] max-[600px]:px-4 max-[600px]:pb-5">
+          <div id={panelId} role="region" aria-label={item.title} className="flex flex-col gap-[18px] pr-8 pb-8 pl-[98px] max-[600px]:px-4 max-[600px]:pb-5">
             {info.summary && <p className="text-[17px] leading-[1.7] text-ink">{info.summary}</p>}
 
             {item.placeholder && (

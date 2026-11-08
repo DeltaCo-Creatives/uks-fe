@@ -18,7 +18,7 @@ function PillarJumpCard({ pillar, tagline }) {
   return (
     <button
       type="button"
-      className="flex cursor-pointer flex-col gap-2.5 rounded-card border-[1.5px] border-line bg-card p-6 text-left text-ink shadow-raised [transition:var(--spring)] hover:shadow-lift hover:[transform:translateY(-4px)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-accent max-[600px]:gap-1.5 max-[600px]:px-[18px] max-[600px]:py-4"
+      className="flex cursor-pointer flex-col gap-2.5 rounded-card border-[1.5px] border-line bg-card p-8 text-left text-ink shadow-raised [transition:var(--spring)] hover:shadow-lift hover:[transform:translateY(-4px)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-accent max-[600px]:gap-1.5 max-[600px]:px-[18px] max-[600px]:py-4"
       onClick={() => scrollToSection(sectionIdOf(pillar))} data-gsap="reveal">
       <span className="flex items-center justify-between">
         <span className="flex size-[50px] items-center justify-center rounded-soft text-[22px]" style={{ background: pillar.bgBadge, color: pillar.color }} aria-hidden="true">
@@ -50,7 +50,7 @@ function PillarSection({ pillar, summaries, openItemId, onToggleItem }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3" data-gsap="reveal">
+      <div className="flex flex-col gap-4" data-gsap="reveal">
         {pillar.items.map((item, idx) => (
           <TriasAccordionItem
             key={item.id}
