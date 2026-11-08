@@ -3,7 +3,8 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { prefersReducedMotion } from '@/hooks/useCollapse';
-import { strataCategories, strataLevels } from '@/data/portalData';
+import { strataCategories } from '@/data/portalData';
+import { useStrataLevels } from '@/hooks/useStrataLevels';
 import { strataIndicators } from '../../mapUksm';
 import JenjangTabs from './JenjangTabs';
 import StrataCategoryCard from './StrataCategoryCard';
@@ -20,7 +21,7 @@ const countIndicators = (requirements, strataKey) =>
   strataCategories.reduce((sum, category) => sum + strataIndicators(requirements, category.id, strataKey).length, 0);
 
 /** The 4 strata as a rising ladder of buttons; the selected one drives the panel below. */
-function StrataLadder({ requirements, selectedKey, onSelect }) {
+function StrataLadder({ strataLevels, requirements, selectedKey, onSelect }) {
   return (
     <div className="mb-4 grid grid-cols-4 items-end gap-3 max-[768px]:grid-cols-2 max-[768px]:items-stretch" role="group" aria-label="Pilih strata">
       {strataLevels.map((strata, idx) => {
@@ -53,6 +54,7 @@ function StrataLadder({ requirements, selectedKey, onSelect }) {
  * @param {{ jenjang: Array<{ slug: string, label: string, requirements: object }> }} props at least one row
  */
 export default function StrataExplorer({ jenjang }) {
+  const strataLevels = useStrataLevels();
   const [searchParams] = useSearchParams();
   const { hash } = useLocation();
   const navigate = useNavigate();
@@ -95,7 +97,7 @@ export default function StrataExplorer({ jenjang }) {
 
   return (
     <JenjangTabs jenjang={jenjang} activeSlug={current.slug} onSelect={(slug) => select('jenjang', slug)}>
-      <StrataLadder requirements={requirements} selectedKey={strata.key} onSelect={(key) => select('strata', key)} />
+      <StrataLadder strataLevels={strataLevels} requirements={requirements} selectedKey={strata.key} onSelect={(key) => select('strata', key)} />
 
       <div ref={panelRef} className="rounded-card border-t-[6px] bg-card p-[clamp(20px,3vw,32px)] shadow-raised" style={{ borderTopColor: strata.color }} aria-live="polite">
         <div className="strat-panel-head mb-5">
