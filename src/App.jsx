@@ -259,13 +259,19 @@ function AppRoutes() {
 
 const HEADING_TRACKING = { rapat: '-0.03em', sedang: '-0.01em', lega: '0em' };
 
-// tampilan.jarakHurufJudul from the CMS drives the letter-spacing of every heading; unknown or empty keeps sedang.
+const HEADING_WORD_SPACING = { rapat: '-0.03em', sedang: '0em', lega: '0.12em' };
+
+// tampilan.jarakHurufJudul / jarakKataJudul from the CMS drive the letter- and word-spacing of every heading; unknown or empty keeps sedang.
 function useHeadingTracking() {
   const { data: settings } = usePengaturanSettings();
   const value = HEADING_TRACKING[settings?.['tampilan.jarakHurufJudul']] ?? HEADING_TRACKING.sedang;
+  const wordValue = HEADING_WORD_SPACING[settings?.['tampilan.jarakKataJudul']] ?? HEADING_WORD_SPACING.sedang;
   useEffect(() => {
     document.documentElement.style.setProperty('--heading-tracking', value);
   }, [value]);
+  useEffect(() => {
+    document.documentElement.style.setProperty('--heading-word-spacing', wordValue);
+  }, [wordValue]);
 }
 
 // Routes mount only once the nav config settles, so tab slugs resolve against the real tabs.
