@@ -70,7 +70,7 @@ function pillarItem(row) {
   const description = row.dokumen.description ?? null;
   const sections = list(row.dokumen.sections);
   const placeholder = description === null && sections.length === 0;
-  return { id: row.slug, title: row.judul, ...(placeholder && { placeholder: true }), description, sections };
+  return { id: row.slug, title: row.judul, ...(placeholder && { placeholder: true }), description, descriptionAlign: row.dokumen.align?.description, sections };
 }
 
 function itemSummary(doc) {
@@ -78,6 +78,7 @@ function itemSummary(doc) {
     icon: doc.icon,
     short: doc.short,
     summary: doc.summary ?? null,
+    summaryAlign: doc.align?.summary,
     facts: list(doc.facts).map((fact) => ({ label: fact.label, icon: FACT_ICONS[fact.label], value: fact.value }))
   };
 }
@@ -128,6 +129,7 @@ export function mapUksm(rows) {
           title: pillar.judul,
           ...PILLAR_STYLE[pillar.slug],
           description: pillar.dokumen.description,
+          descriptionAlign: pillar.dokumen.align?.description,
           items: subPrograms.filter((row) => row.induk === pillar.slug).map(pillarItem)
         }
       ])
@@ -156,6 +158,7 @@ export function mapUksm(rows) {
 
     profilGoal: mapIfPresent(docOf('profil', 'tujuan'), (tujuan) => ({
       sentence: tujuan.sentence,
+      sentenceAlign: tujuan.align?.sentence,
       parts: list(tujuan.parts).map(({ id, label, text }) => ({ id, label, icon: GOAL_ICONS[id], text }))
     })),
     profilTargets: mapIfPresent(docOf('profil', 'sasaran'), (sasaran) => ({

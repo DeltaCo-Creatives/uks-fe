@@ -1,4 +1,5 @@
 import { TodoTag } from '@/components/ContentPlaceholder';
+import { alignClass } from '../../alignClass';
 import ProfilChart from '../profil/ProfilChart';
 
 // Dev-only label for the TODO tags: where the original copy came from.
@@ -58,7 +59,7 @@ function EntryList({ entries, numbered, color }) {
 export default function TriasOfficialText({ item, pillar }) {
   return (
     <div className="mt-[18px] flex flex-col gap-5 border-t-[1.5px] border-line pt-[18px]">
-      {item.description && <p className={TEXT}>{item.description}</p>}
+      {item.description && <p className={`${TEXT} ${alignClass(item.descriptionAlign)}`}>{item.description}</p>}
       {item.sections.map((section, idx) => (
         // Labels are editable and can repeat, so the position is the key.
         <div key={idx} className="flex flex-col gap-2">
@@ -66,7 +67,7 @@ export default function TriasOfficialText({ item, pillar }) {
           {section.type === 'image'
             ? <ProfilChart chart={{ title: section.label, ...section.content }} />
             : <h4 className="text-[15px] font-extrabold" style={{ color: pillar.color }}>{section.label}</h4>}
-          {section.type === 'text' && <p className={TEXT}>{section.content}</p>}
+          {section.type === 'text' && <p className={`${TEXT} ${alignClass(section.align)}`}>{section.content}</p>}
           {section.type === 'links' && <LinkList links={section.content} color={pillar.color} />}
           {(section.type === 'bullets' || section.type === 'numbered') && (
             <EntryList entries={section.content} numbered={section.type === 'numbered'} color={pillar.color} />

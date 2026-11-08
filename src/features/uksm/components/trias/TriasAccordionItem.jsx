@@ -3,6 +3,7 @@ import ContentPlaceholder from '@/components/ContentPlaceholder';
 import useCollapse from '@/hooks/useCollapse';
 import TriasOfficialText, { TRIAS_SOURCE } from './TriasOfficialText';
 import { FOCUS_RING } from '../../styles';
+import { alignClass } from '../../alignClass';
 
 function FactTiles({ facts, pillar }) {
   return (
@@ -68,7 +69,7 @@ export default function TriasAccordionItem({ item, info, index, pillar, isOpen, 
       {panelMounted && (
         <div ref={panelRef}>
           <div id={panelId} role="region" aria-label={item.title} className="flex flex-col gap-[18px] pr-8 pb-8 pl-[98px] max-[600px]:px-4 max-[600px]:pb-5">
-            {info.summary && <p className="text-[17px] leading-[1.7] text-ink">{info.summary}</p>}
+            {info.summary && <p className={`text-[17px] leading-[1.7] text-ink ${alignClass(info.summaryAlign)}`}>{info.summary}</p>}
 
             {item.placeholder && (
               <ContentPlaceholder

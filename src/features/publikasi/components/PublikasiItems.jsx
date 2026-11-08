@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { countProdukHukumView, countPublikasiDownload, countPublikasiView } from '@/utils/counters';
 import SafeImage from '@/components/SafeImage';
 import ImageLightbox from '@/components/shared/ImageLightbox';
 import DocViewerModal from '@/components/shared/DocViewerModal';
+import MediaSosialPlayer from '@/features/beranda/components/MediaSosialPlayer';
 import { downloadFile } from '@/utils/downloadFile';
 import { isDirectPdf } from '@/utils/linkKind';
 // The same card grid as the Warta lists (3 across on a desktop, 2 on a tablet, 1 on a phone), so the pages match.
@@ -167,41 +168,90 @@ export function AlbumLightbox({ album, onClose }) {
   );
 }
 
+const VIDEO_CARD = 'group block w-full overflow-hidden rounded-card border-none bg-card p-0 text-left shadow-raised [transition:var(--spring)] hover:shadow-lift hover:[transform:translateY(-6px)]';
+
+function VideoCardBody({ vid }) {
+  return (
+    <>
+      <div className="relative aspect-video w-full overflow-hidden bg-black">
+        <img
+          className="h-full w-full object-cover opacity-85 [transition:var(--ease)] group-hover:opacity-95 group-hover:[transform:scale(1.06)]"
+          src={vid.thumb}
+          alt={vid.title}
+        />
+        <div className="absolute inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)] [transition:var(--ease)]">
+          <div className="flex size-14 items-center justify-center rounded-[50%] bg-brand-accent text-[20px] text-ink shadow-[0_10px_24px_rgba(0,0,0,0.3)] [transition:var(--spring)] group-hover:bg-white group-hover:text-brand group-hover:[transform:scale(1.15)]">
+            <i className="fa-solid fa-play"></i>
+          </div>
+        </div>
+        {vid.duration && (
+          <span className="absolute right-3 bottom-3 rounded-[999px] bg-[rgba(0,0,0,0.8)] px-2.5 py-1 text-[11px] font-extrabold text-white">
+            {vid.duration}
+          </span>
+        )}
+      </div>
+      <div className="p-5">
+        {vid.channel && <span className="text-[11px] font-bold text-brand uppercase">{vid.channel}</span>}
+        <h4 className="mt-1.5 mb-0 line-clamp-3 text-[15px] leading-[1.4] font-extrabold break-words text-ink" title={vid.title}>{vid.title}</h4>
+      </div>
+    </>
+  );
+}
+
+/** An uploaded video plays in the shared popup shell; YouTube items still open in a new tab. */
 export function VideoGrid({ videos }) {
+  const [playing, setPlaying] = useState(null);
+  const [failed, setFailed] = useState(false);
+  const openerRef = useRef(null);
+
   return (
     <div className={GRID}>
-      {videos.map(vid => (
+      {videos.map(vid => (vid.videoUrl ? (
+        <button
+          key={vid.id}
+          type="button"
+          className={`${VIDEO_CARD} cursor-pointer focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink`}
+          aria-label={`Putar video: ${vid.title}`}
+          onClick={(e) => { openerRef.current = e.currentTarget; countPublikasiView(vid.slug); setFailed(false); setPlaying(vid); }}
+        >
+          <VideoCardBody vid={vid} />
+        </button>
+      ) : (
         <a
           key={vid.id}
-          className="group overflow-hidden rounded-card bg-card shadow-raised [transition:var(--spring)] hover:shadow-lift hover:[transform:translateY(-6px)]"
+          className={VIDEO_CARD}
           href={vid.youtubeUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => countPublikasiView(vid.slug)}
         >
-          <div className="relative aspect-video w-full overflow-hidden bg-black">
-            <img
-              className="h-full w-full object-cover opacity-85 [transition:var(--ease)] group-hover:opacity-95 group-hover:[transform:scale(1.06)]"
-              src={vid.thumb}
-              alt={vid.title}
-            />
-            <div className="absolute inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.3)] [transition:var(--ease)]">
-              <div className="flex size-14 items-center justify-center rounded-[50%] bg-brand-accent text-[20px] text-ink shadow-[0_10px_24px_rgba(0,0,0,0.3)] [transition:var(--spring)] group-hover:bg-white group-hover:text-brand group-hover:[transform:scale(1.15)]">
-                <i className="fa-solid fa-play"></i>
-              </div>
-            </div>
-            {vid.duration && (
-              <span className="absolute right-3 bottom-3 rounded-[999px] bg-[rgba(0,0,0,0.8)] px-2.5 py-1 text-[11px] font-extrabold text-white">
-                {vid.duration}
-              </span>
-            )}
-          </div>
-          <div className="p-5">
-            {vid.channel && <span className="text-[11px] font-bold text-brand uppercase">{vid.channel}</span>}
-            <h4 className="mt-1.5 mb-0 line-clamp-3 text-[15px] leading-[1.4] font-extrabold break-words text-ink" title={vid.title}>{vid.title}</h4>
-          </div>
+          <VideoCardBody vid={vid} />
         </a>
-      ))}
+      )))}
+
+      {playing && (
+        <MediaSosialPlayer title={playing.title} widthClass="max-w-[960px]" onClose={() => setPlaying(null)} returnFocusRef={openerRef}>
+          {failed ? (
+            <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 bg-black p-6 text-center text-white">
+              <p className="m-0 text-[15px] font-bold">Video tidak bisa diputar.</p>
+              <a className="text-[14px] font-bold text-white underline underline-offset-4" href={playing.videoUrl} target="_blank" rel="noopener noreferrer">
+                Buka berkas video
+              </a>
+            </div>
+          ) : (
+            <video
+              className="block max-h-[calc(100vh-var(--player-chrome))] w-full bg-black"
+              src={playing.videoUrl}
+              poster={playing.thumb}
+              controls
+              autoPlay
+              playsInline
+              preload="metadata"
+              onError={() => setFailed(true)}
+            />
+          )}
+        </MediaSosialPlayer>
+      )}
     </div>
   );
 }

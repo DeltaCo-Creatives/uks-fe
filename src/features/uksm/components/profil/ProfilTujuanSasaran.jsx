@@ -1,4 +1,5 @@
 import { useUksm } from '../../useUksm';
+import { alignClass } from '../../alignClass';
 import { SECTION, BLOCK_TITLE, MINI_LABEL } from './styles';
 
 // The chevrons between steps mark the order ("dengan … sehingga …"): a right arrow beside each step,
@@ -29,7 +30,7 @@ export default function ProfilTujuanSasaran() {
             <span className="grid size-11 place-items-center rounded-card bg-brand-light text-[18px] text-brand" aria-hidden="true"><i className="fa-solid fa-bullseye"></i></span>
             <h3 className="m-0 text-[17px] font-extrabold">Tujuan UKS/M</h3>
           </div>
-          <p className="mb-6 max-w-[62ch] text-[17px] leading-[1.7] font-semibold text-ink max-[600px]:text-[16px]">{profilGoal.sentence}</p>
+          <p className={`mb-6 max-w-[62ch] text-[17px] leading-[1.7] font-semibold text-ink max-[600px]:text-[16px] ${alignClass(profilGoal.sentenceAlign)}`}>{profilGoal.sentence}</p>
 
           <h4 className={MINI_LABEL}>Dibaca per bagian</h4>
           <ol className="m-0 grid list-none grid-cols-3 gap-7 p-0 max-[600px]:grid-cols-1 max-[600px]:gap-[26px]">

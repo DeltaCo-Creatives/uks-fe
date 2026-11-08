@@ -120,7 +120,7 @@
   .font-heading {
     font-family: "Plus Jakarta Sans", system-ui, sans-serif;
     color: var(--text-primary);
-    letter-spacing: -0.03em;
+    letter-spacing: var(--heading-tracking, -0.01em);
   }
 
   a {
