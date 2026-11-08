@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TriasAccordionItem, useUksm } from '@/features/uksm';
 import { usePageMeta } from '@/hooks/usePageMeta';
+import { alignClass } from '@/features/uksm/alignClass';
 import { LoadingState, ErrorState } from '@/components/shared/AsyncState';
 
 const BADGE = 'inline-flex size-8 shrink-0 items-center justify-center rounded-[50%] font-display text-[15px] font-extrabold text-white';
@@ -46,7 +47,7 @@ function PillarSection({ pillar, summaries, openItemId, onToggleItem }) {
             Pilar {pillar.number} · {pillar.items.length} Sub-program
           </span>
           <h2 className="section-title">{pillar.title}</h2>
-          <p className="mt-2.5 max-w-[860px] text-[15px] leading-[1.7] text-ink-muted">{pillar.description}</p>
+          <p className={`mt-2.5 max-w-[860px] text-[15px] leading-[1.7] text-ink-muted ${alignClass(pillar.descriptionAlign)}`}>{pillar.description}</p>
         </div>
       </div>
 

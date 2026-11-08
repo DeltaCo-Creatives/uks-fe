@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Routes, Route, Navigate, Outlet, Link, useLocation, useParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -29,7 +29,7 @@ import NavConfigProvider from '@/components/NavConfigProvider';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import UptBerceritaDetailView from './components/UptBerceritaDetailView';
 import { useBeritaList } from './hooks/useBerita';
-import { useAgendaList, usePengumumanList, useUptStoriesList } from './hooks/usePublicLists';
+import { useAgendaList, usePengumumanList, usePengaturanSettings, useUptStoriesList } from './hooks/usePublicLists';
 import {
   DETAIL_VIEWS,
   defaultTabPath,
@@ -257,8 +257,20 @@ function AppRoutes() {
   );
 }
 
+const HEADING_TRACKING = { rapat: '-0.03em', sedang: '-0.01em', lega: '0em' };
+
+// tampilan.jarakHurufJudul from the CMS drives the letter-spacing of every heading; unknown or empty keeps sedang.
+function useHeadingTracking() {
+  const { data: settings } = usePengaturanSettings();
+  const value = HEADING_TRACKING[settings?.['tampilan.jarakHurufJudul']] ?? HEADING_TRACKING.sedang;
+  useEffect(() => {
+    document.documentElement.style.setProperty('--heading-tracking', value);
+  }, [value]);
+}
+
 // Routes mount only once the nav config settles, so tab slugs resolve against the real tabs.
 function App() {
+  useHeadingTracking();
   return (
     <NavConfigProvider>
       <AppRoutes />
