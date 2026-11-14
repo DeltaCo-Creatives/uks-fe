@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { pathForPengumuman, pathForTab } from '@/routes';
 import { usePengumuman } from '@/hooks/usePublicLists';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import { useTayangan } from '@/features/pengunjung';
 import { usePageMeta, NOT_FOUND_META } from '@/hooks/usePageMeta';
 import { StatusBadge, PentingBadge, PinnedMarker } from '@/features/informasi/components/PengumumanBadges';
 import { downloadFile } from '@/utils/downloadFile';
@@ -26,6 +27,8 @@ export default function PengumumanDetailView() {
   const tabLabel = useNavConfig().informasi.sections.find((s) => s.slug === tabSlug)?.label;
   // The NotFoundView below sets this too, but a parent's effect runs last, so the parent has to agree.
   const notFound = !loading && (error?.status === 404 || (!error && !item));
+  // Only an item that loaded is a view; a 404 or a failed load counts nothing.
+  useTayangan(item ? 'pengumuman' : null, item?.slug);
   usePageMeta(notFound ? NOT_FOUND_META : {
     title: item?.judul ?? tabLabel,
     description: item?.ringkasan || item?.isi,

@@ -142,3 +142,35 @@ The portal shows "Anda adalah pengunjung ke-57 hari ini" from its marker, next t
 - `src/features/pengunjung/jakartaDate.js`: the device's WIB date, used only as a re-check hint
 - `src/features/pengunjung/components/StatistikPengunjung.jsx`: the footer column and its count-up
 - `src/components/Footer.jsx`: calls the hook always and shows the column unless the setting is `"false"`
+
+## Page and article views
+
+Separate from the visitor count above: the portal also reports **each view** of a page or article, so the CMS Dashboard can show which pages, berita and categories are read. Every view counts (no once-per-day marker) and nothing identifies the viewer.
+
+```
+POST /api/v1/public/kunjungan/konten?tipe=berita&kunci=pmt-sekolah
+```
+
+- **Auth / body / headers:** none, same simple-CORS rules as above. Sent with `apiPing`, so it is fire-and-forget: a failure, a `404` or a `429` is ignored and never shown.
+- **`tipe`:** `halaman`, `berita`, `upt-bercerita`, `pengumuman` or `publikasi`.
+- **`kunci`:** the article's **slug** for the three article types, or the page key for `halaman`.
+- **Response:** `200` with no body. Bots and a blank User-Agent also get `200` and are not counted. `404` for an unknown slug or page key, `400` for a missing or unknown `tipe`.
+
+What the portal sends, and when:
+
+| Where | `tipe` | `kunci` | When |
+|---|---|---|---|
+| `BeritaDetailView` (berita) | `berita` | `article.slug` | The article has loaded (404 or a failed load counts nothing) |
+| `UptBerceritaDetailView` | `upt-bercerita` | `article.slug` | Same |
+| `PengumumanDetailView` (also kesempatan) | `pengumuman` | `item.slug` | Same |
+| `countPublikasiView` (every place a buku panduan, infografis, album or video is opened) | `publikasi` | the publikasi's slug | Each open. It rides on the existing `/lihat` call site, so it is a second request next to that one |
+| `Layout` in `App.jsx` | `halaman` | `beranda`, `mitra`, `kontak`, or `uksm` / `program` / `informasi` / `publikasi` plus one slug (`program/mbg`) | Every route change that lands on such a page |
+
+Detail pages are not also counted as a page, and the bare `/program`, `/informasi`, `/publikasi` and `/uksm` are not counted because they only redirect to their first tab (`halamanKey`). Navigating to another article under the same component counts the new article. Reloading counts again. React StrictMode's double effect is guarded, so development does not double count.
+
+The server decides what is valid (`HalamanKunjungan`, and it looks the slug up), so the portal's own list of pages is only there to avoid requests that would be rejected.
+
+Files:
+
+- `src/features/pengunjung/useTayangan.js`: `halamanKey`, `useTayangan`, `useTayanganHalaman`
+- `src/utils/counters.js`: `countKonten`, the request itself

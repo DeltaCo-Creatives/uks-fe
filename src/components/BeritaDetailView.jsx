@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import { useTayangan } from '@/features/pengunjung';
 import { parseIndonesianDate } from '@/utils/dateID';
 import { usePageMeta, NOT_FOUND_META } from '@/hooks/usePageMeta';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
@@ -16,6 +17,7 @@ import './BeritaDetailView.css';
  * the life of a mounted component.
  */
 const BERITA_CONFIG = {
+  tipe: 'berita',
   useDetail: useBerita,
   useRelated: useBeritaList,
   pathForItem: pathForArticle,
@@ -45,6 +47,8 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
   const backLabel = tabLabel ? `Kembali ke ${tabLabel}` : config.backLabel;
   // The NotFoundView below sets this too, but a parent's effect runs last, so the parent has to agree.
   const notFound = !loading && (error?.status === 404 || (!error && !article));
+  // Only an article that loaded is a view; a 404 or a failed load counts nothing.
+  useTayangan(article ? config.tipe : null, article?.slug);
   usePageMeta(notFound ? NOT_FOUND_META : {
     title: article?.title ?? tabLabel,
     description: article?.excerpt,

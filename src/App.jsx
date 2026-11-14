@@ -27,6 +27,7 @@ import DownloadToast from './components/shared/DownloadToast';
 
 import NavConfigProvider from '@/components/NavConfigProvider';
 import { useNavConfig } from '@/hooks/useNavConfig';
+import { useTayanganHalaman } from '@/features/pengunjung';
 import UptBerceritaDetailView from './components/UptBerceritaDetailView';
 import { useBeritaList } from './hooks/useBerita';
 import { useAgendaList, usePengumumanList, usePengaturanSettings, useUptStoriesList } from './hooks/usePublicLists';
@@ -136,6 +137,7 @@ function Layout() {
   const { pathname } = useLocation();
   const configs = useNavConfig();
   const viewKey = viewKeyFromPathname(pathname);
+  useTayanganHalaman(pathname);
   const [scrolledSection, setScrolledSection] = useState(null);
   // Tracks which elements have already played their reveal, across the whole
   // Layout lifetime, so a re-scan on every pathname change doesn't re-fade

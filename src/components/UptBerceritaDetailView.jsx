@@ -3,6 +3,7 @@ import { useUptBercerita, useUptStoriesList } from '../hooks/usePublicLists';
 import BeritaDetailView from './BeritaDetailView';
 
 const UPT_CONFIG = {
+  tipe: 'upt-bercerita',
   useDetail: useUptBercerita,
   useRelated: useUptStoriesList,
   pathForItem: pathForUptStory,
