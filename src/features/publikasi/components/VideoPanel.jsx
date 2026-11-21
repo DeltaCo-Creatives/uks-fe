@@ -60,7 +60,7 @@ export default function VideoPanel({ title, submenuId }) {
                 text="Coba kata kunci lain."
               />
             ) : (
-              <VideoGrid videos={pagedGroups[0].items} />
+              <VideoGrid videos={pagedGroups[0].items} allVideos={videos || []} />
             )}
             <Pagination page={page} totalPages={totalPages} onChange={setPage} />
           </>

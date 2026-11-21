@@ -7,6 +7,8 @@ import ContentToolbar from '@/components/shared/ContentToolbar';
 import Pagination from '@/components/shared/Pagination';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { BookGrid } from './PublikasiItems';
+import RekomendasiStrip from './RekomendasiStrip';
+import { countPublikasiView } from '@/utils/counters';
 import { BUKU_SEARCH_FIELDS } from '../searchFields';
 
 // The shared subnav pill, a size smaller; "!" beats its unlayered padding.
@@ -127,7 +129,13 @@ export default function BooksPanel({ title, submenuId }) {
             slug: selectedBook.slug
           }}
           onClose={() => setSelectedBook(null)}
-        />
+        >
+          <RekomendasiStrip
+            current={selectedBook}
+            items={bukuList || []}
+            onPick={(book) => { countPublikasiView(book.slug); setSelectedBook(book); }}
+          />
+        </DocViewerModal>
       )}
     </div>
   );

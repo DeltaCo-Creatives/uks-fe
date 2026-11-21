@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { pathForArticle, pathForProgram, pathForTab } from '@/routes';
 import { beritaHookFor } from '@/hooks/useBerita';
+import { useBerandaBeritaTren, orderBySlugs } from '@/hooks/useRekomendasi';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import { useProgramList } from '@/hooks/usePublicLists';
 import SafeImage from '@/components/SafeImage';
@@ -26,7 +27,8 @@ function ProgramsSection({ beritaId }) {
     const { trackProps } = useMarqueeHold(marqueeTween);
     const useList = beritaHookFor(beritaId);
     const { data: newsList, loading, error, retry } = useList();
-    const latestNews = (newsList || []).slice(0, 4);
+    const tren = useBerandaBeritaTren(beritaId);
+    const latestNews = (tren.aktif ? orderBySlugs(newsList || [], tren.slugs) : newsList || []).slice(0, 4);
     // Decorative row: it stays out until the programs load and is skipped if they fail.
     const { data: programs } = useProgramList();
 
@@ -98,7 +100,7 @@ function ProgramsSection({ beritaId }) {
             <div id="sec-home-news" className="container mt-7!">
                 <div className="section-header" data-gsap="reveal">
                     <div>
-                        <span className="section-kicker">Update</span>
+                        <span className="section-kicker">{tren.aktif ? 'Sedang tren' : 'Update'}</span>
                         <h2 className="section-title">Kabar Terbaru</h2>
                     </div>
                     <Link to={pathForTab('informasi', 'berita')} className={`btn-pill primary ${SECTION_MORE_BUTTON}`}>

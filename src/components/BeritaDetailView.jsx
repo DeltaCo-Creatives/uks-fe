@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { pathForArticle, pathForTab } from '../routes';
 import { useBerita, useBeritaList } from '../hooks/useBerita';
+import { useRekomendasi, orderBySlugs } from '../hooks/useRekomendasi';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import { useTayangan } from '@/features/pengunjung';
 import { parseIndonesianDate } from '@/utils/dateID';
@@ -42,6 +43,7 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
   const { idOrSlug, itemSlug, submenuSlug } = useParams();
   const { data: article, loading, error } = config.useDetail(idOrSlug ?? itemSlug);
   const { data: relatedList } = config.useRelated();
+  const rekomendasi = useRekomendasi(config.tipe, idOrSlug ?? itemSlug);
   // Back goes to the item's own submenu tab; the config default covers views without submenus (UPT).
   const tabSlug = article?.submenuSlug ?? submenuSlug;
   const backTo = tabSlug ? pathForTab('informasi', tabSlug) : config.backTo;
@@ -95,7 +97,9 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
   // Newest first must be applied before the cut to 3, or the 3 shown would be the first 3 returned, not the latest.
   const sameSection = (relatedList || [])
     .filter((n) => n.slug !== article.slug && n.submenuSlug === article.submenuSlug);
-  const otherArticles = (config.relatedNewestFirst ? [...sameSection].sort(byNewest) : sameSection).slice(0, 3);
+  const fallback = config.relatedNewestFirst ? [...sameSection].sort(byNewest) : sameSection;
+  // Recommended first, topped up with the fallback order; orderBySlugs keeps that order for the rest.
+  const otherArticles = orderBySlugs(fallback, rekomendasi).slice(0, 3);
 
   return (
     <div className="container" style={{ padding: '24px 20px 80px', maxWidth: '980px' }}>

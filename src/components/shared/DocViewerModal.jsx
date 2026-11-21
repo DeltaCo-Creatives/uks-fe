@@ -24,7 +24,7 @@ const PdfReader = lazy(() => import('./PdfReader'));
  *
  * @param {{ doc: { title: string, url: string, kind?: string, meta?: string, download?: string, downloadSource?: string, slug?: string }, onClose: () => void }} props
  */
-export default function DocViewerModal({ doc, onClose }) {
+export default function DocViewerModal({ doc, onClose, children }) {
   const closeRef = useRef(null);
   const titleId = useId();
   const src = embedUrl(doc.url, doc.kind);
@@ -87,6 +87,8 @@ export default function DocViewerModal({ doc, onClose }) {
             <p>Dokumen ini hanya bisa dibuka di situs sumbernya.</p>
           </div>
         )}
+
+        {children}
 
         <div className="doc-viewer-foot">
           {/* Some hosts refuse to be framed, and that failure is silent, so the way out stays visible */}
