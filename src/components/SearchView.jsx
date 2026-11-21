@@ -1,6 +1,7 @@
 import { useMemo, useRef, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { pathForAgenda, pathForPengumuman, pathForProgram, pathForTab, pathForView, sectionIdForTab } from '../routes';
+import BeritaLink from './BeritaLink';
 import { useBeritaList } from '../hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import useSearchFeedback from '@/hooks/useSearchFeedback';
@@ -146,7 +147,9 @@ export default function SearchView() {
       items.push({
         id: `news-${news.id}`,
         title: news.title,
-        excerpt: `${news.date} · ${news.category} - ${news.excerpt}`,
+        excerpt: [`${news.date} · ${news.category}`, news.excerpt].filter(Boolean).join(' - '),
+        linkOnly: news.linkOnly,
+        sourceUrl: news.sourceUrl,
         typeLabel: 'Warta Terkini',
         typeColor: '#2563EB',
         icon: 'fa-solid fa-newspaper',
@@ -501,7 +504,8 @@ export default function SearchView() {
             {results.map((item) => (
               // The wrapper takes the cascade, since the card's own CSS transition would lag a GSAP move; grid keeps the card filling it.
               <div key={item.id} data-search-item style={{ display: 'grid' }}>
-                <Link
+                <BeritaLink
+                  item={item}
                   to={item.path ?? pathForView(item.viewKey, item.sectionId)}
                   style={{
                     background: '#FFFFFF',
@@ -565,7 +569,7 @@ export default function SearchView() {
                       Bagian #{item.sectionId || item.viewKey}
                     </span>
                   </div>
-                </Link>
+                </BeritaLink>
               </div>
             ))}
           </div>

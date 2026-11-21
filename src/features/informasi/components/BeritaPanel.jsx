@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import BeritaLink from '@/components/BeritaLink';
 import { pathForArticle } from '@/routes';
 import SafeImage from '@/components/SafeImage';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
@@ -123,8 +123,9 @@ export default function BeritaPanel({ title, submenuId }) {
                 {group.label && <h3 className="content-group-heading">{group.label}</h3>}
                 <div className={GRID}>
                   {group.items.map(item => (
-                    <Link
+                    <BeritaLink
                       key={item.id}
+                      item={item}
                       to={pathForArticle(item.slug, item.submenuSlug)}
                       className={NEWS_CARD_LINK}
                     >
@@ -138,13 +139,13 @@ export default function BeritaPanel({ title, submenuId }) {
                         </span>
                       </div>
                       <h3 className={CARD_TITLE}>{item.title}</h3>
-                      <p className={CARD_EXCERPT}>{item.excerpt}</p>
+                      {item.excerpt && <p className={CARD_EXCERPT}>{item.excerpt}</p>}
                       <div className={CARD_FOOT}>
                         <span className={CARD_FOOT_ITEM}>
-                          Baca selengkapnya <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                          {item.linkOnly ? 'Baca di sumber' : 'Baca selengkapnya'} <i className={item.linkOnly ? 'fa-solid fa-arrow-up-right-from-square' : 'fa-solid fa-arrow-right'} aria-hidden="true"></i>
                         </span>
                       </div>
-                    </Link>
+                    </BeritaLink>
                   ))}
                 </div>
               </div>

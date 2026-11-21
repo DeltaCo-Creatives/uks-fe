@@ -6,6 +6,7 @@ import { beritaHookFor } from '@/hooks/useBerita';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import { useProgramList } from '@/hooks/usePublicLists';
 import SafeImage from '@/components/SafeImage';
+import BeritaLink from '@/components/BeritaLink';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
 import { useMarqueeHold } from '../useMarqueeHold';
@@ -126,8 +127,9 @@ function ProgramsSection({ beritaId }) {
                 {!loading && !error && latestNews.length > 0 && (
                     <div className="news-masonry">
                         {latestNews.map((item) => (
-                            <Link
+                            <BeritaLink
                                 key={item.id}
+                                item={item}
                                 to={pathForArticle(item.slug, item.submenuSlug)}
                                 className="news-card-playful"
                                 data-gsap="reveal"
@@ -136,9 +138,9 @@ function ProgramsSection({ beritaId }) {
                                     <SafeImage src={item.image} alt={item.title} />
                                 </div>
                                 <h3>{item.title}</h3>
-                                <p>{item.excerpt}</p>
-                                <span className="mt-auto text-[12px] font-bold text-brand-deep">Baca Selengkapnya &rarr;</span>
-                            </Link>
+                                {item.excerpt && <p>{item.excerpt}</p>}
+                                <span className="mt-auto text-[12px] font-bold text-brand-deep">{item.linkOnly ? <>Baca di sumber <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></> : <>Baca Selengkapnya &rarr;</>}</span>
+                            </BeritaLink>
                         ))}
                     </div>
                 )}

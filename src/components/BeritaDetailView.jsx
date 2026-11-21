@@ -7,6 +7,8 @@ import { parseIndonesianDate } from '@/utils/dateID';
 import { usePageMeta, NOT_FOUND_META } from '@/hooks/usePageMeta';
 import { sanitizeHtml } from '@/utils/sanitizeHtml';
 import SafeImage from './SafeImage';
+import BeritaLink from './BeritaLink';
+import { isExternalBerita } from '@/utils/beritaLink';
 import NotFoundView from './NotFoundView';
 import './BeritaDetailView.css';
 
@@ -178,6 +180,18 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
           />
         </div>
 
+        {isExternalBerita(article) ? (
+          <a
+            href={article.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-pill primary"
+            style={{ padding: '12px 24px', fontSize: '14px', display: 'inline-flex' }}
+          >
+            Baca berita di sumber
+            <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" style={{ marginLeft: '8px' }}></i>
+          </a>
+        ) : (<>
         {/* Excerpt Lead */}
         <p
           style={{
@@ -217,6 +231,7 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
             <i className="fa-solid fa-arrow-up-right-from-square" style={{ marginLeft: '8px' }}></i>
           </a>
         )}
+        </>)}
 
         {/* Share & Back action bar */}
         <div
@@ -271,8 +286,9 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
           {otherArticles.map((other) => (
-            <Link
+            <BeritaLink
               key={other.id}
+              item={other}
               to={config.pathForItem(other.slug, other.submenuSlug)}
               className="news-card-playful"
               style={{ display: 'flex', flexDirection: 'column' }}
@@ -292,16 +308,18 @@ export default function BeritaDetailView({ config = BERITA_CONFIG }) {
               <h4 style={{ fontSize: '16px', fontWeight: 800, margin: '4px 0 8px', color: 'var(--text-primary)', lineHeight: 1.35 }}>
                 {other.title}
               </h4>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '14px', flexGrow: 1 }}>
-                {other.excerpt}
-              </p>
+              {other.excerpt && (
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '14px', flexGrow: 1 }}>
+                  {other.excerpt}
+                </p>
+              )}
               <div style={{ marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--brand-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span>Baca Selengkapnya</span>
                   <i className="fa-solid fa-arrow-right"></i>
                 </span>
               </div>
-            </Link>
+            </BeritaLink>
           ))}
         </div>
       </div>
