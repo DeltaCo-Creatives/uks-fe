@@ -7,6 +7,7 @@ import MediaSosialPlayer from '@/features/beranda/components/MediaSosialPlayer';
 import { downloadFile } from '@/utils/downloadFile';
 import { isDirectPdf } from '@/utils/linkKind';
 // The same card grid as the Warta lists (3 across on a desktop, 2 on a tablet, 1 on a phone), so the pages match.
+import RekomendasiStrip from './RekomendasiStrip';
 import { GRID } from '@/features/informasi/styles';
 
 /*
@@ -199,7 +200,7 @@ function VideoCardBody({ vid }) {
 }
 
 /** An uploaded video plays in the shared popup shell; YouTube items still open in a new tab. */
-export function VideoGrid({ videos }) {
+export function VideoGrid({ videos, allVideos = videos }) {
   const [playing, setPlaying] = useState(null);
   const [failed, setFailed] = useState(false);
   const openerRef = useRef(null);
@@ -250,6 +251,11 @@ export function VideoGrid({ videos }) {
               onError={() => setFailed(true)}
             />
           )}
+          <RekomendasiStrip
+            current={playing}
+            items={allVideos.filter((v) => v.videoUrl)}
+            onPick={(vid) => { countPublikasiView(vid.slug); setFailed(false); setPlaying(vid); }}
+          />
         </MediaSosialPlayer>
       )}
     </div>

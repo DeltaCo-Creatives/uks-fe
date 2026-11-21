@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { pathForArticle } from '@/routes';
+import BeritaLink from '@/components/BeritaLink';
 import { useBeritaList } from '@/hooks/useBerita';
 import { useHeroSlideList } from '@/hooks/usePublicLists';
 
@@ -141,14 +141,15 @@ export default function Hero() {
                         <div className="hero-content relative z-[3] max-w-[900px] px-6 py-[30px] text-center text-white max-[600px]:px-4 max-[600px]:py-5">
                             {/* Titles come from the API and can run long; on phones cap them so they never reach the slider controls. */}
                             <h1 className="mb-4 text-[clamp(24px,6vw,62px)] leading-[1.08] font-extrabold text-balance text-white max-[600px]:line-clamp-4 max-[600px]:leading-[1.2]">{slide.title}</h1>
-                            <p className="mb-6 text-[clamp(15px,1.8vw,18px)] text-[rgba(255,255,255,0.8)]">{slide.excerpt}</p>
+                            {slide.excerpt && <p className="mb-6 text-[clamp(15px,1.8vw,18px)] text-[rgba(255,255,255,0.8)]">{slide.excerpt}</p>}
                             {slide.slug && (
-                                <Link
+                                <BeritaLink
+                                    item={slide}
                                     className="btn-massive max-[600px]:min-h-[40px] max-[600px]:px-5! max-[600px]:py-2.5! max-[600px]:text-[13px]!"
                                     to={pathForArticle(slide.slug)}
                                 >
                                     Baca Selengkapnya
-                                </Link>
+                                </BeritaLink>
                             )}
                         </div>
                     </div>

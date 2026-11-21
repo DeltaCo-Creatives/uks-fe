@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { pathForArticle, pathForProgram, pathForTab } from '@/routes';
 import { beritaHookFor } from '@/hooks/useBerita';
+import { useBerandaBeritaTren, orderBySlugs } from '@/hooks/useRekomendasi';
 import { useNavConfig } from '@/hooks/useNavConfig';
 import { useProgramList } from '@/hooks/usePublicLists';
 import SafeImage from '@/components/SafeImage';
+import BeritaLink from '@/components/BeritaLink';
 import { LoadingState, ErrorState, EmptyState } from '@/components/shared/AsyncState';
 import { MARQUEE_FRAME, MARQUEE_TRACK, SECTION_MORE_BUTTON } from '../styles';
 import { useMarqueeHold } from '../useMarqueeHold';
@@ -25,7 +27,8 @@ function ProgramsSection({ beritaId }) {
     const { trackProps } = useMarqueeHold(marqueeTween);
     const useList = beritaHookFor(beritaId);
     const { data: newsList, loading, error, retry } = useList();
-    const latestNews = (newsList || []).slice(0, 4);
+    const tren = useBerandaBeritaTren(beritaId);
+    const latestNews = (tren.aktif ? orderBySlugs(newsList || [], tren.slugs) : newsList || []).slice(0, 4);
     // Decorative row: it stays out until the programs load and is skipped if they fail.
     const { data: programs } = useProgramList();
 
@@ -97,7 +100,7 @@ function ProgramsSection({ beritaId }) {
             <div id="sec-home-news" className="container mt-7!">
                 <div className="section-header" data-gsap="reveal">
                     <div>
-                        <span className="section-kicker">Update</span>
+                        <span className="section-kicker">{tren.aktif ? 'Sedang tren' : 'Update'}</span>
                         <h2 className="section-title">Kabar Terbaru</h2>
                     </div>
                     <Link to={pathForTab('informasi', 'berita')} className={`btn-pill primary ${SECTION_MORE_BUTTON}`}>
@@ -126,8 +129,9 @@ function ProgramsSection({ beritaId }) {
                 {!loading && !error && latestNews.length > 0 && (
                     <div className="news-masonry">
                         {latestNews.map((item) => (
-                            <Link
+                            <BeritaLink
                                 key={item.id}
+                                item={item}
                                 to={pathForArticle(item.slug, item.submenuSlug)}
                                 className="news-card-playful"
                                 data-gsap="reveal"
@@ -136,9 +140,9 @@ function ProgramsSection({ beritaId }) {
                                     <SafeImage src={item.image} alt={item.title} />
                                 </div>
                                 <h3>{item.title}</h3>
-                                <p>{item.excerpt}</p>
-                                <span className="mt-auto text-[12px] font-bold text-brand-deep">Baca Selengkapnya &rarr;</span>
-                            </Link>
+                                {item.excerpt && <p>{item.excerpt}</p>}
+                                <span className="mt-auto text-[12px] font-bold text-brand-deep">{item.linkOnly ? <>Baca di sumber <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></> : <>Baca Selengkapnya &rarr;</>}</span>
+                            </BeritaLink>
                         ))}
                     </div>
                 )}
